@@ -8,11 +8,12 @@
     --secondary: 205 100% 86%; /* Supporting theme color */
     --accent: 27 87% 67%; /* For highlights or call-to-action */
 
-    --text-primary: 0 0% 10%; /* Dark text color */
-    --text-secondary: 0 0% 40%; /* Lighter text color */
+    --text-primary: 240 100% 25%; /* Dark text color */
+    --text-secondary: 205 100% 86%; /* Lighter text color */
     --border: 0 0% 90%; /* Border or divider color */
     --white: 0 0% 100%; /* White for contrast */
-    --black: 0 0% 100%; /* White for contrast */
+    --black: 0 0% 0%; /* Black for Dark */
+    --grey: 0 0% 50%; /* Gray for Medium */
   }
 
   .dark {
@@ -21,14 +22,21 @@
     --secondary: 205 100% 86%; /* Supporting theme color */
     --accent: 27 87% 67%; /* For highlights or call-to-action */
 
-    --text-primary: 0 0% 10%; /* Dark text color */
-    --text-secondary: 0 0% 40%; /* Lighter text color */
+    --text-primary: 240 100% 25%; /* Dark text color */
+    --text-secondary: 205 100% 86%; /* Lighter text color */
     --border: 0 0% 90%; /* Border or divider color */
     --white: 0 0% 100%; /* White for contrast */
-    --black: 0 0% 100%; /* White for contrast */
+    --black: 0 0% 0%; /* Black for Dark */
+    --grey: 0 0% 50%; /* Gray for Medium */
   }
 }
 
-body {
-  @apply bg-background text-accent;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-primary;
+  }
 }
