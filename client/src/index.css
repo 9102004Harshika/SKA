@@ -1,13 +1,42 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --background: 60 56% 91%; /* Background color */
+    --primary: 240 100% 25%; /* Main theme color */
+    --secondary: 205 100% 86%; /* Supporting theme color */
+    --accent: 27 87% 67%; /* For highlights or call-to-action */
+
+    --text-primary: 240 100% 25%; /* Dark text color */
+    --text-secondary: 205 100% 86%; /* Lighter text color */
+    --border: 0 0% 90%; /* Border or divider color */
+    --white: 0 0% 100%; /* White for contrast */
+    --black: 0 0% 0%; /* Black for Dark */
+    --grey: 0 0% 50%; /* Gray for Medium */
+  }
+
+  .dark {
+    --background: 60 56% 91%; /* Background color */
+    --primary: 240 100% 25%; /* Main theme color */
+    --secondary: 205 100% 86%; /* Supporting theme color */
+    --accent: 27 87% 67%; /* For highlights or call-to-action */
+
+    --text-primary: 240 100% 25%; /* Dark text color */
+    --text-secondary: 205 100% 86%; /* Lighter text color */
+    --border: 0 0% 90%; /* Border or divider color */
+    --white: 0 0% 100%; /* White for contrast */
+    --black: 0 0% 0%; /* Black for Dark */
+    --grey: 0 0% 50%; /* Gray for Medium */
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-primary;
+  }
 }
