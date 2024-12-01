@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import LoginPage from "./pages/login/Login";
-import RegisterPage from './pages/register/Register'
+import RegisterPage from "./pages/register/Register";
 const App = () => {
   return (
     <Router>
@@ -10,9 +10,9 @@ const App = () => {
         {/* <Navbar /> */}
         <main className="flex-grow">
           <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage/>}/>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
         </main>
         {/* <Footer /> */}

@@ -9,9 +9,18 @@ const Home = () => {
       <p className="text-lg text-accent">
         Learn and grow with our curated courses.
       </p>
-      <button className="text-lg text-primary bg-secondary border-secondary border rounded-md p-2 mt-8">
-        View More
-      </button>
+      <a
+        className="text-lg text-primary bg-secondary border-secondary border rounded-md p-2 mt-8 inline-block"
+        href="/register"
+      >
+        Register Page
+      </a>
+      <a
+        className="text-lg text-primary bg-secondary border-secondary border rounded-md p-2 mt-8 inline-block"
+        href="/login"
+      >
+        Login Page
+      </a>
     </section>
   );
 };
