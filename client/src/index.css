@@ -1,7 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base {
+  :root {
+    --background: 60 56% 91%; /* Background color */
+    --primary: 240 100% 25%; /* Main theme color */
+    --secondary: 205 100% 86%; /* Supporting theme color */
+    --accent: 27 87% 67%; /* For highlights or call-to-action */
+
+    --text-primary: 0 0% 10%; /* Dark text color */
+    --text-secondary: 0 0% 40%; /* Lighter text color */
+    --border: 0 0% 90%; /* Border or divider color */
+    --white: 0 0% 100%; /* White for contrast */
+    --black: 0 0% 100%; /* White for contrast */
+  }
+
+  .dark {
+    --background: 60 56% 91%; /* Background color */
+    --primary: 240 100% 25%; /* Main theme color */
+    --secondary: 205 100% 86%; /* Supporting theme color */
+    --accent: 27 87% 67%; /* For highlights or call-to-action */
+
+    --text-primary: 0 0% 10%; /* Dark text color */
+    --text-secondary: 0 0% 40%; /* Lighter text color */
+    --border: 0 0% 90%; /* Border or divider color */
+    --white: 0 0% 100%; /* White for contrast */
+    --black: 0 0% 100%; /* White for contrast */
+  }
+}
 
 body {
-  @apply bg-gray-100 text-gray-800;
+  @apply bg-background text-accent;
 }
