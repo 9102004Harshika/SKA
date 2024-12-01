@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Vidaloka&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,7 +7,7 @@
   :root {
     --background: 60 56% 91%; /* Background color */
     --primary: 240 100% 25%; /* Main theme color */
-    --secondary:205 100% 85.88%; /* Supporting theme color */
+    --secondary: 205 100% 85.88%; /* Supporting theme color */
     --accent: 26.53 86.98% 66.86%; /* For highlights or call-to-action */
 
     --text-primary: 240 100% 25%; /* Dark text color */
@@ -37,6 +39,6 @@
   }
 
   body {
-    @apply bg-background text-primary;
+    @apply bg-background text-primary font-body;
   }
 }

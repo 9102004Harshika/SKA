@@ -11,7 +11,9 @@ function RegisterPage() {
       <div className="w-full max-w-screen-lg flex flex-col items-center justify-center h-full">
         {/* Registration Form */}
         <div className="w-full md:w-1/2 bg-card text-card-foreground  p-8 shadow-lg rounded-lg flex flex-col items-center">
-          <h2 className="text-3xl font-semibold text-center mb-6">Register</h2>
+          <h2 className="text-3xl font-semibold font-header text-center mb-6">
+            Register
+          </h2>
           <form className="w-full max-w-md">
             {/* Full Name Field */}
             <div className="mb-4">
