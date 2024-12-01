@@ -26,7 +26,7 @@ module.exports = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--primary))",
         },
-        darkGrey:{
+        bodyText:{
           DEFAULT:"hsl(var(--dark-grey))"
         }
       },
