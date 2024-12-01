@@ -9,13 +9,12 @@
     --primary: 240 100% 25%; /* Main theme color */
     --secondary: 205 100% 85.88%; /* Supporting theme color */
     --accent: 26.53 86.98% 66.86%; /* For highlights or call-to-action */
-    --body-text:0 0% 17.25%;
 
     --text-primary: 240 100% 25%; /* Dark text color */
     --text-secondary: 205 100% 86%; /* Lighter text color */
     --border: 0 0% 90%; /* Border or divider color */
     --white: 0 0% 100%; /* White for contrast */
-    --black: 0 0% 0%; /* Black for Dark */
+    --black: 0 0% 17.25%; /* Black for Dark */
     --grey: 0 0% 50%; /* Gray for Medium */
   }
 
