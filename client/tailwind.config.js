@@ -27,6 +27,11 @@ module.exports = {
           foreground: "hsl(var(--primary))",
         },
       },
+      fontFamily: {
+        header: ['"Vidaloka"', "serif"],
+        body: ['"Nunito"', "serif"],
+        highlight: ['"Cabin Sketch"', "sans-serif"],
+      },
     },
   },
   plugins: [],

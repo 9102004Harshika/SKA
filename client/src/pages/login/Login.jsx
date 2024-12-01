@@ -49,7 +49,9 @@ function LoginPage() {
 
         {/* Login Form */}
         <div className="w-full md:w-1/2 bg-card text-card-foreground p-8 shadow-lg rounded-lg flex flex-col items-center">
-          <h2 className="text-3xl font-semibold text-center mb-6">Login</h2>
+          <h2 className="text-3xl font-header font-semibold text-center mb-6">
+            Login
+          </h2>
           <form className="w-full max-w-md">
             {/* Email Field */}
             <div className="mb-4">
