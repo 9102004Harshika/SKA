@@ -26,6 +26,9 @@ module.exports = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--primary))",
         },
+        darkGrey:{
+          DEFAULT:"hsl(var(--dark-grey))"
+        }
       },
       fontFamily: {
         header: ['"Vidaloka"', "serif"],
