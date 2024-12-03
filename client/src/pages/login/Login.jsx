@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import LeftPanel from "./LeftPanel";
+import { Input } from "../../ui/input";
 import { loginForm } from "../../config/index";
 
 function LoginPage() {
@@ -60,10 +61,9 @@ function LoginPage() {
                 <label className="block text-sm font-medium mb-1">
                   {field.label}
                 </label>
-                <input
+                <Input
                   type={field.type}
                   name={field.name}
-                  className="w-full px-4 py-2 border border-muted rounded-lg shadow-sm focus:ring-primary focus:border-primary"
                   placeholder={field.placeholder}
                   required={field.required}
                 />
