@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 import LeftPanel from "./LeftPanel";
+import { loginForm } from "../../config/index";
 
 function LoginPage() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -53,29 +54,21 @@ function LoginPage() {
             Login
           </h2>
           <form className="w-full max-w-md">
-            {/* Email Field */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">
-                Email Address
-              </label>
-              <input
-                type="email"
-                className="w-full px-4 py-2 border border-muted rounded-lg shadow-sm focus:ring-primary focus:border-primary"
-                placeholder="Enter your email"
-                required
-              />
-            </div>
-
-            {/* Password Field */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium mb-1">Password</label>
-              <input
-                type="password"
-                className="w-full px-4 py-2 border border-muted rounded-lg shadow-sm focus:ring-primary focus:border-primary"
-                placeholder="Enter your password"
-                required
-              />
-            </div>
+            {/* Dynamic Input Fields */}
+            {loginForm.map((field, index) => (
+              <div className="mb-4" key={index}>
+                <label className="block text-sm font-medium mb-1">
+                  {field.label}
+                </label>
+                <input
+                  type={field.type}
+                  name={field.name}
+                  className="w-full px-4 py-2 border border-muted rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+                  placeholder={field.placeholder}
+                  required={field.required}
+                />
+              </div>
+            ))}
 
             {/* Additional Links */}
             <div className="my-4 text-center">
