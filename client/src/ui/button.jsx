@@ -60,7 +60,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[#0f1923] text-[#fff] hover:bg-[#ff4655]",
+        default: "bg-[#0f1923] text-[#fff] hover:bg-primary",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -84,10 +84,10 @@ const Button = React.forwardRef(
         {...props}
       >
         <span className="button_text">{props.children}</span>
-        <span className="button_sl absolute top-0 bottom-[-1px] left-[-8px] w-0 bg-[#ff4655] skew-x-[-15deg] transition-all duration-200 ease"></span>
-        <span className="button_lg absolute inset-0 bg-[#0f1923]">
-          <span className="absolute top-0 left-0 w-[2px] h-[2px] bg-[#0f1923]"></span>
-          <span className="absolute bottom-0 right-0 w-[4px] h-[4px] bg-[#0f1923] transition-all duration-200 ease"></span>
+        <span className="button_sl absolute top-0 bottom-[-1px] left-[-8px] w-0 bg-primary skew-x-[-15deg] transition-all duration-200 ease"></span>
+        <span className="button_lg absolute inset-0 bg-transparent">
+          <span className="absolute top-0 left-0 w-[2px] h-[2px] bg-transparent"></span>
+          <span className="absolute bottom-0 right-0 w-[4px] h-[4px] bg-transparent transition-all duration-200 ease"></span>
         </span>
       </Comp>
     );

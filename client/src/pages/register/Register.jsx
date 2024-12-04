@@ -32,7 +32,7 @@ function RegisterPage() {
           <form className="w-full max-w-md">
             {/* Dynamic Input Fields */}
             {registerForm.map((field, index) => (
-              <div className="mb-4" key={index}>
+              <div className="mb-2" key={index}>
                 <label className="block text-sm font-medium mb-1">
                   {field.label}
                 </label>
@@ -46,7 +46,7 @@ function RegisterPage() {
             ))}
 
             {/* Additional Links */}
-            <div className="my-4 text-center">
+            <div className="mt-2 text-center">
               <p className="text-sm">
                 Already have an account?{" "}
                 <a href="/" className="text-accent hover:underline">
@@ -58,14 +58,14 @@ function RegisterPage() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="mt-10 w-full rounded-lg hover:bg-secondary border-2 border-primary hover:border-secondary font-poppins text-md"
+              className="mt-6 w-full rounded-lg hover:bg-secondary border-2 border-primary hover:border-secondary font-poppins text-md"
             >
               Submit
             </Button>
           </form>
 
           {/* Divider */}
-          <div className="flex items-center w-full my-4">
+          <div className="flex items-center w-full mb-6">
             <hr className="flex-grow border-t border-muted" />
             <span className="mx-2 text-sm text-muted-foreground">
               Or sign up with

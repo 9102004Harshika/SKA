@@ -57,7 +57,7 @@ label {
   appearance: none;
   border: none;
   background: none;
-  color: #0f1923;
+  color: var(--primary);
   cursor: pointer;
   position: relative;
   padding: 8px;
@@ -115,6 +115,7 @@ label {
   padding: 10px 20px;
   color: #fff;
   background-color: #0f1923;
+  display: none;
   overflow: hidden;
   box-shadow: inset 0px 0px 0px 1px transparent;
 }
@@ -150,6 +151,7 @@ label {
   left: -8px;
   width: 0;
   background-color: #ff4655;
+  color: var(--background);
   transform: skew(-15deg);
   transition: all 0.2s ease;
 }
