@@ -3,9 +3,20 @@ import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
 import myImage from "../../images/bg15.png";
 import { Button } from "../../ui/button";
+import { FaGoogle, FaApple } from "react-icons/fa";
+import { TiVendorMicrosoft } from "react-icons/ti";
+
 function RegisterPage() {
   const handleGoogleSignup = () => {
     console.log("Sign Up with Google clicked");
+  };
+
+  const handleFacebookSignup = () => {
+    console.log("Sign Up with Facebook clicked");
+  };
+
+  const handleTwitterSignup = () => {
+    console.log("Sign Up with Twitter clicked");
   };
 
   return (
@@ -27,7 +38,7 @@ function RegisterPage() {
           }}
         >
           <h2 className="text-3xl font-semibold font-header text-center mb-6">
-            Register
+            Elevate Your Learning
           </h2>
           <form className="w-full max-w-md">
             {/* Dynamic Input Fields */}
@@ -56,37 +67,59 @@ function RegisterPage() {
             </div>
 
             {/* Submit Button */}
-            <Button
-              type="submit"
-              className="mt-6 w-full rounded-lg hover:bg-secondary border-2 border-primary hover:border-secondary font-poppins text-md"
-            >
-              Submit
-            </Button>
+            <Button text="Enrol Now" size="lg" variant="primary" />
           </form>
 
           {/* Divider */}
-          <div className="flex items-center w-full mb-6">
-            <hr className="flex-grow border-t border-muted" />
-            <span className="mx-2 text-sm text-muted-foreground">
+          <div className="flex items-center w-full mb-2">
+            <hr className="flex-grow border-t border-muted border-primary" />
+            <span className="mx-1 text-sm text-muted-foreground">
               Or sign up with
             </span>
-            <hr className="flex-grow border-t border-muted" />
+            <hr className="flex-grow border-t border-muted border-primary" />
           </div>
 
-          {/* Google Sign-Up Button */}
-          <button
-            onClick={handleGoogleSignup}
-            className="w-full flex items-center justify-center border border-muted rounded-lg py-2 px-4 bg-transparent hover:bg-gray-100 focus:ring-2 focus:ring-muted focus:outline-none"
-          >
-            <img
-              src="https://th.bing.com/th/id/OIP.AUmnbiLoI6qsNjlDmrJ3CwHaH5?rs=1&pid=ImgDetMain"
-              alt="Google"
-              className="w-5 h-5 mr-2"
+          {/* Social Media Sign-Up Buttons */}
+          <div className="flex space-x-4 w-full justify-center">
+            {/* Google Sign-Up Button */}
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <FaGoogle className="w-5 h-5 mr-2" /> {/* Google Icon */}
+                  <span className="hidden md:inline">Google</span> {/* Text hidden on mobile */}
+                </div>
+              }
+              size="sm"
+              variant="default"
+              onClick={handleGoogleSignup}
             />
-            <span className="text-sm font-medium text-muted-foreground">
-              Google
-            </span>
-          </button>
+
+            {/* Microsoft Sign-Up Button */}
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <TiVendorMicrosoft className="w-5 h-5 mr-2" /> {/* Microsoft Icon */}
+                  <span className="hidden md:inline">Microsoft</span> {/* Text hidden on mobile */}
+                </div>
+              }
+              size="sm"
+              variant="default"
+              onClick={handleFacebookSignup} // Change to appropriate handler for Microsoft
+            />
+
+            {/* Apple Sign-Up Button */}
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <FaApple className="w-5 h-5 mr-2" /> {/* Apple Icon */}
+                  <span className="hidden md:inline">Apple</span> {/* Text hidden on mobile */}
+                </div>
+              }
+              size="sm"
+              variant="default"
+              onClick={handleTwitterSignup} // Change to appropriate handler for Apple
+            />
+          </div>
         </div>
       </div>
     </div>

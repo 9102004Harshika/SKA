@@ -23,7 +23,7 @@ const Input = React.forwardRef(
             border: "none",
             borderBottom: active
               ? "2px solid hsl(205 ,100% ,85.88%)" // Highlighted bottom border
-              : "2px solid #7d8082", // Normal bottom border
+              : "1px solid #000080", // Normal bottom border
             padding: "0",
             fontSize: "14px",
             color: "#000080",

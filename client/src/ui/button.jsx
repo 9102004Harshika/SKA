@@ -1,98 +1,197 @@
-// import * as React from "react";
-// import { Slot } from "@radix-ui/react-slot";
-// import { cva } from "class-variance-authority";
+import React from 'react';
+import { cva } from 'class-variance-authority';
+import styled from 'styled-components';
 
-// import { cn } from "../libs/utils";
-
-// const buttonVariants = cva(
-//   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-//   {
-//     variants: {
-//       variant: {
-//         default: "bg-primary text-background hover:bg-primary/90",
-//         destructive:
-//           "bg-destructive text-destructive-foreground hover:bg-secondary",
-//         outline:
-//           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-//         secondary:
-//           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-//         ghost: "hover:bg-secondary hover:text-black",
-//         link: "text-primary underline-offset-4 hover:underline",
-//       },
-//       size: {
-//         default: "h-10 px-4 py-2",
-//         sm: "h-9 rounded-md px-3",
-//         lg: "h-11 rounded-md px-8",
-//         icon: "h-10 w-10",
-//       },
-//     },
-//     defaultVariants: {
-//       variant: "default",
-//       size: "default",
-//     },
-//   }
-// );
-
-// const Button = React.forwardRef(
-//   ({ className, variant, size, asChild = false, ...props }, ref) => {
-//     const Comp = asChild ? Slot : "button";
-//     return (
-//       <Comp
-//         className={cn(buttonVariants({ variant, size, className }))}
-//         ref={ref}
-//         {...props}
-//       />
-//     );
-//   }
-// );
-// Button.displayName = "Button";
-
-// export { Button, buttonVariants };
-
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva } from "class-variance-authority";
-
-import { cn } from "../libs/utils";
-
+// Create CVA variant for button
 const buttonVariants = cva(
-  "button relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-bold uppercase cursor-pointer text-[#0f1923] transition-all duration-150 ease-in-out",
+  'button', // base class name
   {
     variants: {
-      variant: {
-        default: "bg-[#0f1923] text-[#fff] hover:bg-primary",
-      },
       size: {
-        default: "h-10 px-4 py-2",
-        lg: "h-12 px-6",
+        sm: 'py-1 px-1 text-sm',  // small size button
+        lg: 'py-3 px-6 text-lg',  // large size button
+      },
+      variant: {
+        default: 'bg-[#000080] text-[#f5f2dc] hover:bg-[#B7E1FF] hover:text-[#000080]',  // navy blue background, beige text, hover light blue
+        secondary: 'bg-gray-500 text-white hover:bg-gray-700',
+        danger: 'bg-red-500 text-white hover:bg-red-700',
       },
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
   }
 );
 
-const Button = React.forwardRef(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      >
-        <span className="button_text">{props.children}</span>
-        <span className="button_sl absolute top-0 bottom-[-1px] left-[-8px] w-0 bg-primary skew-x-[-15deg] transition-all duration-200 ease"></span>
-        <span className="button_lg absolute inset-0 bg-transparent">
-          <span className="absolute top-0 left-0 w-[2px] h-[2px] bg-transparent"></span>
-          <span className="absolute bottom-0 right-0 w-[4px] h-[4px] bg-transparent transition-all duration-200 ease"></span>
+// Styled Wrapper Component (No change needed)
+const StyledWrapper = styled.div`
+  .button {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    background: none;
+    color: #0f1923;
+    cursor: pointer;
+    position: relative;
+    padding: ${({ size }) =>
+      size === 'sm'
+        ? '5px'
+        : '8px'};;
+    margin-bottom: ${({ size }) =>
+      size === 'sm'
+        ? '2px'
+        : '20px'};
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all .15s ease;
+    margin-top: ${({ size }) =>
+      size === 'sm'
+        ? '0'
+        : '0.5rem'}; /* mt-6 */
+    width: 100%; /* w-full */
+    
+  }
+
+  .button::before,
+  .button::after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: calc(50% - 5px);
+    border: ${({ variant }) =>
+      variant === 'secondary'
+        ? '1px solid #7D8082'
+        : variant === 'danger'
+        ? 'red'
+        : '1px solid #000080'}; 
+    
+    transition: all .15s ease;
+  }
+
+  .button::before {
+    top: 0;
+    border-bottom-width: 0;
+  }
+
+  .button::after {
+    bottom: 0;
+    border-top-width: 0;
+  }
+
+  .button:active,
+  .button:focus {
+    outline: none;
+  }
+
+  .button:active::before,
+  .button:active::after {
+    right: 3px;
+    left: 3px;
+  }
+
+  .button:active::before {
+    top: 3px;
+  }
+
+  .button:active::after {
+    bottom: 3px;
+  }
+
+  .button_lg {
+    position: relative;
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #000080;
+    overflow: hidden;
+    box-shadow: inset 0px 0px 0px 1px transparent;
+  }
+
+  .button_lg::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    background-color: #0f192300;
+  }
+
+  .button_lg::after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 4px;
+    height: 4px;
+    background-color: #0f192300;
+    transition: all .2s ease;
+  }
+
+  .button_sl {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: -1px;
+    left: -8px;
+    width: 0;
+    background-color:${({ variant }) =>
+      variant === 'secondary'
+        ? 'hsl(26.53, 86.98%, 66.86%)'
+        : variant === 'danger'
+        ? 'red'
+        : 'hsl(205, 100%, 85.88%)'}; 
+    transform: skew(-15deg);
+    transition: all .2s ease;
+  }
+
+  .button_text {
+    position: relative;
+    
+  }
+ 
+
+  .button:hover .button_text {
+    color: ${({ variant }) =>
+      variant === 'secondary'
+        ? '#000080'
+        : variant === 'danger'
+        ? 'white'
+        : '#000080'};  
+  }
+
+  .button:hover .button_sl {
+    width: calc(100% + 15px);
+  }
+
+  .button:hover .button_lg::after {
+    background-color: ${({ variant }) =>
+      variant === 'secondary'
+        ? 'none'
+        : variant === 'danger'
+        ? 'none'
+        : 'none'};;
+  }
+`;
+
+const Button = ({ text, size = 'lg', variant = 'default' }) => {
+  // Get the button class names based on CVA variants
+  const buttonClass = buttonVariants({ size, variant });
+
+  return (
+    <StyledWrapper variant={variant}> {/* Pass variant prop to StyledWrapper */}
+      <button className={`${buttonClass} button`}> {/* Apply both dynamic and static classes */}
+        <span className="button_lg">
+          <span className="button_sl"></span>
+          <span className="button_text">{text}</span>
         </span>
-      </Comp>
-    );
-  }
-);
-Button.displayName = "Button";
+      </button>
+    </StyledWrapper>
+  );
+};
 
-export { Button, buttonVariants };
+export { Button };
+
