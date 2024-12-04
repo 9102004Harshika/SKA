@@ -1,25 +1,38 @@
 import React from "react";
 import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
-
+import myImage from "../../images/bg15.png";
+import { Button } from "../../ui/button";
 function RegisterPage() {
   const handleGoogleSignup = () => {
     console.log("Sign Up with Google clicked");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+    <div
+      className="min-h-screen flex items-center justify-center bg-background text-foreground"
+      style={{
+        backgroundImage: `url(${myImage})`,
+        background: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       {/* Main Content */}
       <div className="w-full max-w-screen-lg flex flex-col items-center justify-center h-full">
         {/* Registration Form */}
-        <div className="w-full md:w-1/2 bg-card text-card-foreground  p-8 shadow-lg rounded-lg flex flex-col items-center">
+        <div
+          className="w-full md:w-1/2 bg-background text-card-foreground p-8 flex flex-col items-center"
+          style={{
+            boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",
+          }}
+        >
           <h2 className="text-3xl font-semibold font-header text-center mb-6">
             Register
           </h2>
           <form className="w-full max-w-md">
             {/* Dynamic Input Fields */}
             {registerForm.map((field, index) => (
-              <div className="mb-4" key={index}>
+              <div className="mb-2" key={index}>
                 <label className="block text-sm font-medium mb-1">
                   {field.label}
                 </label>
@@ -33,7 +46,7 @@ function RegisterPage() {
             ))}
 
             {/* Additional Links */}
-            <div className="my-4 text-center">
+            <div className="mt-2 text-center">
               <p className="text-sm">
                 Already have an account?{" "}
                 <a href="/" className="text-accent hover:underline">
@@ -43,16 +56,16 @@ function RegisterPage() {
             </div>
 
             {/* Submit Button */}
-            <button
+            <Button
               type="submit"
-              className="w-full bg-primary text-background py-2 px-4 rounded-lg shadow-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="mt-6 w-full rounded-lg hover:bg-secondary border-2 border-primary hover:border-secondary font-poppins text-md"
             >
-              Register
-            </button>
+              Submit
+            </Button>
           </form>
 
           {/* Divider */}
-          <div className="flex items-center w-full my-4">
+          <div className="flex items-center w-full mb-6">
             <hr className="flex-grow border-t border-muted" />
             <span className="mx-2 text-sm text-muted-foreground">
               Or sign up with
