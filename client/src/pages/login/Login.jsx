@@ -18,6 +18,7 @@ function LoginPage() {
   useEffect(() => {
     const tl = gsap.timeline();
 
+<<<<<<< HEAD
     // Animate the left panel from the left to its normal position
     tl.fromTo(
       leftPanelRef.current,
@@ -31,8 +32,21 @@ function LoginPage() {
       { opacity: 0, x: "50%" }, // Start from off-screen to the right
       { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" },
       "-=0.8" // Start overlapping with the left panel animation
+=======
+     tl.fromTo(
+      leftPanelRef.current,
+      {opacity:0, x: "-30%"},
+      {opacity:1, x: "0%", duration: 1.2, ease: "power3.out" }
+    );
+    tl.fromTo(
+      loginFormRef.current,
+      {opacity:0, x: "30%"},
+      {opacity:1, x: "0%", duration: 0.8, ease: "power3.out" },
+       "-=0.8"
+>>>>>>> 3472d535ca86727b7559a57f58d0330783b05b39
     );
   }, []);
+  
 
   const handleDragEnd = (event, info) => {
     if (info.offset.y > 100) {
@@ -75,18 +89,19 @@ function LoginPage() {
       {/* Main Content */}
       <div
         className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full"
-        ref={loginFormRef}
+        
       >
         {/* Desktop Left Panel */}
         <div
           ref={leftPanelRef}
-          className="hidden md:flex w-1/2 bg-gradient-to-r from-primary to-secondary text-background items-center justify-center"
+          className="hidden md:flex w-1/2 bg-gradient-to-r from-secondary to-primary text-background items-center justify-center"
         >
           <LeftPanel />
         </div>
 
         {/* Login Form */}
         <div
+        ref={loginFormRef}
           className="w-full md:w-1/2 bg-background text-card-foreground p-8 shadow-lg flex flex-col items-center"
           style={{
             boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",

@@ -1,12 +1,37 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
 import myImage from "../../images/bg25.png";
 import { Button } from "../../ui/button";
 import { FaGoogle, FaApple } from "react-icons/fa";
 import { TiVendorMicrosoft } from "react-icons/ti";
+import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import RightPanel from "./RightPanel"; // Import the RightPanel component
 
 function RegisterPage() {
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const rightPanelRef = useRef(null);
+  const registerFormRef = useRef(null);
+
+  // GSAP animation for the RightPanel
+  useEffect(() => {
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      rightPanelRef.current,
+      { x: "100%" },
+      { x: "0%", duration: 1.2, ease: "power3.out" }
+    );
+
+    tl.fromTo(
+      registerFormRef.current,
+      { opacity: 0, x: "-50%" },
+      { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" },
+      "-=0.8"
+    );
+  }, []);
+
   const handleGoogleSignup = () => {
     console.log("Sign Up with Google clicked");
   };
@@ -27,9 +52,10 @@ function RegisterPage() {
       }}
     >
       {/* Main Content */}
-      <div className="w-full max-w-screen-lg flex flex-col items-center justify-center h-full">
+      <div className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full">
         {/* Registration Form */}
         <div
+          ref={registerFormRef}
           className="w-full md:w-1/2 bg-background text-card-foreground p-8 flex flex-col items-center border-2 border-primary"
           style={{
             boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",
@@ -127,6 +153,14 @@ function RegisterPage() {
             />
           </div>
         </div>
+
+        {/* Right Panel */}
+        <motion.div
+          ref={rightPanelRef}
+          className="hidden md:flex w-1/2 bg-gradient-to-l from-secondary to-primary text-background items-center justify-center"
+        >
+          <RightPanel />
+        </motion.div>
       </div>
     </div>
   );
