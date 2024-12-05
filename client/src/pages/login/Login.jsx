@@ -18,6 +18,21 @@ function LoginPage() {
   useEffect(() => {
     const tl = gsap.timeline();
 
+<<<<<<< HEAD
+    // Animate the left panel from the left to its normal position
+    tl.fromTo(
+      leftPanelRef.current,
+      { x: "-100%" }, // Start from off-screen to the left
+      { x: "0%", duration: 1.2, ease: "power3.out" } // Move to its normal position
+    );
+
+    // Animate the login form from the right to its normal position
+    tl.fromTo(
+      loginFormRef.current,
+      { opacity: 0, x: "50%" }, // Start from off-screen to the right
+      { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" },
+      "-=0.8" // Start overlapping with the left panel animation
+=======
      tl.fromTo(
       leftPanelRef.current,
       {opacity:0, x: "-30%"},
@@ -28,6 +43,7 @@ function LoginPage() {
       {opacity:0, x: "30%"},
       {opacity:1, x: "0%", duration: 0.8, ease: "power3.out" },
        "-=0.8"
+>>>>>>> 3472d535ca86727b7559a57f58d0330783b05b39
     );
   }, []);
   
