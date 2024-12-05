@@ -14,23 +14,23 @@ function LoginPage() {
   const leftPanelRef = useRef(null);
   const loginFormRef = useRef(null);
 
-  // GSAP animation for the LeftPanel
+  // GSAP animation for the LeftPanel and Login Form
   useEffect(() => {
     const tl = gsap.timeline();
 
-    tl.fromTo(
+     tl.fromTo(
       leftPanelRef.current,
-      { x: "-100%" },
-      { x: "0%", duration: 1.2, ease: "power3.out" }
+      {opacity:0, x: "-30%"},
+      {opacity:1, x: "0%", duration: 1.2, ease: "power3.out" }
     );
-
     tl.fromTo(
       loginFormRef.current,
-      { opacity: 0, x: "50%" },
-      { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" },
-      "-=0.8"
+      {opacity:0, x: "30%"},
+      {opacity:1, x: "0%", duration: 0.8, ease: "power3.out" },
+       "-=0.8"
     );
   }, []);
+  
 
   const handleDragEnd = (event, info) => {
     if (info.offset.y > 100) {
@@ -73,18 +73,19 @@ function LoginPage() {
       {/* Main Content */}
       <div
         className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full"
-        ref={loginFormRef}
+        
       >
         {/* Desktop Left Panel */}
         <div
           ref={leftPanelRef}
-          className="hidden md:flex w-1/2 bg-gradient-to-r from-primary to-secondary text-background items-center justify-center"
+          className="hidden md:flex w-1/2 bg-gradient-to-r from-secondary to-primary text-background items-center justify-center"
         >
           <LeftPanel />
         </div>
 
         {/* Login Form */}
         <div
+        ref={loginFormRef}
           className="w-full md:w-1/2 bg-background text-card-foreground p-8 shadow-lg flex flex-col items-center"
           style={{
             boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",
