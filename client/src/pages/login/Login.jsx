@@ -1,24 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { gsap } from "gsap";
 import LeftPanel from "./LeftPanel";
+import myImage from "../../images/bg25.png";
 import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import { loginForm } from "../../config/index";
+import { FaGoogle, FaApple } from "react-icons/fa";
+import { TiVendorMicrosoft } from "react-icons/ti";
 
 function LoginPage() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const leftPanelRef = useRef(null);
+  const loginFormRef = useRef(null);
+
+  // GSAP animation for the LeftPanel
+  useEffect(() => {
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      leftPanelRef.current,
+      { x: "-100%" },
+      { x: "0%", duration: 1.2, ease: "power3.out" }
+    );
+
+    tl.fromTo(
+      loginFormRef.current,
+      { opacity: 0, x: "50%" },
+      { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" },
+      "-=0.8"
+    );
+  }, []);
 
   const handleDragEnd = (event, info) => {
     if (info.offset.y > 100) {
-      // If dragged down more than 100px, open the panel
-      setIsPanelOpen(true);
+      setIsPanelOpen(true); // Open the panel
     } else if (info.offset.y < -100) {
-      // If dragged up more than 100px, close the panel
-      setIsPanelOpen(false);
+      setIsPanelOpen(false); // Close the panel
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground relative">
+    <div
+      className="min-h-screen flex items-center justify-center bg-background text-foreground relative"
+      style={{
+        backgroundImage: `url(${myImage})`,
+      }}
+    >
       {/* Left Panel for Mobile with Drag Gesture */}
       <motion.div
         drag="y"
@@ -43,25 +71,36 @@ function LoginPage() {
       </motion.div>
 
       {/* Main Content */}
-      <div className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full">
+      <div
+        className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full"
+        ref={loginFormRef}
+      >
         {/* Desktop Left Panel */}
-        <div className="hidden md:flex w-1/2 bg-gradient-to-r from-primary to-secondary text-white items-center justify-center">
+        <div
+          ref={leftPanelRef}
+          className="hidden md:flex w-1/2 bg-gradient-to-r from-primary to-secondary text-background items-center justify-center"
+        >
           <LeftPanel />
         </div>
 
         {/* Login Form */}
-        <div className="w-full md:w-1/2 bg-card text-card-foreground p-8 shadow-lg rounded-lg flex flex-col items-center">
-          <h2 className="text-3xl font-header font-semibold text-center mb-6">
-            Login
+        <div
+          className="w-full md:w-1/2 bg-background text-card-foreground p-8 shadow-lg flex flex-col items-center"
+          style={{
+            boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",
+          }}
+        >
+          <h2 className="text-3xl capitalize md:tracking-wide font-header font-semibold text-center mb-6">
+            Return to learning
           </h2>
           <form className="w-full max-w-md">
-            {/* Dynamic Input Fields */}
             {loginForm.map((field, index) => (
-              <div className="mb-4" key={index}>
+              <div className="mb-0" key={index}>
                 <label className="block text-sm font-medium mb-1">
                   {field.label}
                 </label>
                 <Input
+                  className="placeholder:text-primary placeholder:opacity-[0.5]"
                   type={field.type}
                   name={field.name}
                   placeholder={field.placeholder}
@@ -70,54 +109,78 @@ function LoginPage() {
               </div>
             ))}
 
-            {/* Additional Links */}
-            <div className="my-4 text-center">
-              <p className="text-sm">
-                Don't have an account?{" "}
-                <a href="#" className="text-accent hover:underline">
-                  Sign up
-                </a>
-              </p>
-              <p className="text-sm mt-2">
+            <div className="mb-2 text-center">
+              <p className="text-sm mt-0">
                 Forgot your password?{" "}
-                <a href="#" className="text-accent hover:underline">
+                <a
+                  href="#"
+                  className="text-accent font-bold hover:underline underline-offset-2"
+                >
                   Reset here
                 </a>
               </p>
             </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-primary text-background py-2 px-4 rounded-lg shadow-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary mb-4"
-            >
-              Login
-            </button>
+            <Button text="Sign In" size="lg" variant="primary" />
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center w-full my-4">
-            <hr className="flex-grow border-t border-muted" />
+          <div className="flex items-center w-full mb-2">
+            <hr className="flex-grow border-t border-muted border-primary" />
             <span className="mx-2 text-sm text-muted-foreground">
               Or login with
             </span>
-            <hr className="flex-grow border-t border-muted" />
+            <hr className="flex-grow border-t border-muted border-primary" />
           </div>
 
-          {/* Google Login Button */}
-          <button
-            onClick={() => console.log("Login with Google clicked")}
-            className="w-full flex items-center justify-center border border-muted rounded-lg py-2 px-4 bg-transparent hover:bg-gray-100 focus:ring-2 focus:ring-accent focus:outline-none"
-          >
-            <img
-              src="https://th.bing.com/th/id/OIP.AUmnbiLoI6qsNjlDmrJ3CwHaH5?rs=1&pid=ImgDetMain"
-              alt="Google"
-              className="w-5 h-5 mr-2"
+          <div className="flex space-x-4 w-full justify-center sm:justify-between flex-wrap">
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <FaGoogle className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Google</span>
+                </div>
+              }
+              size="sm"
+              variant="default"
+              onClick={() => console.log("Google Login")}
             />
-            <span className="text-sm font-medium text-muted-foreground">
-              Login with Google
-            </span>
-          </button>
+
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <TiVendorMicrosoft className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Microsoft</span>
+                </div>
+              }
+              size="sm"
+              variant="default"
+              onClick={() => console.log("Microsoft Login")}
+            />
+
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <FaApple className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Apple</span>
+                </div>
+              }
+              size="sm"
+              variant="default"
+              onClick={() => console.log("Apple Login")}
+            />
+          </div>
+
+          <div className="my-0 text-center">
+            <p className="text-sm">
+              Don't have an account?{" "}
+              <a
+                href="#"
+                className="text-accent font-bold hover:underline underline-offset-2"
+              >
+                Sign up
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
