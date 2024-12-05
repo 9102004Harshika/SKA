@@ -14,21 +14,23 @@ function LoginPage() {
   const leftPanelRef = useRef(null);
   const loginFormRef = useRef(null);
 
-  // GSAP animation for the LeftPanel
+  // GSAP animation for the LeftPanel and Login Form
   useEffect(() => {
     const tl = gsap.timeline();
 
+    // Animate the left panel from the left to its normal position
     tl.fromTo(
       leftPanelRef.current,
-      { x: "-100%" },
-      { x: "0%", duration: 1.2, ease: "power3.out" }
+      { x: "-100%" }, // Start from off-screen to the left
+      { x: "0%", duration: 1.2, ease: "power3.out" } // Move to its normal position
     );
 
+    // Animate the login form from the right to its normal position
     tl.fromTo(
       loginFormRef.current,
-      { opacity: 0, x: "50%" },
+      { opacity: 0, x: "50%" }, // Start from off-screen to the right
       { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" },
-      "-=0.8"
+      "-=0.8" // Start overlapping with the left panel animation
     );
   }, []);
 
