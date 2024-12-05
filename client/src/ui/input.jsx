@@ -1,8 +1,21 @@
 import * as React from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Input = React.forwardRef(
   ({ className, type = "text", ...props }, ref) => {
     const [active, setActive] = React.useState(false);
+    const [isValid, setIsValid] = React.useState(false);
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const validateInput = (value) => {
+      // Add your validation logic here
+      // For example, consider input valid if it's not empty
+      setIsValid(value.trim().length > 0);
+    };
+
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
     return (
       <div
@@ -15,15 +28,16 @@ const Input = React.forwardRef(
         }}
       >
         <input
-          type={type}
+          type={type === "password" && showPassword ? "text" : type}
           className={`input-field ${className}`}
           style={{
             width: "100%",
-            height: "40px",
+            height: "35px",
             border: "none",
-            borderBottom: active
-              ? "2px solid hsl(205 ,100% ,85.88%)" // Highlighted bottom border
-              : "1px solid #000080", // Normal bottom border
+            borderBottom:
+              active || isValid
+                ? "2px solid hsl(205 ,100% ,85.88%)"
+                : "1px solid #000080",
             padding: "0",
             fontSize: "14px",
             color: "#000080",
@@ -36,33 +50,33 @@ const Input = React.forwardRef(
           }}
           placeholder="Enter text here"
           onFocus={() => setActive(true)}
-          onBlur={() => setActive(false)}
+          onBlur={(e) => {
+            setActive(false);
+            validateInput(e.target.value);
+          }}
           ref={ref}
           {...props}
         />
-        <span
-          style={{
-            content: '""',
-            position: "absolute",
-            top: "0",
-            left: "0",
-            width: "2px",
-            height: "2px",
-            backgroundColor: "transparent",
-          }}
-        ></span>
-        <span
-          style={{
-            content: '""',
-            position: "absolute",
-            right: "0",
-            bottom: "0",
-            width: "4px",
-            height: "4px",
-            backgroundColor: active ? "#fff" : "transparent",
-            transition: "all 0.2s ease",
-          }}
-        ></span>
+        {type === "password" && (
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "10px",
+              transform: "translateY(-50%)",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              zIndex: 2,
+              color: "#000080",
+            }}
+            aria-label="Toggle password visibility"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        )}
         <span
           className="input-sl"
           style={{
@@ -71,9 +85,9 @@ const Input = React.forwardRef(
             top: "0",
             bottom: "-1px",
             left: "-8px",
-            width: active ? "calc(100% + 16px)" : "0",
+            width: active || isValid ? "calc(100% + 16px)" : "0",
             backgroundColor: "hsl(205 ,100% ,85.88%)",
-            transform: "skew(-15deg)",
+            transform: isValid ? "none" : "skew(-15deg)",
             transition: "all 0.2s ease",
           }}
         ></span>

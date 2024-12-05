@@ -1,7 +1,7 @@
 import React from "react";
 import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
-import myImage from "../../images/bg15.png";
+import myImage from "../../images/bg25.png";
 import { Button } from "../../ui/button";
 import { FaGoogle, FaApple } from "react-icons/fa";
 import { TiVendorMicrosoft } from "react-icons/ti";
@@ -21,33 +21,32 @@ function RegisterPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-background text-foreground"
+      className="min-h-screen flex items-center justify-center bg-background text-foreground bg-cover bg-center"
       style={{
         backgroundImage: `url(${myImage})`,
-        background: "cover",
-        backgroundPosition: "center",
       }}
     >
       {/* Main Content */}
       <div className="w-full max-w-screen-lg flex flex-col items-center justify-center h-full">
         {/* Registration Form */}
         <div
-          className="w-full md:w-1/2 bg-background text-card-foreground p-8 flex flex-col items-center"
+          className="w-full md:w-1/2 bg-background text-card-foreground p-8 flex flex-col items-center border-2 border-primary"
           style={{
             boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",
           }}
         >
-          <h2 className="text-3xl font-semibold font-header text-center mb-6">
+          <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
             Elevate Your Learning
           </h2>
           <form className="w-full max-w-md">
             {/* Dynamic Input Fields */}
             {registerForm.map((field, index) => (
-              <div className="mb-2" key={index}>
+              <div className="" key={index}>
                 <label className="block text-sm font-medium mb-1">
                   {field.label}
                 </label>
                 <Input
+                  className="placeholder:text-primary placeholder:opacity-[0.5]"
                   type={field.type}
                   name={field.name}
                   placeholder={field.placeholder}
@@ -57,10 +56,13 @@ function RegisterPage() {
             ))}
 
             {/* Additional Links */}
-            <div className="mt-2 text-center">
+            <div className="my-2 text-center">
               <p className="text-sm">
                 Already have an account?{" "}
-                <a href="/" className="text-accent hover:underline">
+                <a
+                  href="/login"
+                  className="text-accent font-bold hover:underline underline-offset-2"
+                >
                   Login here
                 </a>
               </p>
@@ -80,13 +82,14 @@ function RegisterPage() {
           </div>
 
           {/* Social Media Sign-Up Buttons */}
-          <div className="flex space-x-4 w-full justify-center">
+          <div className="flex space-x-4 w-full justify-between flex-wrap">
             {/* Google Sign-Up Button */}
             <Button
               text={
                 <div className="flex items-center justify-center">
                   <FaGoogle className="w-5 h-5 mr-2" /> {/* Google Icon */}
-                  <span className="hidden md:inline">Google</span> {/* Text hidden on mobile */}
+                  <span className="hidden lg:inline">Google</span>{" "}
+                  {/* Text hidden on mobile */}
                 </div>
               }
               size="sm"
@@ -98,8 +101,10 @@ function RegisterPage() {
             <Button
               text={
                 <div className="flex items-center justify-center">
-                  <TiVendorMicrosoft className="w-5 h-5 mr-2" /> {/* Microsoft Icon */}
-                  <span className="hidden md:inline">Microsoft</span> {/* Text hidden on mobile */}
+                  <TiVendorMicrosoft className="w-5 h-5 mr-2" />{" "}
+                  {/* Microsoft Icon */}
+                  <span className="hidden lg:inline">Microsoft</span>{" "}
+                  {/* Text hidden on mobile */}
                 </div>
               }
               size="sm"
@@ -112,7 +117,8 @@ function RegisterPage() {
               text={
                 <div className="flex items-center justify-center">
                   <FaApple className="w-5 h-5 mr-2" /> {/* Apple Icon */}
-                  <span className="hidden md:inline">Apple</span> {/* Text hidden on mobile */}
+                  <span className="hidden lg:inline">Apple</span>{" "}
+                  {/* Text hidden on mobile */}
                 </div>
               }
               size="sm"

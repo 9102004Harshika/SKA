@@ -42,12 +42,16 @@
     @apply bg-background text-primary font-body;
   }
 }
-.input-field::placeholder {
-  color: #000080; /* Placeholder color */
-  opacity: 0.35; /* Ensure it's fully visible */
+/* Prevent Google Autofill from changing text and background color */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px hsl(205 100% 85.88%) inset; /* Set to transparent to prevent background color change */
+  box-shadow: 0 0 0 30px hsl(205 100% 85.88%) inset; /* Prevent background color change */
+  -webkit-text-fill-color: hsl(
+    240 100% 25%
+  ); /* Inherit text color from the parent or default styles */
 }
+
 label {
   color: #000080;
   font-weight: bolder;
 }
-
