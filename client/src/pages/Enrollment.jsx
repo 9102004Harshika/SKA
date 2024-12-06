@@ -75,25 +75,26 @@ const Enrollment = () => {
               value={formData.mobile}
               onChange={handleChange}
               disabled={otpSent}
-              className="placeholder-gray-400"
+              className="placeholder:text-primary placeholder:opacity-[0.5]"
               required
             />
-             <Button
-            text={
-              <div className="flex items-center justify-center">
-                {/* Microsoft Icon */}
-                <span className="hidden lg:inline whitespace-nowrap "> {otpSent ? "Resend OTP" : "Send OTP"}</span>{" "}
-                {/* Text hidden on mobile */}
-              </div>
-            }
-  size="lg"
-  variant="accent"
-  onClick={handleSendOtp}
->
-  <span className="whitespace-nowrap">
-    
-  </span>
-</Button>
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  {/* Microsoft Icon */}
+                  <span className="hidden lg:inline whitespace-nowrap ">
+                    {" "}
+                    {otpSent ? "Resend OTP" : "Send OTP"}
+                  </span>{" "}
+                  {/* Text hidden on mobile */}
+                </div>
+              }
+              size="lg"
+              variant="accent"
+              onClick={handleSendOtp}
+            >
+              <span className="whitespace-nowrap"></span>
+            </Button>
           </div>
         </div>
         {/* OTP */}
@@ -108,6 +109,7 @@ const Enrollment = () => {
             id="verification"
             name="verification"
             type="text"
+            className="placeholder:text-primary placeholder:opacity-[0.5]"
             placeholder="Enter OTP"
             value={formData.verification}
             onChange={handleChange}
@@ -145,7 +147,7 @@ const Enrollment = () => {
               handleChange({ target: { name: "board", value } })
             }
           >
-            <SelectTrigger className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange">
+            <SelectTrigger className="w-full px-3 py-2 border border-primary focus:outline-none focus:ring-2 focus:ring-orange">
               <span className="text-gray-400">
                 {formData.board || "Select Board"}
               </span>
@@ -171,7 +173,7 @@ const Enrollment = () => {
               handleChange({ target: { name: "class", value } })
             }
           >
-            <SelectTrigger className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange">
+            <SelectTrigger className="w-full px-3 py-2 border border-primary focus:outline-none focus:ring-2 focus:ring-orange">
               <span className="text-gray-400">
                 {formData.class || "Select Class"}
               </span>
@@ -199,7 +201,7 @@ const Enrollment = () => {
                 handleChange({ target: { name: "medium", value } })
               }
             >
-              <SelectTrigger className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange">
+              <SelectTrigger className="w-full px-3 py-2 border border-primary focus:outline-none focus:ring-2 focus:ring-orange">
                 <span className="text-gray-400">
                   {formData.medium || "Select Medium/Language"}
                 </span>
@@ -224,7 +226,7 @@ const Enrollment = () => {
                 handleChange({ target: { name: "stream", value } })
               }
             >
-              <SelectTrigger className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange">
+              <SelectTrigger className="w-full px-3 py-2 border border-primary focus:outline-none focus:ring-2 focus:ring-orange">
                 <span className="text-gray-400">
                   {formData.stream || "Select Stream"}
                 </span>
