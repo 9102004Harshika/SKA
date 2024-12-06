@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const Select = ({ menuTitle, submenuItems, onSelect }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(menuTitle);
 
   const handleSelect = (item) => {
     setSelectedItem(item);
-    setIsOpen(false);
     if (onSelect) {
       onSelect(item); // Send the selected item to the parent component
     }
@@ -17,11 +15,7 @@ const Select = ({ menuTitle, submenuItems, onSelect }) => {
     <StyledWrapper>
       <div className="menu">
         <div className="item">
-          <button
-            type="button"
-            className="link"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
+          <button type="button" className="link">
             <span>{selectedItem}</span>
             <svg viewBox="0 0 360 360" xmlSpace="preserve">
               <g id="SVGRepo_iconCarrier">
@@ -34,21 +28,20 @@ const Select = ({ menuTitle, submenuItems, onSelect }) => {
               </g>
             </svg>
           </button>
-          {isOpen && (
-            <div className="submenu">
-              {submenuItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="submenu-item"
-                  onClick={() => handleSelect(item)}
-                >
-                  <a href="#" className="submenu-link">
-                    {item}
-                  </a>
-                </div>
-              ))}
-            </div>
-          )}
+          {/* Show submenu based on hover */}
+          <div className="submenu">
+            {submenuItems.map((item, index) => (
+              <div
+                key={index}
+                className="submenu-item"
+                onClick={() => handleSelect(item)}
+              >
+                <a href="#" className="submenu-link">
+                  {item}
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </StyledWrapper>
