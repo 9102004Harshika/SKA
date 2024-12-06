@@ -7,8 +7,10 @@ const buttonVariants = cva(
   {
     variants: {
       size: {
-        sm: "sm", // small size button
-        lg: "lg", // large size button
+        xs: "px-2 py-1 text-xs", // extra small button
+        sm: "px-3 py-1 text-sm", // small button
+        md: "px-4 py-2 text-base", // medium button
+        lg: "px-6 py-3 text-lg", // large button
       },
       variant: {
         primary: "primary",

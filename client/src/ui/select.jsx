@@ -1,147 +1,212 @@
-import * as React from "react";
-import * as SelectPrimitive from "@radix-ui/react-select";
-import { AiOutlineCheck, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import { cn } from "../libs/utils";
+const Select = ({ menuTitle, submenuItems, onSelect }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(menuTitle);
 
-const Select = SelectPrimitive.Root;
+  const handleSelect = (item) => {
+    setSelectedItem(item);
+    setIsOpen(false);
+    if (onSelect) {
+      onSelect(item); // Send the selected item to the parent component
+    }
+  };
 
-const SelectGroup = SelectPrimitive.Group;
-
-const SelectValue = SelectPrimitive.Value;
-
-const SelectTrigger = React.forwardRef(
-  ({ className, children, ...props }, ref) => (
-    <SelectPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        "flex h-10 w-full items-center justify-between border-2 border-accent bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-primary focus:outline-none focus:ring-2 focus:ring-accent focus:border-none focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-        className
-      )}
-      {...props}
-    >
-      {children}
-      <SelectPrimitive.Icon asChild>
-        <AiOutlineDown className="h-4 w-4 opacity-100" />
-      </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
-  )
-);
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
-
-const SelectScrollUpButton = React.forwardRef(
-  ({ className, ...props }, ref) => (
-    <SelectPrimitive.ScrollUpButton
-      ref={ref}
-      className={cn(
-        "flex cursor-default items-center justify-center py-1",
-        className
-      )}
-      {...props}
-    >
-      <AiOutlineUp className="h-4 w-4" />
-    </SelectPrimitive.ScrollUpButton>
-  )
-);
-SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
-
-const SelectScrollDownButton = React.forwardRef(
-  ({ className, ...props }, ref) => (
-    <SelectPrimitive.ScrollDownButton
-      ref={ref}
-      className={cn(
-        "flex cursor-default items-center justify-center py-1",
-        className
-      )}
-      {...props}
-    >
-      <AiOutlineDown className="h-4 w-4" />
-    </SelectPrimitive.ScrollDownButton>
-  )
-);
-SelectScrollDownButton.displayName =
-  SelectPrimitive.ScrollDownButton.displayName;
-
-const SelectContent = React.forwardRef(
-  ({ className, children, position = "popper", ...props }, ref) => (
-    <SelectPrimitive.Portal>
-      <SelectPrimitive.Content
-        ref={ref}
-        className={cn(
-          "relative z-50 max-h-96 min-w-[8rem] overflow-hidden border bg-accent placeholder:text-primary text-popover-primar shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-          position === "popper" &&
-            "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-          className
-        )}
-        position={position}
-        {...props}
-      >
-        <SelectScrollUpButton />
-        <SelectPrimitive.Viewport
-          className={cn(
-            "p-1",
-            position === "popper" &&
-              "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+  return (
+    <StyledWrapper>
+      <div className="menu">
+        <div className="item">
+          <button
+            type="button"
+            className="link"
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
+            <span>{selectedItem}</span>
+            <svg viewBox="0 0 360 360" xmlSpace="preserve">
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  id="XMLID_225_"
+                  d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 
+                  c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 
+                  s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+                />
+              </g>
+            </svg>
+          </button>
+          {isOpen && (
+            <div className="submenu">
+              {submenuItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="submenu-item"
+                  onClick={() => handleSelect(item)}
+                >
+                  <a href="#" className="submenu-link">
+                    {item}
+                  </a>
+                </div>
+              ))}
+            </div>
           )}
-        >
-          {children}
-        </SelectPrimitive.Viewport>
-        <SelectScrollDownButton />
-      </SelectPrimitive.Content>
-    </SelectPrimitive.Portal>
-  )
-);
-SelectContent.displayName = SelectPrimitive.Content.displayName;
-
-const SelectLabel = React.forwardRef(({ className, ...props }, ref) => (
-  <SelectPrimitive.Label
-    ref={ref}
-    className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)}
-    {...props}
-  />
-));
-SelectLabel.displayName = SelectPrimitive.Label.displayName;
-
-const SelectItem = React.forwardRef(
-  ({ className, children, ...props }, ref) => (
-    <SelectPrimitive.Item
-      ref={ref}
-      className={cn(
-        "relative flex w-full text-primary cursor-default select-none items-center py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-secondary focus:text-background data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        className
-      )}
-      {...props}
-    >
-      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        <SelectPrimitive.ItemIndicator>
-          <AiOutlineCheck className="h-4 w-4" />
-        </SelectPrimitive.ItemIndicator>
-      </span>
-
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-    </SelectPrimitive.Item>
-  )
-);
-SelectItem.displayName = SelectPrimitive.Item.displayName;
-
-const SelectSeparator = React.forwardRef(({ className, ...props }, ref) => (
-  <SelectPrimitive.Separator
-    ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-accent", className)}
-    {...props}
-  />
-));
-SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
-
-export {
-  Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
-  SelectContent,
-  SelectLabel,
-  SelectItem,
-  SelectSeparator,
-  SelectScrollUpButton,
-  SelectScrollDownButton,
+        </div>
+      </div>
+    </StyledWrapper>
+  );
 };
+
+const StyledWrapper = styled.div`
+  .menu {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #000080;
+    width: fit-content;
+    display: flex;
+    list-style: none;
+    border-bottom: 1px solid #000080;
+    width: 100%;
+    text-align: center;
+  }
+
+  .menu a {
+    text-decoration: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .menu .link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 250px;
+    padding: 12px 36px;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @media (max-width: 768px) {
+    .menu .link {
+      gap: 100px;
+    }
+  }
+
+  .menu .link::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0a3cff;
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .menu .link svg {
+    width: 14px;
+    height: 14px;
+    fill: #000080;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .menu .item {
+    position: relative;
+  }
+
+  .menu .item .submenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 100%;
+    border-radius: 0 0 16px 16px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #cccccc;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 1;
+    pointer-events: none;
+    list-style: none;
+  }
+
+  .submenu {
+    background-color: hsl(60, 56%, 91%);
+  }
+
+  .menu .item:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+    border-color: hsl(26.53, 86.98%, 66.86%);
+  }
+
+  .menu .item:hover .link {
+    color: #000080;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .menu .item:hover .link::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .menu .item:hover .link svg {
+    fill: #000080;
+    transform: rotate(-180deg);
+  }
+
+  .submenu .submenu-item {
+    width: 100%;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .submenu .submenu-link {
+    display: block;
+    padding: 12px 24px;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .submenu .submenu-item:last-child .submenu-link {
+    border-bottom: none;
+  }
+
+  .submenu .submenu-link::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scaleX(0);
+    width: 100%;
+    height: 100%;
+    background-color: hsl(26.53, 86.98%, 66.86%);
+    z-index: -1;
+    transform-origin: left;
+    transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .submenu .submenu-link:hover:before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .submenu .submenu-link:hover {
+    color: #ffffff;
+    background-color: hsl(26.53, 86.98%, 66.86%);
+  }
+`;
+
+export default Select;

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Select, SelectTrigger, SelectContent, SelectItem } from "../ui/select";
+import Select from "../ui/select";
 import myImage from "../images/bgOrange.png";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css'; // Make sure to import the calendar styles
+import { FaCalendarAlt } from 'react-icons/fa'; // Import a calendar icon
 
 const Enrollment = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +19,7 @@ const Enrollment = () => {
   });
 
   const [otpSent, setOtpSent] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false); // State to manage calendar visibility
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,6 +45,15 @@ const Enrollment = () => {
     alert("Form submitted successfully!");
   };
 
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, dob: date });
+    setShowCalendar(false); // Close calendar after selecting date
+  };
+
+  const toggleCalendar = () => {
+    setShowCalendar((prev) => !prev); // Toggle calendar visibility
+  };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
@@ -50,7 +63,7 @@ const Enrollment = () => {
     >
       <form
         onSubmit={handleSubmit}
-        className="bg-background p-8 border-2 border-accent w-full max-w-lg "
+        className="bg-background p-8 border-2 border-accent w-full max-w-lg"
         style={{
           boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 30px 10px",
         }}
@@ -59,11 +72,8 @@ const Enrollment = () => {
           Student Enrollment Form
         </h2>
         {/* Mobile Number and OTP */}
-        <div className="mb-4">
-          <label
-            htmlFor="mobile"
-            className="block text-sm font-semibold text-navy"
-          >
+        <div>
+          <label htmlFor="mobile" className="block text-sm font-semibold text-navy">
             Mobile Number
           </label>
           <div className="flex items-center gap-2">
@@ -75,41 +85,31 @@ const Enrollment = () => {
               value={formData.mobile}
               onChange={handleChange}
               disabled={otpSent}
-              className="placeholder:text-primary placeholder:opacity-[0.5]"
               required
             />
             <Button
               text={
                 <div className="flex items-center justify-center">
-                  {/* Microsoft Icon */}
-                  <span className="hidden lg:inline whitespace-nowrap ">
-                    {" "}
+                  <span className="block lg:inline whitespace-nowrap ">
                     {otpSent ? "Resend OTP" : "Send OTP"}
-                  </span>{" "}
-                  {/* Text hidden on mobile */}
+                  </span>
                 </div>
               }
               size="lg"
               variant="accent"
               onClick={handleSendOtp}
-            >
-              <span className="whitespace-nowrap"></span>
-            </Button>
+            />
           </div>
         </div>
         {/* OTP */}
         <div className="mb-4">
-          <label
-            htmlFor="verification"
-            className="block text-sm font-semibold text-navy"
-          >
+          <label htmlFor="verification" className="block text-sm font-semibold text-navy">
             OTP
           </label>
           <Input
             id="verification"
             name="verification"
             type="text"
-            className="placeholder:text-primary placeholder:opacity-[0.5]"
             placeholder="Enter OTP"
             value={formData.verification}
             onChange={handleChange}
@@ -117,126 +117,84 @@ const Enrollment = () => {
           />
         </div>
         {/* Date of Birth */}
-        <div className="mb-4">
-          <label
-            htmlFor="dob"
-            className="block text-sm font-semibold text-navy"
-          >
+        <div className="mb-4 relative">
+          <label htmlFor="dob" className="block text-sm font-semibold text-navy">
             Date of Birth
           </label>
-          <Input
-            id="dob"
-            name="dob"
-            type="date"
-            value={formData.dob}
-            onChange={handleChange}
-            required
-          />
+          <div className="flex items-center">
+            <Input
+              id="dob"
+              name="dob"
+              type="text"
+              placeholder="Select your date of birth"
+              value={formData.dob ? formData.dob.toLocaleDateString() : ""}
+              readOnly
+              onClick={toggleCalendar} // Open calendar on input click
+              required
+            />
+            <button
+              type="button"
+              onClick={toggleCalendar}
+              className="ml-2 text-lg text-navy"
+            >
+              <FaCalendarAlt />
+            </button>
+          </div>
+          {/* Conditionally render calendar */}
+          {showCalendar && (
+            <div className="absolute mt-2 z-10">
+              <Calendar
+                value={formData.dob}
+                onChange={handleDateChange}
+                maxDate={new Date()}
+              />
+            </div>
+          )}
         </div>
         {/* Board of Education */}
         <div className="mb-4">
-          <label
-            htmlFor="board"
-            className="block text-sm font-semibold text-navy"
-          >
+          <label htmlFor="board" className="block text-sm font-semibold text-navy">
             Board of Education
           </label>
           <Select
-            value={formData.board}
-            onValueChange={(value) =>
-              handleChange({ target: { name: "board", value } })
-            }
-          >
-            <SelectTrigger className="w-full px-3 py-2 border border-primary focus:outline-none focus:ring-2 focus:ring-orange">
-              <span className="text-gray-400">
-                {formData.board || "Select Board"}
-              </span>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="CBSE">CBSE</SelectItem>
-              <SelectItem value="ICSE">ICSE</SelectItem>
-              <SelectItem value="State Board">State Board</SelectItem>
-            </SelectContent>
-          </Select>
+            menuTitle="Select Board"
+            submenuItems={["CBSE", "ICSE", "SSC"]}
+            onSelect={(item) => setFormData({ ...formData, board: item })}
+          />
         </div>
         {/* Class Selection */}
         <div className="mb-4">
-          <label
-            htmlFor="class"
-            className="block text-sm font-semibold text-navy"
-          >
+          <label htmlFor="class" className="block text-sm font-semibold text-navy">
             Class
           </label>
           <Select
-            value={formData.class}
-            onValueChange={(value) =>
-              handleChange({ target: { name: "class", value } })
-            }
-          >
-            <SelectTrigger className="w-full px-3 py-2 border border-primary focus:outline-none focus:ring-2 focus:ring-orange">
-              <span className="text-gray-400">
-                {formData.class || "Select Class"}
-              </span>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="9th">9th</SelectItem>
-              <SelectItem value="10th">10th</SelectItem>
-              <SelectItem value="11th">11th</SelectItem>
-              <SelectItem value="12th">12th</SelectItem>
-            </SelectContent>
-          </Select>
+            menuTitle="Select Class"
+            submenuItems={["9th", "10th", "11th", "12th"]}
+            onSelect={(item) => setFormData({ ...formData, class: item })}
+          />
         </div>
         {/* Medium or Stream */}
         {formData.class === "9th" || formData.class === "10th" ? (
           <div className="mb-4">
-            <label
-              htmlFor="medium"
-              className="block text-sm font-semibold text-navy"
-            >
+            <label htmlFor="medium" className="block text-sm font-semibold text-navy">
               Medium/Language
             </label>
             <Select
-              value={formData.medium}
-              onValueChange={(value) =>
-                handleChange({ target: { name: "medium", value } })
-              }
-            >
-              <SelectTrigger className="w-full px-3 py-2 border border-primary focus:outline-none focus:ring-2 focus:ring-orange">
-                <span className="text-gray-400">
-                  {formData.medium || "Select Medium/Language"}
-                </span>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="English">English</SelectItem>
-                <SelectItem value="Hindi">Hindi</SelectItem>
-              </SelectContent>
-            </Select>
+              menuTitle="Select Medium"
+              submenuItems={["English", "Hindi", "Marathi"]}
+              onSelect={(item) => setFormData({ ...formData, medium: item })}
+            />
           </div>
         ) : formData.class === "11th" || formData.class === "12th" ? (
           <div className="mb-4">
-            <label
-              htmlFor="stream"
-              className="block text-sm font-semibold text-navy"
-            >
+            <label htmlFor="stream" className="block text-sm font-semibold text-navy">
               Stream
             </label>
             <Select
-              value={formData.stream}
-              onValueChange={(value) =>
-                handleChange({ target: { name: "stream", value } })
-              }
-            >
-              <SelectTrigger className="w-full px-3 py-2 border border-primary focus:outline-none focus:ring-2 focus:ring-orange">
-                <span className="text-gray-400">
-                  {formData.stream || "Select Stream"}
-                </span>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Science">Science</SelectItem>
-                <SelectItem value="Commerce">Commerce</SelectItem>
-                <SelectItem value="Arts">Arts</SelectItem>
-              </SelectContent>
-            </Select>
+              menuTitle="Select Stream"
+              submenuItems={["Science", "Commerce", "Arts"]}
+              onSelect={(item) => setFormData({ ...formData, stream: item })}
+            />
           </div>
         ) : null}
         {/* Submit Button */}
