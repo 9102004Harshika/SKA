@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
-import myImage from "../../images/bg25.png";
+import myImage from "../../images/bgNavy.png";
 import { Button } from "../../ui/button";
 import { FaGoogle, FaApple } from "react-icons/fa";
 import { TiVendorMicrosoft } from "react-icons/ti";
@@ -119,7 +119,7 @@ function RegisterPage() {
                 </div>
               }
               size="sm"
-              variant="default"
+              variant="secondary"
               onClick={handleGoogleSignup}
             />
 
@@ -134,7 +134,7 @@ function RegisterPage() {
                 </div>
               }
               size="sm"
-              variant="default"
+              variant="secondary"
               onClick={handleFacebookSignup} // Change to appropriate handler for Microsoft
             />
 
@@ -148,7 +148,7 @@ function RegisterPage() {
                 </div>
               }
               size="sm"
-              variant="default"
+              variant="secondary"
               onClick={handleTwitterSignup} // Change to appropriate handler for Apple
             />
           </div>

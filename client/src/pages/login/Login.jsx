@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import LeftPanel from "./LeftPanel";
-import myImage from "../../images/bg25.png";
+import myImage from "../../images/bgNavy.png";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { loginForm } from "../../config/index";
@@ -142,7 +142,7 @@ function LoginPage() {
                 </div>
               }
               size="sm"
-              variant="default"
+              variant="secondary"
               onClick={() => console.log("Google Login")}
             />
 
@@ -154,7 +154,7 @@ function LoginPage() {
                 </div>
               }
               size="sm"
-              variant="default"
+              variant="secondary"
               onClick={() => console.log("Microsoft Login")}
             />
 
@@ -166,7 +166,7 @@ function LoginPage() {
                 </div>
               }
               size="sm"
-              variant="default"
+              variant="secondary"
               onClick={() => console.log("Apple Login")}
             />
           </div>

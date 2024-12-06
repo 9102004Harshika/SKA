@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "../ui/select";
-import { FaApple } from "react-icons/fa";
+import myImage from "../images/bgOrange.png";
 
 const Enrollment = () => {
   const [formData, setFormData] = useState({
@@ -34,7 +34,6 @@ const Enrollment = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.verification || formData.verification !== "1234") {
-      // Example OTP
       alert("Invalid OTP. Please verify your OTP.");
       return;
     }
@@ -43,23 +42,27 @@ const Enrollment = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-accent p-4">
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        backgroundImage: `url(${myImage})`,
+      }}
+    >
       <form
         onSubmit={handleSubmit}
-        className="bg-background p-6 border-8 border-double border-primary w-full max-w-lg "
+        className="bg-background p-8 border-2 border-accent w-full max-w-lg "
         style={{
-          boxShadow:
-            "0 60px 80px rgba(0,0,0,0.60), 0 45px 26px rgba(0,0,0,0.14)",
+          boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 30px 10px",
         }}
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-primary">
+        <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
           Student Enrollment Form
         </h2>
         {/* Mobile Number and OTP */}
         <div className="mb-4">
           <label
             htmlFor="mobile"
-            className="block text-sm text-primary font-bold"
+            className="block text-sm font-semibold text-navy"
           >
             Mobile Number
           </label>
@@ -72,21 +75,32 @@ const Enrollment = () => {
               value={formData.mobile}
               onChange={handleChange}
               disabled={otpSent}
-              className="placeholder:text-primary placeholder:opacity-[0.5]"
+              className="placeholder-gray-400"
               required
             />
-            <Button
-              text={otpSent ? "Resend OTP" : "Send OTP"}
-              size="lg"
-              variant="secondary"
-              onClick={handleSendOtp}
-            />
+             <Button
+            text={
+              <div className="flex items-center justify-center">
+                {/* Microsoft Icon */}
+                <span className="hidden lg:inline whitespace-nowrap "> {otpSent ? "Resend OTP" : "Send OTP"}</span>{" "}
+                {/* Text hidden on mobile */}
+              </div>
+            }
+  size="lg"
+  variant="accent"
+  onClick={handleSendOtp}
+>
+  <span className="whitespace-nowrap">
+    
+  </span>
+</Button>
           </div>
         </div>
+        {/* OTP */}
         <div className="mb-4">
           <label
             htmlFor="verification"
-            className="block text-sm text-primary font-bold"
+            className="block text-sm font-semibold text-navy"
           >
             OTP
           </label>
@@ -102,7 +116,10 @@ const Enrollment = () => {
         </div>
         {/* Date of Birth */}
         <div className="mb-4">
-          <label htmlFor="dob" className="block text-sm text-primary font-bold">
+          <label
+            htmlFor="dob"
+            className="block text-sm font-semibold text-navy"
+          >
             Date of Birth
           </label>
           <Input
@@ -118,7 +135,7 @@ const Enrollment = () => {
         <div className="mb-4">
           <label
             htmlFor="board"
-            className="block text-sm text-primary font-bold"
+            className="block text-sm font-semibold text-navy"
           >
             Board of Education
           </label>
@@ -128,7 +145,7 @@ const Enrollment = () => {
               handleChange({ target: { name: "board", value } })
             }
           >
-            <SelectTrigger className="w-full px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-primary">
+            <SelectTrigger className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange">
               <span className="text-gray-400">
                 {formData.board || "Select Board"}
               </span>
@@ -144,7 +161,7 @@ const Enrollment = () => {
         <div className="mb-4">
           <label
             htmlFor="class"
-            className="block text-sm text-primary font-bold"
+            className="block text-sm font-semibold text-navy"
           >
             Class
           </label>
@@ -154,7 +171,7 @@ const Enrollment = () => {
               handleChange({ target: { name: "class", value } })
             }
           >
-            <SelectTrigger className="w-full px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-primary">
+            <SelectTrigger className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange">
               <span className="text-gray-400">
                 {formData.class || "Select Class"}
               </span>
@@ -167,12 +184,12 @@ const Enrollment = () => {
             </SelectContent>
           </Select>
         </div>
-        {/* Conditional Fields for Medium or Stream */}
-        {(formData.class === "9th" || formData.class === "10th") && (
+        {/* Medium or Stream */}
+        {formData.class === "9th" || formData.class === "10th" ? (
           <div className="mb-4">
             <label
               htmlFor="medium"
-              className="block text-sm text-primary font-bold"
+              className="block text-sm font-semibold text-navy"
             >
               Medium/Language
             </label>
@@ -182,7 +199,7 @@ const Enrollment = () => {
                 handleChange({ target: { name: "medium", value } })
               }
             >
-              <SelectTrigger className="w-full px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-primary">
+              <SelectTrigger className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange">
                 <span className="text-gray-400">
                   {formData.medium || "Select Medium/Language"}
                 </span>
@@ -193,12 +210,11 @@ const Enrollment = () => {
               </SelectContent>
             </Select>
           </div>
-        )}
-        {(formData.class === "11th" || formData.class === "12th") && (
+        ) : formData.class === "11th" || formData.class === "12th" ? (
           <div className="mb-4">
             <label
               htmlFor="stream"
-              className="block text-sm text-primary font-bold"
+              className="block text-sm font-semibold text-navy"
             >
               Stream
             </label>
@@ -208,7 +224,7 @@ const Enrollment = () => {
                 handleChange({ target: { name: "stream", value } })
               }
             >
-              <SelectTrigger className="w-full px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-primary">
+              <SelectTrigger className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange">
                 <span className="text-gray-400">
                   {formData.stream || "Select Stream"}
                 </span>
@@ -220,18 +236,9 @@ const Enrollment = () => {
               </SelectContent>
             </Select>
           </div>
-        )}
+        ) : null}
         {/* Submit Button */}
-        <Button
-          text={
-            <div className="flex items-center justify-center">
-              <FaApple className="w-5 h-5 mr-2" />
-              <span>Submit</span>
-            </div>
-          }
-          type="submit"
-          className="w-full"
-        />
+        <Button text="Submit" size="lg" variant="accent" />
       </form>
     </div>
   );

@@ -11,9 +11,9 @@ const buttonVariants = cva(
         lg: "lg", // large size button
       },
       variant: {
-        default: "default",
+        primary: "primary",
         secondary: "secondary",
-        danger: "danger",
+        accent: "accent",
       },
     },
   }
@@ -48,13 +48,7 @@ const StyledWrapper = styled.div`
     right: 0;
     left: 0;
     height: calc(50% - 5px);
-    border: ${({ variant }) =>
-      variant === "secondary"
-        ? "1px solid #7D8082"
-        : variant === "danger"
-        ? "red"
-        : "1px solid #000080"};
-
+    border: 1px solid #000080;
     transition: all 0.15s ease;
   }
 
@@ -92,7 +86,12 @@ const StyledWrapper = styled.div`
     display: block;
     padding: 10px 20px;
     color: #fff;
-    background-color: #000080;
+    background-color:${({ variant }) =>
+      variant === "primary"
+        ? "hsl(240, 100%, 25%)"
+        : variant === "secondary"
+        ? "hsl(205, 100% ,85.88%)"
+        : "hsl(26.53 ,86.98%, 66.86%)"};
     overflow: hidden;
     box-shadow: inset 0px 0px 0px 1px transparent;
   }
@@ -128,10 +127,10 @@ const StyledWrapper = styled.div`
     left: -8px;
     width: 0;
     background-color: ${({ variant }) =>
-      variant === "secondary"
-        ? "hsl(26.53, 86.98%, 66.86%)"
-        : variant === "danger"
-        ? "red"
+      variant === "primary"
+        ? "hsl(205, 100%, 85.88%)"
+        : variant === "secondary"
+        ? "#000080"
         : "hsl(205, 100%, 85.88%)"};
     transform: skew(-15deg);
     transition: all 0.2s ease;
@@ -139,13 +138,19 @@ const StyledWrapper = styled.div`
 
   .button_text {
     position: relative;
+    color:${({ variant }) =>
+      variant === "primary"
+        ? "white"
+        : variant === "secondary"
+        ? "#000080"
+        : "#000080"};
   }
 
   .button:hover .button_text {
     color: ${({ variant }) =>
-      variant === "secondary"
+      variant === "primary"
         ? "#000080"
-        : variant === "danger"
+        : variant === "secondary"
         ? "white"
         : "#000080"};
   }
