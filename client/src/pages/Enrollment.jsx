@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Select from "../ui/select";
@@ -20,6 +20,8 @@ const Enrollment = () => {
 
   const [otpSent, setOtpSent] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false); // State to manage calendar visibility
+  const formRef = useRef(null);
+  const calendarRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +56,22 @@ const Enrollment = () => {
     setShowCalendar((prev) => !prev); // Toggle calendar visibility
   };
 
+  // Close calendar if click happens outside the form or calendar
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target) && 
+          calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setShowCalendar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
@@ -62,6 +80,7 @@ const Enrollment = () => {
       }}
     >
       <form
+        ref={formRef}
         onSubmit={handleSubmit}
         className="bg-background p-8 border-2 border-accent w-full max-w-lg"
         style={{
@@ -142,7 +161,7 @@ const Enrollment = () => {
           </div>
           {/* Conditionally render calendar */}
           {showCalendar && (
-            <div className="absolute mt-2 z-10">
+            <div ref={calendarRef} className="absolute mt-2 z-10">
               <Calendar
                 value={formData.dob}
                 onChange={handleDateChange}
