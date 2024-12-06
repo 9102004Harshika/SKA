@@ -46,7 +46,7 @@ const Enrollment = () => {
     <div className="min-h-screen flex items-center justify-center bg-accent p-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-background p-6 shadow-md w-full max-w-lg"
+        className="bg-background p-6 border-8 border-double border-primary w-full max-w-lg "
         style={{
           boxShadow:
             "0 60px 80px rgba(0,0,0,0.60), 0 45px 26px rgba(0,0,0,0.14)",
