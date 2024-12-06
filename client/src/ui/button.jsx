@@ -164,17 +164,26 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const Button = ({ text, size = "lg", variant = "default" }) => {
+const Button = ({
+  text,
+  size = "lg",
+  variant = "default",
+  onClick,
+  type = "button",
+  ...props
+}) => {
   // Get the button class names based on CVA variants
   const buttonClass = buttonVariants({ size, variant });
 
   return (
     <StyledWrapper variant={variant}>
-      {" "}
       {/* Pass variant prop to StyledWrapper */}
-      <button className={`${buttonClass} button`}>
-        {" "}
-        {/* Apply both dynamic and static classes */}
+      <button
+        className={`${buttonClass} button`}
+        onClick={onClick} // Bind onClick handler
+        type={type} // Ensure correct button type
+        {...props} // Forward any additional props
+      >
         <span className="button_lg">
           <span className="button_sl"></span>
           <span className="button_text">{text}</span>
