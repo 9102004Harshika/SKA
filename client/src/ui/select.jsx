@@ -50,14 +50,16 @@ const Select = ({ menuTitle, submenuItems, onSelect }) => {
 
 const StyledWrapper = styled.div`
   .menu {
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: bold;
     line-height: 1.6;
     color: #000080;
-    width: fit-content;
+    width: 100%;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     list-style: none;
     border-bottom: 1px solid #000080;
-    width: 100%;
     text-align: center;
   }
 
@@ -74,17 +76,22 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 250px;
-    padding: 12px 36px;
+    width: 100%;
+    padding: 12px 0px;
     border-radius: 16px;
     overflow: hidden;
     transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  @media (max-width: 768px) {
-    .menu .link {
-      gap: 100px;
-    }
+  .menu .link span {
+    text-align: left;
+  }
+
+  .menu .link svg {
+    width: 16px; /* Set icon size */
+    height: 16px;
+    fill: #000080;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .menu .link::after {
@@ -99,13 +106,6 @@ const StyledWrapper = styled.div`
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .menu .link svg {
-    width: 14px;
-    height: 14px;
-    fill: #000080;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .menu .item {
