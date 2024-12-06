@@ -170,7 +170,7 @@ const Enrollment = () => {
             </div>
           )}
         </div>
-        {/* Board of Education */}
+
         <div className="mb-4">
           <label htmlFor="board" className="block text-sm font-semibold text-navy">
             Board of Education
