@@ -18,19 +18,18 @@ function LoginPage() {
   useEffect(() => {
     const tl = gsap.timeline();
 
-     tl.fromTo(
+    tl.fromTo(
       leftPanelRef.current,
-      {opacity:0, x: "-30%"},
-      {opacity:1, x: "0%", duration: 1.2, ease: "power3.out" }
+      { opacity: 0, x: "-30%" },
+      { opacity: 1, x: "0%", duration: 1.2, ease: "power3.out" }
     );
     tl.fromTo(
       loginFormRef.current,
-      {opacity:0, x: "30%"},
-      {opacity:1, x: "0%", duration: 0.8, ease: "power3.out" },
-       "-=0.8"
+      { opacity: 0, x: "30%" },
+      { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" },
+      "-=0.8"
     );
   }, []);
-  
 
   const handleDragEnd = (event, info) => {
     if (info.offset.y > 100) {
@@ -71,10 +70,7 @@ function LoginPage() {
       </motion.div>
 
       {/* Main Content */}
-      <div
-        className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full"
-        
-      >
+      <div className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full">
         {/* Desktop Left Panel */}
         <div
           ref={leftPanelRef}
@@ -85,7 +81,7 @@ function LoginPage() {
 
         {/* Login Form */}
         <div
-        ref={loginFormRef}
+          ref={loginFormRef}
           className="w-full md:w-1/2 bg-background text-card-foreground p-8 shadow-lg flex flex-col items-center"
           style={{
             boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",
@@ -175,10 +171,10 @@ function LoginPage() {
             <p className="text-sm">
               Don't have an account?{" "}
               <a
-                href="#"
+                href="/register"
                 className="text-accent font-bold hover:underline underline-offset-2"
               >
-                Sign up
+                Create One
               </a>
             </p>
           </div>
@@ -189,8 +185,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
-
-
-
-

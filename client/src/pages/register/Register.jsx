@@ -135,7 +135,7 @@ function RegisterPage() {
               }
               size="sm"
               variant="secondary"
-              onClick={handleFacebookSignup} // Change to appropriate handler for Microsoft
+              onClick={handleFacebookSignup}
             />
 
             {/* Apple Sign-Up Button */}

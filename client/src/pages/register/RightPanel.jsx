@@ -8,9 +8,12 @@ function RightPanel() {
         alt="Logo"
         className="mb-6 w-32 h-32 mx-auto"
       />
-      <h1 className="text-4xl font-highlight font-bold mb-4">Join the Adventure!</h1>
+      <h1 className="text-4xl font-highlight font-bold mb-4">
+        Join a Big Change!
+      </h1>
       <p className="text-lg">
-        "Learning is the passport to the future, for tomorrow belongs to those who prepare for it today." <br />
+        "Learning is the passport to the future, for tomorrow belongs to those
+        who prepare for it today." <br />
         <span className="font-semibold">- Rahul Singh</span>
       </p>
     </div>
