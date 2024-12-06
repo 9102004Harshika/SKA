@@ -1,21 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 const Select = ({ menuTitle, submenuItems, onSelect }) => {
   const [selectedItem, setSelectedItem] = useState(menuTitle);
+  const [isOpen, setIsOpen] = useState(false); // Track if the submenu is open
+  const dropdownRef = useRef(null); // Reference to the dropdown menu
 
   const handleSelect = (item) => {
     setSelectedItem(item);
     if (onSelect) {
       onSelect(item); // Send the selected item to the parent component
     }
+    setIsOpen(false); // Close the submenu after selection
   };
 
+  const handleToggle = () => {
+    setIsOpen(!isOpen); // Toggle the submenu on click
+  };
+
+  // Close the submenu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false); // Close the dropdown if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <StyledWrapper>
+    <StyledWrapper ref={dropdownRef}>
       <div className="menu">
         <div className="item">
-          <button type="button" className="link">
+          <button type="button" className="link" onClick={handleToggle}>
             <span>{selectedItem}</span>
             <svg viewBox="0 0 360 360" xmlSpace="preserve">
               <g id="SVGRepo_iconCarrier">
@@ -28,20 +50,22 @@ const Select = ({ menuTitle, submenuItems, onSelect }) => {
               </g>
             </svg>
           </button>
-          {/* Show submenu based on hover */}
-          <div className="submenu">
-            {submenuItems.map((item, index) => (
-              <div
-                key={index}
-                className="submenu-item"
-                onClick={() => handleSelect(item)}
-              >
-                <a href="#" className="submenu-link">
-                  {item}
-                </a>
-              </div>
-            ))}
-          </div>
+          {/* Show submenu based on isOpen */}
+          {isOpen && (
+            <div className="submenu">
+              {submenuItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="submenu-item"
+                  onClick={() => handleSelect(item)}
+                >
+                  <a href="#" className="submenu-link">
+                    {item}
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </StyledWrapper>
@@ -130,13 +154,11 @@ const StyledWrapper = styled.div`
     z-index: 1;
     pointer-events: none;
     list-style: none;
-  }
-
-  .submenu {
     background-color: hsl(60, 56%, 91%);
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.56), 0 4px 6px rgba(0, 0, 0, 0.56);
   }
 
-  .menu .item:hover .submenu {
+  .menu .item .submenu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -144,17 +166,17 @@ const StyledWrapper = styled.div`
     border-color: hsl(26.53, 86.98%, 66.86%);
   }
 
-  .menu .item:hover .link {
+  .menu .item .link {
     color: #000080;
     border-radius: 16px 16px 0 0;
   }
 
-  .menu .item:hover .link::after {
+  .menu .item .link::after {
     transform: scaleX(1);
     transform-origin: left;
   }
 
-  .menu .item:hover .link svg {
+  .menu .item .link svg {
     fill: #000080;
     transform: rotate(-180deg);
   }

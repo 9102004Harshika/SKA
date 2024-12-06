@@ -3,9 +3,9 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Select from "../ui/select";
 import myImage from "../images/bgOrange.png";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css'; // Make sure to import the calendar styles
-import { FaCalendarAlt } from 'react-icons/fa'; // Import a calendar icon
+import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
+import { DayPicker } from "react-day-picker";
+import classes from "react-day-picker/style.module.css"; // Import the DayPicker styles
 
 const Enrollment = () => {
   const [formData, setFormData] = useState({
@@ -56,11 +56,22 @@ const Enrollment = () => {
     setShowCalendar((prev) => !prev); // Toggle calendar visibility
   };
 
-  // Close calendar if click happens outside the form or calendar
+  // Close calendar if click happens outside the calendar or on other inputs
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (formRef.current && !formRef.current.contains(event.target) && 
-          calendarRef.current && !calendarRef.current.contains(event.target)) {
+      if (
+        formRef.current &&
+        !formRef.current.contains(event.target) &&
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target)
+      ) {
+        setShowCalendar(false);
+      } else if (
+        formRef.current &&
+        formRef.current.contains(event.target) &&
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target)
+      ) {
         setShowCalendar(false);
       }
     };
@@ -109,7 +120,7 @@ const Enrollment = () => {
             <Button
               text={
                 <div className="flex items-center justify-center">
-                  <span className="block lg:inline whitespace-nowrap ">
+                  <span className="block lg:inline whitespace-nowrap">
                     {otpSent ? "Resend OTP" : "Send OTP"}
                   </span>
                 </div>
@@ -159,16 +170,28 @@ const Enrollment = () => {
               <FaCalendarAlt />
             </button>
           </div>
-          {/* Conditionally render calendar */}
+          {/* Conditionally render DayPicker calendar */}
           {showCalendar && (
-            <div ref={calendarRef} className="absolute mt-2 z-10">
-              <Calendar
-                value={formData.dob}
-                onChange={handleDateChange}
-                maxDate={new Date()}
-              />
-            </div>
-          )}
+  <div
+    ref={calendarRef}
+    className="absolute border p-4 border-accent z-10 w-full bg-background"
+    style={{
+      maxWidth: "95vw", // Prevent overflow on smaller screens
+      width: "auto",
+      left: "50%",
+      transform: "translateX(-50%)",
+      boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 20px 10px", // Add subtle shadow for better visibility
+    }}
+  >
+    <DayPicker
+      mode="single"
+      selected={formData.dob}
+      onSelect={handleDateChange}
+      classNames={classes}
+    />
+  </div>
+)}
+
         </div>
 
         <div className="mb-4">
@@ -190,6 +213,7 @@ const Enrollment = () => {
             menuTitle="Select Class"
             submenuItems={["9th", "10th", "11th", "12th"]}
             onSelect={(item) => setFormData({ ...formData, class: item })}
+           
           />
         </div>
         {/* Medium or Stream */}
