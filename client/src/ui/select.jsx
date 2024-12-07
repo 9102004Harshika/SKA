@@ -112,24 +112,10 @@ const StyledWrapper = styled.div`
   }
 
   .menu .link svg {
-    width: 16px; /* Set icon size */
+    width: 16px;
     height: 16px;
     fill: #000080;
     transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .menu .link::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0a3cff;
-    z-index: -1;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .menu .item {
@@ -142,43 +128,14 @@ const StyledWrapper = styled.div`
     align-items: center;
     position: absolute;
     top: 100%;
-    border-radius: 0 0 16px 16px;
     left: 0;
     width: 100%;
+    border-radius: 0 0 16px 16px;
     overflow: hidden;
     border: 1px solid #cccccc;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-12px);
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-    z-index: 1;
-    pointer-events: none;
-    list-style: none;
     background-color: hsl(60, 56%, 91%);
     box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.56), 0 4px 6px rgba(0, 0, 0, 0.56);
-  }
-
-  .menu .item .submenu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: auto;
-    border-color: hsl(26.53, 86.98%, 66.86%);
-  }
-
-  .menu .item .link {
-    color: #000080;
-    border-radius: 16px 16px 0 0;
-  }
-
-  .menu .item .link::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  .menu .item .link svg {
-    fill: #000080;
-    transform: rotate(-180deg);
+    z-index: 1;
   }
 
   .submenu .submenu-item {
@@ -195,33 +152,50 @@ const StyledWrapper = styled.div`
     transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  .submenu .submenu-item:last-child .submenu-link {
-    border-bottom: none;
-  }
-
   .submenu .submenu-link::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    transform: scaleX(0);
-    width: 100%;
+    width: 0%; /* Start with no background */
     height: 100%;
     background-color: hsl(26.53, 86.98%, 66.86%);
     z-index: -1;
-    transform-origin: left;
-    transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: width 0.48s cubic-bezier(0.23, 1, 0.32, 1); /* Smooth transition */
   }
 
-  .submenu .submenu-link:hover:before {
-    transform: scaleX(1);
-    transform-origin: left;
+  .submenu .submenu-link:hover::before,
+  .submenu .submenu-link:focus::before, /* Add support for focus */
+  .submenu .submenu-link:active::before { /* Add support for touch interaction */
+    width: 100%; /* Animate background to full width */
   }
 
-  .submenu .submenu-link:hover {
+  .submenu .submenu-link:hover,
+  .submenu .submenu-link:focus,
+  .submenu .submenu-link:active {
     color: #ffffff;
-    background-color: hsl(26.53, 86.98%, 66.86%);
+  }
+
+  @media (max-width: 768px) {
+    .menu .link,
+    .submenu .submenu-link {
+      padding: 12px 16px; /* Adjust padding for smaller screens */
+    }
+
+    .submenu .submenu-link::before {
+      width: 0%; /* Ensure smooth animation on smaller screens */
+    }
+
+    .submenu .submenu-link:hover::before,
+    .submenu .submenu-link:focus::before,
+    .submenu .submenu-link:active::before {
+      width: 100%; /* Full animation on hover/tap */
+    }
   }
 `;
+
+
+
+
 
 export default Select;

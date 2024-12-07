@@ -5,6 +5,7 @@ import Select from "../ui/select";
 import myImage from "../images/bgOrange.png";
 import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
 import { DayPicker } from "react-day-picker";
+import { gsap } from "gsap"; // Import GSAP for animation
 import classes from "react-day-picker/style.module.css"; // Import the DayPicker styles
 
 const Enrollment = () => {
@@ -22,6 +23,15 @@ const Enrollment = () => {
   const [showCalendar, setShowCalendar] = useState(false); // State to manage calendar visibility
   const formRef = useRef(null);
   const calendarRef = useRef(null);
+
+  useEffect(() => {
+    // Animate the form to slide in from the left
+    gsap.fromTo(
+      formRef.current,
+      { y: "100%", opacity: 0 },
+    { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }
+    );
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,13 +76,6 @@ const Enrollment = () => {
         !calendarRef.current.contains(event.target)
       ) {
         setShowCalendar(false);
-      } else if (
-        formRef.current &&
-        formRef.current.contains(event.target) &&
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target)
-      ) {
-        setShowCalendar(false);
       }
     };
 
@@ -103,10 +106,13 @@ const Enrollment = () => {
         </h2>
         {/* Mobile Number and OTP */}
         <div>
-          <label htmlFor="mobile" className="block text-sm font-semibold text-navy">
+          <label
+            htmlFor="mobile"
+            className="block text-sm font-semibold text-navy"
+          >
             Mobile Number
           </label>
-          <div className="flex items-center gap-2">
+          <div className="flex items-end gap-4">
             <Input
               id="mobile"
               name="mobile"
@@ -125,15 +131,18 @@ const Enrollment = () => {
                   </span>
                 </div>
               }
-              size="lg"
+              size="xs"
               variant="accent"
               onClick={handleSendOtp}
             />
           </div>
         </div>
         {/* OTP */}
-        <div className="mb-4">
-          <label htmlFor="verification" className="block text-sm font-semibold text-navy">
+        <div>
+          <label
+            htmlFor="verification"
+            className="block text-sm font-semibold text-navy"
+          >
             OTP
           </label>
           <Input
@@ -147,8 +156,11 @@ const Enrollment = () => {
           />
         </div>
         {/* Date of Birth */}
-        <div className="mb-4 relative">
-          <label htmlFor="dob" className="block text-sm font-semibold text-navy">
+        <div className="relative">
+          <label
+            htmlFor="dob"
+            className="block text-sm font-semibold text-navy"
+          >
             Date of Birth
           </label>
           <div className="flex items-center">
@@ -165,37 +177,39 @@ const Enrollment = () => {
             <button
               type="button"
               onClick={toggleCalendar}
-              className="ml-2 text-lg text-navy"
+              className="ml-2 mb-4 text-lg text-navy"
             >
               <FaCalendarAlt />
             </button>
           </div>
           {/* Conditionally render DayPicker calendar */}
           {showCalendar && (
-  <div
-    ref={calendarRef}
-    className="absolute border p-4 border-accent z-10 w-full bg-background"
-    style={{
-      maxWidth: "95vw", // Prevent overflow on smaller screens
-      width: "auto",
-      left: "50%",
-      transform: "translateX(-50%)",
-      boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 20px 10px", // Add subtle shadow for better visibility
-    }}
-  >
-    <DayPicker
-      mode="single"
-      selected={formData.dob}
-      onSelect={handleDateChange}
-      classNames={classes}
-    />
-  </div>
-)}
-
+            <div
+              ref={calendarRef}
+              className="absolute border p-4 border-accent z-10 w-full bg-background"
+              style={{
+                maxWidth: "95vw", // Prevent overflow on smaller screens
+                width: "auto",
+                left: "50%",
+                transform: "translateX(-50%)",
+                boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 20px 10px", // Add subtle shadow for better visibility
+              }}
+            >
+              <DayPicker
+                mode="single"
+                selected={formData.dob}
+                onSelect={handleDateChange}
+                classNames={classes}
+              />
+            </div>
+          )}
         </div>
 
         <div className="mb-4">
-          <label htmlFor="board" className="block text-sm font-semibold text-navy">
+          <label
+            htmlFor="board"
+            className="block text-sm font-semibold text-navy"
+          >
             Board of Education
           </label>
           <Select
@@ -206,20 +220,25 @@ const Enrollment = () => {
         </div>
         {/* Class Selection */}
         <div className="mb-4">
-          <label htmlFor="class" className="block text-sm font-semibold text-navy">
+          <label
+            htmlFor="class"
+            className="block text-sm font-semibold text-navy"
+          >
             Class
           </label>
           <Select
             menuTitle="Select Class"
             submenuItems={["9th", "10th", "11th", "12th"]}
             onSelect={(item) => setFormData({ ...formData, class: item })}
-           
           />
         </div>
         {/* Medium or Stream */}
         {formData.class === "9th" || formData.class === "10th" ? (
           <div className="mb-4">
-            <label htmlFor="medium" className="block text-sm font-semibold text-navy">
+            <label
+              htmlFor="medium"
+              className="block text-sm font-semibold text-navy"
+            >
               Medium/Language
             </label>
             <Select
@@ -230,7 +249,10 @@ const Enrollment = () => {
           </div>
         ) : formData.class === "11th" || formData.class === "12th" ? (
           <div className="mb-4">
-            <label htmlFor="stream" className="block text-sm font-semibold text-navy">
+            <label
+              htmlFor="stream"
+              className="block text-sm font-semibold text-navy"
+            >
               Stream
             </label>
             <Select
