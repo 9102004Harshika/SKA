@@ -4,9 +4,10 @@ import { Button } from "../ui/button";
 import Select from "../ui/select";
 import myImage from "../images/bgOrange.png";
 import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
-import { DayPicker } from "react-day-picker";
+import { ReactDatez } from "react-datez"; // Import ReactDatez
+import "react-datez/dist/css/react-datez.css"; // Import ReactDatez styles
 import { gsap } from "gsap"; // Import GSAP for animation
-import classes from "react-day-picker/style.module.css"; // Import the DayPicker styles
+import { DatePicker } from "../ui/datePicker";
 
 const Enrollment = () => {
   const [formData, setFormData] = useState({
@@ -20,16 +21,14 @@ const Enrollment = () => {
   });
 
   const [otpSent, setOtpSent] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false); // State to manage calendar visibility
   const formRef = useRef(null);
-  const calendarRef = useRef(null);
 
   useEffect(() => {
     // Animate the form to slide in from the left
     gsap.fromTo(
       formRef.current,
       { y: "100%", opacity: 0 },
-    { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }
+      { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }
     );
   }, []);
 
@@ -59,32 +58,7 @@ const Enrollment = () => {
 
   const handleDateChange = (date) => {
     setFormData({ ...formData, dob: date });
-    setShowCalendar(false); // Close calendar after selecting date
   };
-
-  const toggleCalendar = () => {
-    setShowCalendar((prev) => !prev); // Toggle calendar visibility
-  };
-
-  // Close calendar if click happens outside the calendar or on other inputs
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        formRef.current &&
-        !formRef.current.contains(event.target) &&
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target)
-      ) {
-        setShowCalendar(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <div
@@ -118,6 +92,7 @@ const Enrollment = () => {
               name="mobile"
               type="tel"
               placeholder="Enter your mobile number"
+              className="placeholder:text-primary placeholder:opacity-[0.5]"
               value={formData.mobile}
               onChange={handleChange}
               disabled={otpSent}
@@ -150,61 +125,35 @@ const Enrollment = () => {
             name="verification"
             type="text"
             placeholder="Enter OTP"
+            className="placeholder:text-primary placeholder:opacity-[0.5]"
             value={formData.verification}
             onChange={handleChange}
             required
           />
         </div>
         {/* Date of Birth */}
-        <div className="relative">
+        <div className="mb-2">
           <label
             htmlFor="dob"
             className="block text-sm font-semibold text-navy"
           >
             Date of Birth
           </label>
-          <div className="flex items-center">
-            <Input
-              id="dob"
-              name="dob"
-              type="text"
-              placeholder="Select your date of birth"
-              value={formData.dob ? formData.dob.toLocaleDateString() : ""}
-              readOnly
-              onClick={toggleCalendar} // Open calendar on input click
-              required
-            />
-            <button
-              type="button"
-              onClick={toggleCalendar}
-              className="ml-2 mb-4 text-lg text-navy"
-            >
-              <FaCalendarAlt />
-            </button>
-          </div>
-          {/* Conditionally render DayPicker calendar */}
-          {showCalendar && (
-            <div
-              ref={calendarRef}
-              className="absolute border p-4 border-accent z-10 w-full bg-background"
-              style={{
-                maxWidth: "95vw", // Prevent overflow on smaller screens
-                width: "auto",
-                left: "50%",
-                transform: "translateX(-50%)",
-                boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 20px 10px", // Add subtle shadow for better visibility
-              }}
-            >
-              <DayPicker
-                mode="single"
-                selected={formData.dob}
-                onSelect={handleDateChange}
-                classNames={classes}
-              />
-            </div>
-          )}
+          <DatePicker
+            name="dob"
+            handleChange={handleDateChange}
+            value={formData.dob}
+            placeholder="Select your date of birth"
+            allowPast={true}
+            allowFuture={false}
+            firstDayOfWeek="1"
+            displayFormat="DD/MM/YYYY"
+            className="text-primary bg-background text-sm font-semibold font-body border-b border-primary w-full placeholder:text-primary placeholder:opacity-[0.5]"
+            locale="in"
+          />
         </div>
 
+        {/* Education Board */}
         <div className="mb-4">
           <label
             htmlFor="board"

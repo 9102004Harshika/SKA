@@ -132,7 +132,7 @@ const StyledWrapper = styled.div`
     width: 100%;
     border-radius: 0 0 16px 16px;
     overflow: hidden;
-    border: 1px solid #cccccc;
+    border-top: 1px solid #000080;
     background-color: hsl(60, 56%, 91%);
     box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.56), 0 4px 6px rgba(0, 0, 0, 0.56);
     z-index: 1;
@@ -161,41 +161,37 @@ const StyledWrapper = styled.div`
     height: 100%;
     background-color: hsl(26.53, 86.98%, 66.86%);
     z-index: -1;
-    transition: width 0.48s cubic-bezier(0.23, 1, 0.32, 1); /* Smooth transition */
+    transition: width 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .submenu .submenu-link:hover::before,
-  .submenu .submenu-link:focus::before, /* Add support for focus */
-  .submenu .submenu-link:active::before { /* Add support for touch interaction */
-    width: 100%; /* Animate background to full width */
+  .submenu .submenu-link:focus::before,
+  .submenu .submenu-link:active::before {
+    width: 100%;
   }
 
   .submenu .submenu-link:hover,
   .submenu .submenu-link:focus,
   .submenu .submenu-link:active {
-    color: #ffffff;
+    color: #f5f5db;
   }
 
   @media (max-width: 768px) {
     .menu .link,
     .submenu .submenu-link {
-      padding: 12px 16px; /* Adjust padding for smaller screens */
+      padding: 12px 16px;
     }
 
     .submenu .submenu-link::before {
-      width: 0%; /* Ensure smooth animation on smaller screens */
+      width: 0%;
     }
 
     .submenu .submenu-link:hover::before,
     .submenu .submenu-link:focus::before,
     .submenu .submenu-link:active::before {
-      width: 100%; /* Full animation on hover/tap */
+      width: 100%;
     }
   }
 `;
-
-
-
-
 
 export default Select;
