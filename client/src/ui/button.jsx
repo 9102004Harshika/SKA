@@ -88,7 +88,7 @@ const StyledWrapper = styled.div`
     display: block;
     padding: 10px 20px;
     color: #fff;
-    background-color:${({ variant }) =>
+    background-color: ${({ variant }) =>
       variant === "primary"
         ? "hsl(240, 100%, 25%)"
         : variant === "secondary"
@@ -140,7 +140,7 @@ const StyledWrapper = styled.div`
 
   .button_text {
     position: relative;
-    color:${({ variant }) =>
+    color: ${({ variant }) =>
       variant === "primary"
         ? "white"
         : variant === "secondary"

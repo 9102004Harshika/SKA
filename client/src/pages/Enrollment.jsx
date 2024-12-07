@@ -80,24 +80,26 @@ const Enrollment = () => {
         </h2>
         {/* Mobile Number and OTP */}
         <div>
-          <label
-            htmlFor="mobile"
-            className="block text-sm font-semibold text-navy"
-          >
-            Mobile Number
-          </label>
-          <div className="flex items-end gap-4">
-            <Input
-              id="mobile"
-              name="mobile"
-              type="tel"
-              placeholder="Enter your mobile number"
-              className="placeholder:text-primary placeholder:opacity-[0.5]"
-              value={formData.mobile}
-              onChange={handleChange}
-              disabled={otpSent}
-              required
-            />
+          <div className="flex items-end justify-between gap-4">
+            <div className="flex-1">
+              <label
+                htmlFor="mobile"
+                className="block text-sm mb-1 font-semibold text-navy"
+              >
+                Mobile Number
+              </label>
+              <Input
+                id="mobile"
+                name="mobile"
+                type="tel"
+                placeholder="Enter your mobile number"
+                className="placeholder:text-primary placeholder:opacity-[0.5]"
+                value={formData.mobile}
+                onChange={handleChange}
+                disabled={otpSent}
+                required
+              />
+            </div>
             <Button
               text={
                 <div className="flex items-center justify-center">
