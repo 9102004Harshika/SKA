@@ -27,14 +27,14 @@ export const registerForm = [
     type: "email",
     name: "email",
     label: "Email Address",
-    placeholder: "Enter your email",
+    placeholder: "Enter your valid email",
     required: true,
   },
   {
     type: "password",
     name: "password",
     label: "Password",
-    placeholder: "Enter your password",
+    placeholder: "Enter a strong password",
     required: true,
   },
   {

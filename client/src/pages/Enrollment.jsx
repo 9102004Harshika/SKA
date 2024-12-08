@@ -4,10 +4,15 @@ import { Button } from "../ui/button";
 import Select from "../ui/select";
 import myImage from "../images/bgOrange.png";
 import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
+<<<<<<< HEAD
 import { ReactDatez } from "react-datez"; // Import ReactDatez
 import "react-datez/dist/css/react-datez.css"; // Import ReactDatez styles
 import { gsap } from "gsap"; // Import GSAP for animation
 import { DatePicker } from "../ui/datePicker";
+=======
+import { gsap } from "gsap"; // Import GSAP for animation
+import Calendar from "../ui/calendar";
+>>>>>>> 1f11481ebd53640f2e94d72699085df77ed6c693
 
 const Enrollment = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +27,13 @@ const Enrollment = () => {
 
   const [otpSent, setOtpSent] = useState(false);
   const formRef = useRef(null);
+<<<<<<< HEAD
 
+=======
+  const calendarRef = useRef(null);
+  const dobInputRef = useRef(null); // Reference to the date of birth input
+  const mobileRed=useRef(null)
+>>>>>>> 1f11481ebd53640f2e94d72699085df77ed6c693
   useEffect(() => {
     // Animate the form to slide in from the left
     gsap.fromTo(
@@ -56,10 +67,57 @@ const Enrollment = () => {
     alert("Form submitted successfully!");
   };
 
+<<<<<<< HEAD
   const handleDateChange = (date) => {
     setFormData({ ...formData, dob: date });
   };
 
+=======
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const handleDateSelect = (date) => {
+    const selectedDate = new Date(date); // Ensure it's a Date object
+    setFormData((prevData) => ({
+      ...prevData,
+      dob: selectedDate, // Store as a Date object
+    }));
+    setSelectedDate(selectedDate);
+    setShowCalendar(false); // Close the calendar
+    console.log("Selected Date:", selectedDate);
+  };
+  
+  
+  const toggleCalendar = () => {
+    setShowCalendar((prev) => !prev); // Toggle calendar visibility
+  };
+
+  // Close calendar if click happens outside the calendar or on other inputs
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // If the click is outside the dob input, form or calendar, close the calendar
+      if (
+        formRef.current &&
+        !formRef.current.contains(event.target) &&
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target) &&
+        dobInputRef.current &&
+        !dobInputRef.current.contains(event.target)&&
+        dobInputRef.current &&
+        !dobInputRef.current.contains(event.target)
+         // Ensures clicking on the DOB input won't close it
+      ) {
+        setShowCalendar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+>>>>>>> 1f11481ebd53640f2e94d72699085df77ed6c693
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
@@ -80,6 +138,7 @@ const Enrollment = () => {
         </h2>
         {/* Mobile Number and OTP */}
         <div>
+<<<<<<< HEAD
           <div className="flex items-end justify-between gap-4">
             <div className="flex-1">
               <label
@@ -100,6 +159,26 @@ const Enrollment = () => {
                 required
               />
             </div>
+=======
+          <label
+            htmlFor="mobile"
+            className="block text-sm font-semibold text-navy"
+          >
+            Mobile Number
+          </label>
+          <div className="flex items-end gap-4">
+            <Input
+              id="mobile"
+              name="mobile"
+              type="tel"
+              onClick={()=>setShowCalendar(false)}
+              placeholder="Enter your mobile number"
+              value={formData.mobile}
+              onChange={handleChange}
+              disabled={otpSent}
+              required
+            />
+>>>>>>> 1f11481ebd53640f2e94d72699085df77ed6c693
             <Button
               text={
                 <div className="flex items-center justify-center">
@@ -125,6 +204,7 @@ const Enrollment = () => {
           <Input
             id="verification"
             name="verification"
+            onClick={()=>setShowCalendar(false)}
             type="text"
             placeholder="Enter OTP"
             className="placeholder:text-primary placeholder:opacity-[0.5]"
@@ -133,6 +213,7 @@ const Enrollment = () => {
             required
           />
         </div>
+<<<<<<< HEAD
         {/* Date of Birth */}
         <div className="mb-2">
           <label
@@ -154,6 +235,46 @@ const Enrollment = () => {
             locale="in"
           />
         </div>
+=======
+
+       {/* Date of Birth */}
+<div className="relative-container mb-4">
+  <label htmlFor="dob" className="block text-sm font-semibold text-navy">
+    Date of Birth
+  </label>
+  <div className="flex items-center">
+    <Input
+      ref={dobInputRef}
+      id="dob"
+      name="dob"
+      type="text"
+      placeholder="Select your date of birth"
+      value={
+        formData.dob instanceof Date
+          ? formData.dob.toLocaleDateString()
+          : ""
+      }
+      readOnly
+      onClick={toggleCalendar}
+      required
+    />
+    <button
+      type="button"
+      onClick={toggleCalendar}
+      className="ml-2 text-lg text-navy"
+    >
+      <FaCalendarAlt />
+    </button>
+  </div>
+  {/* Render the calendar as an overlay */}
+  {showCalendar && (
+    <div ref={calendarRef} className="calendar-overlay">
+      <Calendar onDateSelect={handleDateSelect} />
+    </div>
+  )}
+</div>
+
+>>>>>>> 1f11481ebd53640f2e94d72699085df77ed6c693
 
         {/* Education Board */}
         <div className="mb-4">
@@ -165,6 +286,7 @@ const Enrollment = () => {
           </label>
           <Select
             menuTitle="Select Board"
+            onClick={()=>setShowCalendar(false)}
             submenuItems={["CBSE", "ICSE", "SSC"]}
             onSelect={(item) => setFormData({ ...formData, board: item })}
           />
@@ -179,6 +301,7 @@ const Enrollment = () => {
           </label>
           <Select
             menuTitle="Select Class"
+            onClick={()=>setShowCalendar(false)}
             submenuItems={["9th", "10th", "11th", "12th"]}
             onSelect={(item) => setFormData({ ...formData, class: item })}
           />
@@ -194,6 +317,7 @@ const Enrollment = () => {
             </label>
             <Select
               menuTitle="Select Medium"
+              onClick={()=>setShowCalendar(false)}
               submenuItems={["English", "Hindi", "Marathi"]}
               onSelect={(item) => setFormData({ ...formData, medium: item })}
             />

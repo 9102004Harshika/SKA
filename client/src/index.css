@@ -50,6 +50,12 @@ input:-webkit-autofill {
     240 100% 25%
   ); /* Inherit text color from the parent or default styles */
 }
+/* password eye button disabling*/
+input::-ms-reveal,
+input::-ms-clear,
+input::-webkit-clear-button {
+  display: none;
+}
 
 .react-datepicker {
   background-color: #f4e8da; /* Light beige background */

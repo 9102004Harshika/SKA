@@ -8,9 +8,11 @@ import { TiVendorMicrosoft } from "react-icons/ti";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import RightPanel from "./RightPanel"; // Import the RightPanel component
+import { toast } from "../../components/use-toast";
 
 function RegisterPage() {
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [errors, setErrors] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
 
@@ -32,16 +34,55 @@ function RegisterPage() {
     );
   }, []);
 
-  const handleGoogleSignup = () => {
-    console.log("Sign Up with Google clicked");
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleFacebookSignup = () => {
-    console.log("Sign Up with Facebook clicked");
-  };
+  // Form validation and submission logic
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handleTwitterSignup = () => {
-    console.log("Sign Up with Twitter clicked");
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
+    let validationErrors = {};
+
+    // Validate all fields
+    registerForm.forEach((field) => {
+      if (field.required && !formData[field.name]) {
+        validationErrors[field.name] = `${field.label} is required`;
+      }
+    });
+
+    if (
+      formData.password &&
+      (formData.password.length < 8 || formData.password.length > 16)
+    ) {
+      validationErrors.password =
+        "Password must be between 8 and 16 characters long";
+      toast({
+        title: "Password must be between 8 and 16 characters long",
+        variant: "destructive",
+      });
+    }
+
+    if (formData.password && !passwordRegex.test(formData.password)) {
+      validationErrors.password =
+        "Password must contain letters, numbers, and symbols";
+    }
+
+    if (formData.password !== formData.repeatPassword) {
+      validationErrors.repeatPassword = "Passwords do not match";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+    console.log("Form Submitted Successfully", formData);
   };
 
   return (
@@ -64,10 +105,10 @@ function RegisterPage() {
           <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
             Elevate Your Learning
           </h2>
-          <form className="w-full max-w-md">
+          <form className="w-full max-w-md" onSubmit={handleSubmit}>
             {/* Dynamic Input Fields */}
             {registerForm.map((field, index) => (
-              <div className="" key={index}>
+              <div className="mb-5" key={index}>
                 <label className="block text-sm font-medium mb-1">
                   {field.label}
                 </label>
@@ -77,7 +118,14 @@ function RegisterPage() {
                   name={field.name}
                   placeholder={field.placeholder}
                   required={field.required}
+                  value={formData[field.name] || ""}
+                  onChange={handleChange}
                 />
+                {errors[field.name] && (
+                  <p className="text-accent text-xs mt-0">
+                    {errors[field.name]}
+                  </p>
+                )}
               </div>
             ))}
 
@@ -95,7 +143,12 @@ function RegisterPage() {
             </div>
 
             {/* Submit Button */}
-            <Button text="Enrol Now" size="lg" variant="primary" />
+            <Button
+              text="Enrol Now"
+              size="lg"
+              variant="primary"
+              type="submit"
+            />
           </form>
 
           {/* Divider */}
@@ -109,47 +162,38 @@ function RegisterPage() {
 
           {/* Social Media Sign-Up Buttons */}
           <div className="flex space-x-4 w-full justify-between flex-wrap">
-            {/* Google Sign-Up Button */}
             <Button
               text={
                 <div className="flex items-center justify-center">
-                  <FaGoogle className="w-5 h-5 mr-2" /> {/* Google Icon */}
-                  <span className="hidden lg:inline">Google</span>{" "}
-                  {/* Text hidden on mobile */}
+                  <FaGoogle className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Google</span>
                 </div>
               }
               size="sm"
               variant="secondary"
-              onClick={handleGoogleSignup}
+              onClick={() => console.log("Sign Up with Google clicked")}
             />
-
-            {/* Microsoft Sign-Up Button */}
             <Button
               text={
                 <div className="flex items-center justify-center">
-                  <TiVendorMicrosoft className="w-5 h-5 mr-2" />{" "}
-                  {/* Microsoft Icon */}
-                  <span className="hidden lg:inline">Microsoft</span>{" "}
-                  {/* Text hidden on mobile */}
+                  <TiVendorMicrosoft className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Microsoft</span>
                 </div>
               }
               size="sm"
               variant="secondary"
-              onClick={handleFacebookSignup}
+              onClick={() => console.log("Sign Up with Microsoft clicked")}
             />
-
-            {/* Apple Sign-Up Button */}
             <Button
               text={
                 <div className="flex items-center justify-center">
-                  <FaApple className="w-5 h-5 mr-2" /> {/* Apple Icon */}
-                  <span className="hidden lg:inline">Apple</span>{" "}
-                  {/* Text hidden on mobile */}
+                  <FaApple className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Apple</span>
                 </div>
               }
               size="sm"
               variant="secondary"
-              onClick={handleTwitterSignup} // Change to appropriate handler for Apple
+              onClick={() => console.log("Sign Up with Apple clicked")}
             />
           </div>
         </div>
