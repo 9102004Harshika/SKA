@@ -621,7 +621,6 @@ const Calendar = ({onDateSelect}) => {
   }
 }
 
-  
       `}</style>
     </div>
   );
