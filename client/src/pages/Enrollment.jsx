@@ -4,9 +4,8 @@ import { Button } from "../ui/button";
 import Select from "../ui/select";
 import myImage from "../images/bgOrange.png";
 import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
-import { DayPicker } from "react-day-picker";
 import { gsap } from "gsap"; // Import GSAP for animation
-import classes from "react-day-picker/style.module.css"; // Import the DayPicker styles
+import Calendar from "../ui/calendar";
 
 const Enrollment = () => {
   const [formData, setFormData] = useState({
@@ -23,13 +22,14 @@ const Enrollment = () => {
   const [showCalendar, setShowCalendar] = useState(false); // State to manage calendar visibility
   const formRef = useRef(null);
   const calendarRef = useRef(null);
-
+  const dobInputRef = useRef(null); // Reference to the date of birth input
+  const mobileRed=useRef(null)
   useEffect(() => {
     // Animate the form to slide in from the left
     gsap.fromTo(
       formRef.current,
       { y: "100%", opacity: 0 },
-    { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }
+      { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }
     );
   }, []);
 
@@ -57,11 +57,20 @@ const Enrollment = () => {
     alert("Form submitted successfully!");
   };
 
-  const handleDateChange = (date) => {
-    setFormData({ ...formData, dob: date });
-    setShowCalendar(false); // Close calendar after selecting date
-  };
+  const [selectedDate, setSelectedDate] = useState("");
 
+  const handleDateSelect = (date) => {
+    const selectedDate = new Date(date); // Ensure it's a Date object
+    setFormData((prevData) => ({
+      ...prevData,
+      dob: selectedDate, // Store as a Date object
+    }));
+    setSelectedDate(selectedDate);
+    setShowCalendar(false); // Close the calendar
+    console.log("Selected Date:", selectedDate);
+  };
+  
+  
   const toggleCalendar = () => {
     setShowCalendar((prev) => !prev); // Toggle calendar visibility
   };
@@ -69,11 +78,17 @@ const Enrollment = () => {
   // Close calendar if click happens outside the calendar or on other inputs
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // If the click is outside the dob input, form or calendar, close the calendar
       if (
         formRef.current &&
         !formRef.current.contains(event.target) &&
         calendarRef.current &&
-        !calendarRef.current.contains(event.target)
+        !calendarRef.current.contains(event.target) &&
+        dobInputRef.current &&
+        !dobInputRef.current.contains(event.target)&&
+        dobInputRef.current &&
+        !dobInputRef.current.contains(event.target)
+         // Ensures clicking on the DOB input won't close it
       ) {
         setShowCalendar(false);
       }
@@ -117,6 +132,7 @@ const Enrollment = () => {
               id="mobile"
               name="mobile"
               type="tel"
+              onClick={()=>setShowCalendar(false)}
               placeholder="Enter your mobile number"
               value={formData.mobile}
               onChange={handleChange}
@@ -148,6 +164,7 @@ const Enrollment = () => {
           <Input
             id="verification"
             name="verification"
+            onClick={()=>setShowCalendar(false)}
             type="text"
             placeholder="Enter OTP"
             value={formData.verification}
@@ -155,55 +172,44 @@ const Enrollment = () => {
             required
           />
         </div>
-        {/* Date of Birth */}
-        <div className="relative">
-          <label
-            htmlFor="dob"
-            className="block text-sm font-semibold text-navy"
-          >
-            Date of Birth
-          </label>
-          <div className="flex items-center">
-            <Input
-              id="dob"
-              name="dob"
-              type="text"
-              placeholder="Select your date of birth"
-              value={formData.dob ? formData.dob.toLocaleDateString() : ""}
-              readOnly
-              onClick={toggleCalendar} // Open calendar on input click
-              required
-            />
-            <button
-              type="button"
-              onClick={toggleCalendar}
-              className="ml-2 mb-4 text-lg text-navy"
-            >
-              <FaCalendarAlt />
-            </button>
-          </div>
-          {/* Conditionally render DayPicker calendar */}
-          {showCalendar && (
-            <div
-              ref={calendarRef}
-              className="absolute border p-4 border-accent z-10 w-full bg-background"
-              style={{
-                maxWidth: "95vw", // Prevent overflow on smaller screens
-                width: "auto",
-                left: "50%",
-                transform: "translateX(-50%)",
-                boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 20px 10px", // Add subtle shadow for better visibility
-              }}
-            >
-              <DayPicker
-                mode="single"
-                selected={formData.dob}
-                onSelect={handleDateChange}
-                classNames={classes}
-              />
-            </div>
-          )}
-        </div>
+
+       {/* Date of Birth */}
+<div className="relative-container mb-4">
+  <label htmlFor="dob" className="block text-sm font-semibold text-navy">
+    Date of Birth
+  </label>
+  <div className="flex items-center">
+    <Input
+      ref={dobInputRef}
+      id="dob"
+      name="dob"
+      type="text"
+      placeholder="Select your date of birth"
+      value={
+        formData.dob instanceof Date
+          ? formData.dob.toLocaleDateString()
+          : ""
+      }
+      readOnly
+      onClick={toggleCalendar}
+      required
+    />
+    <button
+      type="button"
+      onClick={toggleCalendar}
+      className="ml-2 text-lg text-navy"
+    >
+      <FaCalendarAlt />
+    </button>
+  </div>
+  {/* Render the calendar as an overlay */}
+  {showCalendar && (
+    <div ref={calendarRef} className="calendar-overlay">
+      <Calendar onDateSelect={handleDateSelect} />
+    </div>
+  )}
+</div>
+
 
         <div className="mb-4">
           <label
@@ -214,6 +220,7 @@ const Enrollment = () => {
           </label>
           <Select
             menuTitle="Select Board"
+            onClick={()=>setShowCalendar(false)}
             submenuItems={["CBSE", "ICSE", "SSC"]}
             onSelect={(item) => setFormData({ ...formData, board: item })}
           />
@@ -228,6 +235,7 @@ const Enrollment = () => {
           </label>
           <Select
             menuTitle="Select Class"
+            onClick={()=>setShowCalendar(false)}
             submenuItems={["9th", "10th", "11th", "12th"]}
             onSelect={(item) => setFormData({ ...formData, class: item })}
           />
@@ -243,6 +251,7 @@ const Enrollment = () => {
             </label>
             <Select
               menuTitle="Select Medium"
+              onClick={()=>setShowCalendar(false)}
               submenuItems={["English", "Hindi", "Marathi"]}
               onSelect={(item) => setFormData({ ...formData, medium: item })}
             />
