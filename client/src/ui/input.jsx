@@ -24,7 +24,7 @@ const Input = React.forwardRef(
           position: "relative",
           display: "inline-block",
           width: "100%",
-          marginBottom: "20px",
+          marginBottom: "2px",
         }}
       >
         <input

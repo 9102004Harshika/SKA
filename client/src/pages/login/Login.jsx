@@ -92,7 +92,7 @@ function LoginPage() {
           </h2>
           <form className="w-full max-w-md">
             {loginForm.map((field, index) => (
-              <div className="mb-0" key={index}>
+              <div className="mb-5" key={index}>
                 <label className="block text-sm font-medium mb-1">
                   {field.label}
                 </label>
@@ -129,7 +129,7 @@ function LoginPage() {
             <hr className="flex-grow border-t border-muted border-primary" />
           </div>
 
-          <div className="flex space-x-4 w-full justify-center sm:justify-between flex-wrap">
+          <div className="flex space-x-4 w-full justify-between flex-wrap sm:justify-between">
             <Button
               text={
                 <div className="flex items-center justify-center">
@@ -167,7 +167,7 @@ function LoginPage() {
             />
           </div>
 
-          <div className="my-0 text-center">
+          <div className="mt-2 text-center">
             <p className="text-sm">
               Don't have an account?{" "}
               <a
