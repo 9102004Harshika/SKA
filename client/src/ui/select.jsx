@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
@@ -108,7 +101,7 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 12px 0px;
+    padding: 8px 0px;
     border-radius: 16px;
     overflow: hidden;
     transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
