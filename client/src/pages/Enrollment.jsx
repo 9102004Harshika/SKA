@@ -273,7 +273,13 @@ const Enrollment = () => {
           </div>
         ) : null}
         {/* Submit Button */}
-        <Button text="Submit" size="lg" variant="accent" />
+        <Button
+          text="Submit"
+          size="lg"
+          variant="accent"
+          type="submit"
+          className={"mt-6"}
+        />
       </form>
     </div>
   );

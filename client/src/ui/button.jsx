@@ -177,13 +177,14 @@ const Button = ({
   variant = "default",
   onClick,
   type = "button",
+  className,
   ...props
 }) => {
   // Get the button class names based on CVA variants
   const buttonClass = buttonVariants({ size, variant });
 
   return (
-    <StyledWrapper variant={variant}>
+    <StyledWrapper variant={variant} className={className}>
       {/* Pass variant prop to StyledWrapper */}
       <button
         className={`${buttonClass} button`}
