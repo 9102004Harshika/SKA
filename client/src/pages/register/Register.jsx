@@ -12,7 +12,6 @@ import { toast } from "../../components/use-toast"; // Import the toast function
 
 function RegisterPage() {
   const [formData, setFormData] = useState({});
-  const [errors, setErrors] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
 
@@ -44,63 +43,87 @@ function RegisterPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const nameRegex = /^[A-Za-z\s]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
-    let validationErrors = {};
+    let isValid = true;
 
-    // Validate all fields
-    registerForm.forEach((field) => {
-      if (field.required && !formData[field.name]) {
-        validationErrors[field.name] = `${field.label} is required`;
+    for (const field of registerForm) {
+      const value = formData[field.name];
+
+      if (field.required && !value) {
         toast({
           title: `${field.label} is required`,
           variant: "destructive",
         });
+        isValid = false;
+        break;
       }
-    });
 
-    if (
-      formData.password &&
-      (formData.password.length < 8 || formData.password.length > 16)
-    ) {
-      validationErrors.password =
-        "Password must be between 8 and 16 characters long";
-      toast({
-        title: "Password must be between 8 and 16 characters long",
-        
-        variant: "destructive",
-      });
+      // Additional validation for specific fields
+      if (field.name === "name" && !nameRegex.test(value)) {
+        toast({
+          title: "Invalid Name",
+          description: "Name should only contain alphabets and spaces",
+          variant: "destructive",
+        });
+        isValid = false;
+        break;
+      }
+
+      if (field.name === "email" && !emailRegex.test(value)) {
+        toast({
+          title: "Invalid Email",
+          description: "Please enter a valid email address",
+          variant: "destructive",
+        });
+        isValid = false;
+        break;
+      }
+
+      if (field.name === "confirmPassword" && value !== formData.password) {
+        toast({
+          title: "Passwords Mismatch",
+          description: "Please ensure the passwords match",
+          variant: "destructive",
+        });
+        isValid = false;
+        break;
+      }
+
+      if (
+        field.name === "password" &&
+        (value.length < 8 || value.length > 16)
+      ) {
+        toast({
+          title: "Invalid Password Length",
+          description: "Password must be 8-16 characters long",
+          variant: "destructive",
+        });
+        isValid = false;
+        break;
+      }
+
+      if (field.name === "password" && !passwordRegex.test(value)) {
+        toast({
+          title: "Weak Password",
+          description: "Password must include letters, numbers, and symbols",
+          variant: "destructive",
+        });
+        isValid = false;
+        break;
+      }
     }
 
-    if (formData.password && !passwordRegex.test(formData.password)) {
-      validationErrors.password =
-        "Password must contain letters, numbers, and symbols";
-      toast({
-        title: "Password must contain letters, numbers, and symbols",
-        variant: "destructive",
-      });
-    }
+    if (!isValid) return;
 
-    if (formData.password !== formData.repeatPassword) {
-      validationErrors.repeatPassword = "Passwords do not match";
-      toast({
-        title: "Passwords do not match",
-        description: "Your passwords don't match please try it again",
-        variant: "destructive",
-      });
-    }
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    setErrors({});
     toast({
       title: "Registration Successful",
       description: "You have successfully registered!",
       variant: "default",
     });
+
     console.log("Form Submitted Successfully", formData);
   };
 
@@ -140,11 +163,6 @@ function RegisterPage() {
                   value={formData[field.name] || ""}
                   onChange={handleChange}
                 />
-                {errors[field.name] && (
-                  <p className="text-accent text-xs mt-0">
-                    {errors[field.name]}
-                  </p>
-                )}
               </div>
             ))}
 
