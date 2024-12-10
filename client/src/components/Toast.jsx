@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva } from "class-variance-authority";
-import { X } from "lucide-react";
+import { X, AlertCircle } from "lucide-react"; // Importing the error icon
 
-import { cn } from "../libs/utils";
+import { cn } from "../libs/utils"; // Utility for conditional class names
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -20,28 +20,39 @@ const ToastViewport = React.forwardRef(({ className, ...props }, ref) => (
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden  p-3 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
   {
     variants: {
       variant: {
-        success: "border bg-[#B7E1FF] text-primary",
         destructive:
-          "border-[#Ff0000] bg-background text-[#Ff0000]",
+          "border-l-8 border-[#D84E47] bg-background text-[#D84E47] flex items-center", // Left border for error toast
       },
     },
     defaultVariants: {
-      variant: "info",
+      variant: "info", // Default variant
     },
   }
 );
 
-const Toast = React.forwardRef(({ className, variant, ...props }, ref) => {
+const Toast = React.forwardRef(({ className, variant, title, description, action, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
       ref={ref}
       className={cn(toastVariants({ variant }), className)}
       {...props}
-    />
+    >
+      {/* Error Icon for destructive variant */}
+      {variant === "destructive" && (
+        <AlertCircle className="h-6 w-6 text-[#D84E47] mr-4" /> // Icon styling
+      )}
+      {/* Toast Content */}
+      <div className="flex flex-col gap-1">
+        <ToastTitle>{title}</ToastTitle>
+        <ToastDescription>{description}</ToastDescription>
+      </div>
+      {action && action}
+      <ToastClose />
+    </ToastPrimitives.Root>
   );
 });
 Toast.displayName = ToastPrimitives.Root.displayName;
@@ -55,7 +66,7 @@ const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
     )}
     {...props}
   >
-    <X className="h-5 w-5 text-background" />
+    <X className="h-5 w-5 text-[#D84E47]" />
   </ToastPrimitives.Close>
 ));
 ToastClose.displayName = ToastPrimitives.Close.displayName;
