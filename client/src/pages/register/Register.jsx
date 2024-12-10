@@ -8,7 +8,7 @@ import { TiVendorMicrosoft } from "react-icons/ti";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import RightPanel from "./RightPanel"; // Import the RightPanel component
-import { toast } from "../../components/use-toast";
+import { toast } from "../../components/use-toast"; // Import the toast function
 
 function RegisterPage() {
   const [formData, setFormData] = useState({});
@@ -52,6 +52,10 @@ function RegisterPage() {
     registerForm.forEach((field) => {
       if (field.required && !formData[field.name]) {
         validationErrors[field.name] = `${field.label} is required`;
+        toast({
+          title: `${field.label} is required`,
+          variant: "destructive",
+        });
       }
     });
 
@@ -63,6 +67,7 @@ function RegisterPage() {
         "Password must be between 8 and 16 characters long";
       toast({
         title: "Password must be between 8 and 16 characters long",
+        
         variant: "destructive",
       });
     }
@@ -70,10 +75,19 @@ function RegisterPage() {
     if (formData.password && !passwordRegex.test(formData.password)) {
       validationErrors.password =
         "Password must contain letters, numbers, and symbols";
+      toast({
+        title: "Password must contain letters, numbers, and symbols",
+        variant: "destructive",
+      });
     }
 
     if (formData.password !== formData.repeatPassword) {
       validationErrors.repeatPassword = "Passwords do not match";
+      toast({
+        title: "Passwords do not match",
+        description: "Your passwords don't match please try it again",
+        variant: "destructive",
+      });
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -82,6 +96,11 @@ function RegisterPage() {
     }
 
     setErrors({});
+    toast({
+      title: "Registration Successful",
+      description: "You have successfully registered!",
+      variant: "default",
+    });
     console.log("Form Submitted Successfully", formData);
   };
 

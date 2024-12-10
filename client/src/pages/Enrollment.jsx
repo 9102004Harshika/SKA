@@ -178,7 +178,7 @@ const Enrollment = () => {
             htmlFor="dob"
             className="block text-sm font-semibold text-navy"
           >
-            Date of Birth
+            Date of Birth 
           </label>
           <div className="flex items-center">
             <Input

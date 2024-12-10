@@ -3,7 +3,7 @@ import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva } from "class-variance-authority";
 import { X } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "../libs/utils";
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -24,13 +24,13 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: "border bg-primary text-background",
+        success: "border bg-[#B7E1FF] text-primary",
         destructive:
-          "destructive group border-border bg-destructive text-background",
+          "border-[#Ff0000] bg-background text-[#Ff0000]",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "info",
     },
   }
 );
@@ -46,18 +46,6 @@ const Toast = React.forwardRef(({ className, variant, ...props }, ref) => {
 });
 Toast.displayName = ToastPrimitives.Root.displayName;
 
-const ToastAction = React.forwardRef(({ className, ...props }, ref) => (
-  <ToastPrimitives.Action
-    ref={ref}
-    className={cn(
-      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
-      className
-    )}
-    {...props}
-  />
-));
-ToastAction.displayName = ToastPrimitives.Action.displayName;
-
 const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
@@ -65,7 +53,6 @@ const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
       "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-100 transition-opacity hover:text-black focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-background group-hover:opacity-100 group-[.destructive]:text-background group-[.destructive]:hover:text-black group-[.destructive]:focus:ring-background group-[.destructive]:focus:ring-offset-background",
       className
     )}
-    toast-close=""
     {...props}
   >
     <X className="h-5 w-5 text-background" />
@@ -98,5 +85,4 @@ export {
   ToastTitle,
   ToastDescription,
   ToastClose,
-  ToastAction,
 };
