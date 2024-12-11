@@ -43,7 +43,7 @@ function RegisterPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const nameRegex = /^[A-Za-z\s]+$/;
+    const nameRegex = /^[A-Za-z]+\s[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
@@ -62,10 +62,11 @@ function RegisterPage() {
       }
 
       // Additional validation for specific fields
-      if (field.name === "name" && !nameRegex.test(value)) {
+      if (field.name === "fullName" && !nameRegex.test(value)) {
         toast({
           title: "Invalid Name",
-          description: "Name should only contain alphabets and spaces",
+          description:
+            "Please enter your full name with a first name and a surname separated by a space.",
           variant: "destructive",
         });
         isValid = false;
@@ -147,7 +148,7 @@ function RegisterPage() {
           <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
             Elevate Your Learning
           </h2>
-          <form className="w-full max-w-md" onSubmit={handleSubmit}>
+          <form className="w-full max-w-md" onSubmit={handleSubmit} noValidate>
             {/* Dynamic Input Fields */}
             {registerForm.map((field, index) => (
               <div className="mb-5" key={index}>
@@ -159,7 +160,6 @@ function RegisterPage() {
                   type={field.type}
                   name={field.name}
                   placeholder={field.placeholder}
-                  required={field.required}
                   value={formData[field.name] || ""}
                   onChange={handleChange}
                 />
