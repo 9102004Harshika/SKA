@@ -26,6 +26,8 @@ const toastVariants = cva(
       variant: {
         destructive:
           "border-l-8 border-[#D84E47] bg-background text-[#D84E47] flex items-center", // Left border for error toast
+        default:
+          "border-l-8 border-primary bg-background text-primary flex items-center", // Left border for error toast
       },
     },
     defaultVariants: {
@@ -34,27 +36,29 @@ const toastVariants = cva(
   }
 );
 
-const Toast = React.forwardRef(({ className, variant, title, description, action, ...props }, ref) => {
-  return (
-    <ToastPrimitives.Root
-      ref={ref}
-      className={cn(toastVariants({ variant }), className)}
-      {...props}
-    >
-      {/* Error Icon for destructive variant */}
-      {variant === "destructive" && (
-        <AlertCircle className="h-6 w-6 text-[#D84E47] mr-4" /> // Icon styling
-      )}
-      {/* Toast Content */}
-      <div className="flex flex-col gap-1">
-        <ToastTitle>{title}</ToastTitle>
-        <ToastDescription>{description}</ToastDescription>
-      </div>
-      {action && action}
-      <ToastClose />
-    </ToastPrimitives.Root>
-  );
-});
+const Toast = React.forwardRef(
+  ({ className, variant, title, description, action, ...props }, ref) => {
+    return (
+      <ToastPrimitives.Root
+        ref={ref}
+        className={cn(toastVariants({ variant }), className)}
+        {...props}
+      >
+        {/* Error Icon for destructive variant */}
+        {variant === "destructive" && (
+          <AlertCircle className="h-6 w-6 text-[#D84E47] mr-4" /> // Icon styling
+        )}
+        {/* Toast Content */}
+        <div className="flex flex-col gap-1">
+          <ToastTitle>{title}</ToastTitle>
+          <ToastDescription>{description}</ToastDescription>
+        </div>
+        {action && action}
+        <ToastClose />
+      </ToastPrimitives.Root>
+    );
+  }
+);
 Toast.displayName = ToastPrimitives.Root.displayName;
 
 const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
