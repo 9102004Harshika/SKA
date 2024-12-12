@@ -55,6 +55,7 @@ function RegisterPage() {
       if (field.required && !value) {
         toast({
           title: `${field.label} is required`,
+          description: "Please fill this field first before proceeding ",
           variant: "destructive",
         });
         isValid = false;

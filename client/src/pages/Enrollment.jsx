@@ -178,7 +178,7 @@ const Enrollment = () => {
             htmlFor="dob"
             className="block text-sm font-semibold text-navy"
           >
-            Date of Birth 
+            Date of Birth
           </label>
           <div className="flex items-center">
             <Input
@@ -222,7 +222,7 @@ const Enrollment = () => {
           <Select
             menuTitle="Select Board"
             onClick={() => setShowCalendar(false)}
-            submenuItems={["CBSE", "ICSE", "SSC"]}
+            submenuItems={["IGCSE", "CBSE", "ICSE", "SSC"]}
             onSelect={(item) => setFormData({ ...formData, board: item })}
           />
         </div>
