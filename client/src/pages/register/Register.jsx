@@ -45,8 +45,10 @@ function RegisterPage() {
 
     const nameRegex = /^[A-Za-z]+\s[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
+    const passwordRegex = 
+  /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
+
+
     let isValid = true;
 
     for (const field of registerForm) {
@@ -54,8 +56,8 @@ function RegisterPage() {
 
       if (field.required && !value) {
         toast({
-          title: `${field.label} is required`,
-          description: "Please fill this field first before proceeding ",
+          title: 'Field left empty',
+          description: `Your ${field.label} field is empty please fill it to proceed`,
           variant: "destructive",
         });
         isValid = false;
@@ -77,7 +79,7 @@ function RegisterPage() {
       if (field.name === "email" && !emailRegex.test(value)) {
         toast({
           title: "Invalid Email",
-          description: "Please enter a valid email address",
+          description: "The email address you entered does not appear to be valid , please try again  ",
           variant: "destructive",
         });
         isValid = false;
@@ -87,7 +89,7 @@ function RegisterPage() {
       if (field.name === "confirmPassword" && value !== formData.password) {
         toast({
           title: "Passwords Mismatch",
-          description: "Please ensure the passwords match",
+          description: "The passwords must match exactly to confirm your account",
           variant: "destructive",
         });
         isValid = false;
@@ -100,7 +102,7 @@ function RegisterPage() {
       ) {
         toast({
           title: "Invalid Password Length",
-          description: "Password must be 8-16 characters long",
+          description: "Your password must be between 8 and 16 characters long. Please ensure that it meets the minimum length",
           variant: "destructive",
         });
         isValid = false;
@@ -110,7 +112,7 @@ function RegisterPage() {
       if (field.name === "password" && !passwordRegex.test(value)) {
         toast({
           title: "Weak Password",
-          description: "Password must include letters, numbers, and symbols",
+          description: "Password must include capital letter, small letters, numbers, and symbols",
           variant: "destructive",
         });
         isValid = false;
@@ -122,8 +124,8 @@ function RegisterPage() {
 
     toast({
       title: "Registration Successful",
-      description: "You have successfully registered!",
-      variant: "default",
+      description: "Congratulations! Your registration has been successfully completed,you are now part of our community!",
+      variant: "success",
     });
 
     console.log("Form Submitted Successfully", formData);

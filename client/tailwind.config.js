@@ -13,20 +13,10 @@ module.exports = {
         black: "hsl(var(--black))",
         white: "hsl(var(--white))",
         background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
         error: "hsl(var(--error))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--primary))",
-        },
+        primary: "hsl(var(--primary))", // Corrected to refer to primary color
+        secondary: "hsl(var(--secondary))",
+        accent: "hsl(var(--accent))",
       },
       fontFamily: {
         header: ['"Vidaloka"', "serif"],

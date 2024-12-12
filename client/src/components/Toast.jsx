@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva } from "class-variance-authority";
-import { X, AlertCircle } from "lucide-react"; // Importing the error icon
+import { X, AlertCircle, CheckCircle, Info, AlertTriangle } from "lucide-react"; // Importing icons
 
 import { cn } from "../libs/utils"; // Utility for conditional class names
 
@@ -24,10 +24,14 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
+        success:
+          "border-l-8 border-primary bg-background text-primary", // Success toast styles with border color
+        info:
+          "border-l-8 border-secondary bg-background text-secondary", // Info toast styles with border color
+        warning:
+          "border-l-8 border-accent bg-background text-accent", // Warning toast styles with border color
         destructive:
-          "border-l-8 border-error bg-background text-error flex items-center", // Left border for error toast
-        default:
-          "border-l-8 border-primary bg-background text-primary flex items-center", // Left border for error toast
+          "border-l-8 border-error bg-background text-error", // Error toast styles with border color
       },
     },
     defaultVariants: {
@@ -36,43 +40,104 @@ const toastVariants = cva(
   }
 );
 
+
 const Toast = React.forwardRef(
   ({ className, variant, title, description, action, ...props }, ref) => {
+    const isSmallContent = !title || !description; // Determine if content is small
+
     return (
       <ToastPrimitives.Root
         ref={ref}
         className={cn(toastVariants({ variant }), className)}
         {...props}
       >
-        {/* Error Icon for destructive variant */}
+        {/* Icon for different variants */}
         {variant === "destructive" && (
-          <AlertCircle className="h-[3rem] w-[3rem] text-error mr-1" /> // Icon styling
+          <AlertCircle
+            className={cn(
+              "flex-shrink-0",
+              isSmallContent ? "h-5 w-5 ml-2" : "h-6 w-6 mr-1"
+            )}
+          />
+        )}
+        {variant === "success" && (
+          <CheckCircle
+            className={cn(
+              "flex-shrink-0 text-primary",
+              isSmallContent ? "h-5 w-5 ml-2" : "h-6 w-6 mr-1"
+            )}
+          />
+        )}
+        {variant === "info" && (
+          <Info
+            className={cn(
+              "flex-shrink-0 text-secondary",
+              isSmallContent ? "h-5 w-5 ml-2" : "h-6 w-6 mr-1"
+            )}
+          />
+        )}
+        {variant === "warning" && (
+          <AlertTriangle
+            className={cn(
+              "flex-shrink-0 text-accent",
+              isSmallContent ? "h-5 w-5 ml-2" : "h-6 w-6 mr-1"
+            )}
+          />
         )}
         {/* Toast Content */}
         <div className="flex flex-col gap-1">
           <ToastTitle>{title}</ToastTitle>
-          <ToastDescription>{description}</ToastDescription>
+          <ToastDescription variant={variant}>{description}</ToastDescription>
         </div>
         {action && action}
-        <ToastClose />
+        <ToastClose variant={variant} />
       </ToastPrimitives.Root>
     );
   }
 );
 Toast.displayName = ToastPrimitives.Root.displayName;
 
-const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
-  <ToastPrimitives.Close
-    ref={ref}
-    className={cn(
-      "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-100 transition-opacity hover:text-black focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-background group-hover:opacity-100 group-[.destructive]:text-background group-[.destructive]:hover:text-black group-[.destructive]:focus:ring-background group-[.destructive]:focus:ring-offset-background",
-      className
-    )}
-    {...props}
-  >
-    <X className="h-5 w-5 text-[#D84E47]" />
-  </ToastPrimitives.Close>
-));
+const ToastClose = React.forwardRef(({ className, variant, ...props }, ref) => {
+  let closeButtonColor = "text-gray-600"; // Default close button color
+  let focusRingColor = "focus:ring-gray-200"; // Default focus ring color
+
+  // Set colors based on the variant
+  switch (variant) {
+    case "success":
+      closeButtonColor = "text-primary"; // Success variant close button color
+      focusRingColor = "focus:ring-primary"; // Success focus ring
+      break;
+    case "info":
+      closeButtonColor = "text-secondary"; // Info variant close button color
+      focusRingColor = "focus:ring-secondary"; // Info focus ring
+      break;
+    case "warning":
+      closeButtonColor = "text-accent"; // Warning variant close button color
+      focusRingColor = "focus:ring-accent"; // Warning focus ring
+      break;
+    case "destructive":
+      closeButtonColor = "text-error"; // Destructive variant close button color
+      focusRingColor = "focus:ring-error"; // Destructive focus ring
+      break;
+    default:
+      break;
+  }
+
+  return (
+    <ToastPrimitives.Close
+      ref={ref}
+      className={cn(
+        "absolute right-2 top-2 rounded-md p-1 opacity-100 transition-opacity hover:opacity-80 focus:outline-none focus:ring-2",
+        closeButtonColor,
+        focusRingColor,
+        className
+      )}
+      {...props}
+    >
+      <X className="h-5 w-5" />
+    </ToastPrimitives.Close>
+  );
+});
 ToastClose.displayName = ToastPrimitives.Close.displayName;
 
 const ToastTitle = React.forwardRef(({ className, ...props }, ref) => (
@@ -84,13 +149,33 @@ const ToastTitle = React.forwardRef(({ className, ...props }, ref) => (
 ));
 ToastTitle.displayName = ToastPrimitives.Title.displayName;
 
-const ToastDescription = React.forwardRef(({ className, ...props }, ref) => (
-  <ToastPrimitives.Description
-    ref={ref}
-    className={cn("text-sm opacity-80 text-error", className)}
-    {...props}
-  />
-));
+const ToastDescription = React.forwardRef(({ className, variant, ...props }, ref) => {
+  let descriptionClass = "text-sm opacity-80"; // Default description styling
+  switch (variant) {
+    case "success":
+      descriptionClass = "text-primary text-sm"; // Success variant
+      break;
+    case "info":
+      descriptionClass = "text-secondary text-sm"; // Info variant
+      break;
+    case "warning":
+      descriptionClass = "text-accent text-sm"; // Warning variant
+      break;
+    case "destructive":
+      descriptionClass = "text-error text-sm"; // Destructive variant
+      break;
+    default:
+      break;
+  }
+
+  return (
+    <ToastPrimitives.Description
+      ref={ref}
+      className={cn(descriptionClass, className)}
+      {...props}
+    />
+  );
+});
 ToastDescription.displayName = ToastPrimitives.Description.displayName;
 
 export {
