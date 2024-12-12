@@ -5,7 +5,6 @@ module.exports = {
     "./components/**/*.{js,jsx}",
     "./app/**/*.{js,jsx}",
     "./src/**/*.{js,jsx}",
-    
   ],
   theme: {
     extend: {
@@ -15,6 +14,7 @@ module.exports = {
         white: "hsl(var(--white))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        error: "hsl(var(--error))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

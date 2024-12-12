@@ -20,12 +20,12 @@ const ToastViewport = React.forwardRef(({ className, ...props }, ref) => (
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden  p-3 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden p-3 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
   {
     variants: {
       variant: {
         destructive:
-          "border-l-8 border-[#D84E47] bg-background text-[#D84E47] flex items-center", // Left border for error toast
+          "border-l-8 border-error bg-background text-error flex items-center", // Left border for error toast
         default:
           "border-l-8 border-primary bg-background text-primary flex items-center", // Left border for error toast
       },
@@ -46,7 +46,7 @@ const Toast = React.forwardRef(
       >
         {/* Error Icon for destructive variant */}
         {variant === "destructive" && (
-          <AlertCircle className="h-6 w-6 text-[#D84E47] mr-4" /> // Icon styling
+          <AlertCircle className="h-[3rem] w-[3rem] text-error mr-1" /> // Icon styling
         )}
         {/* Toast Content */}
         <div className="flex flex-col gap-1">
@@ -87,7 +87,7 @@ ToastTitle.displayName = ToastPrimitives.Title.displayName;
 const ToastDescription = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={cn("text-sm opacity-90", className)}
+    className={cn("text-sm opacity-80 text-error", className)}
     {...props}
   />
 ));
