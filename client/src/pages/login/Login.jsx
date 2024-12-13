@@ -8,9 +8,11 @@ import { Button } from "../../ui/button";
 import { loginForm } from "../../config/index";
 import { FaGoogle, FaApple } from "react-icons/fa";
 import { TiVendorMicrosoft } from "react-icons/ti";
+import { toast } from "../../components/use-toast"; // Ensure you have this installed and configured
 
 function LoginPage() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [formData, setFormData] = useState({}); // State to hold form data
   const leftPanelRef = useRef(null);
   const loginFormRef = useRef(null);
 
@@ -37,6 +39,45 @@ function LoginPage() {
     } else if (info.offset.y < -100) {
       setIsPanelOpen(false); // Close the panel
     }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    let isValid = true;
+
+    // Validate each field in the form
+    for (const field of loginForm) {
+      const value = formData[field.name] || ""; // Default to an empty string if undefined
+
+      if (field.required && !value) {
+        toast.error(
+          `Your ${field.label} field is empty. Please fill it to proceed.`
+        );
+        isValid = false;
+        break;
+      }
+
+      if (field.name === "email" && !emailRegex.test(value)) {
+        toast.error(
+          "The email address you entered is invalid. Please try again."
+        );
+        isValid = false;
+        break;
+      }
+    }
+
+    if (!isValid) return;
+
+    // Successful submission
+    toast.success("Signed in successfully! You can now explore the app.");
+    console.log("Form Submitted Successfully", formData);
   };
 
   return (
@@ -90,7 +131,7 @@ function LoginPage() {
           <h2 className="text-3xl capitalize md:tracking-wide font-header font-semibold text-center mb-6">
             Return to learning
           </h2>
-          <form className="w-full max-w-md">
+          <form className="w-full max-w-md" onSubmit={handleSubmit}>
             {loginForm.map((field, index) => (
               <div className="mb-5" key={index}>
                 <label className="block text-sm font-medium mb-1">
@@ -102,6 +143,7 @@ function LoginPage() {
                   name={field.name}
                   placeholder={field.placeholder}
                   required={field.required}
+                  onChange={handleInputChange}
                 />
               </div>
             ))}
@@ -118,7 +160,7 @@ function LoginPage() {
               </p>
             </div>
 
-            <Button text="Sign In" size="lg" variant="primary" />
+            <Button text="Sign In" size="lg" variant="primary" type="submit" />
           </form>
 
           <div className="flex items-center w-full mb-2">
