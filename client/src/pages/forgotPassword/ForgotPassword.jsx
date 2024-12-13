@@ -118,7 +118,7 @@ function ForgotPassword() {
   };
   
 
-  // Password reset validation
+ 
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
 
   const handleResetPassword = () => {
