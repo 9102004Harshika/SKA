@@ -22,7 +22,7 @@ mongoose
 
 // Define a sample route
 app.get("/", (req, res) => {
-  res.send("Hello, World!");
+  res.send("Shree Kalam Academy: Endless Possiblities!!!");
 });
 
 // Start the server

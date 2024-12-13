@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import myImage from "../../images/bgLightBlue.png";
+import myImage from "../../images/bgNavy.png";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { forgotPasswordForm } from "../../config/index"; // Import configuration
@@ -8,7 +8,13 @@ import { toast } from "../../components/use-toast";
 
 function ForgotPassword() {
   const [currentStep, setCurrentStep] = useState("email"); // Start with email step
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    email: "",
+    mobile: "",
+    otp: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [useMobile, setUseMobile] = useState(false); // State to toggle between email and mobile
 
   const formRef = useRef(null);
@@ -24,23 +30,40 @@ function ForgotPassword() {
     );
   }, []);
 
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Send OTP validation
   const handleSendOTP = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA0-9.-]+\.[a-zA-Z]{2,}$/;
     const mobileRegex = /^\d{10}$/;
-    const value = useMobile ? formData.mobile : formData.email; // Use either mobile or email based on the state
+    const value = useMobile ? formData.mobile : formData.email;
 
-    if (
-      (useMobile && !mobileRegex.test(value)) || // Invalid mobile number
-      (!useMobile && !emailRegex.test(value)) // Invalid email
-    ) {
+    if (!value) {
       toast({
-        title: "Invalid Input",
-        description: `Please enter a valid ${useMobile ? "mobile number" : "email"}.`,
+        title: "Field left empty",
+        description: `Your  ${useMobile ? "mobile number" : "email"} field is empty please fill it to proceed`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (useMobile && !mobileRegex.test(value)) {
+      toast({
+        title: "Invalid Mobile Number",
+        description: "Please enter a valid 10-digit mobile number.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!useMobile && !emailRegex.test(value)) {
+      toast({
+        title: "Invalid Email",
+        description: "The email address you entered does not appear to be valid , please try again ",
         variant: "destructive",
       });
       return;
@@ -52,49 +75,101 @@ function ForgotPassword() {
       variant: "success",
     });
 
-    setCurrentStep("otp");
+    // Clear sensitive data before moving to OTP step
+    setFormData({
+      otp: "", // Clear OTP
+      newPassword: "",
+      confirmPassword: "",
+      email: "", // Clear email
+      mobile: "", // Clear mobile
+    });
+
+    setCurrentStep("otp"); // Move to OTP step
   };
 
+  // OTP validation
   const handleVerifyOTP = () => {
-    if (!formData.otp || formData.otp.length !== 6) {
+    if (!formData.otp) { // Check if OTP field is empty
       toast({
-        title: "Invalid OTP",
-        description: "Please enter a valid 6-digit OTP.",
+        title: "Empty OTP Field",
+        description: "Please enter the OTP sent to your email or mobile number.",
         variant: "destructive",
       });
       return;
     }
-
+  
+    if (formData.otp.length !== 6) { // Check if OTP is not 6 digits
+      toast({
+        title: "Invalid OTP",
+        description:
+          "The OTP you entered is either incorrect or does not match the expected 6-digit format.",
+        variant: "destructive",
+      });
+      return;
+    }
+  
     toast({
       title: "OTP Verified",
-      description: "You can now set a new password.",
+      description: "Your OTP has been verified, and you are now able to reset your password. ",
       variant: "success",
     });
-
+  
     setCurrentStep("newPassword");
   };
+  
+
+  // Password reset validation
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
 
   const handleResetPassword = () => {
     const { newPassword, confirmPassword } = formData;
-
-    if (newPassword !== confirmPassword) {
+  
+    // Check if either of the password fields is empty
+    if (!newPassword || !confirmPassword) {
       toast({
-        title: "Passwords Do Not Match",
-        description: "Please ensure both passwords are the same.",
+        title: "Password Fields Are Empty",
+        description:
+          "Both the new password and confirmation fields are required to reset your password. ",
         variant: "destructive",
       });
       return;
     }
-
+  
+    // Check if passwords match
+    if (newPassword !== confirmPassword) {
+      toast({
+        title: "Passwords Do Not Match",
+        description:
+          "The new password and confirmation password must match exactly.",
+        variant: "destructive",
+      });
+      return;
+    }
+  
+    // Validate new password using the regex
+    if (!passwordRegex.test(newPassword)) {
+      toast({
+        title: "Invalid Password Format",
+        description:
+          "Your new password must contain at least one uppercase letter, one number, and one special character. ",
+        variant: "destructive",
+      });
+      return;
+    }
+  
     toast({
       title: "Password Reset Successful",
-      description: "Your password has been updated successfully.",
+      description:
+        "Your password has been updated successfully. You can now use your new password to log in and access your account. Make sure to remember it for future logins.",
       variant: "success",
     });
-
+  
     // Redirect to login or another page
   };
+  
+  
 
+  // Render form fields based on the current step
   const renderFields = () => {
     let fields = [];
 
@@ -115,7 +190,7 @@ function ForgotPassword() {
           name={field.name}
           type={field.type}
           placeholder={field.placeholder}
-          value={formData[field.name] || ""}
+          value={formData[field.name] || ""} // Ensure OTP field starts empty
           onChange={handleChange}
           required={field.required}
         />
@@ -146,7 +221,7 @@ function ForgotPassword() {
             : "Set New Password"}
         </h2>
 
-        <form className="w-full max-w-md">
+        <form className="w-full max-w-md" autoComplete="off">
           {renderFields()}
 
           {/* Switch between email and mobile */}
