@@ -97,3 +97,13 @@ export const studentInfoForm = [
     type: "password",
   },
 ];
+
+export const forgotPassword = [
+  {
+    name: "email",
+    label: "Email Address",
+    placeholder: "Enter your email address here",
+    componentType: "input",
+    type: "email",
+  },
+];
