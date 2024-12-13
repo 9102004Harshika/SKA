@@ -98,12 +98,46 @@ export const studentInfoForm = [
   },
 ];
 
-export const forgotPassword = [
+export const forgotPasswordForm = [
   {
     name: "email",
-    label: "Email Address",
+    label: "Email",
     placeholder: "Enter your email address here",
     componentType: "input",
-    type: "email",
+    type: "text",
+    required: true,
+  },
+  {
+    name: "mobile",
+    label: "Mobile",
+    placeholder: "Enter your mobile number here",
+    componentType: "input",
+    type: "text",
+    required: true,
+  },
+  {
+    name: "otp",
+    label: "OTP",
+    placeholder: "Enter the OTP sent to your email or mobile",
+    componentType: "input",
+    type: "text",
+    required: true,
+  },
+  {
+    name: "newPassword",
+    label: "New Password",
+    placeholder: "Enter your new password",
+    componentType: "input",
+    type: "password",
+    required: true,
+  },
+  {
+    name: "confirmPassword",
+    label: "Confirm Password",
+    placeholder: "Re-enter your new password",
+    componentType: "input",
+    type: "password",
+    required: true,
   },
 ];
+

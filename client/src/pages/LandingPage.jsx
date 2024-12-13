@@ -37,6 +37,12 @@ const Landing = () => {
           >
             Login
           </a>
+          <a
+            className="text-lg sm:text-xl text-white bg-accent border border-secondary hover:bg-secondary hover:text-white transition-colors px-6 py-3 rounded-lg shadow-lg"
+            href="/forgotPassword"
+          >
+            Forgot Password
+          </a>
         </div>
       </div>
 

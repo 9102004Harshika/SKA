@@ -48,37 +48,49 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let isValid = true;
-
+  
     // Validate each field in the form
     for (const field of loginForm) {
       const value = formData[field.name] || ""; // Default to an empty string if undefined
-
+  
       if (field.required && !value) {
-        toast.error(
-          `Your ${field.label} field is empty. Please fill it to proceed.`
-        );
+        toast({
+          title: "Field Left Empty",
+          description: `Your ${field.label} field is empty. Please fill it to proceed.`,
+          variant: "destructive",
+        });
         isValid = false;
         break;
       }
-
+  
       if (field.name === "email" && !emailRegex.test(value)) {
-        toast.error(
-          "The email address you entered is invalid. Please try again."
-        );
+        toast({
+          title: "Invalid Email",
+          description:
+            "The email address you entered is invalid. Please try again.",
+          variant: "destructive",
+        });
         isValid = false;
         break;
       }
     }
-
+  
     if (!isValid) return;
-
+  
     // Successful submission
-    toast.success("Signed in successfully! You can now explore the app.");
+    toast({
+      title: "Sign-In Successful",
+      description: "You have signed in successfully! Welcome back.",
+      variant: "success",
+    });
+  
     console.log("Form Submitted Successfully", formData);
   };
+  
+  
 
   return (
     <div
@@ -131,7 +143,7 @@ function LoginPage() {
           <h2 className="text-3xl capitalize md:tracking-wide font-header font-semibold text-center mb-6">
             Return to learning
           </h2>
-          <form className="w-full max-w-md" onSubmit={handleSubmit}>
+          <form className="w-full max-w-md" onSubmit={handleSubmit} noValidate>
             {loginForm.map((field, index) => (
               <div className="mb-5" key={index}>
                 <label className="block text-sm font-medium mb-1">

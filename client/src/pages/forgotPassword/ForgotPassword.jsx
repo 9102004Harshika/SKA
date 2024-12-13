@@ -1,251 +1,191 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Input } from "../../ui/input";
-import { registerForm } from "../../config/index";
-import myImage from "../../images/bgNavy.png";
-import { Button } from "../../ui/button";
-import { motion } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { toast } from "../../components/use-toast"; // Import the toast function
+import myImage from "../../images/bgLightBlue.png";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
+import { forgotPasswordForm } from "../../config/index"; // Import configuration
+import { toast } from "../../components/use-toast";
 
 function ForgotPassword() {
+  const [currentStep, setCurrentStep] = useState("email"); // Start with email step
   const [formData, setFormData] = useState({});
-  const rightPanelRef = useRef(null);
-  const registerFormRef = useRef(null);
+  const [useMobile, setUseMobile] = useState(false); // State to toggle between email and mobile
 
-  // GSAP animation for the RightPanel
+  const formRef = useRef(null);
+
+  // GSAP animations
   useEffect(() => {
     const tl = gsap.timeline();
 
     tl.fromTo(
-      rightPanelRef.current,
-      { x: "100%" },
-      { x: "0%", duration: 1.2, ease: "power3.out" }
-    );
-
-    tl.fromTo(
-      registerFormRef.current,
-      { opacity: 0, x: "-50%" },
-      { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" },
-      "-=0.8"
+      formRef.current,
+      { opacity: 0, x: "30%" },
+      { opacity: 1, x: "0%", duration: 0.8, ease: "power3.out" }
     );
   }, []);
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Form validation and submission logic
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSendOTP = () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA0-9.-]+\.[a-zA-Z]{2,}$/;
+    const mobileRegex = /^\d{10}$/;
+    const value = useMobile ? formData.mobile : formData.email; // Use either mobile or email based on the state
 
-    const nameRegex = /^[A-Za-z]+\s[A-Za-z]+$/;
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
-
-    let isValid = true;
-
-    for (const field of registerForm) {
-      const value = formData[field.name];
-
-      if (field.required && !value) {
-        toast({
-          title: "Field left empty",
-          description: `Your ${field.label} field is empty please fill it to proceed`,
-          variant: "destructive",
-        });
-        isValid = false;
-        break;
-      }
-
-      // Additional validation for specific fields
-      if (field.name === "fullName" && !nameRegex.test(value)) {
-        toast({
-          title: "Invalid Name",
-          description:
-            "Please enter your full name with a first name and a surname separated by a space.",
-          variant: "destructive",
-        });
-        isValid = false;
-        break;
-      }
-
-      if (field.name === "email" && !emailRegex.test(value)) {
-        toast({
-          title: "Invalid Email",
-          description:
-            "The email address you entered does not appear to be valid , please try again  ",
-          variant: "destructive",
-        });
-        isValid = false;
-        break;
-      }
-
-      if (field.name === "confirmPassword" && value !== formData.password) {
-        toast({
-          title: "Passwords Mismatch",
-          description:
-            "The passwords must match exactly to confirm your account",
-          variant: "destructive",
-        });
-        isValid = false;
-        break;
-      }
-
-      if (
-        field.name === "password" &&
-        (value.length < 8 || value.length > 16)
-      ) {
-        toast({
-          title: "Invalid Password Length",
-          description:
-            "Your password must be between 8 and 16 characters long. Please ensure that it meets the minimum length",
-          variant: "destructive",
-        });
-        isValid = false;
-        break;
-      }
-
-      if (field.name === "password" && !passwordRegex.test(value)) {
-        toast({
-          title: "Weak Password",
-          description:
-            "Password must include capital letter, small letters, numbers, and symbols",
-          variant: "destructive",
-        });
-        isValid = false;
-        break;
-      }
+    if (
+      (useMobile && !mobileRegex.test(value)) || // Invalid mobile number
+      (!useMobile && !emailRegex.test(value)) // Invalid email
+    ) {
+      toast({
+        title: "Invalid Input",
+        description: `Please enter a valid ${useMobile ? "mobile number" : "email"}.`,
+        variant: "destructive",
+      });
+      return;
     }
 
-    if (!isValid) return;
-
     toast({
-      title: "Registration Successful",
-      description:
-        "Congratulations! Your registration has been successfully completed,you are now part of our community!",
+      title: "OTP Sent",
+      description: `An OTP has been sent to your ${useMobile ? "mobile number" : "email"}: ${value}`,
       variant: "success",
     });
 
-    console.log("Form Submitted Successfully", formData);
+    setCurrentStep("otp");
+  };
+
+  const handleVerifyOTP = () => {
+    if (!formData.otp || formData.otp.length !== 6) {
+      toast({
+        title: "Invalid OTP",
+        description: "Please enter a valid 6-digit OTP.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "OTP Verified",
+      description: "You can now set a new password.",
+      variant: "success",
+    });
+
+    setCurrentStep("newPassword");
+  };
+
+  const handleResetPassword = () => {
+    const { newPassword, confirmPassword } = formData;
+
+    if (newPassword !== confirmPassword) {
+      toast({
+        title: "Passwords Do Not Match",
+        description: "Please ensure both passwords are the same.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Password Reset Successful",
+      description: "Your password has been updated successfully.",
+      variant: "success",
+    });
+
+    // Redirect to login or another page
+  };
+
+  const renderFields = () => {
+    let fields = [];
+
+    if (currentStep === "email") {
+      fields = [forgotPasswordForm[0]]; // Email input field
+    } else if (currentStep === "mobile") {
+      fields = [forgotPasswordForm[1]]; // Mobile input field
+    } else if (currentStep === "otp") {
+      fields = [forgotPasswordForm[2]]; // OTP input field
+    } else if (currentStep === "newPassword") {
+      fields = [forgotPasswordForm[3], forgotPasswordForm[4]]; // New and Confirm password fields
+    }
+
+    return fields.map((field, index) => (
+      <div className="mb-5" key={index}>
+        <label className="block text-sm font-medium mb-1">{field.label}</label>
+        <Input
+          name={field.name}
+          type={field.type}
+          placeholder={field.placeholder}
+          value={formData[field.name] || ""}
+          onChange={handleChange}
+          required={field.required}
+        />
+      </div>
+    ));
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-background text-foreground bg-cover bg-center"
+      className="min-h-screen flex items-center justify-center bg-background text-foreground relative"
       style={{
         backgroundImage: `url(${myImage})`,
       }}
     >
-      {/* Main Content */}
-      <div className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full">
-        {/* Registration Form */}
-        <div
-          ref={registerFormRef}
-          className="w-full md:w-1/2 bg-background text-card-foreground p-8 flex flex-col items-center border-2 border-primary"
-          style={{
-            boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",
-          }}
-        >
-          <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
-            Elevate Your Learning
-          </h2>
-          <form className="w-full max-w-md" onSubmit={handleSubmit} noValidate>
-            {/* Dynamic Input Fields */}
-            {registerForm.map((field, index) => (
-              <div className="mb-5" key={index}>
-                <label className="block text-sm font-medium mb-1">
-                  {field.label}
-                </label>
-                <Input
-                  className="placeholder:text-primary placeholder:opacity-[0.5]"
-                  type={field.type}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  value={formData[field.name] || ""}
-                  onChange={handleChange}
-                />
-              </div>
-            ))}
+      {/* Form Section */}
+      <div
+        ref={formRef}
+        className="w-full md:w-1/2 bg-background text-card-foreground p-8 shadow-lg flex flex-col items-center"
+        style={{
+          boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px",
+        }}
+      >
+        <h2 className="text-3xl capitalize md:tracking-wide font-header font-semibold text-center mb-6">
+          {currentStep === "email" || currentStep === "mobile"
+            ? "Forgot Password"
+            : currentStep === "otp"
+            ? "Enter OTP"
+            : "Set New Password"}
+        </h2>
 
-            {/* Additional Links */}
-            <div className="my-2 text-center">
-              <p className="text-sm">
-                Already have an account?{" "}
-                <a
-                  href="/login"
-                  className="text-accent font-bold hover:underline underline-offset-2"
-                >
-                  Login here
-                </a>
-              </p>
-            </div>
+        <form className="w-full max-w-md">
+          {renderFields()}
 
-            {/* Submit Button */}
+          {/* Switch between email and mobile */}
+          {currentStep === "email" || currentStep === "mobile" ? (
+            <p className="text-sm mt-3 text-center">
+              Prefer to receive OTP via{" "}
+              <span
+                className="text-accent font-bold cursor-pointer hover:underline underline-offset-2"
+                onClick={() => {
+                  setUseMobile(!useMobile);
+                  setCurrentStep(useMobile ? "email" : "mobile"); // Switch steps based on state
+                }}
+              >
+                {useMobile ? "Email" : "Mobile"}
+              </span>
+              ?
+            </p>
+          ) : null}
+
+          {/* Button to send OTP */}
+          {currentStep === "email" || currentStep === "mobile" ? (
+            <Button text="Send OTP" size="lg" variant="primary" onClick={handleSendOTP} />
+          ) : null}
+
+          {/* Button to verify OTP */}
+          {currentStep === "otp" ? (
+            <Button text="Verify OTP" size="lg" variant="primary" onClick={handleVerifyOTP} />
+          ) : null}
+
+          {/* Button to reset password */}
+          {currentStep === "newPassword" ? (
             <Button
-              text="Enrol Now"
+              text="Reset Password"
               size="lg"
               variant="primary"
-              type="submit"
+              onClick={handleResetPassword}
             />
-          </form>
-
-          {/* Divider */}
-          <div className="flex items-center w-full mb-2">
-            <hr className="flex-grow border-t border-muted border-primary" />
-            <span className="mx-1 text-sm text-muted-foreground">
-              Or sign up with
-            </span>
-            <hr className="flex-grow border-t border-muted border-primary" />
-          </div>
-
-          {/* Social Media Sign-Up Buttons */}
-          <div className="flex space-x-4 w-full justify-between flex-wrap">
-            <Button
-              text={
-                <div className="flex items-center justify-center">
-                  <FaGoogle className="w-5 h-5 mr-2" />
-                  <span className="hidden lg:inline">Google</span>
-                </div>
-              }
-              size="sm"
-              variant="secondary"
-              onClick={() => console.log("Sign Up with Google clicked")}
-            />
-            <Button
-              text={
-                <div className="flex items-center justify-center">
-                  <TiVendorMicrosoft className="w-5 h-5 mr-2" />
-                  <span className="hidden lg:inline">Microsoft</span>
-                </div>
-              }
-              size="sm"
-              variant="secondary"
-              onClick={() => console.log("Sign Up with Microsoft clicked")}
-            />
-            <Button
-              text={
-                <div className="flex items-center justify-center">
-                  <FaApple className="w-5 h-5 mr-2" />
-                  <span className="hidden lg:inline">Apple</span>
-                </div>
-              }
-              size="sm"
-              variant="secondary"
-              onClick={() => console.log("Sign Up with Apple clicked")}
-            />
-          </div>
-        </div>
-
-        {/* Right Panel */}
-        <motion.div
-          ref={rightPanelRef}
-          className="hidden md:flex w-1/2 bg-gradient-to-l from-secondary to-primary text-background items-center justify-center"
-        >
-          <RightPanel />
-        </motion.div>
+          ) : null}
+        </form>
       </div>
     </div>
   );
