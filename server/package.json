@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "Abhay Kumar Das, Harshika Gawade",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.8.4"
+  }
+}
