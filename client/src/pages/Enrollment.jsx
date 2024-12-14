@@ -12,6 +12,8 @@ const Enrollment = () => {
     mobile: "",
     verification: "",
     dob: "",
+    state: "",
+    city: "",
     board: "",
     class: "",
     medium: "",
@@ -23,7 +25,7 @@ const Enrollment = () => {
   const formRef = useRef(null);
   const calendarRef = useRef(null);
   const dobInputRef = useRef(null); // Reference to the date of birth input
-  const mobileRed = useRef(null);
+
   useEffect(() => {
     // Animate the form to slide in from the left
     gsap.fromTo(
@@ -77,17 +79,13 @@ const Enrollment = () => {
   // Close calendar if click happens outside the calendar or on other inputs
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // If the click is outside the dob input, form or calendar, close the calendar
       if (
         formRef.current &&
         !formRef.current.contains(event.target) &&
         calendarRef.current &&
         !calendarRef.current.contains(event.target) &&
         dobInputRef.current &&
-        !dobInputRef.current.contains(event.target) &&
-        dobInputRef.current &&
         !dobInputRef.current.contains(event.target)
-        // Ensures clicking on the DOB input won't close it
       ) {
         setShowCalendar(false);
       }
@@ -99,6 +97,31 @@ const Enrollment = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Dynamically update class options based on selected board
+  const getClassOptions = () => {
+    switch (formData.board) {
+      case "IGCSE":
+      case "IB":
+        return ["7th", "8th", "9th", "10th", "11th", "12th"];
+      case "CBSE":
+      case "SSC":
+        return ["9th", "10th", "11th", "12th"];
+      case "ICSC":
+        return ["8th", "9th", "10th", "11th", "12th"];
+      default:
+        return [];
+    }
+  };
+
+  const getCitiesByState = (state) => {
+    const stateCityMap = {
+      Maharashtra: ["Mumbai", "Pune", "Nagpur"],
+      Karnataka: ["Bangalore", "Mysore", "Hubli"],
+      Gujarat: ["Ahmedabad", "Surat", "Vadodara"],
+    };
+    return stateCityMap[state] || [];
+  };
 
   return (
     <div
@@ -118,6 +141,7 @@ const Enrollment = () => {
         <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
           Student Enrollment Form
         </h2>
+
         {/* Mobile Number and OTP */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
@@ -152,6 +176,7 @@ const Enrollment = () => {
             onClick={handleSendOtp}
           />
         </div>
+
         {/* OTP */}
         <div className="mb-4">
           <label
@@ -204,7 +229,6 @@ const Enrollment = () => {
               <FaCalendarAlt />
             </button>
           </div>
-          {/* Render the calendar as an overlay */}
           {showCalendar && (
             <div ref={calendarRef} className="calendar-overlay">
               <Calendar onDateSelect={handleDateSelect} />
@@ -212,6 +236,43 @@ const Enrollment = () => {
           )}
         </div>
 
+        {/* State Selection */}
+        <div className="mb-4">
+          <label
+            htmlFor="state"
+            className="block text-sm font-semibold text-navy"
+          >
+            State
+          </label>
+          <Select
+            menuTitle="Select State"
+            onClick={() => setShowCalendar(false)}
+            submenuItems={["Maharashtra", "Karnataka", "Gujarat"]}
+            onSelect={(item) =>
+              setFormData({ ...formData, state: item, city: "" })
+            }
+          />
+        </div>
+
+        {/* City Selection */}
+        {formData.state && (
+          <div className="mb-4">
+            <label
+              htmlFor="city"
+              className="block text-sm font-semibold text-navy"
+            >
+              City
+            </label>
+            <Select
+              menuTitle="Select City"
+              onClick={() => setShowCalendar(false)}
+              submenuItems={getCitiesByState(formData.state)}
+              onSelect={(item) => setFormData({ ...formData, city: item })}
+            />
+          </div>
+        )}
+
+        {/* Board Selection */}
         <div className="mb-4">
           <label
             htmlFor="board"
@@ -222,42 +283,33 @@ const Enrollment = () => {
           <Select
             menuTitle="Select Board"
             onClick={() => setShowCalendar(false)}
-            submenuItems={["IGCSE", "CBSE", "ICSE", "SSC"]}
-            onSelect={(item) => setFormData({ ...formData, board: item })}
+            submenuItems={["IGCSE", "IB", "CBSE", "SSC", "ICSC"]}
+            onSelect={(item) =>
+              setFormData({ ...formData, board: item, class: "" })
+            }
           />
         </div>
+
         {/* Class Selection */}
-        <div className="mb-4">
-          <label
-            htmlFor="class"
-            className="block text-sm font-semibold text-navy"
-          >
-            Class
-          </label>
-          <Select
-            menuTitle="Select Class"
-            onClick={() => setShowCalendar(false)}
-            submenuItems={["9th", "10th", "11th", "12th"]}
-            onSelect={(item) => setFormData({ ...formData, class: item })}
-          />
-        </div>
-        {/* Medium or Stream */}
-        {formData.class === "9th" || formData.class === "10th" ? (
+        {formData.board && (
           <div className="mb-4">
             <label
-              htmlFor="medium"
+              htmlFor="class"
               className="block text-sm font-semibold text-navy"
             >
-              Medium/Language
+              Class
             </label>
             <Select
-              menuTitle="Select Medium"
+              menuTitle="Select Class"
               onClick={() => setShowCalendar(false)}
-              submenuItems={["English", "Hindi", "Marathi"]}
-              onSelect={(item) => setFormData({ ...formData, medium: item })}
+              submenuItems={getClassOptions()}
+              onSelect={(item) => setFormData({ ...formData, class: item })}
             />
           </div>
-        ) : formData.class === "11th" || formData.class === "12th" ? (
+        )}
+
+        {/* Medium or Stream */}
+        {formData.class === "11th" || formData.class === "12th" ? (
           <div className="mb-4">
             <label
               htmlFor="stream"
@@ -272,6 +324,7 @@ const Enrollment = () => {
             />
           </div>
         ) : null}
+
         {/* Submit Button */}
         <Button
           text="Submit"

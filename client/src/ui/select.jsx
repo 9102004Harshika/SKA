@@ -136,6 +136,27 @@ const StyledWrapper = styled.div`
     background-color: hsl(60, 56%, 91%);
     box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.56), 0 4px 6px rgba(0, 0, 0, 0.56);
     z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  /* Custom scrollbar styles for the dropdown submenu */
+  .menu .item .submenu::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+  }
+
+  .menu .item .submenu::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Track color */
+    border-radius: 10px; /* Rounded corners */
+  }
+
+  .menu .item .submenu::-webkit-scrollbar-thumb {
+    background-color: hsl(26.53 86.98% 66.86%); /* Scrollbar thumb color */
+    border-radius: 10px; /* Rounded thumb */
+  }
+
+  .menu .item .submenu::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(205 100% 85.88%); /* Thumb color on hover */
   }
 
   .submenu .submenu-item {
@@ -157,7 +178,7 @@ const StyledWrapper = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: 0%; /* Start with no background */
+    width: 0%;
     height: 100%;
     background-color: hsl(26.53, 86.98%, 66.86%);
     z-index: -1;
@@ -193,5 +214,7 @@ const StyledWrapper = styled.div`
     }
   }
 `;
+
+
 
 export default Select;
