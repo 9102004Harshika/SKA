@@ -1,12 +1,14 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
+import dotenv from "dotenv";
+
+import mongoose from "mongoose";
+import express from "express";
 const app = express();
-
-const DB_URL =
-  "mongodb+srv://ShreeKalamAcademy:69696969@ska.qi4ln.mongodb.net/?retryWrites=true&w=majority&appName=SKA";
+dotenv.config();
+// const DB_URL =
+//   "mongodb+srv://ShreeKalamAcademy:69696969@ska.qi4ln.mongodb.net/?retryWrites=true&w=majority&appName=SKA";
+// const PORT = 5000;
+const DB_URL = process.env.DB_URL;
 const PORT = 5000;
-
 // MongoDB Connection
 mongoose
   .connect(DB_URL, {
