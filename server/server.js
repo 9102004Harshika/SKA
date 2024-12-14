@@ -1,12 +1,11 @@
 import dotenv from "dotenv";
-
 import mongoose from "mongoose";
 import express from "express";
+import userRoutes from "./routes/userRoutes.js";
+
 const app = express();
 dotenv.config();
-// const DB_URL =
-//   "mongodb+srv://ShreeKalamAcademy:69696969@ska.qi4ln.mongodb.net/?retryWrites=true&w=majority&appName=SKA";
-// const PORT = 5000;
+
 const DB_URL = process.env.DB_URL;
 const PORT = 5000;
 // MongoDB Connection
@@ -31,3 +30,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+app.use("/api", userRoutes);
