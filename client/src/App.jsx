@@ -4,9 +4,8 @@ import Landing from "./pages/LandingPage";
 import LoginPage from "./pages/login/Login";
 import RegisterPage from "./pages/register/Register";
 import Enrollment from "./pages/Enrollment";
-import { Toaster } from "./components/Toaster"; // Import the Toaster component
+import { Toaster } from "./components/Toaster";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
-import Carousel from "./components/Carousel";
 import Home from "./pages/Home";
 
 const App = () => {
