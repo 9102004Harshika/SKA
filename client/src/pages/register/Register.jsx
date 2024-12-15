@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
 import myImage from "../../images/bgNavy.png";
@@ -7,8 +8,8 @@ import { FaGoogle, FaApple } from "react-icons/fa";
 import { TiVendorMicrosoft } from "react-icons/ti";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import RightPanel from "./RightPanel"; // Import the RightPanel component
-import { toast } from "../../components/use-toast"; // Import the toast function
+import RightPanel from "./RightPanel";
+import { toast } from "../../components/use-toast";
 
 function RegisterPage() {
   const [formData, setFormData] = useState({});
@@ -40,14 +41,13 @@ function RegisterPage() {
   };
 
   // Form validation and submission logic
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const nameRegex = /^[A-Za-z]+\s[A-Za-z]+$/;
+    const nameRegex = /^[A-Za-z]{2,20}(?:\s[A-Za-z]{2,20}){1,4}$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = 
-  /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
-
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
 
     let isValid = true;
 
@@ -56,15 +56,14 @@ function RegisterPage() {
 
       if (field.required && !value) {
         toast({
-          title: 'Field left empty',
-          description: `Your ${field.label} field is empty please fill it to proceed`,
+          title: "Field left empty",
+          description: `Your ${field.label} field is empty. Please fill it to proceed.`,
           variant: "destructive",
         });
         isValid = false;
         break;
       }
 
-      // Additional validation for specific fields
       if (field.name === "fullName" && !nameRegex.test(value)) {
         toast({
           title: "Invalid Name",
@@ -79,7 +78,8 @@ function RegisterPage() {
       if (field.name === "email" && !emailRegex.test(value)) {
         toast({
           title: "Invalid Email",
-          description: "The email address you entered does not appear to be valid , please try again  ",
+          description:
+            "The email address you entered does not appear to be valid. Please try again.",
           variant: "destructive",
         });
         isValid = false;
@@ -89,7 +89,8 @@ function RegisterPage() {
       if (field.name === "confirmPassword" && value !== formData.password) {
         toast({
           title: "Passwords Mismatch",
-          description: "The passwords must match exactly to confirm your account",
+          description:
+            "The passwords must match exactly to confirm your account.",
           variant: "destructive",
         });
         isValid = false;
@@ -102,7 +103,8 @@ function RegisterPage() {
       ) {
         toast({
           title: "Invalid Password Length",
-          description: "Your password must be between 8 and 16 characters long. Please ensure that it meets the minimum length",
+          description:
+            "Your password must be between 8 and 16 characters long.",
           variant: "destructive",
         });
         isValid = false;
@@ -112,7 +114,8 @@ function RegisterPage() {
       if (field.name === "password" && !passwordRegex.test(value)) {
         toast({
           title: "Weak Password",
-          description: "Password must include capital letter, small letters, numbers, and symbols",
+          description:
+            "Password must include capital letters, small letters, numbers, and symbols.",
           variant: "destructive",
         });
         isValid = false;
@@ -122,13 +125,42 @@ function RegisterPage() {
 
     if (!isValid) return;
 
-    toast({
-      title: "Registration Successful",
-      description: "Congratulations! Your registration has been successfully completed,you are now part of our community!",
-      variant: "success",
-    });
+    // API Call to the Backend
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/register`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    console.log("Form Submitted Successfully", formData);
+      if (response.status === 201) {
+        toast({
+          title: "Registration Successful",
+          description:
+            "Congratulations! Your registration has been successfully completed.",
+          variant: "success",
+        });
+      } else {
+        toast({
+          title: "Registration Failed",
+          description:
+            "An error occurred during registration. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Server Error",
+        description:
+          "We encountered an issue with the server. Please try again later.",
+        variant: "destructive",
+      });
+      console.error("Error during registration:", error);
+    }
   };
 
   return (
