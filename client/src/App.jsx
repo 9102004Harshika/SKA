@@ -7,6 +7,7 @@ import Enrollment from "./pages/Enrollment";
 import { Toaster } from "./components/Toaster"; // Import the Toaster component
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import Carousel from "./components/Carousel";
+import Home from "./pages/Home";
 
 const App = () => {
   return (
@@ -21,8 +22,8 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enrollment" element={<Enrollment />} />
-            <Route path='/forgotPassword' element={<ForgotPassword/>}/>
-            <Route path='/carousel' element={<Carousel/>}/>
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
+            <Route path="/home" element={<Home />} />
           </Routes>
         </main>
         {/* <Footer /> */}

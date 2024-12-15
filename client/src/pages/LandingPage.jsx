@@ -39,9 +39,9 @@ const Landing = () => {
           </a>
           <a
             className="text-lg sm:text-xl text-white bg-accent border border-secondary hover:bg-secondary hover:text-white transition-colors px-6 py-3 rounded-lg shadow-lg"
-            href="/forgotPassword"
+            href="/home"
           >
-            Forgot Password
+            Home Page
           </a>
         </div>
       </div>

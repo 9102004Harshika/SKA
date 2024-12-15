@@ -48,14 +48,14 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let isValid = true;
-  
+
     // Validate each field in the form
     for (const field of loginForm) {
       const value = formData[field.name] || ""; // Default to an empty string if undefined
-  
+
       if (field.required && !value) {
         toast({
           title: "Field Left Empty",
@@ -65,7 +65,7 @@ function LoginPage() {
         isValid = false;
         break;
       }
-  
+
       if (field.name === "email" && !emailRegex.test(value)) {
         toast({
           title: "Invalid Email",
@@ -77,20 +77,18 @@ function LoginPage() {
         break;
       }
     }
-  
+
     if (!isValid) return;
-  
+
     // Successful submission
     toast({
       title: "Sign-In Successful",
       description: "You have signed in successfully! Welcome back.",
       variant: "success",
     });
-  
+
     console.log("Form Submitted Successfully", formData);
   };
-  
-  
 
   return (
     <div
@@ -164,7 +162,7 @@ function LoginPage() {
               <p className="text-sm mt-0">
                 Forgot your password?{" "}
                 <a
-                  href="#"
+                  href="/forgotPassword"
                   className="text-accent font-bold hover:underline underline-offset-2"
                 >
                   Reset here
