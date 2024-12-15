@@ -10,11 +10,13 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import RightPanel from "./RightPanel";
 import { toast } from "../../components/use-toast";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 
 function RegisterPage() {
   const [formData, setFormData] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
+  const navigate = useNavigate(); // Initialize navigate
 
   // GSAP animation for the RightPanel
   useEffect(() => {
@@ -43,17 +45,19 @@ function RegisterPage() {
   // Form validation and submission logic
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Validation logic (same as you already have)
     const nameRegex = /^[A-Za-z]{2,20}(?:\s[A-Za-z]{2,20}){1,4}$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+\-])[A-Za-z\d@$!%*?&+\-]+$/;
-
+  
     let isValid = true;
-
+  
+    // Validation for each field
     for (const field of registerForm) {
       const value = formData[field.name];
-
+  
       if (field.required && !value) {
         toast({
           title: "Field left empty",
@@ -63,7 +67,7 @@ function RegisterPage() {
         isValid = false;
         break;
       }
-
+  
       if (field.name === "fullName" && !nameRegex.test(value)) {
         toast({
           title: "Invalid Name",
@@ -74,7 +78,7 @@ function RegisterPage() {
         isValid = false;
         break;
       }
-
+  
       if (field.name === "email" && !emailRegex.test(value)) {
         toast({
           title: "Invalid Email",
@@ -85,7 +89,7 @@ function RegisterPage() {
         isValid = false;
         break;
       }
-
+  
       if (field.name === "confirmPassword" && value !== formData.password) {
         toast({
           title: "Passwords Mismatch",
@@ -96,7 +100,7 @@ function RegisterPage() {
         isValid = false;
         break;
       }
-
+  
       if (
         field.name === "password" &&
         (value.length < 8 || value.length > 16)
@@ -110,7 +114,7 @@ function RegisterPage() {
         isValid = false;
         break;
       }
-
+  
       if (field.name === "password" && !passwordRegex.test(value)) {
         toast({
           title: "Weak Password",
@@ -122,13 +126,13 @@ function RegisterPage() {
         break;
       }
     }
-
+  
     if (!isValid) return;
-
+  
     // API Call to the Backend
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/register`,
+        'http://localhost:5000/api/register',
         formData,
         {
           headers: {
@@ -136,7 +140,7 @@ function RegisterPage() {
           },
         }
       );
-
+  
       if (response.status === 201) {
         toast({
           title: "Registration Successful",
@@ -144,6 +148,9 @@ function RegisterPage() {
             "Congratulations! Your registration has been successfully completed.",
           variant: "success",
         });
+
+        // Redirect to enrollment page after successful registration
+        navigate("/enrollment");  // This will navigate the user to the enrollment page
       } else {
         toast({
           title: "Registration Failed",

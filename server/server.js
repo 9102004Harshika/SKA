@@ -6,10 +6,13 @@ import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 app.use(cors());
+app.use(express.json()); // Make sure JSON parsing is enabled for incoming requests
+
 dotenv.config();
 
 const DB_URL = process.env.DB_URL;
 const PORT = 5000;
+
 // MongoDB Connection
 mongoose
   .connect(DB_URL, {
@@ -25,12 +28,13 @@ mongoose
 
 // Define a sample route
 app.get("/", (req, res) => {
-  res.send("Shree Kalam Academy: Endless Possiblities!!!");
+  res.send("Shree Kalam Academy: Endless Possibilities!!!");
 });
+
+// API Routes
+app.use("/api", userRoutes);
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
-app.use("/api", userRoutes);
