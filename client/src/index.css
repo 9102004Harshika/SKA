@@ -120,3 +120,23 @@ label {
   color: #000080;
   font-weight: bolder;
 }
+/* Hide the Swiper navigation buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+/* Custom Pagination Lines */
+.swiper-pagination-bullet {
+  width: 30px; /* Line width */
+  height: 4px; /* Line height */
+  background: #000080; /* Navy blue color for the lines */
+  margin: 0 5px; /* Spacing between lines */
+  opacity: 0.5; /* Slight transparency for inactive lines */
+  transition: all 0.3s ease; /* Smooth transition on hover */
+}
+
+.swiper-pagination-bullet-active {
+  background: #f4a261; /* Highlighted color for the active line */
+  opacity: 1; /* Fully opaque for the active line */
+  transform: scale(1.2); /* Slightly enlarge the active line */
+}

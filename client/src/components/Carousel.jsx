@@ -1,54 +1,52 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Navigation,
-  Pagination,
-  EffectCreative,
-  Autoplay,
-} from "swiper/modules";
+import { Navigation, Pagination, EffectCreative, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-creative";
 
+
 const Carousel = () => {
   return (
     <div className="w-full max-w-6xl mx-auto mt-10">
       <Swiper
-        modules={[Navigation, Pagination, EffectCreative, Autoplay]} // Add Autoplay to enable automatic sliding
+        modules={[Navigation, Pagination, EffectCreative, Autoplay]}
         spaceBetween={50}
         slidesPerView={1}
-        navigation={true}
-        pagination={{ clickable: true }}
+        navigation={true} // Keep navigation
+        pagination={{ clickable: true }} // Pagination enabled
+        loop={true} // Enable loop for continuous autoplay
         autoplay={{
           delay: 1000, // Low delay for quicker transitions
           disableOnInteraction: false, // Continue autoplay even after user interaction
+          pauseOnMouseEnter: false, // Do not pause autoplay on hover
         }}
-        speed={3000} // Transition speed set to 1 second for smoothness
+        speed={3000} // Transition speed set to 3 seconds for smoothness
         effect="creative" // Use the creative effect for smooth animation
         creativeEffect={{
           prev: {
-            translate: ["-120%", 0, -500], // Move the previous slide off-screen
-            opacity: 0.6, // Make the previous slide slightly transparent
-            scale: 0.8, // Shrink the previous slide for perspective effect
-            rotate: [0, 0, -30], // Rotate the previous slide slightly
+            translate: ["-120%", 0, -500],
+            opacity: 0.6,
+            scale: 0.8,
+            rotate: [0, 0, -30],
           },
           next: {
-            translate: ["120%", 0, -500], // Move the next slide off-screen
-            opacity: 0.6, // Make the next slide slightly transparent
-            scale: 0.8, // Shrink the next slide for perspective effect
-            rotate: [0, 0, 30], // Rotate the next slide slightly
+            translate: ["120%", 0, -500],
+            opacity: 0.6,
+            scale: 0.8,
+            rotate: [0, 0, 30],
           },
           current: {
-            translate: [0, 0, 0], // Keep the current slide centered
-            opacity: 1, // Full opacity for the current slide
-            scale: 1, // Full scale for the current slide
-            rotate: [0, 0, 0], // No rotation for the current slide
+            translate: [0, 0, 0],
+            opacity: 1,
+            scale: 1,
+            rotate: [0, 0, 0],
           },
         }}
         className=""
       >
-        {/* Slide 1 - Using images as an example */}
+        {/* Slide 1 */}
         <SwiperSlide>
           <div
             className="h-64 bg-cover bg-center"
