@@ -141,3 +141,19 @@ export const forgotPasswordForm = [
   },
 ];
 
+export const navigationLinksDesktop = [
+  { label: "Courses", link: "/courses" },
+  { label: "Quiz", link: "/quiz" },
+  { label: "Notes", link: "/notes" },
+  { label: "Tuitions", link: "/tuitions" },
+  { label: "Career Guidance", link: "/career-guidance" },
+];
+export const navigationLinksMobile = [
+  { label: "Courses", link: "/courses" },
+  { label: "Quiz", link: "/quiz" },
+  { label: "Notes", link: "/notes" },
+  { label: "Tuitions", link: "/tuitions" },
+  { label: "Career Guidance", link: "/career-guidance" },
+  { label: "Scholarship", link: "/scholarship" },
+  { label: "Question Paper", link: "/question-paper" },
+];
