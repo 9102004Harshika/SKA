@@ -120,6 +120,7 @@ label {
   color: #000080;
   font-weight: bolder;
 }
+
 /* Hide the Swiper navigation buttons */
 .swiper-button-next,
 .swiper-button-prev {
@@ -127,16 +128,26 @@ label {
 }
 /* Custom Pagination Lines */
 .swiper-pagination-bullet {
-  width: 30px; /* Line width */
-  height: 4px; /* Line height */
-  background: #000080; /* Navy blue color for the lines */
+  width: 30px;
+  height: 3px;
+  background: hsl(205 100% 85.88%); /* Navy blue color for the lines */
   margin: 0 5px; /* Spacing between lines */
-  opacity: 0.5; /* Slight transparency for inactive lines */
+  opacity: 0.6; /* Slight transparency for inactive lines */
   transition: all 0.3s ease; /* Smooth transition on hover */
+  border-radius: 40px;
 }
 
 .swiper-pagination-bullet-active {
-  background: #f4a261; /* Highlighted color for the active line */
-  opacity: 1; /* Fully opaque for the active line */
-  transform: scale(1.2); /* Slightly enlarge the active line */
+  background: #000080; /* Highlighted color for the active line */
+  opacity: 0.6; /* Fully opaque for the active line */
+  transform: scale(1.25); /* Slightly enlarge the active line */
+}
+
+/* Media query for mobile screens */
+@media (max-width: 768px) {
+  .swiper-pagination-bullet {
+    width: 10px; /* Slightly smaller width for mobile */
+    height: 2px; /* Keep the height consistent */
+    margin: 0 3px; /* Reduce spacing between bullets */
+  }
 }
