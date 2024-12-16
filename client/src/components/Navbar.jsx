@@ -8,21 +8,19 @@ const logoutLink = { label: "Logout", link: "/logout", icon: FaSignOutAlt };
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile Menu Toggle
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // Mobile Search Bar Toggle
   const [searchQuery, setSearchQuery] = useState(""); // Search Input Value
 
   // Toggle Functions
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-  const toggleSearch = () => setIsSearchOpen((prev) => !prev);
 
   return (
     <>
       {/* Navbar Container */}
-      <nav className="bg-primary relative">
+      <nav className="bg-primary relative z-50">
         {/* First Row */}
         <div className="flex items-center justify-between px-4 py-2">
           {/* Bread Crumb Icon for Mobile */}
-          <div className="sm:hidden text-white" onClick={toggleMenu}>
+          <div className="sm:hidden text-background" onClick={toggleMenu}>
             <FaBars className="text-2xl cursor-pointer" />
           </div>
 
@@ -35,19 +33,27 @@ const Navbar = () => {
                 className="h-10 w-auto inline-block"
               />
             </a>
+            <span>LOGO</span>
+          </div>
+
+          {/* Profile Button (Mobile) */}
+          <div className="sm:hidden text-background">
+            <button>
+              <FaUserCircle className="text-2xl cursor-pointer" />
+            </button>
           </div>
 
           {/* Search Bar (Desktop) */}
-          <div className="hidden sm:flex items-center bg-secondary rounded-md px-2 py-1">
+          <div className="hidden sm:flex items-center border-b-[1px] border-secondary pr-2 mr-5">
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-2 py-1 bg-transparent text-white focus:outline-none"
+              className="px-2 py-1 bg-transparent text-secondary focus:outline-none text-blue"
             />
             <button
-              className="text-white ml-2"
+              className="text-background ml-5"
               onClick={() => alert(`Searching: ${searchQuery}`)}
             >
               <FaSearch className="text-xl" />
@@ -63,25 +69,26 @@ const Navbar = () => {
               <FaSignOutAlt className="text-xl" />
             </button>
           </div>
-
-          {/* Search Icon (Mobile) */}
-          <div className="sm:hidden text-white" onClick={toggleSearch}>
-            <FaSearch className="text-2xl cursor-pointer" />
-          </div>
         </div>
 
-        {/* Search Bar (Mobile) */}
-        {isSearchOpen && (
-          <div className="sm:hidden bg-secondary px-4 py-2">
+        {/* Search Bar (Mobile - Always Visible) */}
+        <div className="sm:hidden bg-secondary px-4 py-2">
+          <div className="flex items-center rounded-md px-2">
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Type your search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-2 py-1 rounded-md focus:outline-none"
+              className="flex-grow px-2 py-1 bg-transparent text-primary border-b-2 border-accent focus:outline-none"
             />
+            <button
+              className="text-accent ml-2"
+              onClick={() => alert(`Searching: ${searchQuery}`)}
+            >
+              <FaSearch className="text-xl" />
+            </button>
           </div>
-        )}
+        </div>
 
         {/* Second Row (Static for Desktop) */}
         <div className="hidden sm:flex justify-center bg-accent py-2">

@@ -13,7 +13,7 @@ import "swiper/css/effect-creative";
 
 const Carousel = () => {
   return (
-    <div className="w-full max-w-6xl mx-auto mt-10">
+    <div className="w-full max-w-6xl mx-auto mt-2">
       <Swiper
         modules={[Navigation, Pagination, EffectCreative, Autoplay]}
         spaceBetween={50}
@@ -52,10 +52,7 @@ const Carousel = () => {
       >
         {/* Slide 1 */}
         <SwiperSlide>
-          <div
-            className="h-64 bg-cover bg-center"
-            
-          >
+          <div className="h-64 bg-cover bg-center">
             <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg  bg-opacity-50">
               <img
                 src="https://cdn.vectorstock.com/i/preview-1x/63/57/mathematics-word-concepts-banner-presentation-vector-29126357.jpg"
@@ -67,10 +64,7 @@ const Carousel = () => {
         </SwiperSlide>
         {/* Slide 2 */}
         <SwiperSlide>
-          <div
-            className="h-64 bg-cover bg-center"
-           
-          >
+          <div className="h-64 bg-cover bg-center">
             <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
               <img
                 src="https://static.vecteezy.com/system/resources/previews/045/761/280/original/mathematics-light-orange-word-concept-science-calculations-academic-discipline-algebra-visual-communication-artwith-lettering-text-editable-glyph-icons-vector.jpg"
@@ -82,10 +76,7 @@ const Carousel = () => {
         </SwiperSlide>
         {/* Slide 3 */}
         <SwiperSlide>
-          <div
-            className="h-64 bg-cover bg-center"
-           
-          >
+          <div className="h-64 bg-cover bg-center">
             <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
               <img
                 src="https://img.cdn.schooljotter2.com/sampled/12293546/900/0/nocrop/"
@@ -97,10 +88,7 @@ const Carousel = () => {
         </SwiperSlide>
         {/* Slide 4 */}
         <SwiperSlide>
-          <div
-            className="h-64 bg-cover bg-center"
-            
-          >
+          <div className="h-64 bg-cover bg-center">
             <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg  bg-opacity-50">
               <img
                 src="https://t4.ftcdn.net/jpg/02/38/56/47/360_F_238564753_anEHnK7TS2OjweqAE8LFUqVn7zk4TIlt.jpg"
