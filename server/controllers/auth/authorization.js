@@ -57,4 +57,45 @@ const registerUser = async (req, res) => {
   }
 };
 
-export { registerUser };
+import { OAuth2Client } from "google-auth-library";
+
+
+const client = new OAuth2Client("186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com");
+
+const registerWithGoogle = async (req, res) => {
+  try {
+    const { googleToken } = req.body; 
+    if (!googleToken) {
+      return res.status(400).json({ message: "Google token is required." });
+    }
+
+    // Verify Google token
+    const ticket = await client.verifyIdToken({
+      idToken: googleToken,
+      audience: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com", // Specify your client ID
+    });
+    const payload=ticket.payload
+    // Check if the user already exists
+    const existingUser = await User.findOne({ fullName: payload.name });
+    if (existingUser) {
+      return res.status(200).json({ success: true, user: existingUser });
+    }
+
+    // Create a new user
+    const newUser = new User({
+      fullName: payload.name,
+      email: payload.email,
+      password: null, // Google sign-up doesn't need a password
+    });
+
+    await newUser.save();
+    res.status(201).json({ success: true, user: newUser });
+  } catch (error) {
+    console.error("Error during Google registration:", error);
+    res.status(500).json({ message: "An error occurred during registration." });
+  }
+};
+
+
+
+export { registerUser,registerWithGoogle };
