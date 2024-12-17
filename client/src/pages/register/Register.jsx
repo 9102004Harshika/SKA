@@ -85,54 +85,75 @@ function RegisterPage() {
   };
 
   // Google Login success handler
-  const handleGoogleLogin = async (response) => {
-    try {
-      const googleToken = response.credential; // This is the token from Google
-
-      const { data } = await axios.post(
-        'http://localhost:5000/api/register/google',
-        { googleToken },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+ 
+  const login = useGoogleLogin({
+    client_id: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com",
+    scope: "openid email profile",
+    ux_mode: 'popup',
+    flow: "implicit",
+    onSuccess: async (response) => {
+      console.log('Login Success:', response);
+  
+      // Get the access token
+      const accessToken = response.access_token;
+  
+      // Fetch user information using Google People API
+      const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      const data = await userInfo.json();
+      console.log('User Info:', data);
+  
+      const fullName = data.name;
+      const email = data.email;
+      const userData = {
+        fullName: fullName,
+        email: email,
+        password: null,  // Or you can omit this field if it's not required
+      };
+      try {
+        const response = await axios.post(
+          'http://localhost:5000/api/register',
+          userData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        if (response.status === 201) {
+          toast({
+            title: "Registration Successful",
+            description: "Congratulations! Your registration has been successfully completed.",
+            variant: "success",
+          });
+          navigate("/enrollment");
+        } else {
+          toast({
+            title: "Registration Failed",
+            description: "An error occurred during registration. Please try again.",
+            variant: "destructive",
+          });
         }
-      );
-    
-      if (data.success) {
+      } catch (error) {
         toast({
-          title: "Registration Successful",
-          description: "You have successfully signed up with Google.",
-          variant: "success",
-        });
-        navigate("/enrollment");
-      } else {
-        toast({
-          title: "Google Signup Failed",
-          description: "An error occurred during Google signup. Please try again.",
+          title: "Server Error",
+          description: "We encountered an issue with the server. Please try again later.",
           variant: "destructive",
         });
       }
-    } catch (error) {
-      console.error("Error during Google login:", error);
-      toast({
-        title: "Server Error",
-        description: "An error occurred during Google signup. Please try again later.",
-        variant: "destructive",
-      });
-    }
-  };
-  const login = useGoogleLogin({
-    onSuccess: async(response) => {
-      // Handle successful login, e.g., send the response to your backend
-      console.log('Login Success:', response);
-      // You can also extract the token from the response:
-     
+      // You can use the full name and email as needed
     },
     onError: (error) => {
       console.log('Login Failed:', error);
     }
   });
+  
   return (
       <div
         className="min-h-screen flex items-center justify-center bg-background text-foreground bg-cover bg-center"
@@ -185,7 +206,7 @@ function RegisterPage() {
               />
             </div>
           
-            <GoogleLogin onSuccess={handleGoogleLogin} onError={() => console.log("Login Failed")} />
+            
           </div>
 
           <motion.div ref={rightPanelRef} className="hidden md:flex w-1/2 bg-gradient-to-l from-secondary to-primary text-background items-center justify-center">
