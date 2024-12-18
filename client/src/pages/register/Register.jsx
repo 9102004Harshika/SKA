@@ -12,7 +12,7 @@ import { toast } from "../../components/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import useFacebookLogin from "../../hooks/useFacebookLogin"; // Import custom Facebook login hook
-
+///
 function RegisterPage() {
   const [formData, setFormData] = useState({});
   const rightPanelRef = useRef(null);
