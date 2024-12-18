@@ -10,7 +10,7 @@ import { gsap } from "gsap";
 import RightPanel from "./RightPanel";
 import { toast } from "../../components/use-toast";
 import { useNavigate } from "react-router-dom";
-import { useGoogleLogin } from "@react-oauth/google";
+import {  useGoogleLogin } from "@react-oauth/google";
 import useFacebookLogin from "../../hooks/useFacebookLogin"; // Import custom Facebook login hook
 
 function RegisterPage() {
@@ -243,7 +243,7 @@ function RegisterPage() {
           </div>
 
           {/* Social Sign-Up Buttons */}
-          <div className="flex space-x-4 w-full  flex-wrap">
+          <div className="flex space-x-4 w-full justify-between flex-wrap">
             {/* Google Login */}
             <Button
               text={
@@ -262,7 +262,7 @@ function RegisterPage() {
               text={
                 <div className="flex items-center justify-center">
                   <FaFacebook className="w-5 h-5 mr-2" />
-                  <span className="hidden lg:inline">Facebook</span>
+                  <span className="hidden lg:inline">Login with Facebook</span>
                 </div>
               }
               size="sm"
