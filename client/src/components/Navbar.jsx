@@ -33,7 +33,6 @@ const Navbar = () => {
                 className="h-10 w-auto inline-block"
               />
             </a>
-            <span>LOGO</span>
           </div>
 
           {/* Profile Button (Mobile) */}

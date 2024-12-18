@@ -1,5 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import {
   Navigation,
   Pagination,
@@ -10,10 +11,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-creative";
+import { sliderImages } from "../config";
 
 const Carousel = () => {
   return (
-    <div className="w-full max-w-6xl mx-auto mt-2">
+    <div className="w-full max-w-full mx-auto mt-2">
       <Swiper
         modules={[Navigation, Pagination, EffectCreative, Autoplay]}
         spaceBetween={50}
@@ -50,54 +52,23 @@ const Carousel = () => {
         }}
         className=""
       >
-        {/* Slide 1 */}
-        <SwiperSlide>
-          <div className="h-64 bg-cover bg-center">
-            <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg  bg-opacity-50">
-              <img
-                src="https://cdn.vectorstock.com/i/preview-1x/63/57/mathematics-word-concepts-banner-presentation-vector-29126357.jpg"
-                alt=""
-                className="w-full"
-              />
+        {sliderImages.map((image, index) => (
+          <SwiperSlide key={index}>
+            <div className="h-64 bg-cover bg-center">
+              <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
+                <img src={image.src} alt={image.alt} className="w-full" />
+                <a
+                  href={image.link}
+                  rel="noopener noreferrer"
+                  className="absolute bottom-4 right-4 bg-white text-black rounded-full p-2 shadow-lg hover:text-primary transition"
+                  aria-label={`Visit ${image.alt}`}
+                >
+                  <FaExternalLinkAlt size={20} />
+                </a>
+              </div>
             </div>
-          </div>
-        </SwiperSlide>
-        {/* Slide 2 */}
-        <SwiperSlide>
-          <div className="h-64 bg-cover bg-center">
-            <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
-              <img
-                src="https://static.vecteezy.com/system/resources/previews/045/761/280/original/mathematics-light-orange-word-concept-science-calculations-academic-discipline-algebra-visual-communication-artwith-lettering-text-editable-glyph-icons-vector.jpg"
-                alt=""
-                className="w-full"
-              />
-            </div>
-          </div>
-        </SwiperSlide>
-        {/* Slide 3 */}
-        <SwiperSlide>
-          <div className="h-64 bg-cover bg-center">
-            <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
-              <img
-                src="https://img.cdn.schooljotter2.com/sampled/12293546/900/0/nocrop/"
-                alt=""
-                className="w-full"
-              />
-            </div>
-          </div>
-        </SwiperSlide>
-        {/* Slide 4 */}
-        <SwiperSlide>
-          <div className="h-64 bg-cover bg-center">
-            <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg  bg-opacity-50">
-              <img
-                src="https://t4.ftcdn.net/jpg/02/38/56/47/360_F_238564753_anEHnK7TS2OjweqAE8LFUqVn7zk4TIlt.jpg"
-                alt=""
-                className="w-full"
-              />
-            </div>
-          </div>
-        </SwiperSlide>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );
