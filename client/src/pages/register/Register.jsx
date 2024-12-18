@@ -12,12 +12,14 @@ import { toast } from "../../components/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import useFacebookLogin from "../../hooks/useFacebookLogin"; // Import custom Facebook login hook
-///
+import FacebookLogin from "react-facebook-login"; // Import Facebook Login component
+
 function RegisterPage() {
   const [formData, setFormData] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
   const navigate = useNavigate();
+
   const { user, loading, error, Login, logout } =
     useFacebookLogin("1140128027688012"); // Use custom hook
 
@@ -87,62 +89,60 @@ function RegisterPage() {
     }
   };
 
-  const handleFacebookLogin = async () => {
-    Login(); // Trigger the Facebook login process via the custom hook
-  };
-
-  useEffect(() => {
-    if (user) {
-      const { name, email } = user; // Extract full name and email from the user object
-
+  const handleFacebookResponse = async (response) => {
+    if (response.status !== "unknown") {
+      // Handle Facebook login success
+      const { name, email } = response;
       const userData = {
         fullName: name,
         email: email,
-        password: null, // Or omit this if not required
+        password: null,
       };
 
-      // Make API call to register the user using the data retrieved from Facebook
-      const registerWithFacebook = async () => {
-        try {
-          const apiResponse = await axios.post(
-            "http://localhost:5000/api/register",
-            userData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          if (apiResponse.status === 201) {
-            toast({
-              title: "Registration Successful",
-              description:
-                "Congratulations! Your registration has been successfully completed.",
-              variant: "success",
-            });
-            navigate("/enrollment");
-          } else {
-            toast({
-              title: "Registration Failed",
-              description:
-                "An error occurred during registration. Please try again.",
-              variant: "destructive",
-            });
+      try {
+        const apiResponse = await axios.post(
+          "http://localhost:5000/api/register",
+          userData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        } catch (error) {
+        );
+
+        if (apiResponse.status === 201) {
           toast({
-            title: "Server Error",
+            title: "Registration Successful",
             description:
-              "We encountered an issue with the server. Please try again later.",
+              "Congratulations! Your registration has been successfully completed.",
+            variant: "success",
+          });
+          navigate("/enrollment");
+        } else {
+          toast({
+            title: "Registration Failed",
+            description:
+              "An error occurred during registration. Please try again.",
             variant: "destructive",
           });
         }
-      };
-
-      registerWithFacebook();
+      } catch (error) {
+        toast({
+          title: "Server Error",
+          description:
+            "We encountered an issue with the server. Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } else {
+      // Handle Facebook login failure
+      toast({
+        title: "Login Failed",
+        description: "Unable to login with Facebook. Please try again.",
+        variant: "destructive",
+      });
     }
-  }, [user, navigate]);
+  };
 
   const login = useGoogleLogin({
     client_id:
@@ -151,12 +151,7 @@ function RegisterPage() {
     ux_mode: "popup",
     flow: "implicit",
     onSuccess: async (response) => {
-      console.log("Login Success:", response);
-
-      // Get the access token
       const accessToken = response.access_token;
-
-      // Fetch user information using Google People API
       const userInfo = await fetch(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         {
@@ -168,14 +163,13 @@ function RegisterPage() {
       );
 
       const data = await userInfo.json();
-      console.log("User Info:", data);
 
       const fullName = data.name;
       const email = data.email;
       const userData = {
         fullName: fullName,
         email: email,
-        password: null, // Or you can omit this field if it's not required
+        password: null,
       };
 
       try {
@@ -281,21 +275,15 @@ function RegisterPage() {
             />
 
             {/* Facebook Login */}
-            <Button
-              text={
-                <div className="flex items-center justify-center">
-                  <FaFacebook className="w-5 h-5 mr-2" />
-                  <span className="hidden lg:inline">Facebook</span>
-                </div>
-              }
-              size="sm"
-              variant="secondary"
-              onClick={handleFacebookLogin}
-              disabled={loading} // Disable the button while loading
+            <FacebookLogin
+              appId="1140128027688012"
+              fields="name,email,picture"
+              callback={handleFacebookResponse}
+              cssClass="facebook-button"
+              icon={<FaFacebook />}
             />
           </div>
         </div>
-
         <motion.div
           ref={rightPanelRef}
           className="hidden md:flex w-1/2 bg-gradient-to-l from-secondary to-primary text-background items-center justify-center"
