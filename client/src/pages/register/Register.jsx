@@ -4,20 +4,21 @@ import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
 import myImage from "../../images/bgNavy.png";
 import { Button } from "../../ui/button";
-import { FaGoogle, FaApple } from "react-icons/fa";
-import { TiVendorMicrosoft } from "react-icons/ti";
+import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import RightPanel from "./RightPanel";
 import { toast } from "../../components/use-toast";
 import { useNavigate } from "react-router-dom";
-import { GoogleOAuthProvider, GoogleLogin ,useGoogleLogin} from "@react-oauth/google";  // Import Google OAuth
+import { useGoogleLogin } from "@react-oauth/google";
+import useFacebookLogin from "../../hooks/useFacebookLogin"; // Import custom Facebook login hook
 
 function RegisterPage() {
   const [formData, setFormData] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
   const navigate = useNavigate();
+  const { user, loading, error, Login, logout } = useFacebookLogin("1140128027688012"); // Use custom hook
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -44,10 +45,8 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation logic (same as you already have)
+    // Validation logic
     let isValid = true;
-
-    // Check for any missing fields and validate them
     if (!isValid) return;
 
     try {
@@ -84,8 +83,60 @@ function RegisterPage() {
     }
   };
 
-  // Google Login success handler
- 
+  const handleFacebookLogin = async () => {
+    Login(); // Trigger the Facebook login process via the custom hook
+  };
+
+  useEffect(() => {
+    if (user) {
+      const { name, email } = user;  // Extract full name and email from the user object
+
+      const userData = {
+        fullName: name,
+        email: email,
+        password: null,  // Or omit this if not required
+      };
+
+      // Make API call to register the user using the data retrieved from Facebook
+      const registerWithFacebook = async () => {
+        try {
+          const apiResponse = await axios.post(
+            'http://localhost:5000/api/register',
+            userData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (apiResponse.status === 201) {
+            toast({
+              title: "Registration Successful",
+              description: "Congratulations! Your registration has been successfully completed.",
+              variant: "success",
+            });
+            navigate("/enrollment");
+          } else {
+            toast({
+              title: "Registration Failed",
+              description: "An error occurred during registration. Please try again.",
+              variant: "destructive",
+            });
+          }
+        } catch (error) {
+          toast({
+            title: "Server Error",
+            description: "We encountered an issue with the server. Please try again later.",
+            variant: "destructive",
+          });
+        }
+      };
+
+      registerWithFacebook();
+    }
+  }, [user, navigate]);
+
   const login = useGoogleLogin({
     client_id: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com",
     scope: "openid email profile",
@@ -93,10 +144,10 @@ function RegisterPage() {
     flow: "implicit",
     onSuccess: async (response) => {
       console.log('Login Success:', response);
-  
+
       // Get the access token
       const accessToken = response.access_token;
-  
+
       // Fetch user information using Google People API
       const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
         method: 'GET',
@@ -104,10 +155,10 @@ function RegisterPage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-  
+
       const data = await userInfo.json();
       console.log('User Info:', data);
-  
+
       const fullName = data.name;
       const email = data.email;
       const userData = {
@@ -115,6 +166,7 @@ function RegisterPage() {
         email: email,
         password: null,  // Or you can omit this field if it's not required
       };
+
       try {
         const response = await axios.post(
           'http://localhost:5000/api/register',
@@ -125,7 +177,7 @@ function RegisterPage() {
             },
           }
         );
-  
+
         if (response.status === 201) {
           toast({
             title: "Registration Successful",
@@ -147,74 +199,88 @@ function RegisterPage() {
           variant: "destructive",
         });
       }
-      // You can use the full name and email as needed
     },
     onError: (error) => {
       console.log('Login Failed:', error);
     }
   });
-  
+
   return (
-      <div
-        className="min-h-screen flex items-center justify-center bg-background text-foreground bg-cover bg-center"
-        style={{ backgroundImage: `url(${myImage})` }}
-      >
-        <div className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full">
-          <div
-            ref={registerFormRef}
-            className="w-full md:w-1/2 bg-background text-card-foreground p-8 flex flex-col items-center border-2 border-primary"
-            style={{ boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px" }}
-          >
-            <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
-              Elevate Your Learning
-            </h2>
-            <form className="w-full max-w-md" onSubmit={handleSubmit} noValidate>
-              {registerForm.map((field, index) => (
-                <div className="mb-5" key={index}>
-                  <label className="block text-sm font-medium mb-1">{field.label}</label>
-                  <Input
-                    className="placeholder:text-primary placeholder:opacity-[0.5]"
-                    type={field.type}
-                    name={field.name}
-                    placeholder={field.placeholder}
-                    value={formData[field.name] || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-              ))}
-              <Button text="Enrol Now" size="lg" variant="primary" type="submit" />
-            </form>
+    <div
+      className="min-h-screen flex items-center justify-center bg-background text-foreground bg-cover bg-center"
+      style={{ backgroundImage: `url(${myImage})` }}
+    >
+      <div className="w-full max-w-screen-lg flex flex-col md:flex-row items-center justify-center h-full">
+        <div
+          ref={registerFormRef}
+          className="w-full md:w-1/2 bg-background text-card-foreground p-8 flex flex-col items-center border-2 border-primary"
+          style={{ boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px" }}
+        >
+          <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
+            Elevate Your Learning
+          </h2>
+          <form className="w-full max-w-md" onSubmit={handleSubmit} noValidate>
+            {registerForm.map((field, index) => (
+              <div className="mb-5" key={index}>
+                <label className="block text-sm font-medium mb-1">{field.label}</label>
+                <Input
+                  className="placeholder:text-primary placeholder:opacity-[0.5]"
+                  type={field.type}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  value={formData[field.name] || ""}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
+            <Button text="Enroll Now" size="lg" variant="primary" type="submit" />
+          </form>
 
-            <div className="flex items-center w-full mb-2">
-              <hr className="flex-grow border-t border-muted border-primary" />
-              <span className="mx-1 text-sm text-muted-foreground">Or sign up with</span>
-              <hr className="flex-grow border-t border-muted border-primary" />
-            </div>
-
-            {/* Google Signup Button */}
-            <div className="flex space-x-4 w-full justify-between flex-wrap">
-              <Button
-                text={
-                  <div className="flex items-center justify-center">
-                    <FaGoogle className="w-5 h-5 mr-2" />
-                    <span className="hidden lg:inline">Google</span>
-                  </div>
-                }
-                size="sm"
-                variant="secondary"
-                onClick={() => login()}
-              />
-            </div>
-          
-            
+          <div className="flex items-center w-full mb-2">
+            <hr className="flex-grow border-t border-muted border-primary" />
+            <span className="mx-1 text-sm text-muted-foreground">Or sign up with</span>
+            <hr className="flex-grow border-t border-muted border-primary" />
           </div>
 
-          <motion.div ref={rightPanelRef} className="hidden md:flex w-1/2 bg-gradient-to-l from-secondary to-primary text-background items-center justify-center">
-            <RightPanel />
-          </motion.div>
+          {/* Social Sign-Up Buttons */}
+          <div className="flex space-x-4 w-full  flex-wrap">
+            {/* Google Login */}
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <FaGoogle className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Google</span>
+                </div>
+              }
+              size="sm"
+              variant="secondary"
+              onClick={() => login()}
+            />
+
+            {/* Facebook Login */}
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <FaFacebook className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Facebook</span>
+                </div>
+              }
+              size="sm"
+              variant="secondary"
+              onClick={handleFacebookLogin}
+              disabled={loading}  // Disable the button while loading
+            />
+          </div>
         </div>
+
+        <motion.div
+          ref={rightPanelRef}
+          className="hidden md:flex w-1/2 bg-gradient-to-l from-secondary to-primary text-background items-center justify-center"
+        >
+          <RightPanel />
+        </motion.div>
       </div>
-   
+    </div>
   );
 }
 
