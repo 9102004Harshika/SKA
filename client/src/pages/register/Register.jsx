@@ -10,18 +10,15 @@ import { gsap } from "gsap";
 import RightPanel from "./RightPanel";
 import { toast } from "../../components/use-toast";
 import { useNavigate } from "react-router-dom";
-import { useGoogleLogin } from "@react-oauth/google";
+import {  useGoogleLogin } from "@react-oauth/google";
 import useFacebookLogin from "../../hooks/useFacebookLogin"; // Import custom Facebook login hook
-import FacebookLogin from "react-facebook-login"; // Import Facebook Login component
 
 function RegisterPage() {
   const [formData, setFormData] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
   const navigate = useNavigate();
-
-  const { user, loading, error, Login, logout } =
-    useFacebookLogin("1140128027688012"); // Use custom hook
+  const { user, loading, error, Login, logout } = useFacebookLogin("1140128027688012"); // Use custom hook
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -54,7 +51,7 @@ function RegisterPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/register",
+        'http://localhost:5000/api/register',
         formData,
         {
           headers: {
@@ -66,115 +63,113 @@ function RegisterPage() {
       if (response.status === 201) {
         toast({
           title: "Registration Successful",
-          description:
-            "Congratulations! Your registration has been successfully completed.",
+          description: "Congratulations! Your registration has been successfully completed.",
           variant: "success",
         });
         navigate("/enrollment");
       } else {
         toast({
           title: "Registration Failed",
-          description:
-            "An error occurred during registration. Please try again.",
+          description: "An error occurred during registration. Please try again.",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
         title: "Server Error",
-        description:
-          "We encountered an issue with the server. Please try again later.",
+        description: "We encountered an issue with the server. Please try again later.",
         variant: "destructive",
       });
     }
   };
 
-  const handleFacebookResponse = async (response) => {
-    if (response.status !== "unknown") {
-      // Handle Facebook login success
-      const { name, email } = response;
+  const handleFacebookLogin = async () => {
+    Login(); // Trigger the Facebook login process via the custom hook
+  };
+
+  useEffect(() => {
+    if (user) {
+      const { name, email } = user;  // Extract full name and email from the user object
+
       const userData = {
         fullName: name,
         email: email,
-        password: null,
+        password: null,  // Or omit this if not required
       };
 
-      try {
-        const apiResponse = await axios.post(
-          "http://localhost:5000/api/register",
-          userData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+      // Make API call to register the user using the data retrieved from Facebook
+      const registerWithFacebook = async () => {
+        try {
+          const apiResponse = await axios.post(
+            'http://localhost:5000/api/register',
+            userData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
-        if (apiResponse.status === 201) {
+          if (apiResponse.status === 201) {
+            toast({
+              title: "Registration Successful",
+              description: "Congratulations! Your registration has been successfully completed.",
+              variant: "success",
+            });
+            navigate("/enrollment");
+          } else {
+            toast({
+              title: "Registration Failed",
+              description: "An error occurred during registration. Please try again.",
+              variant: "destructive",
+            });
+          }
+        } catch (error) {
           toast({
-            title: "Registration Successful",
-            description:
-              "Congratulations! Your registration has been successfully completed.",
-            variant: "success",
-          });
-          navigate("/enrollment");
-        } else {
-          toast({
-            title: "Registration Failed",
-            description:
-              "An error occurred during registration. Please try again.",
+            title: "Server Error",
+            description: "We encountered an issue with the server. Please try again later.",
             variant: "destructive",
           });
         }
-      } catch (error) {
-        toast({
-          title: "Server Error",
-          description:
-            "We encountered an issue with the server. Please try again later.",
-          variant: "destructive",
-        });
-      }
-    } else {
-      // Handle Facebook login failure
-      toast({
-        title: "Login Failed",
-        description: "Unable to login with Facebook. Please try again.",
-        variant: "destructive",
-      });
+      };
+
+      registerWithFacebook();
     }
-  };
+  }, [user, navigate]);
 
   const login = useGoogleLogin({
-    client_id:
-      "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com",
+    client_id: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com",
     scope: "openid email profile",
-    ux_mode: "popup",
+    ux_mode: 'popup',
     flow: "implicit",
     onSuccess: async (response) => {
+      console.log('Login Success:', response);
+
+      // Get the access token
       const accessToken = response.access_token;
-      const userInfo = await fetch(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+
+      // Fetch user information using Google People API
+      const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       const data = await userInfo.json();
+      console.log('User Info:', data);
 
       const fullName = data.name;
       const email = data.email;
       const userData = {
         fullName: fullName,
         email: email,
-        password: null,
+        password: null,  // Or you can omit this field if it's not required
       };
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/register",
+          'http://localhost:5000/api/register',
           userData,
           {
             headers: {
@@ -186,31 +181,28 @@ function RegisterPage() {
         if (response.status === 201) {
           toast({
             title: "Registration Successful",
-            description:
-              "Congratulations! Your registration has been successfully completed.",
+            description: "Congratulations! Your registration has been successfully completed.",
             variant: "success",
           });
           navigate("/enrollment");
         } else {
           toast({
             title: "Registration Failed",
-            description:
-              "An error occurred during registration. Please try again.",
+            description: "An error occurred during registration. Please try again.",
             variant: "destructive",
           });
         }
       } catch (error) {
         toast({
           title: "Server Error",
-          description:
-            "We encountered an issue with the server. Please try again later.",
+          description: "We encountered an issue with the server. Please try again later.",
           variant: "destructive",
         });
       }
     },
     onError: (error) => {
-      console.log("Login Failed:", error);
-    },
+      console.log('Login Failed:', error);
+    }
   });
 
   return (
@@ -230,9 +222,7 @@ function RegisterPage() {
           <form className="w-full max-w-md" onSubmit={handleSubmit} noValidate>
             {registerForm.map((field, index) => (
               <div className="mb-5" key={index}>
-                <label className="block text-sm font-medium mb-1">
-                  {field.label}
-                </label>
+                <label className="block text-sm font-medium mb-1">{field.label}</label>
                 <Input
                   className="placeholder:text-primary placeholder:opacity-[0.5]"
                   type={field.type}
@@ -243,19 +233,12 @@ function RegisterPage() {
                 />
               </div>
             ))}
-            <Button
-              text="Enroll Now"
-              size="lg"
-              variant="primary"
-              type="submit"
-            />
+            <Button text="Enroll Now" size="lg" variant="primary" type="submit" />
           </form>
 
           <div className="flex items-center w-full mb-2">
             <hr className="flex-grow border-t border-muted border-primary" />
-            <span className="mx-1 text-sm text-muted-foreground">
-              Or sign up with
-            </span>
+            <span className="mx-1 text-sm text-muted-foreground">Or sign up with</span>
             <hr className="flex-grow border-t border-muted border-primary" />
           </div>
 
@@ -275,15 +258,21 @@ function RegisterPage() {
             />
 
             {/* Facebook Login */}
-            <FacebookLogin
-              appId="1140128027688012"
-              fields="name,email,picture"
-              callback={handleFacebookResponse}
-              cssClass="facebook-button"
-              icon={<FaFacebook />}
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <FaFacebook className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Login with Facebook</span>
+                </div>
+              }
+              size="sm"
+              variant="secondary"
+              onClick={handleFacebookLogin}
+              disabled={loading}  // Disable the button while loading
             />
           </div>
         </div>
+
         <motion.div
           ref={rightPanelRef}
           className="hidden md:flex w-1/2 bg-gradient-to-l from-secondary to-primary text-background items-center justify-center"
