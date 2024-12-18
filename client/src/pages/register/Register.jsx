@@ -285,7 +285,7 @@ function RegisterPage() {
               text={
                 <div className="flex items-center justify-center">
                   <FaFacebook className="w-5 h-5 mr-2" />
-                  <span className="hidden lg:inline">Login with Facebook</span>
+                  <span className="hidden lg:inline">Facebook</span>
                 </div>
               }
               size="sm"
