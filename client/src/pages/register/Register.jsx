@@ -11,14 +11,12 @@ import RightPanel from "./RightPanel";
 import { toast } from "../../components/use-toast";
 import { useNavigate } from "react-router-dom";
 import {  useGoogleLogin } from "@react-oauth/google";
-import useFacebookLogin from "../../hooks/useFacebookLogin"; // Import custom Facebook login hook
 
 function RegisterPage() {
   const [formData, setFormData] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
   const navigate = useNavigate();
-  const { user, loading, error, Login, logout } = useFacebookLogin("1140128027688012"); // Use custom hook
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -83,59 +81,9 @@ function RegisterPage() {
     }
   };
 
-  const handleFacebookLogin = async () => {
-    Login(); // Trigger the Facebook login process via the custom hook
-  };
+ 
 
-  useEffect(() => {
-    if (user) {
-      const { name, email } = user;  // Extract full name and email from the user object
-
-      const userData = {
-        fullName: name,
-        email: email,
-        password: null,  // Or omit this if not required
-      };
-
-      // Make API call to register the user using the data retrieved from Facebook
-      const registerWithFacebook = async () => {
-        try {
-          const apiResponse = await axios.post(
-            'http://localhost:5000/api/register',
-            userData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          if (apiResponse.status === 201) {
-            toast({
-              title: "Registration Successful",
-              description: "Congratulations! Your registration has been successfully completed.",
-              variant: "success",
-            });
-            navigate("/enrollment");
-          } else {
-            toast({
-              title: "Registration Failed",
-              description: "An error occurred during registration. Please try again.",
-              variant: "destructive",
-            });
-          }
-        } catch (error) {
-          toast({
-            title: "Server Error",
-            description: "We encountered an issue with the server. Please try again later.",
-            variant: "destructive",
-          });
-        }
-      };
-
-      registerWithFacebook();
-    }
-  }, [user, navigate]);
+ 
 
   const login = useGoogleLogin({
     client_id: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com",
@@ -257,19 +205,6 @@ function RegisterPage() {
               onClick={() => login()}
             />
 
-            {/* Facebook Login */}
-            <Button
-              text={
-                <div className="flex items-center justify-center">
-                  <FaFacebook className="w-5 h-5 mr-2" />
-                  <span className="hidden lg:inline">Login with Facebook</span>
-                </div>
-              }
-              size="sm"
-              variant="secondary"
-              onClick={handleFacebookLogin}
-              disabled={loading}  // Disable the button while loading
-            />
           </div>
         </div>
 
