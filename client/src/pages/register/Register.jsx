@@ -10,7 +10,8 @@ import { gsap } from "gsap";
 import RightPanel from "./RightPanel";
 import { toast } from "../../components/use-toast";
 import { useNavigate } from "react-router-dom";
-import {  useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 
 function RegisterPage() {
   const [formData, setFormData] = useState({});
@@ -81,10 +82,6 @@ function RegisterPage() {
     }
   };
 
- 
-
- 
-
   const login = useGoogleLogin({
     client_id: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com",
     scope: "openid email profile",
@@ -153,6 +150,53 @@ function RegisterPage() {
     }
   });
 
+  const responseFacebook = async (response) => {
+    console.log("Facebook login response:", response);
+    
+    if (response.accessToken) {
+      const { name, email } = response;
+
+      const userData = {
+        fullName: name,
+        email: email,
+        password: null,  // Or you can omit this field if it's not required
+      };
+
+      try {
+        const res = await axios.post(
+          'http://localhost:5000/api/register',
+          userData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (res.status === 201) {
+          toast({
+            title: "Registration Successful",
+            description: "Congratulations! Your registration has been successfully completed.",
+            variant: "success",
+          });
+          navigate("/enrollment");
+        } else {
+          toast({
+            title: "Registration Failed",
+            description: "An error occurred during registration. Please try again.",
+            variant: "destructive",
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Server Error",
+          description: "We encountered an issue with the server. Please try again later.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-background text-foreground bg-cover bg-center"
@@ -191,7 +235,7 @@ function RegisterPage() {
           </div>
 
           {/* Social Sign-Up Buttons */}
-          <div className="flex space-x-4 w-full justify-between flex-wrap">
+          <div className="flex space-x-4 w-full flex-wrap">
             {/* Google Login */}
             <Button
               text={
@@ -204,7 +248,25 @@ function RegisterPage() {
               variant="secondary"
               onClick={() => login()}
             />
-
+            {/* Facebook Login */}
+            <FacebookLogin
+              appId="2988430361296081"  // Replace with your Facebook app ID
+              fields="name,email,picture"
+              callback={responseFacebook}
+              render={(renderProps) => (
+                <Button
+                  text={
+                    <div className="flex items-center justify-center">
+                      <FaFacebook className="w-5 h-5 mr-2" />
+                      <span className="hidden lg:inline">Facebook</span>
+                    </div>
+                  }
+                  size="sm"
+                  variant="secondary"
+                  onClick={renderProps.onClick}
+                />
+              )}
+            />
           </div>
         </div>
 
