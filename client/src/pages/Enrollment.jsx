@@ -6,7 +6,9 @@ import myImage from "../images/bgOrange.png";
 import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
 import { gsap } from "gsap"; // Import GSAP for animation
 import Calendar from "../ui/calendar";
-
+import axios from "axios";
+import { useNavigate,useLocation } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { toast } from "../components/use-toast";
 const Enrollment = () => {
   const [formData, setFormData] = useState({
     mobile: "",
@@ -16,15 +18,16 @@ const Enrollment = () => {
     city: "",
     board: "",
     class: "",
-    medium: "",
-    stream: "",
   });
-
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
   const [otpSent, setOtpSent] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false); // State to manage calendar visibility
   const formRef = useRef(null);
   const calendarRef = useRef(null);
   const dobInputRef = useRef(null); // Reference to the date of birth input
+  const email = params.get("userEmail");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     // Animate the form to slide in from the left
@@ -49,14 +52,44 @@ const Enrollment = () => {
     alert("OTP has been sent to your mobile number!");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.verification || formData.verification !== "1234") {
-      alert("Invalid OTP. Please verify your OTP.");
-      return;
+
+    // Send enrollment data to the backend
+    const enrollmentData = { ...formData, email };
+    console.log(enrollmentData)
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/enroll", // Your API endpoint
+        enrollmentData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+      toast({
+                title: "Enrollment Successful",
+                description:
+                  "Congratulations! Your enrollment has been successfully completed.",
+                variant: "success",
+              });
+        navigate("/login"); // Navigate to the login page after successful enrollment
+      } else {
+        toast({
+                  title: "Error in registration ",
+                  description:
+                    "ENROLLMENT NOT DONE",
+                  variant: "destructive",
+                });
+      }
+    } catch (error) {
+      console.error("Error submitting enrollment:", error.response?.data || error.message);
+      console.error("Error submitting enrollment:", error);
+      alert("An error occurred. Please try again.");
     }
-    console.log("Form Data Submitted:", formData);
-    alert("Form submitted successfully!");
   };
 
   const [selectedDate, setSelectedDate] = useState("");

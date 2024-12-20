@@ -43,44 +43,46 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validation logic
-    let isValid = true;
-    if (!isValid) return;
-
+  
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/register',
-        formData,
+        "http://localhost:5000/api/register",
+        { ...formData, loginMode: "email" },
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-
+  
       if (response.status === 201) {
         toast({
           title: "Registration Successful",
-          description: "Congratulations! Your registration has been successfully completed.",
+          description:
+            "Congratulations! Your registration has been successfully completed.",
           variant: "success",
         });
-        navigate("/enrollment");
-      } else {
+        navigate(`/enrollment?userEmail=${formData.email}`);
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        // Display the error message sent from the server
         toast({
           title: "Registration Failed",
-          description: "An error occurred during registration. Please try again.",
+          description: error.response.data.message,
+          variant: "destructive",
+        });
+      } else {
+        // Fallback for unexpected errors
+        toast({
+          title: "Unexpected Error",
+          description: "Something went wrong. Please try again later.",
           variant: "destructive",
         });
       }
-    } catch (error) {
-      toast({
-        title: "Server Error",
-        description: "We encountered an issue with the server. Please try again later.",
-        variant: "destructive",
-      });
     }
   };
+  
 
   const login = useGoogleLogin({
     client_id: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com",
@@ -115,7 +117,7 @@ function RegisterPage() {
       try {
         const response = await axios.post(
           'http://localhost:5000/api/register',
-          userData,
+          {...userData,loginMode:"google"},
           {
             headers: {
               "Content-Type": "application/json",
@@ -124,12 +126,13 @@ function RegisterPage() {
         );
 
         if (response.status === 201) {
+          localStorage.setItem("userEmail", userData.email);
           toast({
             title: "Registration Successful",
             description: "Congratulations! Your registration has been successfully completed.",
             variant: "success",
           });
-          navigate("/enrollment");
+          navigate(`/enrollment?userEmail=${userData.email}`);
         } else {
           toast({
             title: "Registration Failed",
@@ -174,6 +177,7 @@ function RegisterPage() {
         );
 
         if (res.status === 201) {
+          localStorage.setItem("userEmail", userData.email);
           toast({
             title: "Registration Successful",
             description: "Congratulations! Your registration has been successfully completed.",
@@ -216,7 +220,7 @@ function RegisterPage() {
               <div className="mb-5" key={index}>
                 <label className="block text-sm font-medium mb-1">{field.label}</label>
                 <Input
-                  className="placeholder:text-primary placeholder:opacity-[0.5]"
+                  className="placeholder:texft-primary placeholder:opacity-[0.5]"
                   type={field.type}
                   name={field.name}
                   placeholder={field.placeholder}

@@ -8,18 +8,21 @@ import { Button } from "../../ui/button";
 import { loginForm } from "../../config/index";
 import { FaGoogle, FaApple } from "react-icons/fa";
 import { TiVendorMicrosoft } from "react-icons/ti";
-import { toast } from "../../components/use-toast"; // Ensure you have this installed and configured
+import { toast } from "../../components/use-toast";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google"; 
 
 function LoginPage() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [formData, setFormData] = useState({}); // State to hold form data
+  const [formData, setFormData] = useState({});
+  const [emailChecked, setEmailChecked] = useState(false);
   const leftPanelRef = useRef(null);
   const loginFormRef = useRef(null);
+  const navigate = useNavigate();
 
-  // GSAP animation for the LeftPanel and Login Form
   useEffect(() => {
     const tl = gsap.timeline();
-
     tl.fromTo(
       leftPanelRef.current,
       { opacity: 0, x: "-30%" },
@@ -33,29 +36,46 @@ function LoginPage() {
     );
   }, []);
 
+  const checkGoogleAccount = async (email) => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/check-google-account", { email });
+      if (response.data.isGoogleAccount) {
+        toast({
+          title: "Google Account Detected",
+          description: "It seems this email is associated with a Google login. You can use Google to sign in.",
+          variant: "info",
+        });
+      }
+    } catch (error) {
+      console.error("Error checking Google account:", error);
+    }
+  };
+
   const handleDragEnd = (event, info) => {
     if (info.offset.y > 100) {
-      setIsPanelOpen(true); // Open the panel
+      setIsPanelOpen(true);
     } else if (info.offset.y < -100) {
-      setIsPanelOpen(false); // Close the panel
+      setIsPanelOpen(false);
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "email" && value && !emailChecked) {
+      setEmailChecked(true);
+      checkGoogleAccount(value);
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let isValid = true;
 
-    // Validate each field in the form
     for (const field of loginForm) {
-      const value = formData[field.name] || ""; // Default to an empty string if undefined
-
+      const value = formData[field.name] || "";
       if (field.required && !value) {
         toast({
           title: "Field Left Empty",
@@ -69,8 +89,7 @@ function LoginPage() {
       if (field.name === "email" && !emailRegex.test(value)) {
         toast({
           title: "Invalid Email",
-          description:
-            "The email address you entered is invalid. Please try again.",
+          description: "The email address you entered is invalid. Please try again.",
           variant: "destructive",
         });
         isValid = false;
@@ -80,15 +99,115 @@ function LoginPage() {
 
     if (!isValid) return;
 
-    // Successful submission
-    toast({
-      title: "Sign-In Successful",
-      description: "You have signed in successfully! Welcome back.",
-      variant: "success",
-    });
+    try {
+      const response = await axios.post("http://localhost:5000/api/login", { ...formData, loginMode: "email" });
 
-    console.log("Form Submitted Successfully", formData);
+      if (response.status === 200) {
+        const user = response.data.user;
+        if (!user.isEnrolled) {
+          toast({
+            title: "Enrollment Required",
+            description: "You are not enrolled. Please complete the enrollment process.",
+            variant: "destructive",
+          });
+          navigate(`/enrollment?userEmail=${formData.email}`);  // Redirect to enrollment page
+        } else {
+          toast({
+            title: "Login Successful",
+            description: "You have logged in successfully! Welcome back.",
+            variant: "success",
+          });
+          navigate("/home");  // Redirect to home page
+        }
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast({
+          title: "Login Failed",
+          description: error.response.data.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Unexpected Error",
+          description: "Something went wrong. Please try again later.",
+          variant: "destructive",
+        });
+      }
+    }
   };
+
+  const loginWithGoogle = useGoogleLogin({
+    client_id: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com", 
+    scope: "openid email profile",
+    ux_mode: "popup",
+    flow: "implicit",
+    onSuccess: async (response) => {
+      console.log('Google Login Success:', response);
+      const accessToken = response.access_token;
+      const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const data = await userInfo.json();
+      console.log('User Info:', data);
+
+      const userData = {
+        fullName: data.name,
+        email: data.email,
+        password: null, 
+      };
+
+      try {
+        const res = await axios.post('http://localhost:5000/api/login', { ...userData, loginMode: "google" });
+
+        if (res.status === 200) {
+          const user = res.data.user;
+          if (!user.isEnrolled) {
+            toast({
+              title: "Enrollment Required",
+              description: "You are not enrolled. Please complete the enrollment process.",
+              variant: "destructive",
+            });
+            navigate(`/enrollment?userEmail=${userData.email}`);  // Redirect to enrollment page
+          } else {
+            toast({
+              title: "Login Successful",
+              description: "You have logged in successfully! Welcome back.",
+              variant: "success",
+            });
+            navigate("/home");  // Redirect to home page
+          }
+        } else {
+          toast({
+            title: "Login Failed",
+            description: "An error occurred during login. Please try again.",
+            variant: "destructive",
+          });
+        }
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          toast({
+            title: "Login Failed",
+            description: error.response.data.message,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Unexpected Error",
+            description: "Something went wrong. Please try again later.",
+            variant: "destructive",
+          });
+        }
+      }
+    },
+    onError: (error) => {
+      console.log('Login Failed:', error);
+    }
+  });
 
   return (
     <div
@@ -175,9 +294,7 @@ function LoginPage() {
 
           <div className="flex items-center w-full mb-2">
             <hr className="flex-grow border-t border-muted border-primary" />
-            <span className="mx-2 text-sm text-muted-foreground">
-              Or login with
-            </span>
+            <span className="mx-2 text-sm text-muted-foreground">Or login with</span>
             <hr className="flex-grow border-t border-muted border-primary" />
           </div>
 
@@ -191,9 +308,8 @@ function LoginPage() {
               }
               size="sm"
               variant="secondary"
-              onClick={() => console.log("Google Login")}
+              onClick={() => loginWithGoogle()}
             />
-
             <Button
               text={
                 <div className="flex items-center justify-center">
@@ -203,9 +319,7 @@ function LoginPage() {
               }
               size="sm"
               variant="secondary"
-              onClick={() => console.log("Microsoft Login")}
             />
-
             <Button
               text={
                 <div className="flex items-center justify-center">
@@ -215,20 +329,7 @@ function LoginPage() {
               }
               size="sm"
               variant="secondary"
-              onClick={() => console.log("Apple Login")}
             />
-          </div>
-
-          <div className="mt-2 text-center">
-            <p className="text-sm">
-              Don't have an account?{" "}
-              <a
-                href="/register"
-                className="text-accent font-bold hover:underline underline-offset-2"
-              >
-                Create One
-              </a>
-            </p>
           </div>
         </div>
       </div>

@@ -12,9 +12,8 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    // Allow null value for password but only if no other value is provided
     validate: {
-      validator: function(value) {
+      validator: function (value) {
         // Allow null or undefined as a valid value for password
         if (value === null || value === undefined) {
           return true;
@@ -24,12 +23,39 @@ const userSchema = new mongoose.Schema({
       },
       message: "Password cannot be empty if provided.",
     },
-    default: null,  // Set default to null
+    default: null, // Set default to null
   },
+  loginMode: {
+    type: String,
+    required: true,
+    default: "email",
+    enum: ["email", "google","facebook"], // Ensure loginMode is only 'email' or 'google'
+  },
+  isEnrolled: {
+    type: Boolean,
+    default: false, // Set to true after form submission
+  },
+  enrollmentDetails: {
+    mobile: { type: String },
+    dob: { type: Date },
+    state: { type: String },
+    city: { type: String },
+    board: { type: String },
+    Class: { type: String },
+  },
+  
   createdAt: {
     type: Date,
     default: Date.now,
   },
+});
+
+// Pre-save hook to enforce password requirements based on loginMode
+userSchema.pre("save", function (next) {
+  if (this.loginMode === "email" && (!this.password || this.password.trim() === "")) {
+    return next(new Error("Password is mandatory for completing registration. Please provide a valid password."));
+  }
+  next();
 });
 
 const User = mongoose.model("User", userSchema);
