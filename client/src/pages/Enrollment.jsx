@@ -7,7 +7,8 @@ import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
 import { gsap } from "gsap"; // Import GSAP for animation
 import Calendar from "../ui/calendar";
 import axios from "axios";
-import { useNavigate,useLocation } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { useNavigate, useLocation } from "react-router-dom";
+import { Country, State, City } from "country-state-city";
 import { toast } from "../components/use-toast";
 const Enrollment = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +28,9 @@ const Enrollment = () => {
   const calendarRef = useRef(null);
   const dobInputRef = useRef(null); // Reference to the date of birth input
   const email = params.get("userEmail");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
 
   useEffect(() => {
     // Animate the form to slide in from the left
@@ -36,7 +39,15 @@ const Enrollment = () => {
       { y: "100%", opacity: 0 },
       { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }
     );
+    const indianStates = State.getStatesOfCountry("IN");
+    setStates(indianStates);
   }, []);
+
+  const handleStateSelect = (stateCode) => {
+    setFormData({ ...formData, state: stateCode, city: "" });
+    const stateCities = City.getCitiesOfState("IN", stateCode);
+    setCities(stateCities);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +68,7 @@ const Enrollment = () => {
 
     // Send enrollment data to the backend
     const enrollmentData = { ...formData, email };
-    console.log(enrollmentData)
+    console.log(enrollmentData);
     try {
       const response = await axios.post(
         "http://localhost:5000/api/enroll", // Your API endpoint
@@ -70,23 +81,25 @@ const Enrollment = () => {
       );
 
       if (response.status === 200) {
-      toast({
-                title: "Enrollment Successful",
-                description:
-                  "Congratulations! Your enrollment has been successfully completed.",
-                variant: "success",
-              });
+        toast({
+          title: "Enrollment Successful",
+          description:
+            "Congratulations! Your enrollment has been successfully completed.",
+          variant: "success",
+        });
         navigate("/login"); // Navigate to the login page after successful enrollment
       } else {
         toast({
-                  title: "Error in registration ",
-                  description:
-                    "ENROLLMENT NOT DONE",
-                  variant: "destructive",
-                });
+          title: "Error in registration ",
+          description: "ENROLLMENT NOT DONE",
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      console.error("Error submitting enrollment:", error.response?.data || error.message);
+      console.error(
+        "Error submitting enrollment:",
+        error.response?.data || error.message
+      );
       console.error("Error submitting enrollment:", error);
       alert("An error occurred. Please try again.");
     }
@@ -280,10 +293,11 @@ const Enrollment = () => {
           <Select
             menuTitle="Select State"
             onClick={() => setShowCalendar(false)}
-            submenuItems={["Maharashtra", "Karnataka", "Gujarat"]}
-            onSelect={(item) =>
-              setFormData({ ...formData, state: item, city: "" })
-            }
+            submenuItems={states.map((state) => state.name)}
+            onSelect={(stateName) => {
+              const selectedState = states.find((s) => s.name === stateName);
+              handleStateSelect(selectedState.isoCode);
+            }}
           />
         </div>
 
@@ -299,8 +313,10 @@ const Enrollment = () => {
             <Select
               menuTitle="Select City"
               onClick={() => setShowCalendar(false)}
-              submenuItems={getCitiesByState(formData.state)}
-              onSelect={(item) => setFormData({ ...formData, city: item })}
+              submenuItems={cities.map((city) => city.name)}
+              onSelect={(cityName) =>
+                setFormData({ ...formData, city: cityName })
+              }
             />
           </div>
         )}
