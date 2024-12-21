@@ -42,6 +42,29 @@
     @apply bg-background text-primary font-body;
   }
 }
+
+/* Scroll Bar Design  */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 80px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: hsl(60, 56%, 91%);
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: hsl(240 100% 25%);
+  border-radius: 6px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(240, 100%, 25%, 0.85);
+}
+::-webkit-backdrop-filter {
+  blur: 3px saturate(106%);
+}
+
 /* Prevent Google Autofill from changing text and background color */
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px hsl(205 100% 85.88%) inset; /* Set to transparent to prevent background color change */
@@ -50,6 +73,7 @@ input:-webkit-autofill {
     240 100% 25%
   ); /* Inherit text color from the parent or default styles */
 }
+
 /* password eye button disabling*/
 input::-ms-reveal,
 input::-ms-clear,
