@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
 import myImage from "../../images/bgNavy.png";
@@ -8,17 +7,14 @@ import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import RightPanel from "./RightPanel";
-import { toast } from "../../components/use-toast";
 import { useNavigate } from "react-router-dom";
-import { useGoogleLogin } from "@react-oauth/google";
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-
+import {  GoogleRegister, handleSubmit } from "../../logic/register/registerSubmit";
 function RegisterPage() {
   const [formData, setFormData] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
   const navigate = useNavigate();
-
+  const login=GoogleRegister(navigate)
   useEffect(() => {
     const tl = gsap.timeline();
 
@@ -40,167 +36,6 @@ function RegisterPage() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/register",
-        { ...formData, loginMode: "email" },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-  
-      if (response.status === 201) {
-        toast({
-          title: "Registration Successful",
-          description:
-            "Congratulations! Your registration has been successfully completed.",
-          variant: "success",
-        });
-        navigate(`/enrollment?userEmail=${formData.email}`);
-      }
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        // Display the error message sent from the server
-        toast({
-          title: "Registration Failed",
-          description: error.response.data.message,
-          variant: "destructive",
-        });
-      } else {
-        // Fallback for unexpected errors
-        toast({
-          title: "Unexpected Error",
-          description: "Something went wrong. Please try again later.",
-          variant: "destructive",
-        });
-      }
-    }
-  };
-  
-
-  const login = useGoogleLogin({
-    client_id: "186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com",
-    scope: "openid email profile",
-    ux_mode: 'popup',
-    flow: "implicit",
-    onSuccess: async (response) => {
-      console.log('Login Success:', response);
-
-      // Get the access token
-      const accessToken = response.access_token;
-
-      // Fetch user information using Google People API
-      const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      const data = await userInfo.json();
-      console.log('User Info:', data);
-
-      const fullName = data.name;
-      const email = data.email;
-      const userData = {
-        fullName: fullName,
-        email: email,
-        password: null,  // Or you can omit this field if it's not required
-      };
-
-      try {
-        const response = await axios.post(
-          'http://localhost:5000/api/register',
-          {...userData,loginMode:"google"},
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (response.status === 201) {
-          localStorage.setItem("userEmail", userData.email);
-          toast({
-            title: "Registration Successful",
-            description: "Congratulations! Your registration has been successfully completed.",
-            variant: "success",
-          });
-          navigate(`/enrollment?userEmail=${userData.email}`);
-        } else {
-          toast({
-            title: "Registration Failed",
-            description: "An error occurred during registration. Please try again.",
-            variant: "destructive",
-          });
-        }
-      } catch (error) {
-        toast({
-          title: "Server Error",
-          description: "We encountered an issue with the server. Please try again later.",
-          variant: "destructive",
-        });
-      }
-    },
-    onError: (error) => {
-      console.log('Login Failed:', error);
-    }
-  });
-
-  const responseFacebook = async (response) => {
-    console.log("Facebook login response:", response);
-    
-    if (response.accessToken) {
-      const { name, email } = response;
-
-      const userData = {
-        fullName: name,
-        email: email,
-        password: null,  // Or you can omit this field if it's not required
-      };
-
-      try {
-        const res = await axios.post(
-          'http://localhost:5000/api/register',
-          userData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (res.status === 201) {
-          localStorage.setItem("userEmail", userData.email);
-          toast({
-            title: "Registration Successful",
-            description: "Congratulations! Your registration has been successfully completed.",
-            variant: "success",
-          });
-          navigate("/enrollment");
-        } else {
-          toast({
-            title: "Registration Failed",
-            description: "An error occurred during registration. Please try again.",
-            variant: "destructive",
-          });
-        }
-      } catch (error) {
-        toast({
-          title: "Server Error",
-          description: "We encountered an issue with the server. Please try again later.",
-          variant: "destructive",
-        });
-      }
-    }
-  };
-
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-background text-foreground bg-cover bg-center"
@@ -215,12 +50,12 @@ function RegisterPage() {
           <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
             Elevate Your Learning
           </h2>
-          <form className="w-full max-w-md" onSubmit={handleSubmit} noValidate>
+          <form className="w-full max-w-md" onSubmit={(e) => handleSubmit(e, formData, navigate)} noValidate>
             {registerForm.map((field, index) => (
               <div className="mb-5" key={index}>
                 <label className="block text-sm font-medium mb-1">{field.label}</label>
                 <Input
-                  className="placeholder:texft-primary placeholder:opacity-[0.5]"
+                  className="placeholder:texft-primary placeholder:opacity-[0.8]"
                   type={field.type}
                   name={field.name}
                   placeholder={field.placeholder}
@@ -253,23 +88,17 @@ function RegisterPage() {
               onClick={() => login()}
             />
             {/* Facebook Login */}
-            <FacebookLogin
-              appId="2988430361296081"  // Replace with your Facebook app ID
-              fields="name,email,picture"
-              callback={responseFacebook}
-              render={(renderProps) => (
+           
                 <Button
                   text={
                     <div className="flex items-center justify-center">
                       <FaFacebook className="w-5 h-5 mr-2" />
                       <span className="hidden lg:inline">Facebook</span>
                     </div>
+                    
                   }
                   size="sm"
-                  variant="secondary"
-                  onClick={renderProps.onClick}
-                />
-              )}
+              variant="secondary"
             />
           </div>
         </div>

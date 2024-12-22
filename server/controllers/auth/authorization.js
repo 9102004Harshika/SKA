@@ -142,7 +142,7 @@ const loginUser = async (req, res) => {
 };
 const enrollUser = async (req, res) => {
   try {
-    const { email, mobile, dob, state, city, board, Class } = req.body;
+    const { email, mobile, dob, state, city, board, class:StudentClass ,stream} = req.body;
 
     // Validate the request data
     
@@ -159,15 +159,19 @@ const enrollUser = async (req, res) => {
 
     // Update the user's enrollment details and mark them as enrolled
     user.isEnrolled = true;
-   user.enrollmentDetails = {
+   const enrollmentDetails = {
       mobile,
       dob,
       state,
       city,
       board,
-      Class,
+      class:StudentClass,
     };
+    if (StudentClass === "11th" || StudentClass === "12th") {
+      enrollmentDetails.stream = stream;
+    }
 
+    user.enrollmentDetails = enrollmentDetails;
     // Save the updated user data to the database
     await user.save();
 

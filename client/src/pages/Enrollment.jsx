@@ -6,10 +6,9 @@ import myImage from "../images/bgOrange.png";
 import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
 import { gsap } from "gsap"; // Import GSAP for animation
 import Calendar from "../ui/calendar";
-import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Country, State, City } from "country-state-city";
-import { toast } from "../components/use-toast";
+import { State, City } from "country-state-city";
+import { handleSubmit,handleDateSelect } from "../logic/enroll/enrollSubmit";
 const Enrollment = () => {
   const [formData, setFormData] = useState({
     mobile: "",
@@ -63,60 +62,11 @@ const Enrollment = () => {
     alert("OTP has been sent to your mobile number!");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    // Send enrollment data to the backend
-    const enrollmentData = { ...formData, email };
-    console.log(enrollmentData);
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/enroll", // Your API endpoint
-        enrollmentData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        toast({
-          title: "Enrollment Successful",
-          description:
-            "Congratulations! Your enrollment has been successfully completed.",
-          variant: "success",
-        });
-        navigate("/login"); // Navigate to the login page after successful enrollment
-      } else {
-        toast({
-          title: "Error in registration ",
-          description: "ENROLLMENT NOT DONE",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error(
-        "Error submitting enrollment:",
-        error.response?.data || error.message
-      );
-      console.error("Error submitting enrollment:", error);
-      alert("An error occurred. Please try again.");
-    }
-  };
 
   const [selectedDate, setSelectedDate] = useState("");
 
-  const handleDateSelect = (date) => {
-    const selectedDate = new Date(date); // Ensure it's a Date object
-    setFormData((prevData) => ({
-      ...prevData,
-      dob: selectedDate, // Store as a Date object
-    }));
-    setSelectedDate(selectedDate);
-    setShowCalendar(false); // Close the calendar
-    console.log("Selected Date:", selectedDate);
-  };
+  
 
   const toggleCalendar = () => {
     setShowCalendar((prev) => !prev); // Toggle calendar visibility
@@ -160,14 +110,6 @@ const Enrollment = () => {
     }
   };
 
-  const getCitiesByState = (state) => {
-    const stateCityMap = {
-      Maharashtra: ["Mumbai", "Pune", "Nagpur"],
-      Karnataka: ["Bangalore", "Mysore", "Hubli"],
-      Gujarat: ["Ahmedabad", "Surat", "Vadodara"],
-    };
-    return stateCityMap[state] || [];
-  };
 
   return (
     <div
@@ -178,7 +120,7 @@ const Enrollment = () => {
     >
       <form
         ref={formRef}
-        onSubmit={handleSubmit}
+        onSubmit={(e)=>{handleSubmit(e,formData,navigate,email)}}
         className="bg-background p-8 border-2 border-accent w-full max-w-lg"
         style={{
           boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 30px 10px",
@@ -277,7 +219,8 @@ const Enrollment = () => {
           </div>
           {showCalendar && (
             <div ref={calendarRef} className="calendar-overlay">
-              <Calendar onDateSelect={handleDateSelect} />
+              <Calendar onDateSelect={(date) => 
+         handleDateSelect(date, setFormData, setSelectedDate, setShowCalendar)} />
             </div>
           )}
         </div>

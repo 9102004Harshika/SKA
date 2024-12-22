@@ -41,7 +41,8 @@ const userSchema = new mongoose.Schema({
     state: { type: String },
     city: { type: String },
     board: { type: String },
-    Class: { type: String },
+    class: { type: String },
+    stream:{type:String,default:null}
   },
   
   createdAt: {
