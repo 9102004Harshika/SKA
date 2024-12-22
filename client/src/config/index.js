@@ -1,3 +1,12 @@
+import {
+  FaBook,
+  FaQuestionCircle,
+  FaFileAlt,
+  FaChalkboardTeacher,
+  FaLightbulb,
+} from "react-icons/fa";
+import { IoSchool } from "react-icons/io5";
+
 export const loginForm = [
   {
     type: "email",
@@ -142,21 +151,21 @@ export const forgotPasswordForm = [
 ];
 
 export const navigationLinksDesktop = [
-  { label: "Courses", link: "/courses" },
-  { label: "Quiz", link: "/quiz" },
-  { label: "Notes", link: "/notes" },
-  { label: "Tuitions", link: "/tuitions" },
-  { label: "Career Guidance", link: "/career-guidance" },
+  { label: "Courses", link: "/courses", icon: <FaBook /> },
+  { label: "Quiz", link: "/quiz", icon: <FaQuestionCircle /> },
+  { label: "Notes", link: "/notes", icon: <FaFileAlt /> },
+  { label: "Tuitions", link: "/tuitions", icon: <FaChalkboardTeacher /> },
+  { label: "Career Guidance", link: "/career-guidance", icon: <FaLightbulb /> },
 ];
 
 export const navigationLinksMobile = [
-  { label: "Courses", link: "/courses" },
-  { label: "Quiz", link: "/quiz" },
-  { label: "Notes", link: "/notes" },
-  { label: "Tuitions", link: "/tuitions" },
-  { label: "Career Guidance", link: "/career-guidance" },
-  { label: "Scholarship", link: "/scholarship" },
-  { label: "Question Paper", link: "/question-paper" },
+  { label: "Courses", link: "/courses", icon: <FaBook /> },
+  { label: "Quiz", link: "/quiz", icon: <FaQuestionCircle /> },
+  { label: "Notes", link: "/notes", icon: <FaFileAlt /> },
+  { label: "Tuitions", link: "/tuitions", icon: <FaChalkboardTeacher /> },
+  { label: "Career Guidance", link: "/career-guidance", icon: <FaLightbulb /> },
+  { label: "Scholarship", link: "/scholarship", icon: <IoSchool /> },
+  { label: "Question Paper", link: "/question-paper", icon: <FaFileAlt /> },
 ];
 
 export const sliderImages = [
