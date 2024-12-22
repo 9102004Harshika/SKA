@@ -11,11 +11,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-creative";
-import { sliderImages } from "../config";
+import { sliderImages } from "../config/index";
 
 const Carousel = () => {
   return (
-    <div className="w-full max-w-full mx-auto mt-2">
+    <div className="w-full max-w-full mt-2 md:mt-2">
       <Swiper
         modules={[Navigation, Pagination, EffectCreative, Autoplay]}
         spaceBetween={50}
@@ -54,13 +54,19 @@ const Carousel = () => {
       >
         {sliderImages.map((image, index) => (
           <SwiperSlide key={index}>
-            <div className="h-64 bg-cover bg-center">
+            <div
+              className="h-[30vh] md:h-[65vh] bg-cover bg-center" // Set height for mobile and desktop
+            >
               <div className="h-full flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
-                <img src={image.src} alt={image.alt} className="w-full" />
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-full object-cover object-center" // Ensures the image maintains its aspect ratio, fills container, and is centered
+                />
                 <a
                   href={image.link}
                   rel="noopener noreferrer"
-                  className="absolute bottom-4 right-4 bg-white text-black rounded-full p-2 shadow-lg hover:text-primary transition"
+                  className="absolute bottom-4 right-4 bg-primary text-background rounded-full p-2 shadow-lg hover:text-primary transition"
                   aria-label={`Visit ${image.alt}`}
                 >
                   <FaExternalLinkAlt size={20} />

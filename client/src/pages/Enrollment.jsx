@@ -8,7 +8,9 @@ import { gsap } from "gsap"; // Import GSAP for animation
 import Calendar from "../ui/calendar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { State, City } from "country-state-city";
-import { handleSubmit,handleDateSelect } from "../logic/enroll/enrollSubmit";
+import { handleSubmit, handleDateSelect } from "../logic/enroll/enrollSubmit";
+import { RadioButton } from "../ui/radioButton"; // Import RadioButton
+
 const Enrollment = () => {
   const [formData, setFormData] = useState({
     mobile: "",
@@ -18,7 +20,9 @@ const Enrollment = () => {
     city: "",
     board: "",
     class: "",
+    gender: "", // Add gender to form data
   });
+
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const [otpSent, setOtpSent] = useState(false);
@@ -62,11 +66,7 @@ const Enrollment = () => {
     alert("OTP has been sent to your mobile number!");
   };
 
-
-
   const [selectedDate, setSelectedDate] = useState("");
-
-  
 
   const toggleCalendar = () => {
     setShowCalendar((prev) => !prev); // Toggle calendar visibility
@@ -109,8 +109,11 @@ const Enrollment = () => {
         return [];
     }
   };
-
-
+  const genderOptions = [
+    { value: 'Male', text: 'Male' },
+    { value: 'Female', text: 'Female' },
+  ];
+ console.log(formData.gender)
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
@@ -120,7 +123,7 @@ const Enrollment = () => {
     >
       <form
         ref={formRef}
-        onSubmit={(e)=>{handleSubmit(e,formData,navigate,email)}}
+        onSubmit={(e) => { handleSubmit(e, formData, navigate, email) }}
         className="bg-background p-8 border-2 border-accent w-full max-w-lg"
         style={{
           boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 30px 10px",
@@ -220,10 +223,26 @@ const Enrollment = () => {
           {showCalendar && (
             <div ref={calendarRef} className="calendar-overlay">
               <Calendar onDateSelect={(date) => 
-         handleDateSelect(date, setFormData, setSelectedDate, setShowCalendar)} />
+                handleDateSelect(date, setFormData, setSelectedDate, setShowCalendar)} />
             </div>
           )}
         </div>
+
+        {/* Gender Selection */}
+        <div className="flex flex-col">
+  <label className="text-sm font-semibold text-navy mb-2">
+    Gender
+  </label>
+  <div className="flex items-center gap-4 mb-2">
+    <RadioButton
+      name="gender"
+      options={genderOptions}
+      checked={formData.gender}
+      onChange={handleChange}
+    />
+  </div>
+</div>
+
 
         {/* State Selection */}
         <div className="mb-4">

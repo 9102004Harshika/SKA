@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FaSearch, FaUserCircle, FaSignOutAlt, FaBars } from "react-icons/fa";
-import { IoMdCloseCircle } from "react-icons/io";
+import { FaSearch, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import logo from "./../images/logo.jpg";
 import { navigationLinksDesktop, navigationLinksMobile } from "../config";
+import { Hamburger } from '../ui/hamburger'; // Import Hamburger component
 
 const logoutLink = { label: "Logout", link: "/logout", icon: FaSignOutAlt };
 
@@ -17,9 +17,9 @@ const Navbar = () => {
       <nav className="bg-primary relative z-50">
         {/* First Row */}
         <div className="flex items-center justify-between px-4 py-2">
-          {/* Menu Icon for Mobile */}
-          <div className="sm:hidden text-background" onClick={toggleMenu}>
-            <FaBars className="text-2xl cursor-pointer" title="Open Menu" />
+          {/* Menu Icon for Mobile - Use Hamburger component */}
+          <div className="sm:hidden text-background mr-2">
+            <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
           </div>
 
           {/* Logo */}
@@ -65,12 +65,12 @@ const Navbar = () => {
           </div>
 
           {/* Icons and Logout (Desktop) */}
-          <div className="hidden sm:flex items-center space-x-4 mr-2">
+          <div className="hidden sm:flex items-center space-x-4 ">
             <button className="text-background" title="Profile">
-              <FaUserCircle className="text-xl" />
+              <FaUserCircle className="text-2xl" /> {/* Increased icon size */}
             </button>
             <button className="text-background" title="Logout">
-              <FaSignOutAlt className="text-xl" />
+              <FaSignOutAlt className="text-2xl" /> {/* Increased icon size */}
             </button>
           </div>
         </div>
@@ -83,10 +83,10 @@ const Navbar = () => {
               placeholder="Type your search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-grow px-2 py-1 bg-transparent text-primary border-b-2 border-accent focus:outline-none"
+              className="flex-grow px-2 py-1 bg-transparent text-primary border-b-2 border-primary focus:outline-none"
             />
             <button
-              className="text-accent ml-2"
+              className="text-primary ml-2"
               onClick={() => alert(`Searching: ${searchQuery}`)}
               title="Search"
             >
@@ -115,14 +115,15 @@ const Navbar = () => {
           className={`sm:hidden fixed top-0 left-0 h-full bg-primary w-64 transform ${
             isMenuOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300 ease-in-out`}
+          style={{
+            boxShadow: isMenuOpen
+              ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px" // Custom box shadow when menu is open
+              : "none", // No shadow when menu is closed
+          }}
         >
-          {/* Close Button */}
+          {/* Close Button using Hamburger Component */}
           <div className="flex justify-end p-4">
-            <IoMdCloseCircle
-              className="text-background text-2xl cursor-pointer hover:text-secondary"
-              onClick={toggleMenu}
-              title="Close Menu"
-            />
+            <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
           </div>
 
           {/* Menu Items */}
