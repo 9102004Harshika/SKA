@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaSearch, FaUserCircle, FaSignOutAlt, FaBars } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
+import { IoMdCloseCircle } from "react-icons/io";
 import logo from "./../images/logo.jpg";
 import { navigationLinksDesktop, navigationLinksMobile } from "../config";
 
@@ -10,35 +10,39 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile Menu Toggle
   const [searchQuery, setSearchQuery] = useState(""); // Search Input Value
 
-  // Toggle Functions
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
     <>
-      {/* Navbar Container */}
       <nav className="bg-primary relative z-50">
         {/* First Row */}
         <div className="flex items-center justify-between px-4 py-2">
-          {/* Bread Crumb Icon for Mobile */}
+          {/* Menu Icon for Mobile */}
           <div className="sm:hidden text-background" onClick={toggleMenu}>
-            <FaBars className="text-2xl cursor-pointer" />
+            <FaBars className="text-2xl cursor-pointer" title="Open Menu" />
           </div>
 
           {/* Logo */}
           <div className="flex-grow text-center sm:text-left">
-            <a href="/home">
+            <a href="/home" className="flex items-center">
               <img
                 src={logo}
                 alt="Company Logo"
                 className="h-10 w-auto inline-block"
               />
+              <span className="text-background font-extrabold text-xl hidden sm:inline ml-5">
+                Shri Kalam Academy
+              </span>
             </a>
           </div>
 
           {/* Profile Button (Mobile) */}
           <div className="sm:hidden text-background">
             <button>
-              <FaUserCircle className="text-2xl cursor-pointer" />
+              <FaUserCircle
+                className="text-2xl cursor-pointer"
+                title="Profile"
+              />
             </button>
           </div>
 
@@ -54,17 +58,18 @@ const Navbar = () => {
             <button
               className="text-background ml-5"
               onClick={() => alert(`Searching: ${searchQuery}`)}
+              title="Search"
             >
               <FaSearch className="text-xl" />
             </button>
           </div>
 
           {/* Icons and Logout (Desktop) */}
-          <div className="hidden sm:flex items-center space-x-4">
-            <button className="text-background">
+          <div className="hidden sm:flex items-center space-x-4 mr-2">
+            <button className="text-background" title="Profile">
               <FaUserCircle className="text-xl" />
             </button>
-            <button className="text-background">
+            <button className="text-background" title="Logout">
               <FaSignOutAlt className="text-xl" />
             </button>
           </div>
@@ -83,6 +88,7 @@ const Navbar = () => {
             <button
               className="text-accent ml-2"
               onClick={() => alert(`Searching: ${searchQuery}`)}
+              title="Search"
             >
               <FaSearch className="text-xl" />
             </button>
@@ -95,9 +101,11 @@ const Navbar = () => {
             <a
               key={index}
               href={item.link}
-              className="text-background px-4 py-2 hover:bg-primary rounded-full"
+              className="text-background flex items-center px-4 py-2 hover:bg-primary rounded-full space-x-2"
+              title={item.label}
             >
-              {item.label}
+              {item.icon}
+              <span>{item.label}</span>
             </a>
           ))}
         </div>
@@ -110,9 +118,10 @@ const Navbar = () => {
         >
           {/* Close Button */}
           <div className="flex justify-end p-4">
-            <IoClose
+            <IoMdCloseCircle
               className="text-background text-2xl cursor-pointer hover:text-secondary"
               onClick={toggleMenu}
+              title="Close Menu"
             />
           </div>
 
@@ -123,18 +132,21 @@ const Navbar = () => {
               <a
                 key={index}
                 href={item.link}
-                className="text-background px-4 py-2 hover:bg-accent rounded-full"
+                className="text-background flex items-center px-4 py-2 hover:bg-accent rounded-full space-x-2"
+                title={item.label}
               >
-                {item.label}
+                {item.icon}
+                <span>{item.label}</span>
               </a>
             ))}
             {/* Logout Button */}
             <a
               href={logoutLink.link}
-              className="text-background px-4 py-2 hover:bg-error rounded-full flex items-center"
+              className="text-background flex items-center px-4 py-2 hover:bg-error rounded-full space-x-2"
+              title={logoutLink.label}
             >
-              <logoutLink.icon className="text-background inline-block mr-2" />
-              {logoutLink.label}
+              <logoutLink.icon className="text-background" />
+              <span>{logoutLink.label}</span>
             </a>
           </div>
         </div>
