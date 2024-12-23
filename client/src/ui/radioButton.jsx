@@ -33,6 +33,7 @@ const StyledWrapper = styled.div`
   .radio-input {
     display: flex;
     gap: 16px; /* Space between the radio buttons */
+    flex-wrap: wrap; /* Allow wrapping of radio buttons */
   }
 
   .radio-b {
@@ -63,7 +64,7 @@ const StyledWrapper = styled.div`
     width: 26px;
     height: 26px;
     border: 2px solid #000080;
-    border-radius: 0%;
+    border-radius: 15%;
     transition: all 0.3s ease;
     overflow: hidden;
   }
@@ -100,7 +101,26 @@ const StyledWrapper = styled.div`
     font-size: 15px;
     color: #000080;
     font-weight: 600;
+    white-space:nowrap
+  }
+
+  /* For laptops and above (screens above 768px), display 3 radio buttons in one line */
+  @media (min-width: 768px) {
+    .radio-b {
+      width: calc(28.33% - 10px); /* Each radio button takes up 1/3 of the space */
+    }
+  }
+
+  /* For smaller screens (below 768px), show 2 radio buttons per line */
+  @media (max-width: 768px) {
+    .radio-b {
+      width: calc(50% - 8px); /* Each radio button takes up 50% of the space */
+      margin-bottom: 10px; /* Add some space between rows */
+    }
   }
 `;
 
 export { RadioButton };
+
+
+;

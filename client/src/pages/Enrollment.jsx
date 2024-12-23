@@ -10,6 +10,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { State, City } from "country-state-city";
 import { handleSubmit, handleDateSelect } from "../logic/enroll/enrollSubmit";
 import { RadioButton } from "../ui/radioButton"; // Import RadioButton
+import { Checkbox } from "../ui/checkBox"; // Import Checkbox
 
 const Enrollment = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +21,13 @@ const Enrollment = () => {
     city: "",
     board: "",
     class: "",
+    stream:"",
     gender: "", // Add gender to form data
+
   });
+
+  const [isCheckedTerms, setIsCheckedTerms] = useState(false); // State for the "Agree to Terms" checkbox
+  const [isCheckedPrivacy, setIsCheckedPrivacy] = useState(false); // State for the "Agree to Privacy" checkbox
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -98,9 +104,11 @@ const Enrollment = () => {
   const getClassOptions = () => {
     switch (formData.board) {
       case "IGCSE":
+        return ["7th", "8th", "9th", "10th", "11th", "12th"]
       case "IB":
         return ["7th", "8th", "9th", "10th", "11th", "12th"];
       case "CBSE":
+        return ["9th", "10th", "11th", "12th"]
       case "SSC":
         return ["9th", "10th", "11th", "12th"];
       case "ICSC":
@@ -109,11 +117,20 @@ const Enrollment = () => {
         return [];
     }
   };
+
   const genderOptions = [
-    { value: 'Male', text: 'Male' },
-    { value: 'Female', text: 'Female' },
+    { value: "Male", text: "Male" },
+    { value: "Female", text: "Female" },
+    { value: "Prefer Not To Say", text: "Prefer Not To Say" },
   ];
- console.log(formData.gender)
+
+  // Handle checkbox changes for gender preferences
+  const handleCheckboxChange = (updatedValues) => {
+    setFormData({ ...formData, genderPreferences: updatedValues });
+  };
+  const streamOptions = ["Science", "Commerce", "Arts"];
+
+
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
@@ -123,7 +140,9 @@ const Enrollment = () => {
     >
       <form
         ref={formRef}
-        onSubmit={(e) => { handleSubmit(e, formData, navigate, email) }}
+        onSubmit={(e) => {
+          handleSubmit(e, formData, navigate, email,isCheckedTerms,isCheckedPrivacy)
+        }}
         className="bg-background p-8 border-2 border-accent w-full max-w-lg"
         style={{
           boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 30px 10px",
@@ -190,10 +209,7 @@ const Enrollment = () => {
 
         {/* Date of Birth */}
         <div className="relative-container mb-4">
-          <label
-            htmlFor="dob"
-            className="block text-sm font-semibold text-navy"
-          >
+          <label htmlFor="dob" className="block text-sm font-semibold text-navy">
             Date of Birth
           </label>
           <div className="flex items-center">
@@ -203,11 +219,7 @@ const Enrollment = () => {
               name="dob"
               type="text"
               placeholder="Select your date of birth"
-              value={
-                formData.dob instanceof Date
-                  ? formData.dob.toLocaleDateString()
-                  : ""
-              }
+              value={formData.dob instanceof Date ? formData.dob.toLocaleDateString() : ""}
               readOnly
               onClick={toggleCalendar}
               required
@@ -222,34 +234,30 @@ const Enrollment = () => {
           </div>
           {showCalendar && (
             <div ref={calendarRef} className="calendar-overlay">
-              <Calendar onDateSelect={(date) => 
-                handleDateSelect(date, setFormData, setSelectedDate, setShowCalendar)} />
+              <Calendar
+                onDateSelect={(date) =>
+                  handleDateSelect(date, setFormData, setSelectedDate, setShowCalendar)
+                }
+              />
             </div>
           )}
         </div>
 
         {/* Gender Selection */}
         <div className="flex flex-col">
-  <label className="text-sm font-semibold text-navy mb-2">
-    Gender
-  </label>
-  <div className="flex items-center gap-4 mb-2">
-    <RadioButton
-      name="gender"
-      options={genderOptions}
-      checked={formData.gender}
-      onChange={handleChange}
-    />
-  </div>
-</div>
-
-
+          <label className="text-sm font-semibold text-navy mb-2">Gender</label>
+          <div className="flex items-center gap-4 mb-2">
+            <RadioButton
+              name="gender"
+              options={genderOptions}
+              checked={formData.gender}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
         {/* State Selection */}
         <div className="mb-4">
-          <label
-            htmlFor="state"
-            className="block text-sm font-semibold text-navy"
-          >
+          <label htmlFor="state" className="block text-sm font-semibold text-navy">
             State
           </label>
           <Select
@@ -266,84 +274,93 @@ const Enrollment = () => {
         {/* City Selection */}
         {formData.state && (
           <div className="mb-4">
-            <label
-              htmlFor="city"
-              className="block text-sm font-semibold text-navy"
-            >
+            <label htmlFor="city" className="block text-sm font-semibold text-navy">
               City
             </label>
             <Select
               menuTitle="Select City"
               onClick={() => setShowCalendar(false)}
               submenuItems={cities.map((city) => city.name)}
-              onSelect={(cityName) =>
-                setFormData({ ...formData, city: cityName })
-              }
+              onSelect={(cityName) => {
+                const selectedCity = cities.find((c) => c.name === cityName);
+                setFormData({ ...formData, city: selectedCity.name });
+              }}
             />
           </div>
         )}
 
         {/* Board Selection */}
         <div className="mb-4">
-          <label
-            htmlFor="board"
-            className="block text-sm font-semibold text-navy"
-          >
-            Board of Education
+          <label htmlFor="board" className="block text-sm font-semibold text-navy">
+            Board
           </label>
           <Select
             menuTitle="Select Board"
             onClick={() => setShowCalendar(false)}
-            submenuItems={["IGCSE", "IB", "CBSE", "SSC", "ICSC"]}
-            onSelect={(item) =>
-              setFormData({ ...formData, board: item, class: "" })
-            }
+            submenuItems={["CBSE", "ICSE", "IGCSE", "IB", "SSC"]}
+            onSelect={(board) => {
+              setFormData({ ...formData, board, class: "" });
+            }}
           />
         </div>
 
         {/* Class Selection */}
         {formData.board && (
           <div className="mb-4">
-            <label
-              htmlFor="class"
-              className="block text-sm font-semibold text-navy"
-            >
+            <label htmlFor="class" className="block text-sm font-semibold text-navy">
               Class
             </label>
             <Select
               menuTitle="Select Class"
               onClick={() => setShowCalendar(false)}
               submenuItems={getClassOptions()}
-              onSelect={(item) => setFormData({ ...formData, class: item })}
+              onSelect={(className) => setFormData({ ...formData, class: className })}
             />
           </div>
         )}
 
-        {/* Medium or Stream */}
-        {formData.class === "11th" || formData.class === "12th" ? (
-          <div className="mb-4">
-            <label
-              htmlFor="stream"
-              className="block text-sm font-semibold text-navy"
-            >
-              Stream
-            </label>
-            <Select
-              menuTitle="Select Stream"
-              submenuItems={["Science", "Commerce", "Arts"]}
-              onSelect={(item) => setFormData({ ...formData, stream: item })}
-            />
-          </div>
-        ) : null}
-
-        {/* Submit Button */}
-        <Button
-          text="Submit"
-          size="lg"
-          variant="accent"
-          type="submit"
-          className={"mt-6"}
+{(formData.class === "11th" || formData.class === "12th") && (
+  <div className="mb-4">
+    <label htmlFor="stream" className="block text-sm font-semibold text-navy">
+      Stream
+    </label>
+    <Select
+      menuTitle="Select Stream"
+      onClick={() => setShowCalendar(false)}
+      submenuItems={streamOptions}
+      onSelect={(stream) => setFormData({ ...formData, stream })}
+    />
+  </div>
+)}
+        {/* Agree to Terms Checkbox */}
+        <Checkbox
+          text={
+            <span>
+              I Agree to the{" "}
+              <a href="/terms-and-conditions" className="text-accent">
+                Terms and Conditions .
+              </a>
+            </span>
+          }
+          checked={isCheckedTerms}
+          onChange={setIsCheckedTerms} // Handle checkbox state change
         />
+
+        {/* Agree to Privacy Checkbox */}
+        <Checkbox
+          text={
+            <span>
+              I Agree to the{" "}
+              <a href="/privacy-policies" className="text-accent">
+                Privacy Policies .
+              </a>
+            </span>
+          }
+          checked={isCheckedPrivacy}
+          onChange={setIsCheckedPrivacy} // Handle checkbox state change
+        />
+
+        <Button text="Submit" size="lg" variant="accent" type="submit" />
       </form>
     </div>
   );

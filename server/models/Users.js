@@ -42,7 +42,8 @@ const userSchema = new mongoose.Schema({
     city: { type: String },
     board: { type: String },
     class: { type: String },
-    stream:{type:String,default:null}
+    stream:{type:String,default:null},
+    gender:{type:String},
   },
   
   createdAt: {

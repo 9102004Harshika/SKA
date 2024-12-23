@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { FaSearch, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import logo from "./../images/logo.jpg";
 import { navigationLinksDesktop, navigationLinksMobile } from "../config";
-import { Hamburger } from '../ui/hamburger'; // Import Hamburger component
+import { Hamburger } from "../ui/hamburger"; // Import Hamburger component
+import Tooltip from "../ui/tooltip"; // Import Tooltip component
 
 const logoutLink = { label: "Logout", link: "/logout", icon: FaSignOutAlt };
 
@@ -39,10 +40,7 @@ const Navbar = () => {
           {/* Profile Button (Mobile) */}
           <div className="sm:hidden text-background">
             <button>
-              <FaUserCircle
-                className="text-2xl cursor-pointer"
-                title="Profile"
-              />
+              <FaUserCircle className="text-2xl cursor-pointer" />
             </button>
           </div>
 
@@ -58,20 +56,27 @@ const Navbar = () => {
             <button
               className="text-background ml-5"
               onClick={() => alert(`Searching: ${searchQuery}`)}
-              title="Search"
             >
               <FaSearch className="text-xl" />
             </button>
           </div>
 
           {/* Icons and Logout (Desktop) */}
-          <div className="hidden sm:flex items-center space-x-4 ">
-            <button className="text-background" title="Profile">
-              <FaUserCircle className="text-2xl" /> {/* Increased icon size */}
-            </button>
-            <button className="text-background" title="Logout">
-              <FaSignOutAlt className="text-2xl" /> {/* Increased icon size */}
-            </button>
+          <div className="hidden sm:flex items-center space-x-4">
+            <div className="relative group">
+              <button className="text-background">
+                <FaUserCircle className="text-2xl" />
+              </button>
+              {/* Tooltip */}
+              <Tooltip tooltipText="Profile" />
+            </div>
+            <div className="relative group">
+              <button className="text-background">
+                <FaSignOutAlt className="text-2xl" />
+              </button>
+              {/* Tooltip */}
+              <Tooltip tooltipText="Logout" />
+            </div>
           </div>
         </div>
 
@@ -88,7 +93,6 @@ const Navbar = () => {
             <button
               className="text-primary ml-2"
               onClick={() => alert(`Searching: ${searchQuery}`)}
-              title="Search"
             >
               <FaSearch className="text-xl" />
             </button>
@@ -102,7 +106,6 @@ const Navbar = () => {
               key={index}
               href={item.link}
               className="text-background flex items-center px-4 py-2 hover:bg-primary rounded-full space-x-2"
-              title={item.label}
             >
               {item.icon}
               <span>{item.label}</span>
@@ -134,7 +137,6 @@ const Navbar = () => {
                 key={index}
                 href={item.link}
                 className="text-background flex items-center px-4 py-2 hover:bg-accent rounded-full space-x-2"
-                title={item.label}
               >
                 {item.icon}
                 <span>{item.label}</span>
@@ -144,7 +146,6 @@ const Navbar = () => {
             <a
               href={logoutLink.link}
               className="text-background flex items-center px-4 py-2 hover:bg-error rounded-full space-x-2"
-              title={logoutLink.label}
             >
               <logoutLink.icon className="text-background" />
               <span>{logoutLink.label}</span>

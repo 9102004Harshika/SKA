@@ -142,7 +142,7 @@ const loginUser = async (req, res) => {
 };
 const enrollUser = async (req, res) => {
   try {
-    const { email, mobile, dob, state, city, board, class:StudentClass ,stream} = req.body;
+    const { email, mobile, dob, state, city, board, class:StudentClass ,stream,gender} = req.body;
 
     // Validate the request data
     
@@ -166,6 +166,7 @@ const enrollUser = async (req, res) => {
       city,
       board,
       class:StudentClass,
+      gender
     };
     if (StudentClass === "11th" || StudentClass === "12th") {
       enrollmentDetails.stream = stream;

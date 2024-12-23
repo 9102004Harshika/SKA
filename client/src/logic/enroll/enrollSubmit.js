@@ -1,8 +1,27 @@
 import axios from "axios";
 import { toast } from "../../components/use-toast";
-export const handleSubmit = async (e,formData,navigate,email) => {
+export const handleSubmit = async (e,formData,navigate,email,isCheckedTerms,isCheckedPrivacy) => {
     e.preventDefault();
+    if (!formData.gender) {
+      toast({
+        title: "Gender field required",
+        description: "Please select your gender from the available options before proceeding with the enrollment process.",
+        variant: "destructive",
+      });
+      return; // Prevent form submission if gender is not selected
+    }
+    else if (!isCheckedTerms || !isCheckedPrivacy) {
+      toast({
+        title: "Please agree to the Terms and Conditions and Privacy Policies to proceed.",
+        description:
+          "Please ensure that you agree with terms and conditions and privacy policies to proceed",
+        variant: "destructive",
+      });
+      return; // Prevent form submission if checkboxes are not checked
+    }
 
+    // Proceed with form submission (existing submit logic)
+    handleSubmit(e, formData, navigate, email);
     // Send enrollment data to the backend
     const enrollmentData = { ...formData, email };
     console.log(enrollmentData);
