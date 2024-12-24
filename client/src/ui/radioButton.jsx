@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const RadioButton = ({ name, options, checked, onChange }) => {
   return (
@@ -53,7 +53,7 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 12px; /* Space between the circle and the text */
-    font-size: 15px;
+    font-size: 14px;
     color: #000080;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -61,8 +61,8 @@ const StyledWrapper = styled.div`
 
   .radio-b__custom {
     position: relative;
-    width: 26px;
-    height: 26px;
+    width: 20px;
+    height: 20px;
     border: 2px solid #000080;
     border-radius: 15%;
     transition: all 0.3s ease;
@@ -76,7 +76,11 @@ const StyledWrapper = styled.div`
     width: 0;
     height: 0;
     border-radius: 10px;
-    background: linear-gradient(180deg, rgba(244,162,97,1) 41%, rgba(183,225,255,1) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(244, 162, 97, 1) 41%,
+      rgba(183, 225, 255, 1) 100%
+    );
     transform: translate(-50%, -50%);
     transition: all 0.3s ease;
   }
@@ -94,20 +98,26 @@ const StyledWrapper = styled.div`
 
   .radio-b__input:hover + .radio-b__label .radio-b__custom {
     transform: scale(0.85);
-    color: linear-gradient(0deg, rgba(0, 230, 118, 1) 0%, rgba(255, 215, 0, 1) 100%);
+    color: linear-gradient(
+      0deg,
+      rgba(0, 230, 118, 1) 0%,
+      rgba(255, 215, 0, 1) 100%
+    );
   }
 
   .radio-b__text {
     font-size: 15px;
     color: #000080;
     font-weight: 600;
-    white-space:nowrap
+    white-space: nowrap;
   }
 
   /* For laptops and above (screens above 768px), display 3 radio buttons in one line */
   @media (min-width: 768px) {
     .radio-b {
-      width: calc(28.33% - 10px); /* Each radio button takes up 1/3 of the space */
+      width: calc(
+        28.33% - 10px
+      ); /* Each radio button takes up 1/3 of the space */
     }
   }
 
@@ -121,6 +131,3 @@ const StyledWrapper = styled.div`
 `;
 
 export { RadioButton };
-
-
-;

@@ -21,10 +21,11 @@ const Navbar = () => {
           {/* Menu Icon for Mobile - Use Hamburger component */}
           <div className="sm:hidden text-background mr-2">
             <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+            {/* <Tooltip tooltipText="Profile" /> */}
           </div>
 
           {/* Logo */}
-          <div className="flex-grow text-center sm:text-left">
+          <div className="sm:text-left">
             <a href="/home" className="flex items-center">
               <img
                 src={logo}
@@ -40,18 +41,19 @@ const Navbar = () => {
           {/* Profile Button (Mobile) */}
           <div className="sm:hidden text-background">
             <button>
-              <FaUserCircle className="text-2xl cursor-pointer" />
+              <FaUserCircle className="text-3xl cursor-pointer" />
             </button>
+            {/* <Tooltip tooltipText="Profile" /> */}
           </div>
 
           {/* Search Bar (Desktop) */}
-          <div className="hidden sm:flex items-center border-b-[1px] border-secondary pr-2 mr-5">
+          <div className="hidden sm:flex items-center border-b-[1px] border-background pr-2 mr-5">
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-2 py-1 bg-transparent text-secondary focus:outline-none text-blue"
+              className="px-2 py-1 bg-transparent text-background focus:outline-none placeholder:text-background"
             />
             <button
               className="text-background ml-5"
@@ -88,7 +90,7 @@ const Navbar = () => {
               placeholder="Type your search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-grow px-2 py-1 bg-transparent text-primary border-b-2 border-primary focus:outline-none"
+              className="flex-grow px-2 py-1 bg-transparent text-primary border-b-2 border-primary focus:outline-none placeholder:text-primary"
             />
             <button
               className="text-primary ml-2"

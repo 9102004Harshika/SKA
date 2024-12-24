@@ -199,5 +199,38 @@ export const sliderImages = [
     alt: "Image 6",
     link: "/home",
   },
-  
 ];
+
+// Course card configurations:
+export const courseConfig = {
+  courses: [
+    {
+      thumbnail: "https://via.placeholder.com/300x180",
+      title: "SSC MATHEMATICS 5100+ Questions",
+      instructor: "By RAMO SIR",
+      details: [
+        "Statistics & Probability included",
+        "11 Practice sets for SSC CGL Tier - II (On New Pattern)",
+      ],
+      notesType: "NOTES COMBO",
+      validity: "Valid for 18 months",
+      price: 499,
+      originalPrice: 999,
+      discount: "50% OFF TILL 31 DEC",
+    },
+    {
+      thumbnail: "https://via.placeholder.com/300x180",
+      title: "General Science for SSC",
+      instructor: "By Shyam Sir",
+      details: [
+        "Physics, Chemistry, and Biology covered",
+        "10 Practice Sets for SSC Exams",
+      ],
+      notesType: "NOTES COMBO",
+      validity: "Valid for 12 months",
+      price: 599,
+      originalPrice: 1099,
+      discount: "45% OFF TILL 31 DEC",
+    },
+  ],
+};
