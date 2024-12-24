@@ -21,9 +21,8 @@ const Enrollment = () => {
     city: "",
     board: "",
     class: "",
-    stream:"",
+    stream: "",
     gender: "", // Add gender to form data
-
   });
 
   const [isCheckedTerms, setIsCheckedTerms] = useState(false); // State for the "Agree to Terms" checkbox
@@ -104,11 +103,11 @@ const Enrollment = () => {
   const getClassOptions = () => {
     switch (formData.board) {
       case "IGCSE":
-        return ["7th", "8th", "9th", "10th", "11th", "12th"]
+        return ["7th", "8th", "9th", "10th", "11th", "12th"];
       case "IB":
         return ["7th", "8th", "9th", "10th", "11th", "12th"];
       case "CBSE":
-        return ["9th", "10th", "11th", "12th"]
+        return ["9th", "10th", "11th", "12th"];
       case "SSC":
         return ["9th", "10th", "11th", "12th"];
       case "ICSC":
@@ -130,7 +129,6 @@ const Enrollment = () => {
   };
   const streamOptions = ["Science", "Commerce", "Arts"];
 
-
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
@@ -141,7 +139,14 @@ const Enrollment = () => {
       <form
         ref={formRef}
         onSubmit={(e) => {
-          handleSubmit(e, formData, navigate, email,isCheckedTerms,isCheckedPrivacy)
+          handleSubmit(
+            e,
+            formData,
+            navigate,
+            email,
+            isCheckedTerms,
+            isCheckedPrivacy
+          );
         }}
         className="bg-background p-8 border-2 border-accent w-full max-w-lg"
         style={{
@@ -209,7 +214,10 @@ const Enrollment = () => {
 
         {/* Date of Birth */}
         <div className="relative-container mb-4">
-          <label htmlFor="dob" className="block text-sm font-semibold text-navy">
+          <label
+            htmlFor="dob"
+            className="block text-sm font-semibold text-navy"
+          >
             Date of Birth
           </label>
           <div className="flex items-center">
@@ -219,7 +227,11 @@ const Enrollment = () => {
               name="dob"
               type="text"
               placeholder="Select your date of birth"
-              value={formData.dob instanceof Date ? formData.dob.toLocaleDateString() : ""}
+              value={
+                formData.dob instanceof Date
+                  ? formData.dob.toLocaleDateString()
+                  : ""
+              }
               readOnly
               onClick={toggleCalendar}
               required
@@ -236,7 +248,12 @@ const Enrollment = () => {
             <div ref={calendarRef} className="calendar-overlay">
               <Calendar
                 onDateSelect={(date) =>
-                  handleDateSelect(date, setFormData, setSelectedDate, setShowCalendar)
+                  handleDateSelect(
+                    date,
+                    setFormData,
+                    setSelectedDate,
+                    setShowCalendar
+                  )
                 }
               />
             </div>
@@ -244,9 +261,9 @@ const Enrollment = () => {
         </div>
 
         {/* Gender Selection */}
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-4">
           <label className="text-sm font-semibold text-navy mb-2">Gender</label>
-          <div className="flex items-center gap-4 mb-2">
+          <div className="flex items-center gap-4">
             <RadioButton
               name="gender"
               options={genderOptions}
@@ -257,7 +274,10 @@ const Enrollment = () => {
         </div>
         {/* State Selection */}
         <div className="mb-4">
-          <label htmlFor="state" className="block text-sm font-semibold text-navy">
+          <label
+            htmlFor="state"
+            className="block text-sm font-semibold text-navy"
+          >
             State
           </label>
           <Select
@@ -274,7 +294,10 @@ const Enrollment = () => {
         {/* City Selection */}
         {formData.state && (
           <div className="mb-4">
-            <label htmlFor="city" className="block text-sm font-semibold text-navy">
+            <label
+              htmlFor="city"
+              className="block text-sm font-semibold text-navy"
+            >
               City
             </label>
             <Select
@@ -291,7 +314,10 @@ const Enrollment = () => {
 
         {/* Board Selection */}
         <div className="mb-4">
-          <label htmlFor="board" className="block text-sm font-semibold text-navy">
+          <label
+            htmlFor="board"
+            className="block text-sm font-semibold text-navy"
+          >
             Board
           </label>
           <Select
@@ -307,31 +333,39 @@ const Enrollment = () => {
         {/* Class Selection */}
         {formData.board && (
           <div className="mb-4">
-            <label htmlFor="class" className="block text-sm font-semibold text-navy">
+            <label
+              htmlFor="class"
+              className="block text-sm font-semibold text-navy"
+            >
               Class
             </label>
             <Select
               menuTitle="Select Class"
               onClick={() => setShowCalendar(false)}
               submenuItems={getClassOptions()}
-              onSelect={(className) => setFormData({ ...formData, class: className })}
+              onSelect={(className) =>
+                setFormData({ ...formData, class: className })
+              }
             />
           </div>
         )}
 
-{(formData.class === "11th" || formData.class === "12th") && (
-  <div className="mb-4">
-    <label htmlFor="stream" className="block text-sm font-semibold text-navy">
-      Stream
-    </label>
-    <Select
-      menuTitle="Select Stream"
-      onClick={() => setShowCalendar(false)}
-      submenuItems={streamOptions}
-      onSelect={(stream) => setFormData({ ...formData, stream })}
-    />
-  </div>
-)}
+        {(formData.class === "11th" || formData.class === "12th") && (
+          <div className="mb-4">
+            <label
+              htmlFor="stream"
+              className="block text-sm font-semibold text-navy"
+            >
+              Stream
+            </label>
+            <Select
+              menuTitle="Select Stream"
+              onClick={() => setShowCalendar(false)}
+              submenuItems={streamOptions}
+              onSelect={(stream) => setFormData({ ...formData, stream })}
+            />
+          </div>
+        )}
         {/* Agree to Terms Checkbox */}
         <Checkbox
           text={
