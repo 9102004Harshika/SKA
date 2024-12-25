@@ -9,7 +9,7 @@ import {
 } from "../config";
 import { Hamburger } from "../ui/hamburger";
 import Tooltip from "../ui/tooltip"; // Import Tooltip component
-
+import { DropDown } from "../ui/dropdownMenu";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile Menu Toggle
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown Toggle
@@ -88,39 +88,23 @@ const Navbar = () => {
             </div>
 
             {/* Triple Dot Dropdown */}
-            <div className="hidden sm:block relative">
-              <button
-                onClick={toggleMoreItemsDropdown}
-                className="focus:outline-none"
-              >
-                <FaEllipsisV className="text-2xl cursor-pointer" />
-              </button>
+        {/* Triple Dot Dropdown */}
+<div className="hidden sm:block relative">
+  <button
+    onClick={toggleMoreItemsDropdown}
+    className="focus:outline-none"
+  >
+    <FaEllipsisV className="text-2xl cursor-pointer" />
+  </button>
 
-              {isMoreItemsDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-secondary shadow-lg z-50 rounded-xl overflow-hidden">
-                  <ul>
-                    {navigationLinksMoreItems.map((item, index) => (
-                      <li
-                        key={index}
-                        className={`py-2 px-4 text-primary ${
-                          item.label === "Logout"
-                            ? "hover:bg-error"
-                            : "hover:bg-primary hover:text-secondary"
-                        } flex items-center`}
-                      >
-                        <a
-                          href={item.link}
-                          className="text-inherit flex items-center"
-                        >
-                          <span className="mr-2">{item.icon}</span>
-                          {item.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+  {isMoreItemsDropdownOpen && (
+    <div className="absolute right-0 mt-2  z-30 rounded-xl overflow-hidden">
+      {/* Replace this with your custom DropDown component */}
+      <DropDown />
+    </div>
+  )}
+</div>
+
           </div>
         </div>
 
