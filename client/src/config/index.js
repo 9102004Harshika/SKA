@@ -183,9 +183,10 @@ export const navigationLinksMobile = [
 
 // Notifications Example
 export const notificationItems = [
-  { title: "New Message", icon: <FaEnvelope />, link: "/messages" },
-  { title: "New Comment", icon: <FaComment />, link: "/comments" },
-  { title: "Server Alert", icon: <FaExclamationTriangle />, link: "/alerts" },
+  { title: "New Message",description:"This is a New Message from Shree Kalam Academy", icon: <FaEnvelope />, link: "/messages" },
+  { title: "New Comment",description:"This is a New Comment from Shree Kalam Academy", icon: <FaComment />, link: "/comments" },
+  { title: "Server Alert",description:"This is a Server Alert from Shree Kalam Academy", icon: <FaExclamationTriangle />, link: "/alerts" },
+  { title: "Server Alert",description:"This is a Server Alert from Shree Kalam Academy", icon: <FaExclamationTriangle />, link: "/alerts" }
 ];
 
 export const sliderImages = [

@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { FaSearch, FaEllipsisV, FaBell } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from "react";
+import { FaSearch, FaEllipsisV } from "react-icons/fa";
 import logo from "./../images/logo.jpg";
 import {
   navigationLinksDesktop,
   navigationLinksMobile,
-  navigationLinksMoreItems,
   notificationItems,
 } from "../config";
 import { Hamburger } from "../ui/hamburger";
 import Tooltip from "../ui/tooltip"; // Import Tooltip component
-import { DropDown } from "../ui/dropdownMenu";
+import { DropDown, NotificationDropDown } from "../ui/dropdownMenu";
+import { Notification } from "../ui/notification"; // Import your new notification button component
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile Menu Toggle
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown Toggle
@@ -17,6 +18,31 @@ const Navbar = () => {
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false); // Notification Dropdown Toggle
   const [isMoreItemsDropdownOpen, setIsMoreItemsDropdownOpen] = useState(false); // More Items Dropdown Toggle
+
+  // References for dropdowns
+  const notificationDropdownRef = useRef(null);
+  const moreItemsDropdownRef = useRef(null);
+
+  // Close dropdowns if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notificationDropdownRef.current &&
+        !notificationDropdownRef.current.contains(event.target)
+      ) {
+        setIsNotificationDropdownOpen(false);
+      }
+      if (
+        moreItemsDropdownRef.current &&
+        !moreItemsDropdownRef.current.contains(event.target)
+      ) {
+        setIsMoreItemsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
@@ -51,60 +77,49 @@ const Navbar = () => {
 
           {/* Notification Icon and Triple Dot Dropdown */}
           <div className="text-background flex items-center space-x-4 relative">
-            {/* Notification Bell */}
-            <div className="relative">
-              <button
-                onClick={toggleNotificationDropdown}
-                className="focus:outline-none relative"
-              >
-                <FaBell className="text-2xl cursor-pointer" />
-                {/* Badge for notifications */}
-                <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-error text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
-                  3 {/* Dynamic count */}
-                </span>
-              </button>
-
+            {/* Custom Notification Button */}
+            <div className="relative" ref={notificationDropdownRef}>
+              <Notification onClick={toggleNotificationDropdown} /> {/* Use your custom Button component */}
               {/* Notifications Dropdown */}
               {isNotificationDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-background shadow-lg z-50 rounded-xl overflow-hidden">
+                <div
+                  className="absolute -right-5 rounded-xl overflow-hidden"
+                  style={{
+                    boxShadow: isNotificationDropdownOpen
+                      ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px" // Custom box shadow when menu is open
+                      : "none", // No shadow when menu is closed
+                  }}
+                >
                   <ul>
-                    {notificationItems.map((item, index) => (
-                      <li
-                        key={index}
-                        className="py-2 px-4 text-primary hover:bg-primary hover:text-secondary flex items-center"
-                      >
-                        <a
-                          href={item.link}
-                          className="text-inherit flex items-center w-full"
-                        >
-                          <span className="mr-2">{item.icon}</span>
-                          {item.title}
-                        </a>
-                      </li>
-                    ))}
+                    <NotificationDropDown />
                   </ul>
                 </div>
               )}
             </div>
 
             {/* Triple Dot Dropdown */}
-        {/* Triple Dot Dropdown */}
-<div className="hidden sm:block relative">
-  <button
-    onClick={toggleMoreItemsDropdown}
-    className="focus:outline-none"
-  >
-    <FaEllipsisV className="text-2xl cursor-pointer" />
-  </button>
+            <div className="hidden sm:block relative" ref={moreItemsDropdownRef}>
+              <button
+                onClick={toggleMoreItemsDropdown}
+                className="focus:outline-none"
+              >
+                <FaEllipsisV className="text-xl cursor-pointer" />
+              </button>
 
-  {isMoreItemsDropdownOpen && (
-    <div className="absolute right-0 mt-2  z-30 rounded-xl overflow-hidden">
-      {/* Replace this with your custom DropDown component */}
-      <DropDown />
-    </div>
-  )}
-</div>
-
+              {isMoreItemsDropdownOpen && (
+                <div
+                  className="absolute right-0 mt-2 z-30 rounded-xl overflow-hidden"
+                  style={{
+                    boxShadow: isMoreItemsDropdownOpen
+                      ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px" // Custom box shadow when menu is open
+                      : "none", // No shadow when menu is closed
+                  }}
+                >
+                  {/* Replace this with your custom DropDown component */}
+                  <DropDown />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -147,6 +162,11 @@ const Navbar = () => {
           className={`sm:hidden fixed top-0 left-0 h-full bg-primary w-64 transform ${
             isMenuOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300 ease-in-out`}
+          style={{
+            boxShadow: isMenuOpen
+              ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px" // Custom box shadow when menu is open
+              : "none", // No shadow when menu is closed
+          }}
         >
           {/* Close Button using Hamburger Component */}
           <div className="flex justify-end p-4">
@@ -162,7 +182,9 @@ const Navbar = () => {
                 key={index}
                 href={item.link}
                 className={`text-background flex items-center px-4 py-2 rounded-full space-x-2 ${
-                  item.label === "Logout" ? "hover:bg-error" : "hover:bg-accent"
+                  item.label === "Logout"
+                    ? "hover:bg-error"
+                    : "hover:bg-accent"
                 }`}
               >
                 {item.icon}

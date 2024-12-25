@@ -1,6 +1,8 @@
+import { notificationItems } from '../config'; // Assuming you have notificationItems in your config
 import React from 'react';
 import styled from 'styled-components';
 import { navigationLinksMoreItems } from '../config';
+import { useNavigate } from 'react-router-dom';
 const DropDown = () => {
   return (
     <StyledWrapper>
@@ -20,6 +22,49 @@ const DropDown = () => {
   );
 }
 
+
+
+const NotificationDropDown = () => {
+  const navigate=useNavigate()
+  // Define a limit for visible notifications
+  const visibleLimit = 3;
+  const visibleNotifications = notificationItems.slice(0, visibleLimit);
+  const hasMore = notificationItems.length > visibleLimit;
+
+  return (
+    <StyledWrapper>
+      <div className="dropdown-container">
+        {/* Dropdown Header */}
+        <div className="header">
+          <p>Notifications</p>
+          <button className="mark-as-read">Mark as Read</button>
+        </div>
+
+        {/* Notifications List */}
+        <div className="notifications">
+          {visibleNotifications.map((item, index) => (
+            <div key={index} className="notification-item">
+              <div className="notification-icon">{item.icon}</div>
+              <div className="notification-content">
+                <a href={item.link} className="notification-link">
+                  {item.title}
+                </a>
+                <p className="notification-description">{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* "View More" Button */}
+        {hasMore && (
+          <div className="view-more-container">
+            <button className="view-more" onClick={()=>navigate('/notification')}>View All</button>
+          </div>
+        )}
+      </div>
+    </StyledWrapper>
+  );
+};
 const StyledWrapper = styled.div`
   .input {
     display: flex;
@@ -148,12 +193,124 @@ const StyledWrapper = styled.div`
     
 
   .input:hover > :not(.value:hover, .logout:hover)  {
-    transition: 300ms;
-    filter: blur(1.5px);
+    transition: 100ms;
+    filter: blur(1px);
     transform: scale(0.95, 0.95);
   }
-    
 
-`;
+  /* Styles for the dropdown */
+  .dropdown-container {
+    background-color: #f5f2dc;
+    width: 300px;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    transition: 1s;
+    padding: 20px;
+  }
 
-export  {DropDown};
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+
+  .header p {
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+  }
+
+  .mark-as-read {
+    font-size: 14px;
+    padding: 5px 12px;
+    border-radius: 5px;
+    background-color: #000080;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .mark-as-read:hover {
+    background-color: #b7e1ff;
+    color: #000080;
+  }
+
+  .notifications {
+    margin-top: 15px;
+  }
+
+  .notification-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #000080;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    transition :1s;
+  }
+
+  .notification-item:hover {
+    background-color: #000080;
+    color: #f5f2dc;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .notification-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    margin-top: 2px;
+  }
+
+  .notification-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .notification-link {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: inherit;
+    transition: color 0.3s ease;
+  }
+
+  .notification-description {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+  }
+
+  .notification-item:hover .notification-description {
+    color: #f5f2dc;
+  }
+
+  .view-more-container {
+    display: flex;
+    margin-top: 10px;
+    justify-content:center
+  }
+
+  .view-more {
+    font-size: 14px;
+    padding: 5px 12px;
+    border-radius: 5px;
+    color: #000080;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .view-more:hover {
+    background-color: #000080;
+    color: #f5f2dc;
+  }`;
+export  {DropDown,NotificationDropDown};

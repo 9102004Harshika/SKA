@@ -8,6 +8,7 @@ import { Toaster } from "./components/Toaster";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
+import { NotificationDropDown } from "./ui/dropdownMenu";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/forgotPassword" element={<ForgotPassword />} />
             <Route path="/home" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
+            <Route path="/notification" element={<NotificationDropDown />} />
           </Routes>
         </main>
         {/* <Footer /> */}
