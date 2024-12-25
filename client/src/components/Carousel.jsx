@@ -66,7 +66,7 @@ const Carousel = () => {
                 <a
                   href={image.link}
                   rel="noopener noreferrer"
-                  className="absolute bottom-4 right-4 bg-primary text-background rounded-full p-2 shadow-lg hover:text-primary transition"
+                  className="absolute bottom-4 right-4 bg-primary text-background rounded-full p-2 shadow-lg hover:text-secondary transition"
                   aria-label={`Visit ${image.alt}`}
                 >
                   <FaExternalLinkAlt size={20} />
