@@ -260,6 +260,20 @@ export const courses = [
   },
   {
     thumbnail: "https://via.placeholder.com/300x180",
+    title: "Logical Reasoning for Competitive Exams",
+    instructor: "By Vikram Singh",
+    details: [
+      "500+ logical reasoning problems solved",
+      "Shortcut techniques and tricks included",
+    ],
+    notesType: "VIDEO",
+    validity: "Valid for 6 months",
+    price: 299,
+    originalPrice: 599,
+    discount: "50% OFF TILL 31 DEC",
+  },
+  {
+    thumbnail: "https://via.placeholder.com/300x180",
     title: "General Science for SSC",
     instructor: "By Shyam Sir",
     details: [
@@ -312,6 +326,20 @@ export const courses = [
     validity: "Valid for 9 months",
     price: 499,
     originalPrice: 999,
+    discount: "50% OFF TILL 31 DEC",
+  },
+  {
+    thumbnail: "https://via.placeholder.com/300x180",
+    title: "Logical Reasoning for Competitive Exams",
+    instructor: "By Vikram Singh",
+    details: [
+      "500+ logical reasoning problems solved",
+      "Shortcut techniques and tricks included",
+    ],
+    notesType: "VIDEO",
+    validity: "Valid for 6 months",
+    price: 299,
+    originalPrice: 599,
     discount: "50% OFF TILL 31 DEC",
   },
 ];

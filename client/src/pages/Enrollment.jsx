@@ -110,7 +110,7 @@ const Enrollment = () => {
         return ["9th", "10th", "11th", "12th"];
       case "SSC":
         return ["9th", "10th", "11th", "12th"];
-      case "ICSC":
+      case "ICSE":
         return ["8th", "9th", "10th", "11th", "12th"];
       default:
         return [];
