@@ -7,6 +7,7 @@ import Enrollment from "./pages/Enrollment";
 import { Toaster } from "./components/Toaster";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import Home from "./pages/Home";
+import Courses from "./pages/Courses";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/enrollment" element={<Enrollment />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/courses" element={<Courses />} />
           </Routes>
         </main>
         {/* <Footer /> */}
