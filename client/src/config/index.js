@@ -4,6 +4,11 @@ import {
   FaFileAlt,
   FaChalkboardTeacher,
   FaLightbulb,
+  FaUser,
+  FaSignOutAlt,
+  FaEnvelope,
+  FaComment,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import { IoSchool } from "react-icons/io5";
 
@@ -157,6 +162,12 @@ export const navigationLinksDesktop = [
   { label: "Tuitions", link: "/tuitions", icon: <FaChalkboardTeacher /> },
   { label: "Career Guidance", link: "/career-guidance", icon: <FaLightbulb /> },
 ];
+export const navigationLinksMoreItems = [
+  { label: "My Profile", link: "/profile", icon: <FaUser /> },
+  { label: "Question Paper", link: "/question-paper", icon: <FaFileAlt /> },
+  { label: "Scholarship", link: "/scholarship", icon: <IoSchool /> },
+  { label: "Logout", link: "/logout", icon: <FaSignOutAlt /> },
+];
 
 export const navigationLinksMobile = [
   { label: "Courses", link: "/courses", icon: <FaBook /> },
@@ -166,6 +177,15 @@ export const navigationLinksMobile = [
   { label: "Career Guidance", link: "/career-guidance", icon: <FaLightbulb /> },
   { label: "Scholarship", link: "/scholarship", icon: <IoSchool /> },
   { label: "Question Paper", link: "/question-paper", icon: <FaFileAlt /> },
+  { label: "My Profile", link: "/profile", icon: <FaUser /> },
+  { label: "Logout", link: "/logout", icon: <FaSignOutAlt /> },
+];
+
+// Notifications Example
+export const notificationItems = [
+  { title: "New Message", icon: <FaEnvelope />, link: "/messages" },
+  { title: "New Comment", icon: <FaComment />, link: "/comments" },
+  { title: "Server Alert", icon: <FaExclamationTriangle />, link: "/alerts" },
 ];
 
 export const sliderImages = [
