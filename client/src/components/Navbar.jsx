@@ -150,7 +150,7 @@ const Navbar = () => {
             <a
               key={index}
               href={item.link}
-              className="text-background flex items-center px-4 py-2 hover:bg-primary rounded-full space-x-2"
+              className="text-background text-lg flex items-center px-4 py-2 hover:bg-primary rounded-full space-x-2"
             >
               {item.icon}
               <span>{item.label}</span>
