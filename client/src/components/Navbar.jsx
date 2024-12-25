@@ -22,7 +22,7 @@ const Navbar = () => {
   // References for dropdowns
   const notificationDropdownRef = useRef(null);
   const moreItemsDropdownRef = useRef(null);
-
+  const count =notificationItems.length
   // Close dropdowns if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -79,7 +79,7 @@ const Navbar = () => {
           <div className="text-background flex items-center space-x-4 relative">
             {/* Custom Notification Button */}
             <div className="relative" ref={notificationDropdownRef}>
-              <Notification onClick={toggleNotificationDropdown} /> {/* Use your custom Button component */}
+              <Notification onClick={toggleNotificationDropdown} count={count} /> {/* Use your custom Button component */}
               {/* Notifications Dropdown */}
               {isNotificationDropdownOpen && (
                 <div

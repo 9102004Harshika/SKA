@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Notification = ({ onClick }) => {
+const Notification = ({ onClick, count }) => {
   return (
     <StyledWrapper>
       <div className="notification" onClick={onClick}>
@@ -9,23 +9,27 @@ const Notification = ({ onClick }) => {
           <div className="bell" />
         </div>
         <button className="group relative">
-          <div className="absolute -right-3 -top-5 z-10">
-            <div className="flex h-5 w-5 items-center justify-center">
-              <span
-                className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B7E1FF] opacity-75"
-              ></span>
-              <span
-                className="relative inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#B7E1FF] text-[10px] font-bold text-[#000080]"
-              >
-                3
-              </span>
+          {/* Notification Count Badge */}
+          {count > 0 && (
+            <div className="absolute -right-3 -top-5 z-10">
+              <div className="flex h-5 w-5 items-center justify-center">
+                <span
+                  className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B7E1FF] opacity-75"
+                ></span>
+                <span
+                  className="relative inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#B7E1FF] text-[10px] font-bold text-[#000080]"
+                >
+                  {count}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
         </button>
       </div>
     </StyledWrapper>
   );
 };
+
 
 const StyledWrapper = styled.div`
   /* Making bell shape with one div */
