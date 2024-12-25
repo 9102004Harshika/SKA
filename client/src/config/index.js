@@ -183,10 +183,30 @@ export const navigationLinksMobile = [
 
 // Notifications Example
 export const notificationItems = [
-  { title: "New Message",description:"This is a New Message from Shree Kalam Academy", icon: <FaEnvelope />, link: "/messages" },
-  { title: "New Comment",description:"This is a New Comment from Shree Kalam Academy", icon: <FaComment />, link: "/comments" },
-  { title: "Server Alert",description:"This is a Server Alert from Shree Kalam Academy", icon: <FaExclamationTriangle />, link: "/alerts" },
-  { title: "Server Alert",description:"This is a Server Alert from Shree Kalam Academy", icon: <FaExclamationTriangle />, link: "/alerts" }
+  {
+    title: "New Message",
+    description: "This is a New Message from Shree Kalam Academy",
+    icon: <FaEnvelope />,
+    link: "/messages",
+  },
+  {
+    title: "New Comment",
+    description: "This is a New Comment from Shree Kalam Academy",
+    icon: <FaComment />,
+    link: "/comments",
+  },
+  {
+    title: "Server Alert",
+    description: "This is a Server Alert from Shree Kalam Academy",
+    icon: <FaExclamationTriangle />,
+    link: "/alerts",
+  },
+  {
+    title: "Server Alert",
+    description: "This is a Server Alert from Shree Kalam Academy",
+    icon: <FaExclamationTriangle />,
+    link: "/alerts",
+  },
 ];
 
 export const sliderImages = [
@@ -223,35 +243,75 @@ export const sliderImages = [
 ];
 
 // Course card configurations:
-export const courseConfig = {
-  courses: [
-    {
-      thumbnail: "https://via.placeholder.com/300x180",
-      title: "SSC MATHEMATICS 5100+ Questions",
-      instructor: "By RAMO SIR",
-      details: [
-        "Statistics & Probability included",
-        "11 Practice sets for SSC CGL Tier - II (On New Pattern)",
-      ],
-      notesType: "NOTES COMBO",
-      validity: "Valid for 18 months",
-      price: 499,
-      originalPrice: 999,
-      discount: "50% OFF TILL 31 DEC",
-    },
-    {
-      thumbnail: "https://via.placeholder.com/300x180",
-      title: "General Science for SSC",
-      instructor: "By Shyam Sir",
-      details: [
-        "Physics, Chemistry, and Biology covered",
-        "10 Practice Sets for SSC Exams",
-      ],
-      notesType: "NOTES COMBO",
-      validity: "Valid for 12 months",
-      price: 599,
-      originalPrice: 1099,
-      discount: "45% OFF TILL 31 DEC",
-    },
-  ],
-};
+export const courses = [
+  {
+    thumbnail: "https://via.placeholder.com/300x180",
+    title: "SSC MATHEMATICS 5100+ Questions",
+    instructor: "By RAMO SIR",
+    details: [
+      "Statistics & Probability included",
+      "11 Practice sets for SSC CGL Tier - II (On New Pattern)",
+    ],
+    notesType: "NOTES COMBO",
+    validity: "Valid for 18 months",
+    price: 499,
+    originalPrice: 999,
+    discount: "50% OFF TILL 31 DEC",
+  },
+  {
+    thumbnail: "https://via.placeholder.com/300x180",
+    title: "General Science for SSC",
+    instructor: "By Shyam Sir",
+    details: [
+      "Physics, Chemistry, and Biology covered",
+      "10 Practice Sets for SSC Exams",
+    ],
+    notesType: "NOTES COMBO",
+    validity: "Valid for 12 months",
+    price: 599,
+    originalPrice: 1099,
+    discount: "45% OFF TILL 31 DEC",
+  },
+  {
+    thumbnail: "https://via.placeholder.com/300x180",
+    title: "English Grammar Mastery",
+    instructor: "By Anjali Mam",
+    details: [
+      "Comprehensive grammar topics covered",
+      "Practice sets for error detection and corrections",
+    ],
+    notesType: "VIDEO + NOTES",
+    validity: "Valid for 12 months",
+    price: 399,
+    originalPrice: 899,
+    discount: "55% OFF TILL 31 DEC",
+  },
+  {
+    thumbnail: "https://via.placeholder.com/300x180",
+    title: "Logical Reasoning for Competitive Exams",
+    instructor: "By Vikram Singh",
+    details: [
+      "500+ logical reasoning problems solved",
+      "Shortcut techniques and tricks included",
+    ],
+    notesType: "VIDEO",
+    validity: "Valid for 6 months",
+    price: 299,
+    originalPrice: 599,
+    discount: "50% OFF TILL 31 DEC",
+  },
+  {
+    thumbnail: "https://via.placeholder.com/300x180",
+    title: "Computer Awareness for Banking Exams",
+    instructor: "By Suresh Kumar",
+    details: [
+      "Covers computer basics, networking, and cybersecurity",
+      "Practice sets based on latest banking exam patterns",
+    ],
+    notesType: "NOTES COMBO",
+    validity: "Valid for 9 months",
+    price: 499,
+    originalPrice: 999,
+    discount: "50% OFF TILL 31 DEC",
+  },
+];
