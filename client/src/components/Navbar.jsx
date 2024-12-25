@@ -22,7 +22,8 @@ const Navbar = () => {
   // References for dropdowns
   const notificationDropdownRef = useRef(null);
   const moreItemsDropdownRef = useRef(null);
-  const count =notificationItems.length
+  const count = notificationItems.length;
+
   // Close dropdowns if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -75,60 +76,83 @@ const Navbar = () => {
             </a>
           </div>
 
-          {/* Notification Icon and Triple Dot Dropdown */}
-          <div className="text-background flex items-center space-x-4 relative">
-            {/* Custom Notification Button */}
-            <div className="relative" ref={notificationDropdownRef}>
-              <Notification onClick={toggleNotificationDropdown} count={count} /> {/* Use your custom Button component */}
-              {/* Notifications Dropdown */}
-              {isNotificationDropdownOpen && (
-                <div
-                  className="absolute -right-5 rounded-xl overflow-hidden"
-                  style={{
-                    boxShadow: isNotificationDropdownOpen
-                      ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px" // Custom box shadow when menu is open
-                      : "none", // No shadow when menu is closed
-                  }}
-                >
-                  <ul>
-                    <NotificationDropDown />
-                  </ul>
-                </div>
-              )}
+          {/* Right Side Icons */}
+          <div className="text-background flex items-center space-x-4">
+            <div className="hidden sm:flex items-center border-b-[1px] border-background">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="px-5 py-1 bg-transparent text-background focus:outline-none placeholder:text-background"
+              />
+              <button
+                className="text-background ml-5"
+                onClick={() => alert(`Searching: ${searchQuery}`)}
+              >
+                <FaSearch className="text-xl" />
+              </button>
             </div>
 
-            {/* Triple Dot Dropdown */}
-            <div className="hidden sm:block relative" ref={moreItemsDropdownRef}>
-              <button
-                onClick={toggleMoreItemsDropdown}
-                className="focus:outline-none"
-              >
-                <FaEllipsisV className="text-xl cursor-pointer" />
-              </button>
+            {/* Notification and Triple Dot */}
+            <div className="relative flex items-center space-x-4">
+              {/* Notification Button */}
+              <div className="relative" ref={notificationDropdownRef}>
+                <Notification
+                  onClick={toggleNotificationDropdown}
+                  count={count}
+                />
+                {isNotificationDropdownOpen && (
+                  <div
+                    className="absolute -right-5 rounded-xl overflow-hidden"
+                    style={{
+                      boxShadow: isNotificationDropdownOpen
+                        ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
+                        : "none",
+                    }}
+                  >
+                    <ul>
+                      <NotificationDropDown />
+                    </ul>
+                  </div>
+                )}
+              </div>
 
-              {isMoreItemsDropdownOpen && (
-                <div
-                  className="absolute right-0 mt-2 z-30 rounded-xl overflow-hidden"
-                  style={{
-                    boxShadow: isMoreItemsDropdownOpen
-                      ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px" // Custom box shadow when menu is open
-                      : "none", // No shadow when menu is closed
-                  }}
+              {/* Triple Dot Dropdown */}
+              <div
+                className="hidden sm:block relative"
+                ref={moreItemsDropdownRef}
+              >
+                <button
+                  onClick={toggleMoreItemsDropdown}
+                  className="focus:outline-none"
                 >
-                  {/* Replace this with your custom DropDown component */}
-                  <DropDown />
-                </div>
-              )}
+                  <FaEllipsisV className="text-xl cursor-pointer" />
+                </button>
+
+                {isMoreItemsDropdownOpen && (
+                  <div
+                    className="absolute right-0 mt-2 z-30 rounded-xl overflow-hidden"
+                    style={{
+                      boxShadow: isMoreItemsDropdownOpen
+                        ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
+                        : "none",
+                    }}
+                  >
+                    <DropDown />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Search Bar (Mobile - Always Visible) */}
+        {/* Mobile Search Bar */}
         <div className="sm:hidden bg-secondary px-4 py-2">
           <div className="flex items-center rounded-md px-2">
             <input
               type="text"
-              placeholder="Type your search"
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-grow px-2 py-1 bg-transparent text-primary border-b-2 border-primary focus:outline-none placeholder:text-primary"
@@ -138,7 +162,6 @@ const Navbar = () => {
               onClick={() => alert(`Searching: ${searchQuery}`)}
             >
               <FaSearch className="text-xl" />
-              {/* <Tooltip tooltipText="Search" /> */}
             </button>
           </div>
         </div>
@@ -164,14 +187,13 @@ const Navbar = () => {
           } transition-transform duration-300 ease-in-out`}
           style={{
             boxShadow: isMenuOpen
-              ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px" // Custom box shadow when menu is open
-              : "none", // No shadow when menu is closed
+              ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
+              : "none",
           }}
         >
           {/* Close Button using Hamburger Component */}
           <div className="flex justify-end p-4">
             <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
-            {/* <Tooltip tooltipText="Menu Items" /> */}
           </div>
 
           {/* Menu Items */}

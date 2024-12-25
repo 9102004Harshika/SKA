@@ -58,7 +58,7 @@ const NotificationDropDown = () => {
         {/* "View More" Button */}
         {hasMore && (
           <div className="view-more-container">
-            <button className="view-more" onClick={()=>navigate('/notification')}>View All</button>
+            <button className="view-more" onClick={()=>navigate('/#')}>View All</button>
           </div>
         )}
       </div>
