@@ -1,17 +1,29 @@
 import React, { useState } from "react";
-import { FaSearch, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaSearch, FaEllipsisV, FaBell } from "react-icons/fa";
 import logo from "./../images/logo.jpg";
-import { navigationLinksDesktop, navigationLinksMobile } from "../config";
-import { Hamburger } from "../ui/hamburger"; // Import Hamburger component
+import {
+  navigationLinksDesktop,
+  navigationLinksMobile,
+  navigationLinksMoreItems,
+  notificationItems,
+} from "../config";
+import { Hamburger } from "../ui/hamburger";
 import Tooltip from "../ui/tooltip"; // Import Tooltip component
-
-const logoutLink = { label: "Logout", link: "/logout", icon: FaSignOutAlt };
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile Menu Toggle
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown Toggle
   const [searchQuery, setSearchQuery] = useState(""); // Search Input Value
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
+    useState(false); // Notification Dropdown Toggle
+  const [isMoreItemsDropdownOpen, setIsMoreItemsDropdownOpen] = useState(false); // More Items Dropdown Toggle
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+  const toggleNotificationDropdown = () =>
+    setIsNotificationDropdownOpen((prev) => !prev); // Toggle for notification dropdown
+  const toggleMoreItemsDropdown = () =>
+    setIsMoreItemsDropdownOpen((prev) => !prev); // Toggle for more items dropdown
 
   return (
     <>
@@ -21,7 +33,6 @@ const Navbar = () => {
           {/* Menu Icon for Mobile - Use Hamburger component */}
           <div className="sm:hidden text-background mr-2">
             <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
-            {/* <Tooltip tooltipText="Profile" /> */}
           </div>
 
           {/* Logo */}
@@ -38,46 +49,77 @@ const Navbar = () => {
             </a>
           </div>
 
-          {/* Profile Button (Mobile) */}
-          <div className="sm:hidden text-background">
-            <button>
-              <FaUserCircle className="text-3xl cursor-pointer" />
-            </button>
-            {/* <Tooltip tooltipText="Profile" /> */}
-          </div>
-
-          {/* Search Bar (Desktop) */}
-          <div className="hidden sm:flex items-center border-b-[1px] border-background pr-2 mr-5">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-2 py-1 bg-transparent text-background focus:outline-none placeholder:text-background"
-            />
-            <button
-              className="text-background ml-5"
-              onClick={() => alert(`Searching: ${searchQuery}`)}
-            >
-              <FaSearch className="text-xl" />
-            </button>
-          </div>
-
-          {/* Icons and Logout (Desktop) */}
-          <div className="hidden sm:flex items-center space-x-4">
-            <div className="relative group">
-              <button className="text-background">
-                <FaUserCircle className="text-2xl" />
+          {/* Notification Icon and Triple Dot Dropdown */}
+          <div className="text-background flex items-center space-x-4 relative">
+            {/* Notification Bell */}
+            <div className="relative">
+              <button
+                onClick={toggleNotificationDropdown}
+                className="focus:outline-none relative"
+              >
+                <FaBell className="text-2xl cursor-pointer" />
+                {/* Badge for notifications */}
+                <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-error text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                  3 {/* Dynamic count */}
+                </span>
               </button>
-              {/* Tooltip */}
-              <Tooltip tooltipText="Profile" />
+
+              {/* Notifications Dropdown */}
+              {isNotificationDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-72 bg-background shadow-lg z-50 rounded-xl overflow-hidden">
+                  <ul>
+                    {notificationItems.map((item, index) => (
+                      <li
+                        key={index}
+                        className="py-2 px-4 text-primary hover:bg-primary hover:text-secondary flex items-center"
+                      >
+                        <a
+                          href={item.link}
+                          className="text-inherit flex items-center w-full"
+                        >
+                          <span className="mr-2">{item.icon}</span>
+                          {item.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
-            <div className="relative group">
-              <button className="text-background">
-                <FaSignOutAlt className="text-2xl" />
+
+            {/* Triple Dot Dropdown */}
+            <div className="hidden sm:block relative">
+              <button
+                onClick={toggleMoreItemsDropdown}
+                className="focus:outline-none"
+              >
+                <FaEllipsisV className="text-2xl cursor-pointer" />
               </button>
-              {/* Tooltip */}
-              <Tooltip tooltipText="Logout" />
+
+              {isMoreItemsDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-secondary shadow-lg z-50 rounded-xl overflow-hidden">
+                  <ul>
+                    {navigationLinksMoreItems.map((item, index) => (
+                      <li
+                        key={index}
+                        className={`py-2 px-4 text-primary ${
+                          item.label === "Logout"
+                            ? "hover:bg-error"
+                            : "hover:bg-primary hover:text-secondary"
+                        } flex items-center`}
+                      >
+                        <a
+                          href={item.link}
+                          className="text-inherit flex items-center"
+                        >
+                          <span className="mr-2">{item.icon}</span>
+                          {item.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -97,6 +139,7 @@ const Navbar = () => {
               onClick={() => alert(`Searching: ${searchQuery}`)}
             >
               <FaSearch className="text-xl" />
+              {/* <Tooltip tooltipText="Search" /> */}
             </button>
           </div>
         </div>
@@ -120,15 +163,11 @@ const Navbar = () => {
           className={`sm:hidden fixed top-0 left-0 h-full bg-primary w-64 transform ${
             isMenuOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300 ease-in-out`}
-          style={{
-            boxShadow: isMenuOpen
-              ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px" // Custom box shadow when menu is open
-              : "none", // No shadow when menu is closed
-          }}
         >
           {/* Close Button using Hamburger Component */}
           <div className="flex justify-end p-4">
             <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+            {/* <Tooltip tooltipText="Menu Items" /> */}
           </div>
 
           {/* Menu Items */}
@@ -138,20 +177,14 @@ const Navbar = () => {
               <a
                 key={index}
                 href={item.link}
-                className="text-background flex items-center px-4 py-2 hover:bg-accent rounded-full space-x-2"
+                className={`text-background flex items-center px-4 py-2 rounded-full space-x-2 ${
+                  item.label === "Logout" ? "hover:bg-error" : "hover:bg-accent"
+                }`}
               >
                 {item.icon}
                 <span>{item.label}</span>
               </a>
             ))}
-            {/* Logout Button */}
-            <a
-              href={logoutLink.link}
-              className="text-background flex items-center px-4 py-2 hover:bg-error rounded-full space-x-2"
-            >
-              <logoutLink.icon className="text-background" />
-              <span>{logoutLink.label}</span>
-            </a>
           </div>
         </div>
       </nav>
