@@ -1,7 +1,6 @@
 import React from "react";
 import Carousel from "../components/Carousel";
 import Navbar from "../components/Navbar";
-import CourseCarousel from "../components/CourseCarousel";
 import { courses } from "../config";
 
 const Home = () => {
@@ -18,7 +17,6 @@ const Home = () => {
       <h2 className="text-2xl font-bold text-primary mt-16 mb-10 text-center">
         Top Picks For You
       </h2>
-      <CourseCarousel courses={courses} />
     </div>
   );
 };
