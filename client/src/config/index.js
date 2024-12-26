@@ -211,34 +211,29 @@ export const notificationItems = [
 
 export const sliderImages = [
   {
-    src: "https://plus.unsplash.com/premium_photo-1672256330854-98c717493128?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "https://images.hdqwalls.com/download/pixel-art-2-pic-1280x720.jpg",
     alt: "Image 1",
-    link: "/home",
+    link: "/coursedetail",
   },
   {
-    src: "https://images.unsplash.com/photo-1509228468518-180dd4864904?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "https://th.bing.com/th/id/OIP.BivozdbfNtrq5pzGpmyAvgHaEK?rs=1&pid=ImgDetMain",
     alt: "Image 2",
-    link: "/home",
+    link: "/coursedetail",
   },
   {
-    src: "https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "https://th.bing.com/th/id/OIP.RxYDgZrJHBxz2Uetp5e_BwHaEK?rs=1&pid=ImgDetMain",
     alt: "Image 3",
-    link: "/home",
+    link: "/coursedetail",
   },
   {
-    src: "https://images.unsplash.com/photo-1601397922721-4326ae07bbc5?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "https://images.wallpaperscraft.com/image/single/triangles_multicolored_pixels_122612_1280x720.jpg",
     alt: "Image 4",
-    link: "/home",
+    link: "/coursedetail",
   },
   {
-    src: "https://images.unsplash.com/photo-1509869175650-a1d97972541a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "https://images.hdqwalls.com/download/8-bit-pixel-art-city-2o-1280x720.jpg",
     alt: "Image 5",
-    link: "/home",
-  },
-  {
-    src: "https://plus.unsplash.com/premium_photo-1724800663657-3e57bf4f622c?q=80&w=1926&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Image 6",
-    link: "/home",
+    link: "/coursedetail",
   },
 ];
 

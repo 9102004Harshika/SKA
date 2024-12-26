@@ -9,6 +9,7 @@ import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import Slider from "./ui/slider";
+import CourseDetail from "./pages/CourseDetails";
 
 const App = () => {
   return (
@@ -26,7 +27,10 @@ const App = () => {
             <Route path="/forgotPassword" element={<ForgotPassword />} />
             <Route path="/home" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/notification" element={<Slider />} />
+            <Route path="/coursedetail" element={<CourseDetail />} />
+
+            {/* Route used for dedicated page of component testing */}
+            <Route path="/testing" element={<Slider />} />
           </Routes>
         </main>
         {/* <Footer /> */}
