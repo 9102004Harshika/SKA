@@ -70,7 +70,7 @@ const Navbar = () => {
                 alt="Company Logo"
                 className="h-10 w-auto inline-block"
               />
-              <span className="text-background font-extrabold text-xl hidden sm:inline ml-5">
+              <span className="text-background font-header font-extrabold text-xl hidden sm:inline ml-5">
                 Shri Kalam Academy
               </span>
             </a>

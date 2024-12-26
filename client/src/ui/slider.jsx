@@ -1,43 +1,69 @@
-import React, { useState, useEffect } from "react";
-import { courses } from "../config";
-// Import courses
-
+import React, { useState, useEffect, useRef } from "react";
+import { courses } from "../config"; // Import courses
 const Slider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(courses.length); // Start in the middle of the duplicated array
   const [visibleCards, setVisibleCards] = useState(1); // Default to 1 visible card
+  const [isTransitioning, setIsTransitioning] = useState(false); // Manage smooth transitions
+  const sliderRef = useRef(null);
+  const autoplayRef = useRef(null);
 
-  // Function to update visible cards count based on screen size
+  // Create a displayCourses array with courses duplicated at the start and end
+  const displayCourses = [...courses, ...courses, ...courses];
+
+  // Update visible cards count based on screen size
   const updateVisibleCards = () => {
-    if (window.innerWidth >= 768) { // Large screen (desktop)
-      setVisibleCards(3); // Show 3 cards at a time on desktop
-    } else { // Mobile devices
-      setVisibleCards(1); // Show 1 card at a time on mobile
+    if (window.innerWidth >= 768) {
+      setVisibleCards(3); // Show 3 cards on desktop
+    } else {
+      setVisibleCards(1); // Show 1 card on mobile
     }
   };
 
-  // Handle next slide
+  // Move to the next slide
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => {
-      const maxIndex = Math.ceil(courses.length / visibleCards) - 1;
-      return prevIndex === maxIndex ? 0 : prevIndex + 1;
-    });
+    setIsTransitioning(true);
+    setCurrentIndex((prevIndex) => prevIndex + 1);
   };
 
-  // Handle previous slide
+  // Move to the previous slide
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => {
-      const maxIndex = Math.ceil(courses.length / visibleCards) - 1;
-      return prevIndex === 0 ? maxIndex : prevIndex - 1;
-    });
+    setIsTransitioning(true);
+    setCurrentIndex((prevIndex) => prevIndex - 1);
   };
 
-  // Update visible cards on window resize
+  // Infinite loop logic
+  useEffect(() => {
+    const totalCards = courses.length;
+
+    // Jump to the middle if the index is at the end of the duplicates
+    if (currentIndex >= totalCards * 2) {
+      setTimeout(() => {
+        setIsTransitioning(false); // Temporarily disable transition
+        setCurrentIndex((prevIndex) => prevIndex - totalCards); // Jump back to the middle
+      }, 300); // Delay matches the CSS transition duration
+    }
+
+    // Jump to the middle if the index is at the start of the duplicates
+    if (currentIndex < totalCards) {
+      setTimeout(() => {
+        setIsTransitioning(false); // Temporarily disable transition
+        setCurrentIndex((prevIndex) => prevIndex + totalCards); // Jump forward to the middle
+      }, 300); // Delay matches the CSS transition duration
+    }
+  }, [currentIndex, courses.length]);
+
+  // Set up autoplay
   useEffect(() => {
     updateVisibleCards(); // Initial check for visible cards
-    window.addEventListener("resize", updateVisibleCards); // Add resize event listener
+    window.addEventListener("resize", updateVisibleCards); // Add resize listener
+
+    autoplayRef.current = setInterval(() => {
+      handleNext(); // Auto-slide every 3 seconds
+    }, 3000);
 
     return () => {
-      window.removeEventListener("resize", updateVisibleCards); // Cleanup the listener
+      window.removeEventListener("resize", updateVisibleCards);
+      clearInterval(autoplayRef.current);
     };
   }, []);
 
@@ -47,21 +73,22 @@ const Slider = () => {
       <div className="overflow-hidden">
         {/* Courses Wrapper */}
         <div
-          className="flex transition-transform duration-700 ease-in-out"
+          ref={sliderRef}
+          className={`flex ${
+            isTransitioning ? "transition-transform duration-700 ease-in-out" : ""
+          }`}
           style={{
             transform: `translateX(-${(currentIndex * 100) / visibleCards}%)`,
           }}
         >
-          {courses.map((course, index) => (
+          {displayCourses.map((course, index) => (
             <div
               key={index}
               className={`${
-                visibleCards === 1
-                  ? "w-full" // Full width for mobile
-                  : "w-1/3" // 1/3 width for large screens (3 cards)
-              } px-2 flex-shrink-0`} // Adjust for 3 visible cards on desktop
+                visibleCards === 1 ? "w-full" : "w-1/3"
+              } px-2 flex-shrink-0`}
             >
-              <div className="bg-white rounded-lg shadow-md overflow-hidden p-4 transform hover:scale-105 transition-transform duration-300 h-[30rem] flex flex-col justify-between">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden p-4 transform hover:scale-105 transition-transform duration-300 h-[33rem] flex flex-col justify-between">
                 <div>
                   <img
                     src={course.thumbnail}
@@ -97,13 +124,13 @@ const Slider = () => {
       {/* Navigation Buttons */}
       <button
         onClick={handlePrev}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-secondary"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-secondary hover:text-primary"
       >
         &lt;
       </button>
       <button
         onClick={handleNext}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-secondary"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-secondary hover:text-primary"
       >
         &gt;
       </button>

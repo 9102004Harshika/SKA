@@ -14,7 +14,7 @@ const Home = () => {
       <h1>One Shot Videos... (Videos) </h1>
       <h1>Small Videos... (Videos) </h1>
       <h1>Featured Courses... (Courses shown as carousel)</h1> */}
-      <h2 className="text-2xl font-bold text-primary mt-16 mb-10 text-center">
+      <h2 className="text-5xl font-header font-bold text-primary mt-16 mb-10 text-center">
         Top Picks For You
       </h2>
     </div>
