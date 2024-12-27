@@ -169,7 +169,7 @@ const Enrollment = () => {
             <Input
               id="mobile"
               name="mobile"
-              type="tel"
+              type="number"
               onClick={() => setShowCalendar(false)}
               placeholder="Enter your mobile number"
               value={formData.mobile}
@@ -369,9 +369,12 @@ const Enrollment = () => {
         {/* Agree to Terms Checkbox */}
         <Checkbox
           text={
-            <span>
+            <span className="flex flex-col items-start md:flex-row md:items-center gap-1">
               I Agree to the{" "}
-              <a href="/terms-and-conditions" className="text-accent">
+              <a
+                href="/terms-and-conditions"
+                className="text-accent hover:underline underline-offset-2"
+              >
                 Terms and Conditions .
               </a>
             </span>
@@ -383,12 +386,15 @@ const Enrollment = () => {
         {/* Agree to Privacy Checkbox */}
         <Checkbox
           text={
-            <span>
+            <div className="flex flex-col items-start md:flex-row md:items-center gap-1">
               I Agree to the{" "}
-              <a href="/privacy-policies" className="text-accent">
+              <a
+                href="/privacy-policies"
+                className="text-accent hover:underline underline-offset-2"
+              >
                 Privacy Policies .
               </a>
-            </span>
+            </div>
           }
           checked={isCheckedPrivacy}
           onChange={setIsCheckedPrivacy} // Handle checkbox state change
