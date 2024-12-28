@@ -142,7 +142,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className=" relative z-20 bg-primary navbar-first-row">
+      <nav className=" relative z-20 bg-primary">
         {/* First Row */}
    <div className="flex  items-center justify-between px-4 py-2 " ref={firstRowRef}>
           {/* Menu Icon for Mobile - Use Hamburger component */}

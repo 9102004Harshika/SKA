@@ -140,6 +140,7 @@ const StyledWrapper = styled.div`
 
   .button_text {
     position: relative;
+    font-size:20px;
     color: ${({ variant }) =>
       variant === "primary"
         ? "white"
