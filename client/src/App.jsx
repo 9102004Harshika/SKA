@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import Slider from "./ui/slider";
 import CourseDetail from "./pages/CourseDetails";
+import { courses } from "./config";
 
 const App = () => {
   return (
@@ -30,7 +31,7 @@ const App = () => {
             <Route path="/coursedetail" element={<CourseDetail />} />
 
             {/* Route used for dedicated page of component testing */}
-            <Route path="/testing" element={<Slider />} />
+          <Route path="/testing" element={<Slider header={"Top Picks For You"} description={"Below are the top-picked courses curated just for you."}  info={courses}/>} />
           </Routes>
         </main>
         {/* <Footer /> */}

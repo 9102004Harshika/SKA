@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { FaSearch, FaEllipsisV } from "react-icons/fa";
-import logo from "./../images/logo.jpg";
+import logo from "../images/logo.png";
 import {
   navigationLinksDesktop,
   navigationLinksMobile,
@@ -10,6 +11,7 @@ import { Hamburger } from "../ui/hamburger";
 import Tooltip from "../ui/tooltip"; // Import Tooltip component
 import { DropDown, NotificationDropDown } from "../ui/dropdownMenu";
 import { Notification } from "../ui/notification"; // Import your new notification button component
+import gsap from "gsap"; // Import GSAP
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile Menu Toggle
@@ -24,6 +26,10 @@ const Navbar = () => {
   const moreItemsDropdownRef = useRef(null);
   const count = notificationItems.length;
 
+  // Reference for the second row of navigation links (for GSAP animation)
+  const navLinksRef = useRef(null);
+  const firstRowRef=useRef(null)
+  const mobileLinksRef=useRef(null)
   // Close dropdowns if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -45,6 +51,88 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Trigger GSAP animation on load for the second row
+  useEffect(() => {
+    const tl = gsap.timeline();
+    tl.fromTo(
+      ".navbar-first-row", // Select the first row by class
+      {
+        opacity: 0, // Start invisible
+        y: -20, // Start slightly above
+      },
+      {
+        opacity: 1, // Fade to visible
+        y: 0, // Move to default position
+        ease: "power3.out", // Smooth easing
+        duration: 1, // Duration of the animation
+      }
+    );
+    tl.fromTo(
+      firstRowRef.current.children, // Target each navigation link
+      {
+        opacity: 0,
+        y: 50, // Start slightly below
+        scale: 0.8, // Shrink them initially
+        rotation: -15, // Slightly rotated for a cool effect
+      },
+      {
+        opacity: 1,
+        y: 0, // Move to their default position
+        scale: 1, // Restore original size
+        rotation: 0, // Remove rotation
+        ease: "elastic.out(1, 0.6)", // Elastic easing for bounce effect
+        stagger: 0.15, // Stagger for wave-like effect
+        duration: 1.5, // Total duration
+      }
+    );
+    // Cool wave-like animation for the second row navigation links
+    tl.fromTo(
+      navLinksRef.current.children, // Target each navigation link
+      {
+        opacity: 0,
+        y: 50, // Start slightly below
+        scale: 0.8, // Shrink them initially
+        rotation: -15, // Slightly rotated for a cool effect
+      },
+      {
+        opacity: 1,
+        y: 0, // Move to their default position
+        scale: 1, // Restore original size
+        rotation: 0, // Remove rotation
+        ease: "elastic.out(1, 0.6)", // Elastic easing for bounce effect
+        stagger: 0.15, // Stagger for wave-like effect
+        duration: 1.5, // Total duration
+      }
+    );
+
+   
+  }, []);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      gsap.fromTo(
+        mobileLinksRef.current?.children || [],
+        {
+          opacity: 0,
+          y: 50, // Start slightly below
+          scale: 0.8, // Shrink them initially
+          rotation: -15, // Slightly rotated for a cool effect
+        },
+        {
+          opacity: 1,
+          y: 0, // Move to their default position
+          scale: 1, // Restore original size
+          rotation: 0, // Remove rotation
+          ease: "elastic.out(1, 0.6)", // Elastic easing for bounce effect
+          stagger: 0.15, // Stagger for wave-like effect
+          duration: 1.5, // Total duration
+        }
+      );
+    }
+  }, [isMenuOpen]);
+
+
+  
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const toggleNotificationDropdown = () =>
@@ -54,9 +142,9 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-primary relative z-50">
+      <nav className=" relative z-50">
         {/* First Row */}
-        <div className="flex items-center justify-between px-4 py-2">
+      <div className="navbar-first-row bg-primary">  <div className="flex  items-center justify-between px-4 py-2" ref={firstRowRef}>
           {/* Menu Icon for Mobile - Use Hamburger component */}
           <div className="sm:hidden text-background mr-2">
             <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
@@ -95,7 +183,7 @@ const Navbar = () => {
             </div>
 
             {/* Notification and Triple Dot */}
-            <div className="relative flex items-center space-x-4">
+            <div className="relative flex items-center space-x-4" >
               {/* Notification Button */}
               <div className="relative" ref={notificationDropdownRef}>
                 <Notification
@@ -145,11 +233,11 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div></div>
 
         {/* Mobile Search Bar */}
-        <div className="sm:hidden bg-secondary px-4 py-2">
-          <div className="flex items-center rounded-md px-2">
+        <div className="sm:hidden navbar-first-row bg-secondary px-4 py-2">
+          <div className="flex items-center rounded-md px-2" >
             <input
               type="text"
               placeholder="Search..."
@@ -167,7 +255,10 @@ const Navbar = () => {
         </div>
 
         {/* Second Row (Static for Desktop) */}
-        <div className="hidden sm:flex justify-center bg-accent py-2">
+        <div
+          className="hidden navbar-first-row sm:flex justify-center bg-accent py-2"
+          ref={navLinksRef}
+        >
           {navigationLinksDesktop.map((item, index) => (
             <a
               key={index}
@@ -197,7 +288,7 @@ const Navbar = () => {
           </div>
 
           {/* Menu Items */}
-          <div className="flex flex-col space-y-2 px-4">
+          <div className="flex flex-col space-y-2 px-4"  ref={mobileLinksRef}>
             <img src={logo} alt="" className="w-20 self-center" />
             {navigationLinksMobile.map((item, index) => (
               <a

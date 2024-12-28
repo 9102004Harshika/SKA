@@ -54,13 +54,18 @@ const Carousel = () => {
       >
         {sliderImages.map((image, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full md:w-10/12 mx-auto h-[0] pb-[56.25%] md:pb-[46.25%] md:h-[480px] lg:h-[560px] bg-cover bg-center">
-              {/* The 56.25% padding-bottom ensures the aspect ratio of 1280x720 (16:9) */}
+            <div className="relative w-full h-[0] pb-[56.25%] md:pb-[46.25%] md:h-[320px] lg:h-[480px] bg-cover bg-center">
+              {/* Ensure the aspect ratio is maintained and images are responsive */}
               <div className="absolute inset-0 flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
                 <img
                   src={image.src}
                   alt={image.alt}
-                  className="absolute inset-0 w-full h-full object-cover object-center" // Ensures the image fills the container
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                  style={{
+                    objectFit: 'fit', // Prevent image cropping
+                    width: '100%',
+                    height: '100%',
+                  }}
                 />
                 <a
                   href={image.link}
