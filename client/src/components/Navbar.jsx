@@ -142,9 +142,9 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className=" relative z-20 bg-primary">
+      <nav className=" relative z-20 bg-primary navbar-first-row">
         {/* First Row */}
-   <div className="flex  items-center justify-between px-4 py-2" ref={firstRowRef}>
+   <div className="flex  items-center justify-between px-4 py-2 " ref={firstRowRef}>
           {/* Menu Icon for Mobile - Use Hamburger component */}
           <div className="sm:hidden text-background mr-2">
             <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
@@ -249,7 +249,7 @@ const Navbar = () => {
 
         {/* Second Row (Static for Desktop) */}
         <div
-          className="hidden  sm:flex justify-center bg-accent py-2"
+          className="hidden   sm:flex justify-center bg-accent py-2"
           ref={navLinksRef}
         >
           {navigationLinksDesktop.map((item, index) => (
