@@ -142,9 +142,9 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className=" relative z-50">
+      <nav className=" relative z-20 bg-primary">
         {/* First Row */}
-      <div className="navbar-first-row bg-primary">  <div className="flex  items-center justify-between px-4 py-2" ref={firstRowRef}>
+   <div className="flex  items-center justify-between px-4 py-2" ref={firstRowRef}>
           {/* Menu Icon for Mobile - Use Hamburger component */}
           <div className="sm:hidden text-background mr-2">
             <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
@@ -183,60 +183,53 @@ const Navbar = () => {
             </div>
 
             {/* Notification and Triple Dot */}
-            <div className="relative flex items-center space-x-4" >
-              {/* Notification Button */}
-              <div className="relative" ref={notificationDropdownRef}>
-                <Notification
-                  onClick={toggleNotificationDropdown}
-                  count={count}
-                />
-                {isNotificationDropdownOpen && (
-                  <div
-                    className="absolute -right-5 rounded-xl overflow-hidden"
-                    style={{
-                      boxShadow: isNotificationDropdownOpen
-                        ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
-                        : "none",
-                    }}
-                  >
-                    <ul>
-                      <NotificationDropDown />
-                    </ul>
-                  </div>
-                )}
-              </div>
+        {/* Notification Dropdown */}
+<div className="relative" ref={notificationDropdownRef}>
+  <Notification onClick={toggleNotificationDropdown} count={count} />
+  {isNotificationDropdownOpen && (
+  <div
+    className="absolute -right-5 top-12 rounded-xl overflow-hidden z-100" // Added top positioning and z-index
+    style={{
+      boxShadow: isNotificationDropdownOpen
+        ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
+        : "none",
+    }}
+  >
+    <ul>
+      <NotificationDropDown />
+    </ul>
+  </div>
+)}
+</div>
 
-              {/* Triple Dot Dropdown */}
-              <div
-                className="hidden sm:block relative"
-                ref={moreItemsDropdownRef}
-              >
-                <button
-                  onClick={toggleMoreItemsDropdown}
-                  className="focus:outline-none"
-                >
-                  <FaEllipsisV className="text-xl cursor-pointer" />
-                </button>
+{/* Triple Dot Dropdown */}
+<div className="hidden sm:block relative" ref={moreItemsDropdownRef}>
+  <button
+    onClick={toggleMoreItemsDropdown}
+    className="focus:outline-none"
+  >
+    <FaEllipsisV className="text-xl cursor-pointer" />
+  </button>
 
-                {isMoreItemsDropdownOpen && (
-                  <div
-                    className="absolute right-0 mt-2 z-30 rounded-xl overflow-hidden"
-                    style={{
-                      boxShadow: isMoreItemsDropdownOpen
-                        ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
-                        : "none",
-                    }}
-                  >
-                    <DropDown />
-                  </div>
-                )}
-              </div>
-            </div>
+  {isMoreItemsDropdownOpen && (
+  <div
+    className="absolute right-0 mt-2 z-50 rounded-xl overflow-hidden" // Ensured z-index is high enough
+    style={{
+      boxShadow: isMoreItemsDropdownOpen
+        ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
+        : "none",
+    }}
+  >
+    <DropDown />
+  </div>
+)}
+</div>
+
           </div>
-        </div></div>
+        </div>
 
         {/* Mobile Search Bar */}
-        <div className="sm:hidden navbar-first-row bg-secondary px-4 py-2">
+        <div className="sm:hidden  bg-secondary px-4 py-2">
           <div className="flex items-center rounded-md px-2" >
             <input
               type="text"
@@ -256,7 +249,7 @@ const Navbar = () => {
 
         {/* Second Row (Static for Desktop) */}
         <div
-          className="hidden navbar-first-row sm:flex justify-center bg-accent py-2"
+          className="hidden  sm:flex justify-center bg-accent py-2"
           ref={navLinksRef}
         >
           {navigationLinksDesktop.map((item, index) => (
