@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
+import courseRoutes from "./routes/courseRoutes.js";
 
 const app = express();
 app.use(cors());
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 
 // API Routes
 app.use("/api", userRoutes);
+app.use("/api/courses", courseRoutes);
 
 // Start the server
 app.listen(PORT, () => {

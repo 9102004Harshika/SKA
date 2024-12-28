@@ -338,3 +338,29 @@ export const courses = [
     discount: "50% OFF TILL 31 DEC",
   },
 ];
+
+// CourseMaterial
+export const courseMaterialConfig = [
+  {
+    notes: {
+      name: "Chapter 1 Notes",
+      description: "Detailed notes covering Chapter 1 topics.",
+      link: "https://example.com/notes/chapter1",
+      image: "https://example.com/images/chapter1-notes.jpg", // Example image URL for notes
+    },
+    quizzes: {
+      name: "Quiz 1",
+      description: "Test your knowledge of Chapter 1.",
+      link: "https://example.com/quiz/chapter1",
+      image: "https://example.com/images/quiz1.jpg", // Example image URL for quiz
+    },
+    instructor: {
+      name: "Rahul Singh", // Example name, replace with actual name
+      photo:
+        "https://insidesources.com/wp-content/uploads/2020/03/bigstock-Portrait-Of-A-Young-Male-Teach-324671239-e1584700649236.jpg",
+      bio: "John Doe is an experienced educator with a passion for teaching computer science. He has been teaching for over 10 years.",
+      education: "PhD in Computer Science from XYZ University", // Example education, replace with actual details
+      experience: "10+ years",
+    },
+  },
+];
