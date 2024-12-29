@@ -363,7 +363,8 @@ export const courseMaterialConfig = [
       photo:
         "https://insidesources.com/wp-content/uploads/2020/03/bigstock-Portrait-Of-A-Young-Male-Teach-324671239-e1584700649236.jpg",
       bio: "Rahul Singh is a dedicated educator and a highly respected computer science professional. With over a decade of teaching experience, Rahul has helped thousands of students build strong foundations in programming, algorithms, and data structures. He specializes in making complex topics simple and accessible to learners of all levels. In addition to teaching, he has contributed to several open-source projects and regularly speaks at industry conferences. Rahul's teaching philosophy emphasizes hands-on learning and real-world problem solving, ensuring that students are well-equipped for their academic and professional journeys.",
-      education: "PhD in Computer Science from XYZ University", // Example education, replace with actual details
+      education: "PhD in Mathematics",
+      role: "Maths Teacher",
       experience: "10+ years",
     },
   },

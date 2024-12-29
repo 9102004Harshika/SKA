@@ -169,6 +169,8 @@ const QuizAndNotesDetails = () => {
               <p className="text-lg text-gray-600">
                 {instructor?.role || "Instructor Role"}
               </p>
+              <p className=" font-semibold">{instructor?.education}</p>
+              <p className="mb-1 text-gray-600">{instructor?.experience}</p>
               {renderDescription(
                 instructor?.bio || "No bio available",
                 showMoreInstructor,
