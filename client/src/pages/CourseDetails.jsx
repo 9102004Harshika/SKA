@@ -80,7 +80,7 @@ const CourseDetail = () => {
     src={course.instructor.photo}
     alt="Instructor"
     style={{ width: '500px', height: '300px' }}  // Set width and height for a rectangle
-    className="object-cover mx-auto"
+    className="object-cover mx-auto" 
   />
 </div>
 
