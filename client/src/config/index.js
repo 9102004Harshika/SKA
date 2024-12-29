@@ -344,21 +344,25 @@ export const courseMaterialConfig = [
   {
     notes: {
       name: "Chapter 1 Notes",
-      description: "Detailed notes covering Chapter 1 topics.",
+      description:
+        "Detailed notes covering Chapter 1 topics, including fundamental concepts, examples, and exercises. These notes are designed to provide an in-depth understanding of the chapter and include diagrams, key formulas, and real-world applications to enhance learning.",
       link: "https://example.com/notes/chapter1",
-      image: "https://example.com/images/chapter1-notes.jpg", // Example image URL for notes
+      image:
+        "https://marketplace.canva.com/EAFh7bSCs1U/1/0/1131w/canva-brown-aesthetic-minimalist-note-book-cover-page-a4-document-yhk3SDUOdz8.jpg",
     },
     quizzes: {
       name: "Quiz 1",
-      description: "Test your knowledge of Chapter 1.",
+      description:
+        "Test your knowledge of Chapter 1 with this comprehensive quiz. It features a variety of question formats, including multiple choice, true/false, and short answer, to ensure a thorough assessment of your understanding. The quiz also includes detailed explanations for each answer to help you learn and improve.",
       link: "https://example.com/quiz/chapter1",
-      image: "https://example.com/images/quiz1.jpg", // Example image URL for quiz
+      image:
+        "https://quizquizquiz.com/wp-content/uploads/2022/09/Pub-Quiz-Book-cover-page-225x300.png", // Example image URL for quiz
     },
     instructor: {
       name: "Rahul Singh", // Example name, replace with actual name
       photo:
         "https://insidesources.com/wp-content/uploads/2020/03/bigstock-Portrait-Of-A-Young-Male-Teach-324671239-e1584700649236.jpg",
-      bio: "John Doe is an experienced educator with a passion for teaching computer science. He has been teaching for over 10 years.",
+      bio: "Rahul Singh is a dedicated educator and a highly respected computer science professional. With over a decade of teaching experience, Rahul has helped thousands of students build strong foundations in programming, algorithms, and data structures. He specializes in making complex topics simple and accessible to learners of all levels. In addition to teaching, he has contributed to several open-source projects and regularly speaks at industry conferences. Rahul's teaching philosophy emphasizes hands-on learning and real-world problem solving, ensuring that students are well-equipped for their academic and professional journeys.",
       education: "PhD in Computer Science from XYZ University", // Example education, replace with actual details
       experience: "10+ years",
     },
