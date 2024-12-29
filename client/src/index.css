@@ -39,9 +39,10 @@
   }
 
   body {
-    @apply bg-background text-primary font-body;
+    @apply bg-background text-primary font-body ;
   }
 }
+
 
 /* Scroll Bar Design  */
 ::-webkit-scrollbar {
