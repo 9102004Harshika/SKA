@@ -367,5 +367,19 @@ export const courseMaterialConfig = [
       role: "Maths Teacher",
       experience: "10+ years",
     },
+    videos: [
+      {
+        title: "Introduction to Chapter 1",
+        link: "https://example.com/videos/chapter1-intro",
+      },
+      {
+        title: "Key Formulas and Applications",
+        link: "https://example.com/videos/chapter1-formulas",
+      },
+      {
+        title: "Problem Solving Techniques",
+        link: "https://example.com/videos/chapter1-problems",
+      },
+    ],
   },
 ];

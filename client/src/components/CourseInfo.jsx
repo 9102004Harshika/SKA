@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState } from "react";
 import { courseMaterialConfig } from "../config/index.js";
 import {
@@ -11,12 +7,14 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaUserTie,
+  FaVideo,
+  FaPhoneAlt,
 } from "react-icons/fa";
 
 const MAX_DESCRIPTION_LENGTH = 100;
 
 const QuizAndNotesDetails = () => {
-  const { notes, quizzes, instructor } = courseMaterialConfig[0];
+  const { notes, quizzes, instructor, videos } = courseMaterialConfig[0];
 
   const [showMoreNotes, setShowMoreNotes] = useState(false);
   const [showMoreQuizzes, setShowMoreQuizzes] = useState(false);
@@ -40,7 +38,9 @@ const QuizAndNotesDetails = () => {
       {description.length > MAX_DESCRIPTION_LENGTH && (
         <button
           onClick={toggleExpand}
-          className={`text-primary font-semibold flex items-center ${isExpanded ? 'mt-1 ml-1' : 'mt-[1px]'}`}
+          className={`text-primary font-semibold flex items-center ${
+            isExpanded ? "mt-1 ml-1" : "mt-[1px]"
+          }`}
         >
           {isExpanded ? (
             <>
@@ -58,6 +58,42 @@ const QuizAndNotesDetails = () => {
 
   return (
     <div className="p-6 rounded-md flex flex-col space-y-8 ">
+      {/* Videos Section */}
+      <div className="p-6 border-2 border-primary rounded-lg">
+        <h3 className="text-xl font-semibold mb-6 text-primary flex items-center">
+          <FaVideo className="mr-2" />
+          Videos
+        </h3>
+        {videos && videos.length > 0 ? (
+          <div className="space-y-6">
+            {videos.map((video, index) => (
+              <div
+                key={index}
+                className="flex flex-col space-y-3 p-4 bg-secondary rounded-md shadow-sm hover:shadow-md transition-shadow"
+              >
+                {/* Video Title */}
+                <p className="text-lg font-semibold text-primary">
+                  {video.title}
+                </p>
+
+                {/* Video Link */}
+                <a
+                  href={video.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center bg-primary text-background px-4 py-2 rounded-md w-fit font-semibold hover:bg-secondary transition-colors"
+                >
+                  <FaLink className="mr-2" />
+                  Watch Video
+                </a>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No video details available.</p>
+        )}
+      </div>
+
       {/* Notes and Quizzes Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Notes Section */}
@@ -90,7 +126,7 @@ const QuizAndNotesDetails = () => {
                       href={notes.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-primary text-white px-4 py-2 rounded-md text-center font-semibold hover:bg-secondary inline-block w-auto"
+                      className="bg-primary text-white px-4 py-2 rounded-md text-center font-semibold hover:bg-secondary inline-block w-fit"
                     >
                       <FaLink className="inline-block mr-2" />
                       View Notes
@@ -136,7 +172,7 @@ const QuizAndNotesDetails = () => {
                       href={quizzes.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-primary text-white px-4 py-2 rounded-md text-center font-semibold hover:bg-secondary inline-block w-auto"
+                      className="bg-primary text-white px-4 py-2 rounded-md text-center font-semibold hover:bg-secondary inline-block w-fit"
                     >
                       <FaLink className="inline-block mr-2" />
                       Take Quiz
@@ -168,7 +204,7 @@ const QuizAndNotesDetails = () => {
                 className="w-28 h-28 rounded-full object-cover border-4 border-primary transition-all duration-300 ease-in-out"
               />
             ) : (
-              <div className="w-28 h-28 bg-gray-300 rounded-full flex items-center justify-center">
+              <div className="w-28 h-28 bg-secondary rounded-full flex items-center justify-center">
                 <span className="text-white text-xl">N/A</span>
               </div>
             )}
@@ -191,6 +227,24 @@ const QuizAndNotesDetails = () => {
         ) : (
           <p className="text-gray-500">No instructor details available.</p>
         )}
+      </div>
+
+      {/* Quries Section  */}
+      <div className="p-6 rounded-md bg-background border-2 border-primary shadow-lg">
+        <h3 className="text-xl font-semibold mb-4 text-primary">
+          Have Any Questions?
+        </h3>
+        <p className="text-gray-700 mb-6">
+          We're here to help! Feel free to reach out to us for any queries or
+          support.
+        </p>
+        <a
+          href="tel:+1234567890"
+          className="inline-flex items-center bg-primary text-white px-6 py-3 rounded-md font-semibold hover:bg-secondary transition-colors shadow-md"
+        >
+          <FaPhoneAlt className="mr-2" />
+          Call Us: +91 93426 75932
+        </a>
       </div>
     </div>
   );
