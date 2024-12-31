@@ -11,8 +11,8 @@ import Courses from "./pages/Courses";
 import Slider from "./ui/slider";
 import CourseDetail from "./pages/CourseDetails";
 import { courses } from "./config";
-import AddCourseForm from "./pages/AddCourseForm";
 import QuizAndNotesDetails from "./components/CourseInfo";
+import AddCourseForm from "./pages/AddCourseForm";
 
 const App = () => {
   return (
