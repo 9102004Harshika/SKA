@@ -9,7 +9,7 @@ const buttonVariants = cva(
       size: {
         xs: "px-2 py-1 text-xs", // extra small button
         sm: "px-3 py-1 text-sm", // small button
-        md: "px-4 py-2 text-base", // medium button
+        md: "px-4 py-2 text-md", // medium button
         lg: "px-6 py-3 text-lg", // large button
       },
       variant: {
@@ -93,6 +93,8 @@ const StyledWrapper = styled.div`
         ? "hsl(240, 100%, 25%)"
         : variant === "secondary"
         ? "hsl(205, 100% ,85.88%)"
+        :variant === "course"
+        ? "#000080"
         : "hsl(26.53 ,86.98%, 66.86%)"};
     overflow: hidden;
     box-shadow: inset 0px 0px 0px 1px transparent;
@@ -133,6 +135,8 @@ const StyledWrapper = styled.div`
         ? "hsl(205, 100%, 85.88%)"
         : variant === "secondary"
         ? "#000080"
+        : variant === "course"
+        ? "hsl(26.53 ,86.98%, 66.86%)"
         : "hsl(205, 100%, 85.88%)"};
     transform: skew(-15deg);
     transition: all 0.2s ease;
@@ -140,9 +144,9 @@ const StyledWrapper = styled.div`
 
   .button_text {
     position: relative;
-    font-size:20px;
+    font-size:18px;
     color: ${({ variant }) =>
-      variant === "primary"
+      variant === "primary" || variant === "course"
         ? "white"
         : variant === "secondary"
         ? "#000080"
@@ -153,7 +157,7 @@ const StyledWrapper = styled.div`
     color: ${({ variant }) =>
       variant === "primary"
         ? "#000080"
-        : variant === "secondary"
+        : variant === "secondary" || variant === "course"
         ? "white"
         : "#000080"};
   }

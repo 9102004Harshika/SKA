@@ -147,7 +147,7 @@ function LoginPage() {
               variant="secondary"
               onClick={() => login()}
             />
-            <Button
+            {/* <Button
               text={
                 <div className="flex items-center justify-center">
                   <TiVendorMicrosoft className="w-5 h-5 mr-2" />
@@ -156,8 +156,8 @@ function LoginPage() {
               }
               size="sm"
               variant="secondary"
-            />
-            <Button
+            /> */}
+            {/* <Button
               text={
                 <div className="flex items-center justify-center">
                   <FaApple className="w-5 h-5 mr-2" />
@@ -166,7 +166,7 @@ function LoginPage() {
               }
               size="sm"
               variant="secondary"
-            />
+            /> */}
           </div>
         </div>
       </div>

@@ -343,15 +343,15 @@ export const courses = [
 export const courseMaterialConfig = [
   {
     notes: {
-      name: "Chapter 1 Notes",
+      name: "Course Notes",
       description:
-        "Detailed notes covering Chapter 1 topics, including fundamental concepts, examples, and exercises. These notes are designed to provide an in-depth understanding of the chapter and include diagrams, key formulas, and real-world applications to enhance learning.",
+        "Detailed notes covering entire course topics, including fundamental concepts, examples, and exercises. These notes are designed to provide an in-depth understanding of the chapter and include diagrams, key formulas, and real-world applications to enhance learning.",
       link: "https://example.com/notes/chapter1",
       image:
         "https://marketplace.canva.com/EAFh7bSCs1U/1/0/1131w/canva-brown-aesthetic-minimalist-note-book-cover-page-a4-document-yhk3SDUOdz8.jpg",
     },
     quizzes: {
-      name: "Quiz 1",
+      name: "Course Quizzes",
       description:
         "Test your knowledge of Chapter 1 with this comprehensive quiz. It features a variety of question formats, including multiple choice, true/false, and short answer, to ensure a thorough assessment of your understanding. The quiz also includes detailed explanations for each answer to help you learn and improve.",
       link: "https://example.com/quiz/chapter1",
@@ -371,14 +371,34 @@ export const courseMaterialConfig = [
       {
         title: "Introduction to Chapter 1",
         link: "https://example.com/videos/chapter1-intro",
+        time:'1 hour'
       },
       {
         title: "Key Formulas and Applications",
         link: "https://example.com/videos/chapter1-formulas",
+        time:'2 hour'
       },
       {
         title: "Problem Solving Techniques",
         link: "https://example.com/videos/chapter1-problems",
+        time:'1 hour'
+      },
+    ],
+    reviews: [
+      {
+        reviewerName: "John Doe",
+        rating: 5,
+        comment: "Excellent course! Highly recommend it.",
+      },
+      {
+        reviewerName: "Jane Smith",
+        rating: 4,
+        comment: "Great content, but could use more examples.",
+      },
+      {
+        reviewerName: "Harshika Gawade",
+        rating: 5,
+        comment: "Great content, but could use more examples.",
       },
     ],
   },
