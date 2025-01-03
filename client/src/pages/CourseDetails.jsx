@@ -535,7 +535,7 @@ const CourseDetail = () => {
     {reviews.map((review, index) => (
       <div
         key={index}
-        className="border border-gray-200 rounded-sm p-4 flex flex-col gap-2 w-full"
+        className="rounded-sm p-4 flex flex-col gap-2 w-full"
         style={{ boxShadow: "0px 15px 50px -5px rgb(184, 169, 169)" }}
       >
         {/* Reviewer Name */}

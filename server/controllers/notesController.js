@@ -20,3 +20,7 @@ export const getAllNotes = async (req, res) => {
     res.status(400).json({ message: "Error fetching notes", error });
   }
 };
+
+
+
+

@@ -209,7 +209,7 @@ function CourseForm() {
             className="input"
           />
           <input
-            type="text"
+            type="date"
             name="lastUpdated"
             value={courseData.lastUpdated}
             onChange={handleChange}
