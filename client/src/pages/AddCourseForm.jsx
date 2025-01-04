@@ -8,23 +8,20 @@ function CourseForm() {
     courseTitle: "",
     courseDescription: "",
     moduledescription: "",
-    demoVideo: "", // Added field
-    studentCount: "", // Added field
-    totalLectures: "", // Added field
-    totalEstimatedTime: "", // Added field
-    lastUpdated: "", // Added field
-    originalPrice: "", // Added field
-    discountedPrice: "", // Added field
-    class: "", // Added field
-    board: "", // Added field
-    subject: "", // Added field
-    stream: "", // Added field
-    category: "", // Added field
-    keyFeatures: {
-      notes: false,
-      quizzes: false,
-      videos: false,
-    },
+    demoVideo: "",
+    studentCount: "",
+    totalLectures: "",
+    totalEstimatedTime: "",
+    lastUpdated: "",
+    originalPrice: "",
+    discountedPrice: "",
+    class: "",
+    board: "",
+    subject: "",
+    stream: "",
+    category: "",
+    keyFeatures: [
+    ],
     topicsCovered: [],
     modules: [{ name: "", estimatedTime: "", videoLink: "" }],
     instructor: "",
@@ -94,21 +91,29 @@ function CourseForm() {
 
   const handleKeyFeaturesChange = (e) => {
     const { name, checked } = e.target;
-    setCourseData((prev) => ({
-      ...prev,
-      keyFeatures: {
-        ...prev.keyFeatures,
-        [name]: checked,
-      },
-    }));
+    setCourseData((prev) => {
+      const updatedKeyFeatures = { ...prev.keyFeatures };
+      updatedKeyFeatures[name] = checked; // Set true or false based on checked state
+      return {
+        ...prev,
+        keyFeatures: updatedKeyFeatures,
+      };
+    });
   };
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formattedData = {
+      ...courseData,
+      keyFeatures: Array.isArray(courseData.keyFeatures)
+        ? courseData.keyFeatures
+        : Object.values(courseData.keyFeatures), // Convert object to array of strings if needed
+    };
     try {
       const response = await axios.post(
         "http://localhost:5000/api/courses",
-        courseData
+        formattedData
       );
       console.log("Course Created:", response.data);
     } catch (error) {
@@ -175,6 +180,7 @@ function CourseForm() {
             className="input"
             required
           />
+
           {/* New Fields */}
           <input
             type="text"
@@ -343,6 +349,7 @@ function CourseForm() {
               Videos
             </label>
           </div>
+
           {/* Select Fields */}
           <select
             name="instructor"
@@ -353,7 +360,7 @@ function CourseForm() {
           >
             <option value="">Select Instructor</option>
             {instructors.map((instructor) => (
-              <option key={instructor.id} value={instructor.name}>
+              <option key={instructor.id} value={instructor._id}>
                 {instructor.name}
               </option>
             ))}
@@ -366,7 +373,7 @@ function CourseForm() {
             className="select"
           >
             {notes.map((note) => (
-              <option key={note.id} value={note.name}>
+              <option key={note.id} value={note._id}>
                 {note.name}
               </option>
             ))}
@@ -379,11 +386,12 @@ function CourseForm() {
             className="select"
           >
             {quizzes.map((quiz) => (
-              <option key={quiz.id} value={quiz.name}>
+              <option key={quiz.id} value={quiz._id}>
                 {quiz.name}
               </option>
             ))}
           </select>
+
           {/* Submit Button */}
           <button type="submit" className="button">
             Submit
