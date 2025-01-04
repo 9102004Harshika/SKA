@@ -58,22 +58,20 @@ const CourseDetailPage = () => {
       {/* Module Description */}
       <div>
         <h2 className="text-2xl font-semibold mt-6">Module Description</h2>
-        <pre className="bg-gray-100 p-4 rounded-md">
-          {course.moduledescription}
-        </pre>
+        <p className="py-5 rounded-md">{course.moduledescription}</p>
       </div>
 
       {/* Demo Video */}
       <div>
         <h2 className="text-2xl font-semibold mt-6">Demo Video</h2>
-        <iframe
-          width="100%"
-          height="315"
-          src={course.demoVideo.replace("youtu.be", "www.youtube.com/embed")}
-          title="Demo Video"
-          frameBorder="0"
-          allowFullScreen
-        ></iframe>
+        <a
+          href={course.demoVideo}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary bg-secondary underline"
+        >
+          Watch Demo Video
+        </a>
       </div>
 
       <hr className="my-6" />
