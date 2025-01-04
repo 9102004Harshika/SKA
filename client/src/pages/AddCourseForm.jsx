@@ -3,25 +3,23 @@ import axios from "axios";
 
 function CourseForm() {
   const [courseData, setCourseData] = useState({
-    courseId: "",
-    courseImage: "",
     courseTitle: "",
     courseDescription: "",
+    courseImage: "",
+    originalPrice: "",
+    discountedPrice: "",
     moduledescription: "",
     demoVideo: "",
     studentCount: "",
     totalLectures: "",
     totalEstimatedTime: "",
     lastUpdated: "",
-    originalPrice: "",
-    discountedPrice: "",
     class: "",
     board: "",
     subject: "",
     stream: "",
     category: "",
-    keyFeatures: [
-    ],
+    keyFeatures: [],
     topicsCovered: [],
     modules: [{ name: "", estimatedTime: "", videoLink: "" }],
     instructor: "",
@@ -68,6 +66,16 @@ function CourseForm() {
     setCourseData((prev) => ({ ...prev, modules }));
   };
 
+  const calculateDiscountPercentage = () => {
+    const { originalPrice, discountedPrice } = courseData;
+    if (originalPrice && discountedPrice) {
+      const discount =
+        ((originalPrice - discountedPrice) / originalPrice) * 100;
+      return discount.toFixed(2);
+    }
+    return 0;
+  };
+
   const addModule = () => {
     setCourseData((prev) => ({
       ...prev,
@@ -101,18 +109,18 @@ function CourseForm() {
     });
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formattedData = {
       ...courseData,
+      discountPercentage: calculateDiscountPercentage(),
       keyFeatures: Array.isArray(courseData.keyFeatures)
         ? courseData.keyFeatures
         : Object.values(courseData.keyFeatures), // Convert object to array of strings if needed
     };
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/courses",
+        "http://localhost:5000/api/courses/add",
         formattedData
       );
       console.log("Course Created:", response.data);
@@ -122,22 +130,13 @@ function CourseForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
+    <div className="min-h-screen bg-secondary py-10">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-semibold text-center mb-6">
           Create Course
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6 flex flex-col">
           {/* Text Fields */}
-          <input
-            type="text"
-            name="courseId"
-            value={courseData.courseId}
-            onChange={handleChange}
-            placeholder="Course ID"
-            className="input"
-            required
-          />
           <input
             type="text"
             name="courseImage"
@@ -239,6 +238,10 @@ function CourseForm() {
               placeholder="Discounted Price"
               className="input"
             />
+            {/* Display Discount Percentage */}
+            <div className="text-lg font-semibold">
+              Discount Percentage: {calculateDiscountPercentage()}%
+            </div>
           </div>
           <input
             type="text"

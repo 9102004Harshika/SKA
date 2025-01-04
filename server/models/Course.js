@@ -2,19 +2,18 @@ import mongoose from "mongoose";
 
 // Course Schema
 const courseSchema = new mongoose.Schema({
-  courseId: { type: String, unique: true, required: true },
-  courseImage: { type: String, required: true },
   courseTitle: { type: String, required: true },
   courseDescription: { type: String, required: true },
+  courseImage: { type: String, required: true },
+  originalPrice: { type: Number, required: true },
+  discountedPrice: { type: Number },
+  discountPercentage: { type: Number },
   moduledescription: { type: String, required: true },
   demoVideo: { type: String },
   studentCount: { type: String, required: true },
   totalLectures: { type: String, required: true },
   totalEstimatedTime: { type: String, required: true },
   lastUpdated: { type: Date, default: Date.now },
-  originalPrice: { type: Number, required: true },
-  discountedPrice: { type: Number, required: true },
-  discountPercentage: { type: Number },
   class: { type: String, required: true },
   board: { type: String, required: true },
   subject: { type: String, required: true },
