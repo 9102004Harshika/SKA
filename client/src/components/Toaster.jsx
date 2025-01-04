@@ -21,7 +21,7 @@ export function Toaster() {
           description={description}
           action={action}
           {...props}
-          style={{ boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 22px" }}
+          style={{ boxShadow: "rgba(0, 0, 0, 0.3) 0px 10px 30px 10px" }}
         >
           <div className="grid gap-1">
             {title && <ToastTitle>{title}</ToastTitle>}
