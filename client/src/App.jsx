@@ -12,7 +12,6 @@ import Slider from "./ui/slider";
 import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
 import AddCourseForm from "./pages/AddCourseForm";
-import CourseDetailPage from "./pages/courseDetailsPage";
 
 const App = () => {
   return (

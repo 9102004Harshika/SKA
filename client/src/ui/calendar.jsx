@@ -25,7 +25,7 @@ const getFebDays = (year) => {
 
 const Calendar = ({ onDateSelect }) => {
   const currentDate = new Date();
-  const [currYear, setCurrYear] = useState(currentDate.getFullYear());
+  const [currYear, setCurrYear] = useState(currentDate.getFullYear()-8);
   const [currMonth, setCurrMonth] = useState(currentDate.getMonth());
   const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [showYearPicker, setShowYearPicker] = useState(false);
@@ -48,13 +48,99 @@ const Calendar = ({ onDateSelect }) => {
     31,
   ];
 
+  // const generateDays = () => {
+  //   const days = [];
+  //   const firstDay = new Date(currYear, currMonth, 1).getDay();
+
+  //   for (let i = 0; i < daysOfMonth[currMonth] + firstDay; i++) {
+  //     if (i >= firstDay) {
+  //       const day = i - firstDay + 1;
+  //       days.push(
+  //         <div
+  //           key={i}
+  //           className={`calendar-day-hover ${
+  //             day === currentDate.getDate() &&
+  //             currYear === currentDate.getFullYear() &&
+  //             currMonth === currentDate.getMonth()
+  //               ? "curr-date"
+  //               : ""
+  //           }`}
+  //           onClick={() => {
+  //             const date = `${currYear}-${currMonth + 1}-${day}`;
+  //             setSelectedDate(date);
+  //             onDateSelect(date); // Call the parent-provided callback
+  //           }}
+  //         >
+  //           {day}
+  //           <span></span>
+  //           <span></span>
+  //           <span></span>
+  //           <span></span>
+  //         </div>
+  //       );
+  //     } else {
+  //       days.push(<div key={i}></div>);
+  //     }
+  //   }
+  //   return days;
+  // };
+  const closePickers = () => {
+    setShowMonthPicker(false);
+    setShowYearPicker(false);
+  };
+  
+  const handleClickOutside = (event) => {
+    if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+      closePickers();
+    }
+  };
+  
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
+  const prevMonth = () => {
+    if (currMonth > 0) {
+      setCurrMonth(currMonth - 1);
+    } else if (currYear > currYear - 1) {
+      setCurrYear(currYear - 1);
+      setCurrMonth(11);
+      
+    }
+  };
+  
+  const nextMonth = () => {
+    if (currMonth < 11) {
+      setCurrMonth(currMonth + 1);
+    } else if (currYear < currentDate.getFullYear()) {
+      setCurrYear(currYear + 1);
+      setCurrMonth(0);
+    }
+  };
+  const minAllowedYear = currentDate.getFullYear() - 8; // Minimum year for someone to be 8 years old
+  const minAllowedMonth = currentDate.getMonth(); // Minimum month for someone to be 8 years old
+  
+  // Disable "Next" button logic
+  const isNextDisabled = currYear === minAllowedYear && currMonth === minAllowedMonth;
+  const minDate = new Date(currentDate.getFullYear() - 8, currentDate.getMonth(), currentDate.getDate()); // Date 8 years ago
+  const isDateDisabled = (date) => {
+    return selectedDate < minDate || selectedDate > currentDate; // Disable dates outside the range
+  };
   const generateDays = () => {
     const days = [];
     const firstDay = new Date(currYear, currMonth, 1).getDay();
-
+    const currentDate = new Date(); // Current date
+    const minDate = new Date(currentDate.getFullYear() - 8, currentDate.getMonth(), currentDate.getDate()); // 8 years ago
+  
     for (let i = 0; i < daysOfMonth[currMonth] + firstDay; i++) {
       if (i >= firstDay) {
         const day = i - firstDay + 1;
+        const dayDate = new Date(currYear, currMonth, day); // The date of this day in the calendar
+        const isDisabled = dayDate > minDate || dayDate > currentDate; // Check if the date is outside the range
+  
         days.push(
           <div
             key={i}
@@ -64,11 +150,13 @@ const Calendar = ({ onDateSelect }) => {
               currMonth === currentDate.getMonth()
                 ? "curr-date"
                 : ""
-            }`}
+            } ${isDisabled ? "disabled-date" : ""}`} // Add a disabled class for styling
             onClick={() => {
-              const date = `${currYear}-${currMonth + 1}-${day}`;
-              setSelectedDate(date);
-              onDateSelect(date); // Call the parent-provided callback
+              if (!isDisabled) {
+                const date = `${currYear}-${currMonth + 1}-${day}`;
+                setSelectedDate(date);
+                onDateSelect(date); // Call the parent-provided callback
+              }
             }}
           >
             {day}
@@ -84,46 +172,7 @@ const Calendar = ({ onDateSelect }) => {
     }
     return days;
   };
-
-  const closePickers = () => {
-    setShowMonthPicker(false);
-    setShowYearPicker(false);
-  };
-
-  const handleClickOutside = (event) => {
-    if (calendarRef.current && !calendarRef.current.contains(event.target)) {
-      closePickers();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const prevMonth = () => {
-    if (currMonth > 0) {
-      setCurrMonth(currMonth - 1);
-    } else if (currYear > currentDate.getFullYear() - 1) {
-      setCurrYear(currYear - 1);
-      setCurrMonth(11);
-    }
-  };
-
-  const nextMonth = () => {
-    if (currMonth < 11) {
-      setCurrMonth(currMonth + 1);
-    } else if (currYear < currentDate.getFullYear()) {
-      setCurrYear(currYear + 1);
-      setCurrMonth(0);
-    }
-  };
-
-  const isNextDisabled =
-    currYear === currentDate.getFullYear() && currMonth === 11;
-
+  
   const handleYearClick = (year) => {
     setCurrYear(year);
     closePickers();
@@ -134,13 +183,14 @@ const Calendar = ({ onDateSelect }) => {
     closePickers();
   };
 
-  const startYear = currentDate.getFullYear() - 100; // 100 years back from current year
+  const startYear = currentDate.getFullYear() - 100;
+  const endYear=currentDate.getFullYear()-8 // 100 years back from current year
   const years = [];
   
-  for (let year = startYear; year <= currentDate.getFullYear(); year++) {
+  for (let year = startYear; year <= endYear; year++) {
     years.push(year);
   }
-  
+  console.log(currYear,currMonth)
 
   return (
     <div className="calendar" ref={calendarRef}>
@@ -148,9 +198,6 @@ const Calendar = ({ onDateSelect }) => {
         <button
           className="year-change"
           onClick={prevMonth}
-          disabled={
-            currYear === currentDate.getFullYear() - 1 && currMonth === 0
-          }
         >
           &lt;
         </button>
@@ -214,7 +261,7 @@ const Calendar = ({ onDateSelect }) => {
             <div>Fri</div>
             <div>Sat</div>
           </div>
-          <div className="calendar-days">{generateDays()}</div>
+          <div className="calendar-days" >{generateDays()}</div>
         </div>
       )}
 
@@ -366,6 +413,13 @@ const Calendar = ({ onDateSelect }) => {
           border-radius: 10px;
           cursor: pointer;
         }
+.disabled-date {
+  color: #ccc; /* Gray out the text */
+  pointer-events: none; /* Disable clicking */
+  opacity: 0.5; /* Add a faded appearance */
+  background-color: #f0f0f0; /* Optional: Light background */
+  cursor: not-allowed; /* Change cursor to indicate it's disabled */
+}
 
         .month-picker:hover,
         .year-picker-toggle:hover {

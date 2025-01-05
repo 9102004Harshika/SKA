@@ -97,10 +97,10 @@ function CourseForm() {
   };
 
   const handleKeyFeaturesChange = (e) => {
-    const { name, checked } = e.target;
+    const { name } = e.target;
     setCourseData((prev) => {
       const updatedKeyFeatures = { ...prev.keyFeatures };
-      updatedKeyFeatures[name] = checked; // Set true or false based on checked state
+      updatedKeyFeatures[name] = name; // Set true or false based on checked state
       return {
         ...prev,
         keyFeatures: updatedKeyFeatures,
@@ -332,15 +332,6 @@ function CourseForm() {
                 onChange={handleKeyFeaturesChange}
               />
               Quizzes
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="videos"
-                checked={courseData.keyFeatures.videos}
-                onChange={handleKeyFeaturesChange}
-              />
-              Videos
             </label>
           </div>
 

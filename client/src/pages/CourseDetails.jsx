@@ -145,7 +145,7 @@ const CourseDetailPage = () => {
               {course.keyFeatures.map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-background px-6 py-2 text-lg rounded-full shadow-md"
+                  className="bg-background px-6 py-2 text-lg rounded-full shadow-md capitalize"
                 >
                   {feature}
                 </div>
