@@ -10,9 +10,9 @@ import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import Slider from "./ui/slider";
 import CourseDetail from "./pages/CourseDetails";
-import { courses } from "./config";
 import QuizAndNotesDetails from "./components/CourseInfo";
 import AddCourseForm from "./pages/AddCourseForm";
+import CourseDetailPage from "./pages/courseDetailsPage";
 
 const App = () => {
   return (
@@ -31,9 +31,11 @@ const App = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/coursedetail" element={<CourseDetail />} />
+            <Route path="/addcourse" element={<AddCourseForm />} />
 
             {/* Route used for dedicated page of component testing */}
-            <Route path="/testing" element={<AddCourseForm />} />
+
+            <Route path="/testing" element={<CourseDetailPage />} />
             <Route path="/testing2" element={<QuizAndNotesDetails />} />
           </Routes>
         </main>
