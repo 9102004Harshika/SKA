@@ -26,7 +26,7 @@ export const getCourses = async (req, res) => {
 // Get a specific course by ID
 export const getCourseById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate("instructor");
+    const course = await Course.findById(req.params.id).populate("instructor notes quizzes");
     if (!course) return res.status(404).json({ error: "Course not found" });
     res.json(course);
   } catch (error) {

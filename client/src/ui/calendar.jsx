@@ -134,10 +134,13 @@ const Calendar = ({ onDateSelect }) => {
     closePickers();
   };
 
+  const startYear = currentDate.getFullYear() - 100; // 100 years back from current year
   const years = [];
-  for (let year = 2000; year <= currentDate.getFullYear(); year++) {
+  
+  for (let year = startYear; year <= currentDate.getFullYear(); year++) {
     years.push(year);
   }
+  
 
   return (
     <div className="calendar" ref={calendarRef}>
@@ -486,10 +489,14 @@ const Calendar = ({ onDateSelect }) => {
           margin-top: 20px;
           padding: 10px;
           cursor: pointer;
+          width: auto; /* Allow the list to expand */
+           max-height: 300px; /* Limit the height */
+  overflow-y: auto; /* Enable vertical scroll */
         }
 
         .year-item {
-          background-color: white;
+          background-color: hsl( 205 100% 85.88%);
+          border:1px solid #000080;
           padding: 5px;
           text-align: center;
           cursor: pointer;
@@ -500,6 +507,7 @@ const Calendar = ({ onDateSelect }) => {
 
         .year-item:hover {
           background-color: hsl(26.53, 86.98%, 66.86%);
+          border:1px solid hsl(26.53, 86.98%, 66.86%);
           color: white;
         }
         .month-grid {
@@ -513,7 +521,8 @@ const Calendar = ({ onDateSelect }) => {
         }
 
         .month-item {
-          background-color: white;
+           background-color: hsl( 205 100% 85.88%);
+          border:1px solid #000080;
           padding: 5px;
           text-align: center;
           cursor: pointer;
@@ -523,7 +532,8 @@ const Calendar = ({ onDateSelect }) => {
         }
 
         .month-item:hover {
-          background-color: hsl(26.53, 86.98%, 66.86%);
+         background-color: hsl(26.53, 86.98%, 66.86%);
+          border:1px solid hsl(26.53, 86.98%, 66.86%);
           color: white;
         }
         .relative-container {
