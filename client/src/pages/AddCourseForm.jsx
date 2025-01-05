@@ -8,11 +8,10 @@ function CourseForm() {
     courseImage: "",
     originalPrice: "",
     discountedPrice: "",
+    aboutCourse: "",
     moduledescription: "",
     demoVideo: "",
     studentCount: "",
-    totalLectures: "",
-    totalEstimatedTime: "",
     lastUpdated: "",
     class: "",
     board: "",
@@ -164,6 +163,14 @@ function CourseForm() {
             required
           />
           <textarea
+            name="aboutCourse"
+            value={courseData.aboutCourse}
+            onChange={handleChange}
+            placeholder="About Course"
+            className="textarea"
+            required
+          />
+          <textarea
             name="moduledescription"
             value={courseData.moduledescription}
             onChange={handleChange}
@@ -195,22 +202,6 @@ function CourseForm() {
             value={courseData.studentCount}
             onChange={handleChange}
             placeholder="Number of Students"
-            className="input"
-          />
-          <input
-            type="number"
-            name="totalLectures"
-            value={courseData.totalLectures}
-            onChange={handleChange}
-            placeholder="Total Lectures"
-            className="input"
-          />
-          <input
-            type="text"
-            name="totalEstimatedTime"
-            value={courseData.totalEstimatedTime}
-            onChange={handleChange}
-            placeholder="Total Estimated Time"
             className="input"
           />
           <input

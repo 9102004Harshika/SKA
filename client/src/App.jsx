@@ -34,9 +34,7 @@ const App = () => {
             <Route path="/addcourse" element={<AddCourseForm />} />
 
             {/* Route used for dedicated page of component testing */}
-
-            <Route path="/testing" element={<CourseDetailPage />} />
-            <Route path="/testing2" element={<QuizAndNotesDetails />} />
+            <Route path="/testing" element={<QuizAndNotesDetails />} />
           </Routes>
         </main>
         {/* <Footer /> */}
