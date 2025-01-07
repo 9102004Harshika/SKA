@@ -220,3 +220,142 @@ label {
 
 
 
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.course-page {
+  font-family: Arial, sans-serif;
+}
+
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: linear-gradient(
+      to right,
+      #333 0%,
+      rgb(24, 32, 83) 45%,       /* Deep blue in the middle */
+      rgba(32, 43, 88, 0.85) 65%, /* Semi-transparent blue towards the right */
+      transparent 100% /* Fading out to transparent white */
+    ),
+    url('https://wallpapercave.com/wp/wp2417737.jpg');
+  background-size: cover; /* Ensures image covers the full section */
+  background-repeat: no-repeat;
+  background-position: center; /* Centers the image */
+  color: white;
+  padding: 2rem;
+  height: 500px; /* Adjust height as needed */
+
+}
+
+.content {
+  max-width: 60%;
+  padding-left: 5%;
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+h1 {
+  font-size: 3.5rem;
+  line-height: 4rem;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.8rem;
+  width: 80%;
+}
+
+.metadata {
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+
+.ratings {
+  font-size: 1rem;
+}
+
+.card {
+  background: hsl( 60 ,56% ,91%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5),0 5px 10px rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  max-width: 350px;
+  text-align: center;
+  margin-top: 50px;
+  margin-right: 80px;
+  z-index: 1;
+}
+
+.course-image {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.enroll-button {
+  background: black;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.tabs {
+  background: #f5f5dc;
+  padding-left: 7%;
+  padding-top: 2%;
+  font-size: large;
+  display: flex;
+  
+}
+
+.tabs ul {
+  list-style: none;
+  display: flex;
+  gap: 4rem;
+  cursor:pointer;
+}
+
+.about-section {
+  padding: 2rem;
+  background: #f5f5dc;
+  color: black;
+}
+
+.about-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.active-tab-hr {
+  border: 0;
+  height: 4px; /* Set height for the hr line */
+  background-color: #000080; /* Set your preferred border color */
+  width: 80%; /* Adjust the width of the hr line */
+  margin-top: 20px; /* Space between the tab and hr line */
+ 
+}
+.about-section h2{
+  font-size: 2.5rem;
+  padding-top: 20px;
+  padding-left: 65px;
+  font-weight: semibold;
+}
+.about-section p{
+  width: 55%;
+  text-indent: 40px;
+  padding-left: 65px;
+  line-height: 2rem;
+}
