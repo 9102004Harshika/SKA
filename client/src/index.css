@@ -339,6 +339,10 @@ h1 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
+.topics-section h2{
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
 .active-tab-hr {
   border: 0;
   height: 4px; /* Set height for the hr line */
