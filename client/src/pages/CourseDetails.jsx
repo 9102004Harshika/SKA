@@ -2,13 +2,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { FaChalkboardTeacher, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaChalkboardTeacher, FaStar, FaStarHalfAlt,FaChevronUp,FaChevronDown } from "react-icons/fa";
 import { Button } from "../ui/button";
 import Navbar from "../components/Navbar";
 import { PiStudent } from "react-icons/pi";
 import { CgSandClock } from "react-icons/cg";
 import { GoStarFill } from "react-icons/go";
-
+import { IoMdCheckmark } from "react-icons/io";
+import { PiVideoCameraFill } from "react-icons/pi";
+import { GoClock } from "react-icons/go";
+import { BsDot } from "react-icons/bs";
+import {LuTvMinimalPlay} from 'react-icons/lu'
 const CourseDetailPage = () => {
   const { id } = useParams(); // Get course ID from URL
   const [course, setCourse] = useState(null); // State to store course details
@@ -84,7 +88,12 @@ const CourseDetailPage = () => {
 
   if (loading) return <p className="text-center text-xl">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-
+  const totalEstimatedTime = course.modules.reduce((sum, module) => {
+    // Parse the estimatedTime as a number and add it to the sum
+    const estimatedTimeNumber = parseFloat(module.estimatedTime) || 0;
+    return sum + estimatedTimeNumber;
+  }, 0);
+  
   return (
     <div className="space-y-0">
       <Navbar />
@@ -95,12 +104,12 @@ const CourseDetailPage = () => {
               <p className="breadcrumb font-body mb-5">
                 Home &gt; Education &gt; (Hons) Business and Management
               </p>
-              <h1 className="font-header ">(Hons) Business and Management</h1>
+              <h1 className="font-header ">{course.courseTitle}</h1>
               <p className="description font-body">
-                This (Hons) Business and Management BSc course from University of Essex Online will
+                {/* This (Hons) Business and Management BSc course from University of Essex Online will
                 help you adapt to the ever-changing world of business. We'll examine a range of
                 real-world business examples and use them to develop the broad skillset that a good
-                manager should be able to draw from.
+                manager should be able to draw from. */}{course.courseDescription}
               </p>
               <div className="metadata flex gap-10 font-body">
                 <p className="inline-flex items-center gap-4">
@@ -147,91 +156,110 @@ const CourseDetailPage = () => {
               ))}
             </ul>
           </div>
-          <div className="about-section">
-            <h2 className="font-header text-primary ">About Us</h2>
-            <p className="font-body text-gray-500">
+          <div className="pt-[50px] pl-20 ml-5">
+            <h2 className="font-header text-primary text-4xl ">About Us</h2>
+            <p className="font-body text-gray-500 w-[62%] p-10 indent-[40px] leading-8">
               This (Hons) Business and Management BSc course from University of Essex Online will help
               you adapt to the ever-changing world of business. We'll examine a range of real-world
               business examples and use them to develop the broad skillset that a good manager should
               be able to draw from.
             </p>
           </div>
-          <div className="topics-section">
-            <h2 className="font-header text-primary ">Topics Covered</h2>
-            <p className="font-body text-gray-500">
-              This (Hons) Business and Management BSc course from University of Essex Online will help
-              you adapt to the ever-changing world of business. We'll examine a range of real-world
-              business examples and use them to develop the broad skillset that a good manager should
-              be able to draw from.
+          <div className="pt-[20px] pl-20 ml-5">
+            <h2 className="font-header text-primary text-4xl  ">Topics Covered</h2>
+            <ul className="font-body text-gray-500 grid grid-cols-2 gap-y-4 w-[62%] text-xl p-10">
+    {course.topicsCovered.map((topic, index) => (
+      <li key={index} className="flex items-center gap-2">
+        <IoMdCheckmark className="text-accent" /> {/* Tick icon */}
+        <span>{topic}</span>
+      </li>
+    ))}
+  </ul>
+          </div>
+          <div className="pt-[20px] pl-20 ml-5">
+            <h2 className="font-header text-primary text-4xl  ">There are {course.modules.length} modules in this course</h2>
+            <p className="font-body text-gray-500  w-[62%] pt-3 pl-10 leading-8 indent-[40px]">{course.courseDescription}</p>
+            <p className="pl-[70px] pt-5 flex gap-2 inline-flex items-center text-center">
+              <span className="font-body text-gray-500"><BsDot/></span>
+  <span className="inline-flex items-center text-center font-body text-gray-500 gap-2">
+    <PiVideoCameraFill className="text-lg" />
+    {course.modules.length} Lectures
+  </span>
+  <span className="font-body text-gray-500"><BsDot/></span>
+  <span className="inline-flex items-center text-center font-body text-gray-500 gap-2">
+    <GoClock />
+    {totalEstimatedTime} hours
+  </span>
+</p>
+{course.modules && course.modules.length > 0 ? (
+  <div className="md:space-y-6 md:mt-10 md:pr-[650px] mt-5 space-y-10 pr-10 md:pl-[65px]">
+    {course.modules.map((module, index) => (
+      <div
+        key={index}
+        className="flex justify-between items-center p-4 bg-primary  shadow-xl hover:shadow-2xl transition-shadow"
+      >
+        {/* Module Details */}
+        <div className="space-y-3 p-2 w-full">
+          <p className="text-xl font-semibold font-header text-background">
+            {module.name}
+          </p>
+          <div className="flex gap-5">
+            <p className="font-bold text-background">
+              Module {index + 1}
+            </p>
+            <p className="font-bold text-background">
+              {module.estimatedTime} hours
             </p>
           </div>
-          <div className="topics-section">
-            <h2 className="font-header text-primary ">Topics Covered</h2>
-            <p className="font-body text-gray-500">
-              This (Hons) Business and Management BSc course from University of Essex Online will help
-              you adapt to the ever-changing world of business. We'll examine a range of real-world
-              business examples and use them to develop the broad skillset that a good manager should
-              be able to draw from.
-            </p>
+          {expandedModules[index] && (
+            <div className="flex gap-[20px] flex-wrap">
+              <a
+                href={module.videoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center bg-secondary text-primary px-4 py-2 rounded-md w-fit font-semibold hover:bg-primary transition-colors mt-2"
+              >
+                <LuTvMinimalPlay className="mr-2" />
+                Watch Video
+              </a>
+            </div>
+          )}
+        </div>
+
+        {/* Toggle Button */}
+        <button
+          onClick={() => toggleModule(index)}
+          className="text-xl p-2 text-background rounded-full transition-all"
+        >
+          {expandedModules[index] ? <FaChevronUp /> : <FaChevronDown />}
+        </button>
+      </div>
+    ))}
+  </div>
+) : (
+  <p className="text-gray-500">No module details available.</p>
+)}
           </div>
-          <div className="topics-section">
-            <h2 className="font-header text-primary ">Topics Covered</h2>
-            <p className="font-body text-gray-500">
-              This (Hons) Business and Management BSc course from University of Essex Online will help
-              you adapt to the ever-changing world of business. We'll examine a range of real-world
-              business examples and use them to develop the broad skillset that a good manager should
-              be able to draw from.
-            </p>
+          <div className="pt-[50px] pl-20 ml-5">
+            <h2 className="font-header text-primary text-4xl ">Demo Video</h2>
+            <div className="w-full flex  mt-5  pl-10">
+    <iframe
+     width="500"  // Adjusted width to 500px
+     height="281"
+   
+      src="https://www.youtube.com/embed/QphgAccZnik?si=SEhMVV8bKddDQ1Bh"  // Replace with your actual video link
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+      title="Demo Video"
+    ></iframe>
+  </div>
           </div>
-          <div className="topics-section">
-            <h2 className="font-header text-primary ">Topics Covered</h2>
-            <p className="font-body text-gray-500">
-              This (Hons) Business and Management BSc course from University of Essex Online will help
-              you adapt to the ever-changing world of business. We'll examine a range of real-world
-              business examples and use them to develop the broad skillset that a good manager should
-              be able to draw from.
-            </p>
-          </div>
-          <div className="topics-section">
-            <h2 className="font-header text-primary ">Topics Covered</h2>
-            <p className="font-body text-gray-500">
-              This (Hons) Business and Management BSc course from University of Essex Online will help
-              you adapt to the ever-changing world of business. We'll examine a range of real-world
-              business examples and use them to develop the broad skillset that a good manager should
-              be able to draw from.
-            </p>
-          </div>
-          <div className="topics-section">
-            <h2 className="font-header text-primary ">Topics Covered</h2>
-            <p className="font-body text-gray-500">
-              This (Hons) Business and Management BSc course from University of Essex Online will help
-              you adapt to the ever-changing world of business. We'll examine a range of real-world
-              business examples and use them to develop the broad skillset that a good manager should
-              be able to draw from.
-            </p>
-          </div>
-          <div className="topics-section">
-            <h2 className="font-header text-primary ">Topics Covered</h2>
-            <p className="font-body text-gray-500">
-              This (Hons) Business and Management BSc course from University of Essex Online will help
-              you adapt to the ever-changing world of business. We'll examine a range of real-world
-              business examples and use them to develop the broad skillset that a good manager should
-              be able to draw from.
-            </p>
-          </div>
-          <div className="topics-section">
-            <h2 className="font-header text-primary ">Topics Covered</h2>
-            <p className="font-body text-gray-500">
-              This (Hons) Business and Management BSc course from University of Essex Online will help
-              you adapt to the ever-changing world of business. We'll examine a range of real-world
-              business examples and use them to develop the broad skillset that a good manager should
-              be able to draw from.
-            </p>
-          </div>
+         
         </div>
         {/* Card Section */}
         <div
-  className={`card fixed top-[450px] right-0 transform translate-y-[-50%] transition-transform duration-500 ${
+  className={`card fixed top-[460px] right-0 transform translate-y-[-50%] transition-transform duration-500 ${
     scrollDirection === "down" ? "translate-y-96" : "translate-y-0"
   }`}
 >
