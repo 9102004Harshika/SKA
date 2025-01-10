@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { FaChalkboardTeacher, FaStar, FaStarHalfAlt,FaChevronUp,FaChevronDown } from "react-icons/fa";
+import { FaChalkboardTeacher, FaStar, FaStarHalfAlt,FaChevronUp,FaChevronDown,FaPhoneAlt } from "react-icons/fa";
 import { Button } from "../ui/button";
 import Navbar from "../components/Navbar";
 import { PiStudent } from "react-icons/pi";
@@ -255,7 +255,94 @@ const CourseDetailPage = () => {
     ></iframe>
   </div>
           </div>
-         
+          <div className="pt-[50px] pl-20 ml-5">
+  <div className="pt-[50px]  ml-5">
+  <h2 className="font-header text-primary text-4xl">Perks of enrolling in the course</h2>
+  <p className="font-body text-gray-500 w-[62%] p-10 indent-[40px] leading-8">
+    Enrolling in this course comes with a range of perks designed to enhance your learning experience. From interactive quizzes to comprehensive study materials, you’ll have everything you need to succeed.
+  </p>
+  <div className="flex gap-10 pl-10">
+    {/* Notes Card (Book Design) */}
+    <div className="relative w-[300px] h-[200px] bg-gradient-to-br from-[#FFD700] to-[#FFA500] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
+      <div className="absolute top-0 left-0 w-[290px] h-[190px] bg-white rounded-lg border-[4px] border-gray-300 shadow-inner transform rotate-[-2deg]"></div>
+      <div className="absolute top-[5px] left-[5px] w-[280px] h-[180px] bg-[#FFF8DC] rounded-lg shadow-inner border-[2px] border-gray-300"></div>
+      <h3 className="relative font-header text-2xl text-primary z-10">📚 Notes</h3>
+      <p className="relative font-body text-gray-700 z-10">
+        Access detailed and structured notes to help you master the course content at your own pace.
+      </p>
+      <div className="absolute top-2 right-2 text-xs bg-[#FFF8DC] px-2 py-1 rounded-md shadow-md font-bold z-10">
+        <span className="uppercase text-gray-500">Bookmark</span>
+      </div>
+    </div>
+
+    {/* Quiz Card (Question Mark Style) */}
+    <div className="relative w-[200px] h-[200px] rounded-full bg-gradient-to-tr from-[#4CAF50] to-[#2E7D32] shadow-lg flex items-center justify-center transform hover:scale-105 transition duration-300">
+      <div className="absolute top-0 left-0 w-[190px] h-[190px] bg-white rounded-full shadow-inner"></div>
+      <div className="absolute top-[5px] left-[5px] w-[180px] h-[180px] bg-[#E8F5E9] rounded-full shadow-md"></div>
+      <h3 className="absolute top-[10px] font-header text-primary text-3xl text-center">
+        ❓
+      </h3>
+      <div className="absolute bottom-[30px] text-center px-4">
+        <h4 className="font-header text-xl text-primary mb-2">Quiz</h4>
+        <p className="font-body text-gray-700 text-sm">
+          Test your knowledge with engaging quizzes designed to reinforce your learning.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div className="pt-[50px] pl-20 ml-5">
+  <h2 className="font-header text-primary text-4xl">Know Our Instructor</h2>
+  <div className="flex gap-10 mt-10 items-center">
+    {/* Instructor Image */}
+    <div className="w-32 h-32 rounded-full overflow-hidden shadow-xl">
+      <img
+        src="https://via.placeholder.com/150" // Replace with the instructor's image URL
+        alt="Instructor"
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Instructor Details */}
+    <div className="space-y-4">
+      <p className="text-2xl font-semibold font-header text-primary">John Doe</p>
+      <p className="text-xl text-gray-500">Senior Mathematics Instructor</p>
+      <p className="font-body text-gray-500 w-[62%] p-4 leading-7">
+        John Doe has over 15 years of teaching experience in Mathematics. He has helped hundreds of students achieve academic success and is passionate about making complex mathematical concepts easy to understand.
+      </p>
+     
+    </div>
+
+  </div>
+    <div>
+      {/* Reviews section */}
+    </div>
+
+    <div className="pt-[50px] pb-10 pr-[650px]">
+        <div
+          className="p-6 rounded-sm mt-8 bg-background"
+          style={{ boxShadow: "0px 15px 50px -5px rgb(184, 169, 169)" }}
+        >
+          <h3 className="text-xl font-semibold mb-4 text-primary">
+            Have Any Questions?
+          </h3>
+          <p className="text-gray-700 mb-6">
+            We're here to help! Feel free to reach out to us for any queries or
+            support.
+          </p>
+          <a
+            href="tel:+1234567890"
+            className="inline-flex items-center bg-accent text-white px-6 py-3 rounded-md font-semibold hover:bg-primary transition-colors shadow-md"
+          >
+            <FaPhoneAlt className="mr-2" />
+            Call Us: +91 93426 75932
+          </a>
+        </div>
+      </div>
+</div>
+
         </div>
         {/* Card Section */}
         <div
