@@ -294,9 +294,9 @@ h1 {
   max-width: 350px;
   text-align: center;
   margin-right: 80px;
-  z-index: 1;
+  z-index: 50;
+  transition: box-shadow 0.3s ease-in-out;
 }
-
 .course-image {
   width: 100%;
   margin-bottom: 1rem;
@@ -334,7 +334,68 @@ h1 {
   background-color: #000080; /* Set your preferred border color */
   width: 80%; /* Adjust the width of the hr line */
   margin-top: 20px; /* Space between the tab and hr line */
- 
+  
 }
 
 
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+.fade-out {
+  animation: fadeOut 4s ease-out forwards;
+  opacity: 0;
+}
+
+.card.is-fixed {
+  box-shadow: 0 2px 3px rgba(73, 72, 72, 0.5),0 2px 3px rgba(104, 103, 103, 0.6);;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+
+
+.tabs {
+  background: #f5f2dc; /* Background color */
+ z-index: 10;
+}
+
+.sticky-tabs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for emphasis */
+  transition: all 0.3s ease-in-out; /* Smooth transition when it becomes sticky */
+  background: #000080; 
+  color: white;
+  margin-bottom: 20px;
+}
+
+
+
+.active-tab-hr {
+  border: 1px solid #000080; /* Active underline color */
+  width: 100%;
+  margin-top: 5px;
+}
+.active-stickytab-hr {
+  border: 1px solid white;
+  background-color: white; /* Active underline color */
+  width: 100%;
+  margin-top: 20px;
+}

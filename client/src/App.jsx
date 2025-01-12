@@ -13,6 +13,7 @@ import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
 import AddCourseForm from "./pages/AddCourseForm";
 
+
 const App = () => {
   return (
     <Router>
