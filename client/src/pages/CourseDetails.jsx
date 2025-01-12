@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { FaChalkboardTeacher, FaStar, FaStarHalfAlt,FaChevronUp,FaChevronDown,FaPhoneAlt } from "react-icons/fa";
+import { FaChalkboardTeacher, FaStar, FaStarHalfAlt,FaChevronUp,FaChevronDown,FaPhoneAlt, FaArrowRight } from "react-icons/fa";
 import { Button } from "../ui/button";
 import Navbar from "../components/Navbar";
 import { PiStudent } from "react-icons/pi";
@@ -13,6 +13,7 @@ import { PiVideoCameraFill } from "react-icons/pi";
 import { GoClock } from "react-icons/go";
 import { BsDot } from "react-icons/bs";
 import {LuTvMinimalPlay} from 'react-icons/lu'
+
 const CourseDetailPage = () => {
   const { id } = useParams(); // Get course ID from URL
   const [course, setCourse] = useState(null); // State to store course details
@@ -180,12 +181,11 @@ const CourseDetailPage = () => {
             <h2 className="font-header text-primary text-4xl  ">There are {course.modules.length} modules in this course</h2>
             <p className="font-body text-gray-500  w-[62%] pt-3 pl-10 leading-8 indent-[40px]">{course.courseDescription}</p>
             <p className="pl-[70px] pt-5 flex gap-2 inline-flex items-center text-center">
-              <span className="font-body text-gray-500"><BsDot/></span>
+
   <span className="inline-flex items-center text-center font-body text-gray-500 gap-2">
     <PiVideoCameraFill className="text-lg" />
     {course.modules.length} Lectures
   </span>
-  <span className="font-body text-gray-500"><BsDot/></span>
   <span className="inline-flex items-center text-center font-body text-gray-500 gap-2">
     <GoClock />
     {totalEstimatedTime} hours
@@ -217,7 +217,7 @@ const CourseDetailPage = () => {
                 href={module.videoLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center bg-secondary text-primary px-4 py-2 rounded-md w-fit font-semibold hover:bg-primary transition-colors mt-2"
+                className="inline-flex items-center bg-secondary text-primary px-4 py-2 rounded-sm w-fit  hover:bg-accent hover:text-background transition-colors mt-2"
               >
                 <LuTvMinimalPlay className="mr-2" />
                 Watch Video
@@ -240,9 +240,13 @@ const CourseDetailPage = () => {
   <p className="text-gray-500">No module details available.</p>
 )}
           </div>
-          <div className="pt-[50px] pl-20 ml-5">
-            <h2 className="font-header text-primary text-4xl ">Demo Video</h2>
-            <div className="w-full flex  mt-5  pl-10">
+          <div className=" pl-20 ml-5  mr-[520px] mt-20">
+            <div className="w-full flex justify-between pr-10 bg-[#f7f9fa] pl-10 pb-20 pt-20 ">
+          <div>  <h2 className="font-header text-primary text-4xl  ">Glimpse of the course</h2>
+          <p className="w-[300px] pt-10 text-gray-500">This is the demo video presented by our esteemed instructor, offering a glimpse into the course content and teaching approach.</p>
+          <div className="inline-flex items-center pt-5 space-x-2 hover:space-x-4 hover:cursor-pointer">
+  <span>See the demo </span><span><FaArrowRight  /></span>
+</div></div>
     <iframe
      width="500"  // Adjusted width to 500px
      height="281"
@@ -263,7 +267,7 @@ const CourseDetailPage = () => {
   </p>
   <div className="flex gap-10 pl-10">
     {/* Notes Card (Book Design) */}
-    <div className="relative w-[300px] h-[200px] bg-gradient-to-br from-[#FFD700] to-[#FFA500] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
+    <div className="relative w-[300px] h-[200px] bg-[#f4a261] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
       <div className="absolute top-0 left-0 w-[290px] h-[190px] bg-white rounded-lg border-[4px] border-gray-300 shadow-inner transform rotate-[-2deg]"></div>
       <div className="absolute top-[5px] left-[5px] w-[280px] h-[180px] bg-[#FFF8DC] rounded-lg shadow-inner border-[2px] border-gray-300"></div>
       <h3 className="relative font-header text-2xl text-primary z-10">📚 Notes</h3>
@@ -276,15 +280,15 @@ const CourseDetailPage = () => {
     </div>
 
     {/* Quiz Card (Question Mark Style) */}
-    <div className="relative w-[200px] h-[200px] rounded-full bg-gradient-to-tr from-[#4CAF50] to-[#2E7D32] shadow-lg flex items-center justify-center transform hover:scale-105 transition duration-300">
-      <div className="absolute top-0 left-0 w-[190px] h-[190px] bg-white rounded-full shadow-inner"></div>
-      <div className="absolute top-[5px] left-[5px] w-[180px] h-[180px] bg-[#E8F5E9] rounded-full shadow-md"></div>
+    <div className="relative w-[300px] h-[200px] rounded-lg bg-accent shadow-lg flex items-center justify-center transform hover:scale-105 transition duration-300">
+      <div className="absolute top-0 left-0 w-[290px] h-[190px] bg-white rounded-lg shadow-inner"></div>
+      <div className="absolute top-[5px] left-[5px] w-[280px] h-[180px] bg-[#E8F5E9] rounded-lg shadow-md"></div>
       <h3 className="absolute top-[10px] font-header text-primary text-3xl text-center">
         ❓
       </h3>
       <div className="absolute bottom-[30px] text-center px-4">
         <h4 className="font-header text-xl text-primary mb-2">Quiz</h4>
-        <p className="font-body text-gray-700 text-sm">
+        <p className="font-body text-gray-700 text-sm mt-2 mb-7">
           Test your knowledge with engaging quizzes designed to reinforce your learning.
         </p>
       </div>
@@ -345,7 +349,7 @@ const CourseDetailPage = () => {
 
         </div>
         {/* Card Section */}
-        <div
+         <div
   className={`card fixed top-[460px] right-0 transform translate-y-[-50%] transition-transform duration-500 ${
     scrollDirection === "down" ? "translate-y-96" : "translate-y-0"
   }`}
@@ -375,7 +379,7 @@ const CourseDetailPage = () => {
     </li>
   </ul>
   <Button text="Enroll Now" size="lg" variant="primary" />
-</div>
+</div> 
 
       </div>
     </div>

@@ -54,59 +54,63 @@ const Navbar = () => {
   // Trigger GSAP animation on load for the second row
   useEffect(() => {
     const tl = gsap.timeline();
+  
+    // Animate the first row (e.g., logo or main navbar container)
     tl.fromTo(
-      ".navbar-first-row", // Select the first row by class
-      {
-        opacity: 0, // Start invisible
-        y: -20, // Start slightly above
-      },
-      {
-        opacity: 1, // Fade to visible
-        y: 0, // Move to default position
-        ease: "power3.out", // Smooth easing
-        duration: 1, // Duration of the animation
-      }
-    );
-    tl.fromTo(
-      firstRowRef.current.children, // Target each navigation link
+      ".navbar-first-row",
       {
         opacity: 0,
-        y: 50, // Start slightly below
-        scale: 0.8, // Shrink them initially
-        rotation: -15, // Slightly rotated for a cool effect
+        y: -20,
       },
       {
         opacity: 1,
-        y: 0, // Move to their default position
-        scale: 1, // Restore original size
-        rotation: 0, // Remove rotation
-        ease: "elastic.out(1, 0.6)", // Elastic easing for bounce effect
-        stagger: 0.15, // Stagger for wave-like effect
-        duration: 1.5, // Total duration
+        y: 0,
+        ease: "power3.out",
+        duration: 0.6, // Reduced duration
       }
     );
-    // Cool wave-like animation for the second row navigation links
-    tl.fromTo(
-      navLinksRef.current.children, // Target each navigation link
+  
+    // Animate the first row navigation links
+    gsap.fromTo(
+      firstRowRef.current.children,
       {
         opacity: 0,
-        y: 50, // Start slightly below
-        scale: 0.8, // Shrink them initially
-        rotation: -15, // Slightly rotated for a cool effect
+        y: 40,
+        scale: 0.9,
+        rotation: -10,
       },
       {
         opacity: 1,
-        y: 0, // Move to their default position
-        scale: 1, // Restore original size
-        rotation: 0, // Remove rotation
-        ease: "elastic.out(1, 0.6)", // Elastic easing for bounce effect
-        stagger: 0.15, // Stagger for wave-like effect
-        duration: 1.5, // Total duration
+        y: 0,
+        scale: 1,
+        rotation: 0,
+        ease: "power2.out", // Faster easing
+        stagger: 0.1, // Reduced stagger
+        duration: 0.8, // Shortened duration
       }
     );
-
-   
+  
+    // Animate the second row navigation links (if applicable)
+    gsap.fromTo(
+      navLinksRef.current.children,
+      {
+        opacity: 0,
+        y: 40,
+        scale: 0.9,
+        rotation: -10,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotation: 0,
+        ease: "power2.out", // Consistent faster easing
+        stagger: 0.1, // Reduced stagger
+        duration: 0.8, // Shortened duration
+      }
+    );
   }, []);
+  
 
   useEffect(() => {
     if (isMenuOpen) {
