@@ -18,7 +18,7 @@ import { GoStarFill } from "react-icons/go";
 import { IoMdCheckmark } from "react-icons/io";
 import { PiVideoCameraFill } from "react-icons/pi";
 import { GoClock } from "react-icons/go";
-
+import sir from "../images/sir.png"
 import { LuTvMinimalPlay } from "react-icons/lu";
 import React from "react";
 
@@ -148,65 +148,53 @@ const CourseDetailPage = () => {
       <Navbar />
       <div className="course-page flex">
         <div className="course-content flex-1">
-          <div className="hero-section">
-            <div className="content">
-              <p className="breadcrumb font-body mb-5">
-                Home &gt; Education &gt; (Hons) Business and Management
-              </p>
-              <h1 className="font-header ">{course.courseTitle}</h1>
-              <p className="description font-body">
-                {/* This (Hons) Business and Management BSc course from University of Essex Online will
-                help you adapt to the ever-changing world of business. We'll examine a range of
-                real-world business examples and use them to develop the broad skillset that a good
-                manager should be able to draw from. */}
-                {course.courseDescription}
-              </p>
-              <div className="metadata flex gap-10 font-body">
-                <p className="inline-flex items-center gap-4">
-                  <span className="text-3xl">
-                    <FaChalkboardTeacher />
-                  </span>
-                  <span>Instructor: John Doe</span>
-                </p>
-                <p className="inline-flex items-center gap-2">
-                  {" "}
-                  <span className="text-3xl">
-                    <PiStudent />
-                  </span>{" "}
-                  20,000+ Learners
-                </p>
-                <p className="inline-flex items-center gap-2">
-                  <span className="text-3xl">
-                    <CgSandClock />{" "}
-                  </span>
-                  Duration: 3 months
-                </p>
-              </div>
-              <div className="ratings font-body flex gap-4">
-                <span className="text-[#f4a261] inline-flex items-center gap-2 text-xl">
-                  {" "}
-                  4.8 <GoStarFill />
-                </span>
-                <p className="">(1,249 ratings) </p>
-                <p>2,945 students </p>
-              </div>
-            </div>
-          </div>
+        <div className="hero-section flex-grow">
+  <div className="content">
+    <p className="breadcrumb font-body mb-5">
+      Home &gt; Education &gt; (Hons) Business and Management
+    </p>
+    <h1 className="font-header">{course.courseTitle}</h1>
+    <p className="description font-body">{course.courseDescription}</p>
+     {/* Price Section */}
+     <div className="price-section font-body flex gap-4">
+      <p className="text-5xl font-bold text-accent">₹{course.discountedPrice}</p>
+      <p className="text-3xl text-gray-500 line-through">₹{course.originalPrice}</p>
+      <p className="text-2xl  ">( {course.discountPercentage}% off )</p>
+    </div>
+    <div className="metadata flex gap-10 font-body">
+      <p className="inline-flex items-center gap-4">
+        <span className="text-3xl">
+          <FaChalkboardTeacher />
+        </span>
+        <span>Instructor: John Doe</span>
+      </p>
+      <p className="inline-flex items-center gap-2">
+        <span className="text-3xl">
+          <PiStudent />
+        </span>
+        20,000+ Learners
+      </p>
+      <p className="inline-flex items-center gap-2">
+        <span className="text-3xl">
+          <CgSandClock />
+        </span>
+        Duration: 3 months
+      </p>
+    </div>
+
+    <div className="ratings font-body flex gap-4">
+      <span className="text-[#f4a261] inline-flex items-center gap-2 text-xl">
+        4.8 <GoStarFill />
+      </span>
+      <p>(1,249 ratings)</p>
+      <p>{course.studentCount} Students Enrolled</p>
+    </div>
+
+   
+  </div>
+</div>
+
           {/* tabs section */}
-          {/* <div className="tabs font-body font-bold">
-            <ul>
-              {["About Us", "Modules", "Quiz & Notes", "Instructor", "Reviews"].map((tab) => (
-                <li
-                  key={tab}
-                  className={activeTab === tab ? "active" : ""}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                  {activeTab === tab && <hr className="active-tab-hr" />} 
-                </li>
-              ))}
-            </ul>
-          </div> */}
           <div
             className={`tabs  font-body font-bold ${
               isSticky ? "sticky-tabs" : ""
@@ -214,7 +202,7 @@ const CourseDetailPage = () => {
           >
             <ul>
               {[
-                "About Us",
+                "About",
                 "Modules",
                 "Quiz & Notes",
                 "Instructor",
@@ -223,7 +211,13 @@ const CourseDetailPage = () => {
                 <li
                   key={tab}
                   className={activeTab === tab ? "active" : ""}
-                  onClick={() => setActiveTab(tab)}
+                  onClick={() => {
+                    setActiveTab(tab)
+                     document
+                     .getElementById(`${tab}`)
+                     .scrollIntoView({ behavior: "smooth" })
+                    }
+                    }
                 >
                   {tab}
                   {activeTab === tab && (
@@ -237,8 +231,9 @@ const CourseDetailPage = () => {
               ))}
             </ul>
           </div>
-          <div className="pt-[50px] pl-20 ml-5">
-            <h2 className="font-header text-primary text-4xl ">About Us</h2>
+          {/* About US Section */}
+          <div id="About" className="pt-[50px] pl-20 ml-5">
+            <h2 className="font-header text-primary text-4xl ">About Course</h2>
             <p className="font-body text-gray-500 w-[62%] p-10 indent-[40px] leading-8">
               This (Hons) Business and Management BSc course from University of
               Essex Online will help you adapt to the ever-changing world of
@@ -247,6 +242,7 @@ const CourseDetailPage = () => {
               should be able to draw from.
             </p>
           </div>
+          {/* Topics covered section */}
           <div className="pt-[20px] pl-20 ml-5">
             <h2 className="font-header text-primary text-4xl  ">
               Topics Covered
@@ -260,7 +256,8 @@ const CourseDetailPage = () => {
               ))}
             </ul>
           </div>
-          <div className="pt-[20px] pl-20 ml-5">
+          {/* modules section */}
+          <div id="Modules" className="pt-[20px] pl-20 ml-5">
             <h2 className="font-header text-primary text-4xl  ">
               There are {course.modules.length} modules in this course
             </h2>
@@ -330,6 +327,7 @@ const CourseDetailPage = () => {
               <p className="text-gray-500">No module details available.</p>
             )}
           </div>
+          {/* demo video section */}
           <div className=" pl-20 ml-5  mr-[520px] mt-20">
             <div className="w-full flex justify-between pr-10 bg-[#f7f9fa] pl-10 pb-20 pt-20 ">
               <div>
@@ -360,7 +358,8 @@ const CourseDetailPage = () => {
               ></iframe>
             </div>
           </div>
-          <div className="pt-[50px] pl-20 ml-5 z-0">
+          {/* notes and quizzes section */}
+          <div id="Quiz & Notes" className="pt-[50px] pl-20 ml-5 z-0">
             <div className="pt-[50px]  ml-5">
               <h2 className="font-header text-primary text-4xl">
                 Perks of enrolling in the course
@@ -406,39 +405,49 @@ const CourseDetailPage = () => {
               </div>
             </div>
           </div>
-          <div className="pt-[150px] pl-20 ml-5">
-            <h2 className="font-header text-primary text-4xl">
-              Know Our Instructor
-            </h2>
-            <div className="flex gap-10 mt-10 items-center">
-              {/* Instructor Image */}
-              <div className="w-32 h-32 rounded-full overflow-hidden shadow-xl">
-                <img
-                  src="https://via.placeholder.com/150" // Replace with the instructor's image URL
-                  alt="Instructor"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+      {/* instructor sectytion */}
+      <div id="Instructor" className="pt-[95px] px-10 md:px-20 lg:px-32">
+  <h2 className="font-header text-primary text-4xl text-center md:text-left">
+    Know Our Instructor
+  </h2>
 
-              {/* Instructor Details */}
-              <div className="space-y-4">
-                <p className="text-2xl font-semibold font-header text-primary">
-                  John Doe
-                </p>
-                <p className="text-xl text-gray-500">
-                  Senior Mathematics Instructor
-                </p>
-                <p className="font-body text-gray-500 w-[62%] p-4 leading-7">
-                  John Doe has over 15 years of teaching experience in
-                  Mathematics. He has helped hundreds of students achieve
-                  academic success and is passionate about making complex
-                  mathematical concepts easy to understand.
-                </p>
-              </div>
-            </div>
-            <div>{/* Reviews section */}</div>
+  <div className="flex flex-col md:flex-row gap-10 mt-10 ml-[-10px] items-center md:items-start">
+    {/* Instructor Image */}
+    <div className="w-[250px] h-[250px] overflow-hidden rounded-full shadow-2xl flex-shrink-0 border-2 border-primary ">
+      <img
+        src={sir} // Replace with the instructor's image URL
+        alt="Instructor"
+        className="w-full h-full object-cover"
+      />
+    </div>
 
-            <div className="pt-[50px] pb-10 pr-[650px]">
+    {/* Instructor Details */}
+    <div className="space-y-4 md:w-2/3">
+      {/* Name and Education */}
+      <p className="text-2xl font-semibold font-header text-primary">
+        {course.instructor.name}
+        <span className="text-sm text-gray-500 ml-2">
+          ( {course.instructor.education} | {course.instructor.experience} years )
+        </span>
+      </p>
+
+      {/* Role */}
+      <p className="text-xl text-gray-500 font-semibold">
+        {course.instructor.role}
+      </p>
+
+      {/* Bio */}
+      <p className="font-body text-gray-500 leading-7  w-[72%]">
+        {course.instructor.bio}
+      </p>
+    </div>
+  </div>
+</div>
+
+           {/* Reviews section */}
+           <div></div>
+          {/* queries section */}
+            <div className="pt-[50px] pb-10 pr-[650px] pl-20">
               <div
                 className="p-6 rounded-sm mt-8 bg-background"
                 style={{ boxShadow: "0px 15px 50px -5px rgb(184, 169, 169)" }}
@@ -459,45 +468,14 @@ const CourseDetailPage = () => {
                 </a>
               </div>
             </div>
-          </div>
-        </div>
+        </div> 
         {/* Card Section */}
-        {/* <div
-  className={`card absolute top-[460px] right-0 transform translate-y-[-50%] transition-transform duration-500 ${
-    scrollDirection === "down" ? "translate-y-96" : "translate-y-0"
-  }`}
->
-  <img
-    src="https://wallpapercave.com/wp/wp2417737.jpg"
-    alt="Course"
-    className="course-image"
-  />
-  <h3 className="font-bold font-body text-primary mt-[-10px] ml-[-60px] ">
-    Project Management Professional
-  </h3>
-  <ul className="pt-2 ">
-    <li className="flex justify-between ml-1 mr-2 mb-2 text-gray-700">
-      <p>Live sessions:</p> <p>70 hrs</p>
-    </li>
-    <li className="flex justify-between ml-1 mr-2  mb-2 text-gray-700">
-      <p>Questions:</p>
-      <p>200+</p>{" "}
-    </li>
-    <li className="flex justify-between ml-1 mr-2  mb-2 text-gray-700">
-      <p>Passing grade:</p>
-      <p>60%</p>{" "}
-    </li>
-    <li className="flex justify-between ml-1 mr-2  mb-2 text-gray-700">
-      <p>Format:</p> <p>MCQ</p>
-    </li>
-  </ul>
-  <Button text="Enroll Now" size="lg" variant="primary" />
-</div>  */}
+        
         <div
           className={`card  ${
             isFixed
-              ? "is-fixed fixed top-[25px] right-0 w-[50%] h-[50%] transform transition-all duration-500  "
-              : "absolute top-[460px] right-0 transform translate-y-[-50%] transition-all duration-500 "
+              ? "is-fixed fixed top-[25px] right-0 w-[50%]  transform transition-all duration-500  flex-grow"
+              : "absolute top-[460px] right-0 transform translate-y-[-50%] transition-all duration-500 flex-grow"
           } ${isScrolled ? "fade-out" : ""}`}
         >
           {!isFixed && (
@@ -516,10 +494,21 @@ const CourseDetailPage = () => {
           </h3>
           <ul className={`pt-2 ${isFixed ? "text-sm space-y-8 pt-6" : ""}`}>
             {[
-              { label: "Live sessions:", value: "70 hrs" },
-              { label: "Questions:", value: "200+" },
-              { label: "Passing grade:", value: "60%" },
-              { label: "Format:", value: "MCQ" },
+              { label: "Class", value: `${course.class}th` },
+              { label: "Board", value: `${course.board}` },
+              { label: "Stream", value:`${course.stream}` },
+              { label: "Subject", value:`${course.subject}`},
+              isFixed && {
+                label: "Price",
+                value: (
+                  <>
+                    <span className="text-primary mr-2">{`₹${course.discountedPrice}`}</span>{" "}
+                    <span className="line-through text-gray-500 mr-2">{`₹${course.originalPrice}`} </span>
+                    <span className="text-sm text-accent">({course.discountPercentage}% off)</span>
+                  </>
+                ),
+                isBold: true,
+              },
             ].map((item, index) => (
               <li
                 key={index}
@@ -527,8 +516,8 @@ const CourseDetailPage = () => {
                   isFixed ? "text-base" : ""
                 }`}
               >
-                <p>{item.label}</p>
-                <p>{item.value}</p>
+                <p className={item.isBold ? "font-bold text-primary" : ""}>{item.label}</p>
+                <p className={item.isBold ? "font-bold text-primary" : ""}>{item.value}</p>
               </li>
             ))}
           </ul>

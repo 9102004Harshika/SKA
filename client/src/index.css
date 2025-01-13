@@ -251,7 +251,7 @@ a {
   background-position: center; /* Centers the image */
   color: white;
   padding: 2rem;
-  height: 500px; /* Adjust height as needed */
+  height: 550px; /* Adjust height as needed */
 
 }
 
@@ -320,6 +320,13 @@ h1 {
   display: flex;
   
 }
+.price-section {
+  display: flex;
+  gap: 16px; /* Space between the prices */
+  align-items: center; /* Vertically center the prices */
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
 
 .tabs ul {
   list-style: none;
@@ -358,7 +365,7 @@ h1 {
 
 
 .fade-out {
-  animation: fadeOut 4s ease-out forwards;
+  animation: fadeOut 0.1s ease-out forwards;
   opacity: 0;
 }
 
