@@ -81,6 +81,9 @@ input::-ms-clear,
 input::-webkit-clear-button {
   display: none;
 }
+body{
+  overflow-x: hidden;
+}
 
 .react-datepicker {
   background-color: #f4e8da; /* Light beige background */
@@ -318,6 +321,7 @@ h1 {
   padding-top: 2%;
   font-size: large;
   display: flex;
+  padding-bottom: 0.11%;
   
 }
 .price-section {
@@ -390,7 +394,7 @@ h1 {
   transition: all 0.3s ease-in-out; /* Smooth transition when it becomes sticky */
   background: #000080; 
   color: white;
-  margin-bottom: 20px;
+  padding-bottom: 2px;
 }
 
 
@@ -398,11 +402,9 @@ h1 {
 .active-tab-hr {
   border: 1px solid #000080; /* Active underline color */
   width: 100%;
-  margin-top: 5px;
 }
 .active-stickytab-hr {
   border: 1px solid white;
   background-color: white; /* Active underline color */
-  width: 100%;
-  margin-top: 20px;
+  width: 100%; 
 }

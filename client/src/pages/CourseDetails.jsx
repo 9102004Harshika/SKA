@@ -220,7 +220,7 @@ const CourseDetailPage = () => {
                     }
                 >
                   {tab}
-                  {activeTab === tab && (
+                  {(activeTab === tab || tab === "About")&& (
                     <hr
                       className={`active-tab-hr ${
                         isSticky ? "active-stickytab-hr " : ""
