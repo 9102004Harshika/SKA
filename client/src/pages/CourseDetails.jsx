@@ -150,32 +150,32 @@ const CourseDetailPage = () => {
         <div className="course-content flex-1">
         <div className="hero-section flex-grow">
   <div className="content">
-    <p className="breadcrumb font-body mb-5">
+    <p className="breadcrumb font-body mb-5 ">
       Home &gt; Education &gt; (Hons) Business and Management
     </p>
-    <h1 className="font-header">{course.courseTitle}</h1>
+    <h1 className="font-header ">{course.courseTitle}</h1>
     <p className="description font-body">{course.courseDescription}</p>
      {/* Price Section */}
      <div className="price-section font-body flex gap-4">
-      <p className="text-5xl font-bold text-accent">₹{course.discountedPrice}</p>
-      <p className="text-3xl text-gray-500 line-through">₹{course.originalPrice}</p>
-      <p className="text-2xl  ">( {course.discountPercentage}% off )</p>
+      <p className="md:text-5xl text-xl  font-bold text-accent">₹{course.discountedPrice}</p>
+      <p className="md:text-3xl text-xl text-gray-500 line-through">₹{course.originalPrice}</p>
+      <p className="md:text-2xl  text-lg ">( {course.discountPercentage}% off )</p>
     </div>
     <div className="metadata flex gap-10 font-body">
       <p className="inline-flex items-center gap-4">
-        <span className="text-3xl">
+        <span className="md:text-3xl text-xl">
           <FaChalkboardTeacher />
         </span>
         <span>Instructor: John Doe</span>
       </p>
       <p className="inline-flex items-center gap-2">
-        <span className="text-3xl">
+        <span className="md:text-3xl text-xl">
           <PiStudent />
         </span>
         20,000+ Learners
       </p>
       <p className="inline-flex items-center gap-2">
-        <span className="text-3xl">
+        <span className="md:text-3xl text-xl">
           <CgSandClock />
         </span>
         Duration: 3 months
@@ -220,7 +220,7 @@ const CourseDetailPage = () => {
                     }
                 >
                   {tab}
-                  {(activeTab === tab || tab === "About")&& (
+                  {(activeTab === tab )&& (
                     <hr
                       className={`active-tab-hr ${
                         isSticky ? "active-stickytab-hr " : ""
@@ -232,7 +232,7 @@ const CourseDetailPage = () => {
             </ul>
           </div>
           {/* About US Section */}
-          <div id="About" className="pt-[50px] pl-20 ml-5">
+          <div id="About" className="about pt-[50px] pl-20 ml-5">
             <h2 className="font-header text-primary text-4xl ">About Course</h2>
             <p className="font-body text-gray-500 w-[62%] p-10 indent-[40px] leading-8">
               This (Hons) Business and Management BSc course from University of
@@ -243,11 +243,11 @@ const CourseDetailPage = () => {
             </p>
           </div>
           {/* Topics covered section */}
-          <div className="pt-[20px] pl-20 ml-5">
+          <div className="topics pt-[20px] pl-20 ml-5">
             <h2 className="font-header text-primary text-4xl  ">
               Topics Covered
             </h2>
-            <ul className="font-body text-gray-500 grid grid-cols-2 gap-y-4 w-[62%] text-xl p-10">
+            <ul className="font-body text-gray-500 grid grid-cols-2 md:gap-y-4  w-[62%] text-xl p-10">
               {course.topicsCovered.map((topic, index) => (
                 <li key={index} className="flex items-center gap-2">
                   <IoMdCheckmark className="text-accent" /> {/* Tick icon */}
@@ -257,7 +257,7 @@ const CourseDetailPage = () => {
             </ul>
           </div>
           {/* modules section */}
-          <div id="Modules" className="pt-[20px] pl-20 ml-5">
+          <div id="Modules" className="modules pt-[20px] pl-20 ml-5">
             <h2 className="font-header text-primary text-4xl  ">
               There are {course.modules.length} modules in this course
             </h2>
@@ -275,7 +275,7 @@ const CourseDetailPage = () => {
               </span>
             </p>
             {course.modules && course.modules.length > 0 ? (
-              <div className="md:space-y-6 md:mt-10 md:pr-[650px] mt-5 space-y-10 pr-10 md:pl-[65px]">
+              <div className="moduleDetails md:space-y-6 md:mt-10 md:pr-[650px] mt-5 space-y-10 pr-10 md:pl-[65px]">
                 {course.modules.map((module, index) => (
                   <div
                     key={index}
@@ -283,7 +283,7 @@ const CourseDetailPage = () => {
                   >
                     {/* Module Details */}
                     <div className="space-y-3 p-2 w-full">
-                      <p className="text-xl font-semibold font-header text-background">
+                      <p className="text-xl  font-semibold font-header text-background">
                         {module.name}
                       </p>
                       <div className="flex gap-5">
@@ -328,8 +328,8 @@ const CourseDetailPage = () => {
             )}
           </div>
           {/* demo video section */}
-          <div className=" pl-20 ml-5  mr-[520px] mt-20">
-            <div className="w-full flex justify-between pr-10 bg-[#f7f9fa] pl-10 pb-20 pt-20 ">
+          <div className="demo pl-20 ml-5  mr-[520px] mt-20">
+            <div className="w-full md:flex block justify-between pr-10 bg-[#f7f9fa] pl-10 pb-20 pt-20 ">
               <div>
                 {" "}
                 <h2 className="font-header text-primary text-4xl  ">
@@ -340,8 +340,8 @@ const CourseDetailPage = () => {
                   offering a glimpse into the course content and teaching
                   approach.
                 </p>
-                <div className="inline-flex items-center pt-5 space-x-2 hover:space-x-4 hover:cursor-pointer">
-                  <span>See the demo </span>
+                <div className="md:inline-flex hidden items-center pt-5 space-x-2 hover:space-x-4 hover:cursor-pointer">
+                  <span >See the demo </span>
                   <span>
                     <FaArrowRight />
                   </span>
@@ -359,7 +359,7 @@ const CourseDetailPage = () => {
             </div>
           </div>
           {/* notes and quizzes section */}
-          <div id="Quiz & Notes" className="pt-[50px] pl-20 ml-5 z-0">
+          <div id="Quiz & Notes" className="notes pt-[50px] pl-20 ml-5 z-0">
             <div className="pt-[50px]  ml-5">
               <h2 className="font-header text-primary text-4xl">
                 Perks of enrolling in the course
@@ -370,15 +370,15 @@ const CourseDetailPage = () => {
                 comprehensive study materials, you’ll have everything you need
                 to succeed.
               </p>
-              <div className="flex gap-10 pl-10">
+              <div className="md:flex block md:gap-10  pl-10">
                 {/* Notes Card (Book Design) */}
-                <div className="relative w-[300px] h-[200px] bg-[#f4a261] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
-                  <div className="absolute top-0 left-0 w-[290px] h-[190px] bg-white rounded-lg border-[4px] border-gray-300 shadow-inner transform rotate-[-2deg]"></div>
-                  <div className="absolute top-[5px] left-[5px] w-[280px] h-[180px] bg-background rounded-lg shadow-inner border-[2px] border-gray-300"></div>
-                  <h3 className="relative font-header text-2xl text-primary z-10">
+                <div className="notesCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-[#f4a261] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
+                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-white rounded-lg border-[4px] border-gray-300 shadow-inner transform rotate-[-2deg]"></div>
+                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px] bg-background rounded-lg shadow-inner border-[2px] border-gray-300"></div>
+                  <h3 className="relative font-header md:text-2xl text-xl text-primary z-10">
                     📚 Notes
                   </h3>
-                  <p className="relative font-body text-gray-700 z-10">
+                  <p className="relative font-body md:text-md text-gray-700 z-10 ">
                     Access detailed and structured notes to help you master the
                     course content at your own pace.
                   </p>
@@ -388,13 +388,13 @@ const CourseDetailPage = () => {
                 </div>
 
                 {/* Quiz Card (Question Mark Style) */}
-                <div className="relative w-[300px] h-[200px] bg-[#f4a261] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
-                  <div className="absolute top-0 left-0 w-[290px] h-[190px] bg-white rounded-lg border-[4px] border-gray-300 shadow-inner transform rotate-[-2deg]"></div>
-                  <div className="absolute top-[5px] left-[5px] w-[280px] h-[180px] bg-background rounded-lg shadow-inner border-[2px] border-gray-300"></div>
-                  <h3 className="relative font-header text-2xl text-primary z-10">
+                <div className="quizCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-[#f4a261] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
+                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-white rounded-lg border-[4px] border-gray-300 shadow-inner transform rotate-[-2deg]"></div>
+                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px]  bg-background rounded-lg shadow-inner border-[2px] border-gray-300"></div>
+                  <h3 className="relative font-header md:text-2xl text-xl text-primary z-10">
                     ❓ Quiz
                   </h3>
-                  <p className="relative font-body text-gray-700 z-10">
+                  <p className="relative font-body  md:text-md text-gray-700 z-10">
                     Test your knowledge with engaging quizzes designed to
                     reinforce your learning.
                   </p>
@@ -406,14 +406,14 @@ const CourseDetailPage = () => {
             </div>
           </div>
       {/* instructor sectytion */}
-      <div id="Instructor" className="pt-[95px] px-10 md:px-20 lg:px-32">
-  <h2 className="font-header text-primary text-4xl text-center md:text-left">
+      <div id="Instructor" className="instructor pt-[95px] px-10 md:px-20 lg:px-32">
+  <h2 className="font-header text-primary text-4xl text-center md:text-left ">
     Know Our Instructor
   </h2>
 
-  <div className="flex flex-col md:flex-row gap-10 mt-10 ml-[-10px] items-center md:items-start">
+  <div className="flex flex-col md:flex-row gap-10 mt-10 md:ml-[-10px]  items-center md:items-start">
     {/* Instructor Image */}
-    <div className="w-[250px] h-[250px] overflow-hidden rounded-full shadow-2xl flex-shrink-0 border-2 border-primary ">
+    <div className="w-[250px] h-[250px] overflow-hidden md:ml-[-10px] ml-[-500px] rounded-full shadow-2xl flex-shrink-0 border-2 border-primary ">
       <img
         src={sir} // Replace with the instructor's image URL
         alt="Instructor"
@@ -437,7 +437,7 @@ const CourseDetailPage = () => {
       </p>
 
       {/* Bio */}
-      <p className="font-body text-gray-500 leading-7  w-[72%]">
+      <p className="font-body text-gray-500 leading-7  md:w-[72%] w-[42%]">
         {course.instructor.bio}
       </p>
     </div>
@@ -445,7 +445,12 @@ const CourseDetailPage = () => {
 </div>
 
            {/* Reviews section */}
-           <div></div>
+           <div className="pt-[50px] pl-20 ml-5 z-0">
+           <div className="pt-[50px]  ml-5"
+           ><h2 className="font-header text-primary text-4xl">
+                Leaner Review
+              </h2></div>
+           </div>
           {/* queries section */}
             <div className="pt-[50px] pb-10 pr-[650px] pl-20">
               <div
@@ -472,7 +477,7 @@ const CourseDetailPage = () => {
         {/* Card Section */}
         
         <div
-          className={`card  ${
+          className={`card md:block hidden  ${
             isFixed
               ? "is-fixed fixed top-[25px] right-0 w-[50%]  transform transition-all duration-500  flex-grow"
               : "absolute top-[460px] right-0 transform translate-y-[-50%] transition-all duration-500 flex-grow"

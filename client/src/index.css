@@ -255,7 +255,7 @@ a {
   color: white;
   padding: 2rem;
   height: 550px; /* Adjust height as needed */
-
+ width: 100vw;
 }
 
 .content {
@@ -381,8 +381,8 @@ h1 {
 
 
 .tabs {
-  background: #f5f2dc; /* Background color */
- z-index: 10;
+  background: #f5f2dc; 
+  z-index: 10;
 }
 
 .sticky-tabs {
@@ -390,8 +390,8 @@ h1 {
   top: 0;
   left: 0;
   right: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for emphasis */
-  transition: all 0.3s ease-in-out; /* Smooth transition when it becomes sticky */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease-in-out; 
   background: #000080; 
   color: white;
   padding-bottom: 2px;
@@ -400,11 +400,169 @@ h1 {
 
 
 .active-tab-hr {
-  border: 1px solid #000080; /* Active underline color */
+  border: 1px solid #000080; 
   width: 100%;
 }
 .active-stickytab-hr {
   border: 1px solid white;
-  background-color: white; /* Active underline color */
+  background-color: white; 
   width: 100%; 
 }
+
+ @media (max-width:400px) {
+  .course-page{
+    overflow-x: hidden;
+  }
+  .breadcrumb{
+    font-size: 0.7rem;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    margin-left: -10px; 
+  }
+  h1{
+    font-size: 1.8rem;
+    display: flex;
+    width: 275px;
+    line-height: 2.5rem;
+    margin-bottom: 10px;
+   margin-left: -10px; 
+  }
+  .hero-section{
+    height: 500px;
+    background-image: none;
+    background: linear-gradient(
+      to right,
+      #333 0%,
+      #000080 45%,
+      #2c2ca0 95%
+    )
+  }
+  .description{
+    font-size: 0.7rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.8rem;
+  width: 250px;
+  }
+  .price-section{
+    margin-top: -10px;
+    white-space: nowrap;
+    gap: 10px;
+    font-size: small;
+  }
+  .metadata {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+    font-size: small;
+    display: none;
+  }
+  
+  .ratings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Optional: adds space between the elements */
+    max-width: 100%; /* Ensure it doesn't overflow */
+    margin-top: 20px;
+  }
+  
+  .ratings > *:nth-child(3),.metadata>*:nth-child(5) {
+    flex-basis: 100%; /* Forces the third element to take the full width */
+  }
+  .tabs{
+    font-size: smaller;
+    margin-left: -50px;
+  }
+  .tabs ul{
+    gap: 1rem;
+  }
+  .about,.topics,.modules,.demo,.notes{
+    margin-left: -70px;
+  }
+  .about h2,.topics h2 ,.modules h2,.demo h2,.notes h2,.instructor h2{
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
+  .about p,.notes p{
+    width: 45%;
+    text-indent: 10px;
+    margin-left: -30px;
+    margin-top:-20px;
+    font-size: small;
+  }
+  .topics ul {
+    display: grid;
+    grid-template-columns: 1fr; /* Makes a single column */
+    gap: 10px; /* Adjust the gap between items */
+    font-size: small;
+    margin-top:-20px;
+  }
+  .topics{
+    margin-top:-20px;
+  }
+  .sticky-tabs{
+    margin-left: -10px; 
+  }
+  .sticky-tabs ul{
+    padding: 5px;
+  }
+  .active-stickytab-hr{
+    padding-bottom: 0px;
+    margin-bottom: -10px;
+  }
+  .modules p{
+    font-size: small;
+    text-indent: 0px;
+    width: 38%;
+    margin-left:-35px;
+  }
+  .moduleDetails {
+    width: 37%;
+  }
+  .moduleDetails p{
+    margin-left:0px;
+  }
+  .moduleDetails a{
+    padding: 5px;
+    font-size: small;
+  }
+ .demo{
+  font-size: small;
+ }
+ .demo p{
+  margin-top: -30px;
+  margin-left: -25px;
+  line-height: 2rem;
+ }
+ .demo h2{
+  margin-left: -25px;
+  margin-top: -30px;
+ }
+ .demo iframe{
+  margin-top: 10px;
+  height: 250px;
+  width: 350px;
+  margin-left: -30px;
+ }
+ .notes h2{
+    margin-left: -20px;
+ }
+ 
+ .notesCard p,.quizCard p{
+   width: 75%;
+   margin-left: 10px;
+   margin-top: 10px;
+ }
+ .quizCard{
+  margin-top: 20px;
+ }
+ .instructor h2{
+  margin-left: -690px;
+ }
+ .instructor p{
+  margin-left: -20px;
+ }
+} 
+
+
+
