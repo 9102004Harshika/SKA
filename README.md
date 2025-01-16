@@ -2,5 +2,6 @@
 
 <br />
 <ul>
-<li> Register Added </li>
+<li> Notes Details Page </li>
+<li> Quiz Details Page </li>
 </ul>
