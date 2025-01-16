@@ -31,17 +31,16 @@ const Enrollment = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const [otpSent, setOtpSent] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false); // State to manage calendar visibility
+  const [showCalendar, setShowCalendar] = useState(false);
   const formRef = useRef(null);
   const calendarRef = useRef(null);
-  const dobInputRef = useRef(null); // Reference to the date of birth input
+  const dobInputRef = useRef(null);
   const email = params.get("userEmail");
   const navigate = useNavigate();
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
-    // Animate the form to slide in from the left
     gsap.fromTo(
       formRef.current,
       { y: "100%", opacity: 0 },
@@ -160,10 +159,7 @@ const Enrollment = () => {
         {/* Mobile Number and OTP */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <label
-              htmlFor="mobile"
-              className="block text-sm font-semibold text-navy"
-            >
+            <label htmlFor="mobile" className="block text-sm font-medium mb-1">
               Mobile Number
             </label>
             <Input
@@ -176,6 +172,7 @@ const Enrollment = () => {
               onChange={handleChange}
               disabled={otpSent}
               required
+              className="placeholder:text-primary placeholder:opacity-[0.5]"
             />
           </div>
           <Button
@@ -196,7 +193,7 @@ const Enrollment = () => {
         <div className="mb-4">
           <label
             htmlFor="verification"
-            className="block text-sm font-semibold text-navy"
+            className="block text-sm font-medium mb-1"
           >
             OTP
           </label>
@@ -214,10 +211,7 @@ const Enrollment = () => {
 
         {/* Date of Birth */}
         <div className="relative-container mb-4">
-          <label
-            htmlFor="dob"
-            className="block text-sm font-semibold text-navy"
-          >
+          <label htmlFor="dob" className="block text-sm font-medium mb-1">
             Date of Birth
           </label>
           <div className="flex items-center">
@@ -262,7 +256,7 @@ const Enrollment = () => {
 
         {/* Gender Selection */}
         <div className="flex flex-col mb-4">
-          <label className="text-sm font-semibold text-navy mb-2">Gender</label>
+          <label className="block text-sm font-medium mb-1">Gender</label>
           <div className="flex items-center gap-4">
             <RadioButton
               name="gender"
@@ -274,10 +268,7 @@ const Enrollment = () => {
         </div>
         {/* State Selection */}
         <div className="mb-4">
-          <label
-            htmlFor="state"
-            className="block text-sm font-semibold text-navy"
-          >
+          <label htmlFor="state" className="block text-sm font-medium">
             State
           </label>
           <Select
@@ -294,10 +285,7 @@ const Enrollment = () => {
         {/* City Selection */}
         {formData.state && (
           <div className="mb-4">
-            <label
-              htmlFor="city"
-              className="block text-sm font-semibold text-navy"
-            >
+            <label htmlFor="city" className="block text-sm font-medium mb-1">
               City
             </label>
             <Select
@@ -314,10 +302,7 @@ const Enrollment = () => {
 
         {/* Board Selection */}
         <div className="mb-4">
-          <label
-            htmlFor="board"
-            className="block text-sm font-semibold text-navy"
-          >
+          <label htmlFor="board" className="block text-sm font-medium mb-1">
             Board
           </label>
           <Select
@@ -333,10 +318,7 @@ const Enrollment = () => {
         {/* Class Selection */}
         {formData.board && (
           <div className="mb-4">
-            <label
-              htmlFor="class"
-              className="block text-sm font-semibold text-navy"
-            >
+            <label htmlFor="class" className="block text-sm font-medium mb-1">
               Class
             </label>
             <Select
@@ -352,10 +334,7 @@ const Enrollment = () => {
 
         {(formData.class === "11th" || formData.class === "12th") && (
           <div className="mb-4">
-            <label
-              htmlFor="stream"
-              className="block text-sm font-semibold text-navy"
-            >
+            <label htmlFor="stream" className="block text-sm font-medium mb-1">
               Stream
             </label>
             <Select
