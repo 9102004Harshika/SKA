@@ -393,7 +393,7 @@ h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   transition: all 0.3s ease-in-out; 
   background: #000080; 
-  color: white;
+  color: #f5f2dc;
   padding-bottom: 2px;
 }
 
@@ -404,8 +404,8 @@ h1 {
   width: 100%;
 }
 .active-stickytab-hr {
-  border: 1px solid white;
-  background-color: white; 
+  border: 1px solid #f5f2dc;
+  background-color: #f5f2dc; 
   width: 100%; 
 }
 
