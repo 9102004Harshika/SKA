@@ -98,18 +98,26 @@ const Enrollment = () => {
     };
   }, []);
 
+  const boards = [
+    "Maharashtra State Board of Secondary and Higher Secondary Education (MSBSHSE)",
+    "International General Certificate of Secondary Education (IGCSE)",
+    "Indian Certificate of Secondary Education (ICSE)",
+    "Central Board of Secondary Education (CBSE)",
+    "International Baccalaureate (IB)",
+  ];
+
   // Dynamically update class options based on selected board
   const getClassOptions = () => {
     switch (formData.board) {
-      case "IGCSE":
+      case "International General Certificate of Secondary Education (IGCSE)":
         return ["7th", "8th", "9th", "10th", "11th", "12th"];
-      case "IB":
+      case "International Baccalaureate (IB)":
         return ["7th", "8th", "9th", "10th", "11th", "12th"];
-      case "CBSE":
+      case "Central Board of Secondary Education (CBSE)":
         return ["9th", "10th", "11th", "12th"];
-      case "SSC":
+      case "Maharashtra State Board of Secondary and Higher Secondary Education (MSBSHSE)":
         return ["9th", "10th", "11th", "12th"];
-      case "ICSE":
+      case "Indian Certificate of Secondary Education (ICSE)":
         return ["8th", "9th", "10th", "11th", "12th"];
       default:
         return [];
@@ -308,7 +316,8 @@ const Enrollment = () => {
           <Select
             menuTitle="Select Board"
             onClick={() => setShowCalendar(false)}
-            submenuItems={["CBSE", "ICSE", "IGCSE", "IB", "SSC"]}
+            // submenuItems={["CBSE", "ICSE", "IGCSE", "IB", "SSC"]}
+            submenuItems={boards.map((board) => board)}
             onSelect={(board) => {
               setFormData({ ...formData, board, class: "" });
             }}
@@ -376,7 +385,7 @@ const Enrollment = () => {
             </div>
           }
           checked={isCheckedPrivacy}
-          onChange={setIsCheckedPrivacy} // Handle checkbox state change
+          onChange={setIsCheckedPrivacy}
         />
 
         <Button text="Submit" size="lg" variant="accent" type="submit" />
