@@ -4,13 +4,12 @@ import screenfull from "screenfull";
 import {
   FaPlay,
   FaPause,
-  FaForward,
-  FaBackward,
   FaExpand,
   FaCompress,
   FaVolumeMute,
   FaVolumeUp,
 } from "react-icons/fa";
+import { PiCaretDoubleRightBold, PiCaretDoubleLeftBold } from "react-icons/pi";
 
 const VideoPlayer = ({ videoSrc }) => {
   const playerRef = useRef(null);
@@ -117,26 +116,14 @@ const VideoPlayer = ({ videoSrc }) => {
       />
 
       {/* Controls */}
-      <div className="absolute top-6 flex items-center justify-between w-full px-6">
-        {/* Mute Button (Left) */}
-        <button
-          onClick={toggleMute}
-          className="bg-gray-700 p-3 rounded-full hover:bg-gray-600 transition"
-        >
-          {muted ? (
-            <FaVolumeMute className="text-background text-xl" />
-          ) : (
-            <FaVolumeUp className="text-background text-xl" />
-          )}
-        </button>
-
+      <div className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-between w-full px-6">
         {/* Play/Pause & Skip (Center) */}
         <div className="flex items-center gap-4">
           <button
             onClick={skipBackward}
-            className="bg-gray-700 p-3 rounded-full hover:bg-gray-600 transition"
+            className="p-3 rounded-full hover:-translate-x-1 transition"
           >
-            <FaBackward className="text-background text-xl" />
+            <PiCaretDoubleLeftBold className="text-background text-xl" />
           </button>
 
           <button
@@ -152,11 +139,26 @@ const VideoPlayer = ({ videoSrc }) => {
 
           <button
             onClick={skipForward}
-            className="bg-gray-700 p-3 rounded-full hover:bg-gray-600 transition"
+            className="p-3 rounded-full hover:translate-x-1 transition"
           >
-            <FaForward className="text-background text-xl" />
+            <PiCaretDoubleRightBold className="text-background text-xl" />
           </button>
         </div>
+      </div>
+
+      {/* Mute and Full-Screen Controls */}
+      <div className="absolute top-6 flex items-center justify-between w-full px-6">
+        {/* Mute Button (Left) */}
+        <button
+          onClick={toggleMute}
+          className="bg-gray-700 p-3 rounded-full hover:bg-gray-600 transition"
+        >
+          {muted ? (
+            <FaVolumeMute className="text-background text-xl" />
+          ) : (
+            <FaVolumeUp className="text-background text-xl" />
+          )}
+        </button>
 
         {/* Full-Screen Button (Right) */}
         <button
