@@ -12,7 +12,7 @@ import Slider from "./ui/slider";
 import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
 import AddCourseForm from "./pages/AddCourseForm";
-
+import Video from "./pages/Video";
 
 const App = () => {
   return (
@@ -34,7 +34,7 @@ const App = () => {
             <Route path="/addcourse" element={<AddCourseForm />} />
 
             {/* Route used for dedicated page of component testing */}
-            <Route path="/testing" element={<QuizAndNotesDetails />} />
+            <Route path="/testing" element={<Video />} />
           </Routes>
         </main>
         {/* <Footer /> */}
