@@ -19,19 +19,17 @@ const VideoPlayer = ({ videoSrc }) => {
   const [duration, setDuration] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
 
-  const togglePlayPause = () => setPlaying(!playing);
+  const togglePlayPause = () => {
+    setPlaying(!playing);
+    setControlsVisible(true);  // Show controls immediately after clicking play/pause
+  };
   const toggleMute = () => setMuted(!muted);
   const skipForward = () =>
-    playerRef.current.seekTo(
-      playerRef.current.getCurrentTime() + 10,
-      "seconds"
-    );
+    playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10, "seconds");
   const skipBackward = () =>
-    playerRef.current.seekTo(
-      playerRef.current.getCurrentTime() - 10,
-      "seconds"
-    );
+    playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10, "seconds");
 
   const handleProgress = (state) => setPlayed(state.playedSeconds);
   const handleDuration = (duration) => setDuration(duration);
@@ -53,6 +51,14 @@ const VideoPlayer = ({ videoSrc }) => {
       };
     }
   }, []);
+
+  // Auto-hide controls after 5 seconds of play/pause
+  useEffect(() => {
+    if (playing) {
+      const timer = setTimeout(() => setControlsVisible(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [playing]);
 
   const handleKeyboardEvents = (event) => {
     switch (event.key) {
@@ -95,12 +101,23 @@ const VideoPlayer = ({ videoSrc }) => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
+  // Handle click on the center of the video to make controls visible again
+  const handleCenterClick = () => {
+    setControlsVisible(true);
+    // Reset the timeout to hide controls again after 5 seconds
+    if (playing) {
+      const timer = setTimeout(() => setControlsVisible(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  };
+
   return (
     <div
       ref={playerContainerRef}
       className={`relative flex flex-col items-center bg-gray-900 rounded-lg shadow-lg w-[80%] mx-auto mt-10 ${
         isFullScreen ? "fixed inset-0 w-full h-full z-50 bg-black" : ""
       }`}
+      onClick={handleCenterClick}
     >
       {/* Video Player */}
       <ReactPlayer
@@ -116,34 +133,38 @@ const VideoPlayer = ({ videoSrc }) => {
       />
 
       {/* Controls */}
-      <div className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-between w-full px-6">
-        {/* Play/Pause & Skip (Center) */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={skipBackward}
-            className="p-3 rounded-full hover:-translate-x-1 transition"
-          >
-            <PiCaretDoubleLeftBold className="text-background text-xl" />
-          </button>
+      <div
+        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-4 transition-opacity duration-500 ${
+          controlsVisible ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {/* Skip Backward Button */}
+        <button
+          onClick={skipBackward}
+          className="p-3 rounded-full hover:-translate-x-1 transition"
+        >
+          <PiCaretDoubleLeftBold className="text-background text-xl" />
+        </button>
 
-          <button
-            onClick={togglePlayPause}
-            className="bg-accent p-3 rounded-full hover:bg-secondary transition"
-          >
-            {playing ? (
-              <FaPause className="text-background text-xl" />
-            ) : (
-              <FaPlay className="text-background text-xl" />
-            )}
-          </button>
+        {/* Play/Pause Button */}
+        <button
+          onClick={togglePlayPause}
+          className="bg-accent p-4 rounded-full hover:bg-secondary transition"
+        >
+          {playing ? (
+            <FaPause className="text-background text-2xl" />
+          ) : (
+            <FaPlay className="text-background text-2xl" />
+          )}
+        </button>
 
-          <button
-            onClick={skipForward}
-            className="p-3 rounded-full hover:translate-x-1 transition"
-          >
-            <PiCaretDoubleRightBold className="text-background text-xl" />
-          </button>
-        </div>
+        {/* Skip Forward Button */}
+        <button
+          onClick={skipForward}
+          className="p-3 rounded-full hover:translate-x-1 transition"
+        >
+          <PiCaretDoubleRightBold className="text-background text-xl" />
+        </button>
       </div>
 
       {/* Mute and Full-Screen Controls */}
