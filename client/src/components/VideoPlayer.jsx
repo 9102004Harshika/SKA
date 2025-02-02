@@ -10,7 +10,12 @@ import {
   FaVolumeUp,
 } from "react-icons/fa";
 import { PiCaretDoubleRightBold, PiCaretDoubleLeftBold } from "react-icons/pi";
-import { MdSlowMotionVideo } from "react-icons/md";
+import {
+  TbMultiplier05X,
+  TbMultiplier1X,
+  TbMultiplier15X,
+  TbMultiplier2X,
+} from "react-icons/tb";
 const VideoPlayer = ({ videoSrc }) => {
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -23,13 +28,19 @@ const VideoPlayer = ({ videoSrc }) => {
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const togglePlayPause = () => {
     setPlaying(!playing);
-    setControlsVisible(true);  // Show controls immediately after clicking play/pause
+    setControlsVisible(true); // Show controls immediately after clicking play/pause
   };
   const toggleMute = () => setMuted(!muted);
   const skipForward = () =>
-    playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10, "seconds");
+    playerRef.current.seekTo(
+      playerRef.current.getCurrentTime() + 10,
+      "seconds"
+    );
   const skipBackward = () =>
-    playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10, "seconds");
+    playerRef.current.seekTo(
+      playerRef.current.getCurrentTime() - 10,
+      "seconds"
+    );
 
   const handleProgress = (state) => setPlayed(state.playedSeconds);
   const handleDuration = (duration) => setDuration(duration);
@@ -38,6 +49,13 @@ const VideoPlayer = ({ videoSrc }) => {
     if (screenfull.isEnabled) {
       screenfull.toggle(playerContainerRef.current);
     }
+  };
+
+  const speedIcons = {
+    0.5: <TbMultiplier05X className="text-background text-3xl" />,
+    1: <TbMultiplier1X className="text-background text-3xl" />,
+    1.5: <TbMultiplier15X className="text-background text-3xl" />,
+    2: <TbMultiplier2X className="text-background text-3xl" />,
   };
 
   useEffect(() => {
@@ -62,13 +80,13 @@ const VideoPlayer = ({ videoSrc }) => {
 
   const handleKeyboardEvents = (event) => {
     switch (event.key) {
-      case "m": // Toggle Mute/Unmute
-      setMuted((prevMuted) => !prevMuted);
-      break;
-        case " ": // Space: Play/Pause
-        event.preventDefault(); // Prevents unwanted scrolling when space is pressed
+      case "m":
+        setMuted((prevMuted) => !prevMuted);
+        break;
+      case " ":
+        event.preventDefault();
         setPlaying((prevPlaying) => !prevPlaying);
-        setControlsVisible(true); // Show controls when space is pressed
+        setControlsVisible(true);
         break;
       case "f":
         // Full-Screen
@@ -111,10 +129,14 @@ const VideoPlayer = ({ videoSrc }) => {
       return () => clearTimeout(timer);
     }
   };
-  const handlePlaybackSpeedChange = (speed) => {
-    setPlaybackSpeed(speed);
-    playerRef.current.seekTo(playerRef.current.getCurrentTime()); // Keep current time after changing speed
+
+  const handlePlaybackSpeedChange = () => {
+    const speeds = [0.5, 1, 1.5, 2]; // Available speeds
+    const currentIndex = speeds.indexOf(playbackSpeed);
+    const nextSpeed = speeds[(currentIndex + 1) % speeds.length]; // Cycle through speeds
+    setPlaybackSpeed(nextSpeed);
   };
+
   return (
     <div
       ref={playerContainerRef}
@@ -123,32 +145,32 @@ const VideoPlayer = ({ videoSrc }) => {
       }`}
       onClick={handleCenterClick}
     >
-      <div className="absolute top-4 left-4 text-white font-bold text-lg">Shree Kalam Academy</div>
-
-{/* Playback Speed Button (Top Right) */}
-<div className="absolute top-4 right-4">
-  <button
-    onClick={() => handlePlaybackSpeedChange(0.5)}
-    className="bg-gray-700 p-2 rounded-full hover:bg-gray-600 transition text-background text-3xl"
-  >
-   <MdSlowMotionVideo/>
-  </button>
-</div>
-      {/* Video Player */}
+      <div className="absolute top-4 left-4 text-white font-bold text-lg">
+        Shree Kalam Academy
+      </div>
+      {/* Playback Speed Button (Top Right) */}
+      <div className="absolute top-4 right-4">
+        <button
+          onClick={handlePlaybackSpeedChange}
+          className="bg-gray-700 p-2 rounded-full hover:bg-gray-600 transition text-background text-3xl z-10"
+        >
+          {speedIcons[playbackSpeed]}
+        </button>
+      </div>
+      ;{/* Video Player */}
       <ReactPlayer
-  ref={playerRef}
-  url={videoSrc}
-  playing={playing}
-  muted={muted}
-  controls={false} // Custom Controls
-  onProgress={handleProgress}
-  onDuration={handleDuration}
-  width="560" 
-  height="315" // Ensures video maintains aspect ratio
-  style={{ maxHeight: isFullScreen ? "100%" : "500px" }} // Full height in fullscreen mode
-/>
-
-
+        ref={playerRef}
+        url={videoSrc}
+        playing={playing}
+        muted={muted}
+        controls={false}
+        playbackRate={playbackSpeed}
+        onProgress={handleProgress}
+        onDuration={handleDuration}
+        width="560"
+        height="315" // Ensures video maintains aspect ratio
+        style={{ maxHeight: isFullScreen ? "100%" : "500px" }} // Full height in fullscreen mode
+      />
       {/* Controls */}
       <div
         className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-4 transition-opacity duration-500 ${
@@ -183,7 +205,6 @@ const VideoPlayer = ({ videoSrc }) => {
           <PiCaretDoubleRightBold className="text-background text-xl" />
         </button>
       </div>
-
       {/* Mute and Full-Screen Controls */}
       <div className="absolute bottom-3 flex items-center justify-between w-full px-6">
         {/* Mute Button (Left) */}
@@ -210,66 +231,70 @@ const VideoPlayer = ({ videoSrc }) => {
           )}
         </button>
       </div>
-
       {/* Progress Bar */}
       <div className="w-full absolute bottom-[70px] px-6">
-  <div className="flex justify-between text-background text-sm">
-    <span>{formatTime(played)}</span>
-    <span>{formatTime(duration)}</span>
-  </div>
-  <div className="relative w-full h-[3px] bg-gray-700 rounded-full">
-    <div
-      className="absolute top-0 left-0 h-full bg-gray-500 rounded-full"
-      style={{ width: `${(played / duration) * 100}%` }}
-    ></div>
-    <input
-      type="range"
-      min={0}
-      max={duration}
-      value={played}
-      onChange={(e) => {
-        const newValue = parseFloat(e.target.value);
-        playerRef.current.seekTo(newValue, "seconds");
-      }}
-      className="absolute top-0 left-0 w-full h-[6px] bg-transparent rounded-full appearance-none cursor-pointer z-20"
-      style={{
-        appearance: 'none',
-        background: 'transparent',
-      }}
-      // To ensure it doesn't exceed the played time
-      step="any"
-    />
-    <div
-      className="absolute top-0 left-0 h-full bg-accent rounded-full z-10"
-      style={{ width: `${(played / duration) * 100}%` }}
-    ></div>
-  </div>
+        <div className="flex justify-between text-background text-sm">
+          <span>{formatTime(played)}</span>
+          <span>{formatTime(duration)}</span>
+        </div>
+        <div className="relative w-full h-[3px] bg-gray-700 rounded-full">
+          <div
+            className="absolute top-0 left-0 h-full bg-gray-500 rounded-full"
+            style={{ width: `${(played / duration) * 100}%` }}
+          ></div>
+          <input
+            type="range"
+            min={0}
+            max={duration}
+            value={played}
+            onChange={(e) => {
+              const newValue = parseFloat(e.target.value);
+              playerRef.current.seekTo(newValue, "seconds");
+            }}
+            className="absolute top-0 left-0 w-full h-[6px] bg-transparent rounded-full appearance-none cursor-pointer z-20"
+            style={{
+              appearance: "none",
+              background: "transparent",
+            }}
+            // To ensure it doesn't exceed the played time
+            step="any"
+          />
+          <div
+            className="absolute top-0 left-0 h-full bg-accent rounded-full z-10"
+            style={{ width: `${(played / duration) * 100}%` }}
+          ></div>
+        </div>
 
-  <style jsx>{`
-    input[type="range"]::-webkit-slider-thumb {
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      background-color: hsl(26.53 ,86.98% ,66.86%); /* Accent color for the thumb */
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10;
-      transition: background-color 0.3s ease;
-    }
+        <style jsx>{`
+          input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background-color: hsl(
+              26.53,
+              86.98%,
+              66.86%
+            ); /* Accent color for the thumb */
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+          }
 
-    input[type="range"]::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      background-color: hsl(26.53 ,86.98% ,66.86%); /* Accent color for the thumb */
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10;
-    }
-  `}</style>
-</div>
-
-
-
+          input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background-color: hsl(
+              26.53,
+              86.98%,
+              66.86%
+            ); /* Accent color for the thumb */
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+          }
+        `}</style>
+      </div>
     </div>
   );
 };
