@@ -129,7 +129,7 @@ const VideoPlayer = ({ videoSrc }) => {
 <div className="absolute top-4 right-4">
   <button
     onClick={() => handlePlaybackSpeedChange(0.5)}
-    className="bg-gray-700 p-2 rounded-full hover:bg-gray-600 transition text-background text-3xl hover:cursor-pointer"
+    className="bg-gray-700 p- rounded-full hover:bg-gray-600 transition text-background text-3xl"
   >
    <MdSlowMotionVideo/>
   </button>
