@@ -141,7 +141,7 @@ const VideoPlayer = ({ videoSrc }) => {
     <div
       ref={playerContainerRef}
       className={`relative flex flex-col items-center bg-gray-900 rounded-lg shadow-lg w-[60%] mx-auto mt-10 ${
-        isFullScreen ? "fixed inset-0 w-full h-full z-50 bg-black" : ""
+        isFullScreen ? "fixed inset-0 w-full h-full z-10 bg-black" : ""
       }`}
       onClick={handleCenterClick}
     >
@@ -152,7 +152,7 @@ const VideoPlayer = ({ videoSrc }) => {
       <div className="absolute top-4 right-4">
         <button
           onClick={handlePlaybackSpeedChange}
-          className="bg-gray-700 p-2 rounded-full hover:bg-gray-600 transition text-background text-3xl z-10"
+          className="p-2 rounded-full hover:bg-gray-600 transition text-background text-3xl z-100"
         >
           {speedIcons[playbackSpeed]}
         </button>
