@@ -10,7 +10,7 @@ import {
   FaVolumeUp,
 } from "react-icons/fa";
 import { PiCaretDoubleRightBold, PiCaretDoubleLeftBold } from "react-icons/pi";
-
+import { MdSlowMotionVideo } from "react-icons/md";
 const VideoPlayer = ({ videoSrc }) => {
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -20,7 +20,7 @@ const VideoPlayer = ({ videoSrc }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [muted, setMuted] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
-
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const togglePlayPause = () => {
     setPlaying(!playing);
     setControlsVisible(true);  // Show controls immediately after clicking play/pause
@@ -62,12 +62,13 @@ const VideoPlayer = ({ videoSrc }) => {
 
   const handleKeyboardEvents = (event) => {
     switch (event.key) {
-      case "m": // Mute
-        toggleMute();
-        break;
-      case " ":
-        // Space: Play/Pause
-        togglePlayPause();
+      case "m": // Toggle Mute/Unmute
+      setMuted((prevMuted) => !prevMuted);
+      break;
+        case " ": // Space: Play/Pause
+        event.preventDefault(); // Prevents unwanted scrolling when space is pressed
+        setPlaying((prevPlaying) => !prevPlaying);
+        setControlsVisible(true); // Show controls when space is pressed
         break;
       case "f":
         // Full-Screen
@@ -110,27 +111,43 @@ const VideoPlayer = ({ videoSrc }) => {
       return () => clearTimeout(timer);
     }
   };
-
+  const handlePlaybackSpeedChange = (speed) => {
+    setPlaybackSpeed(speed);
+    playerRef.current.seekTo(playerRef.current.getCurrentTime()); // Keep current time after changing speed
+  };
   return (
     <div
       ref={playerContainerRef}
-      className={`relative flex flex-col items-center bg-gray-900 rounded-lg shadow-lg w-[80%] mx-auto mt-10 ${
+      className={`relative flex flex-col items-center bg-gray-900 rounded-lg shadow-lg w-[60%] mx-auto mt-10 ${
         isFullScreen ? "fixed inset-0 w-full h-full z-50 bg-black" : ""
       }`}
       onClick={handleCenterClick}
     >
+      <div className="absolute top-4 left-4 text-white font-bold text-lg">Shree Kalam Academy</div>
+
+{/* Playback Speed Button (Top Right) */}
+<div className="absolute top-4 right-4">
+  <button
+    onClick={() => handlePlaybackSpeedChange(0.5)}
+    className="bg-gray-700 p-2 rounded-full hover:bg-gray-600 transition text-background text-3xl hover:cursor-pointer"
+  >
+   <MdSlowMotionVideo/>
+  </button>
+</div>
       {/* Video Player */}
       <ReactPlayer
-        ref={playerRef}
-        url={videoSrc}
-        playing={playing}
-        muted={muted}
-        controls={false} // Custom Controls
-        onProgress={handleProgress}
-        onDuration={handleDuration}
-        width="100%"
-        height={isFullScreen ? "100vh" : "450px"}
-      />
+  ref={playerRef}
+  url={videoSrc}
+  playing={playing}
+  muted={muted}
+  controls={false} // Custom Controls
+  onProgress={handleProgress}
+  onDuration={handleDuration}
+  width="560" 
+  height="315" // Ensures video maintains aspect ratio
+  style={{ maxHeight: isFullScreen ? "100%" : "500px" }} // Full height in fullscreen mode
+/>
+
 
       {/* Controls */}
       <div
@@ -168,7 +185,7 @@ const VideoPlayer = ({ videoSrc }) => {
       </div>
 
       {/* Mute and Full-Screen Controls */}
-      <div className="absolute top-6 flex items-center justify-between w-full px-6">
+      <div className="absolute bottom-3 flex items-center justify-between w-full px-6">
         {/* Mute Button (Left) */}
         <button
           onClick={toggleMute}
@@ -195,28 +212,64 @@ const VideoPlayer = ({ videoSrc }) => {
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full absolute bottom-2 px-6">
-        <div className="flex justify-between text-background text-sm">
-          <span>{formatTime(played)}</span>
-          <span>{formatTime(duration)}</span>
-        </div>
-        <div className="relative w-full h-2 bg-gray-700 rounded-lg">
-          <div
-            className="absolute top-0 left-0 h-full bg-accent rounded-lg z-10"
-            style={{ width: `${(played / duration) * 100}%` }}
-          ></div>
-          <input
-            type="range"
-            min={0}
-            max={duration}
-            value={played}
-            onChange={(e) =>
-              playerRef.current.seekTo(parseFloat(e.target.value), "seconds")
-            }
-            className="absolute top-0 left-0 w-full h-2 bg-background rounded-lg appearance-none cursor-pointer"
-          />
-        </div>
-      </div>
+      <div className="w-full absolute bottom-[70px] px-6">
+  <div className="flex justify-between text-background text-sm">
+    <span>{formatTime(played)}</span>
+    <span>{formatTime(duration)}</span>
+  </div>
+  <div className="relative w-full h-[3px] bg-gray-700 rounded-full">
+    <div
+      className="absolute top-0 left-0 h-full bg-gray-500 rounded-full"
+      style={{ width: `${(played / duration) * 100}%` }}
+    ></div>
+    <input
+      type="range"
+      min={0}
+      max={duration}
+      value={played}
+      onChange={(e) => {
+        const newValue = parseFloat(e.target.value);
+        playerRef.current.seekTo(newValue, "seconds");
+      }}
+      className="absolute top-0 left-0 w-full h-[6px] bg-transparent rounded-full appearance-none cursor-pointer z-20"
+      style={{
+        appearance: 'none',
+        background: 'transparent',
+      }}
+      // To ensure it doesn't exceed the played time
+      step="any"
+    />
+    <div
+      className="absolute top-0 left-0 h-full bg-accent rounded-full z-10"
+      style={{ width: `${(played / duration) * 100}%` }}
+    ></div>
+  </div>
+
+  <style jsx>{`
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background-color: hsl(26.53 ,86.98% ,66.86%); /* Accent color for the thumb */
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background-color: hsl(26.53 ,86.98% ,66.86%); /* Accent color for the thumb */
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+    }
+  `}</style>
+</div>
+
+
+
     </div>
   );
 };
