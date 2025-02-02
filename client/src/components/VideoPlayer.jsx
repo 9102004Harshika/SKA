@@ -210,7 +210,7 @@ const VideoPlayer = ({ videoSrc }) => {
         {/* Mute Button (Left) */}
         <button
           onClick={toggleMute}
-          className="bg-gray-700 p-3 rounded-full hover:bg-gray-600 transition"
+          className="p-3 rounded-full hover:bg-gray-600 transition"
         >
           {muted ? (
             <FaVolumeMute className="text-background text-xl" />
@@ -222,7 +222,7 @@ const VideoPlayer = ({ videoSrc }) => {
         {/* Full-Screen Button (Right) */}
         <button
           onClick={toggleFullScreen}
-          className="bg-gray-700 p-3 rounded-full hover:bg-gray-600 transition"
+          className="p-3 rounded-full hover:bg-gray-600 transition"
         >
           {isFullScreen ? (
             <FaCompress className="text-background text-xl" />
