@@ -11,8 +11,10 @@ import Courses from "./pages/Courses";
 import Slider from "./ui/slider";
 import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
-import AddCourseForm from "./pages/AddCourseForm";
+import AddCourseForm from "./pages/admin/AddCourseForm";
 import Video from "./pages/Video";
+import HomeAdmin from "./pages/admin/HomeAdmin";
+import CoursesAdmin from "./pages/admin/CourseAdmin";
 
 const App = () => {
   return (
@@ -31,7 +33,11 @@ const App = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/coursedetail" element={<CourseDetail />} />
-            <Route path="/addcourse" element={<AddCourseForm />} />
+
+            {/* admin pages */}
+            <Route path="/admin/home" element={<HomeAdmin />} />
+            <Route path="/admin/courses" element={<CoursesAdmin />} />
+            <Route path="/admin/courses/add" element={<AddCourseForm />} />
 
             {/* Route used for dedicated page of component testing */}
             <Route path="/testing" element={<Video />} />
