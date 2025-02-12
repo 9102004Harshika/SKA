@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const TextAreaGroup = styled.div`
+const InputGroup = styled.div`
   font-family: "Segoe UI", sans-serif;
   margin: 1em 0;
   position: relative;
 `;
 
-const TextArea = styled.textarea`
+const Input = styled.input`
   font-size: 100%;
   padding: 0.8em;
   outline: none;
@@ -15,9 +15,7 @@ const TextArea = styled.textarea`
   background-color: transparent;
   border-radius: 10px;
   width: 100%;
-  min-height: 100px;
   transition: border-color 0.3s ease;
-  resize: vertical;
 
   &:focus,
   &:valid {
@@ -35,8 +33,8 @@ const Label = styled.label`
   transition: all 0.3s ease;
   color: #000080;
 
-  ${TextArea}:focus ~ &,
-  ${TextArea}:valid ~ & {
+  ${Input}:focus ~ &,
+  ${Input}:valid ~ & {
     transform: translateY(-50%) scale(0.9);
     margin: 0;
     margin-left: 1.3em;
@@ -45,13 +43,13 @@ const Label = styled.label`
   }
 `;
 
-const TextAreaInput = ({ label, ...props }) => {
+const TextInput = ({ label, ...props }) => {
   return (
-    <TextAreaGroup>
-      <TextArea {...props} required autoComplete="off" />
+    <InputGroup>
+      <Input {...props} required autoComplete="off" />
       <Label>{label}</Label>
-    </TextAreaGroup>
+    </InputGroup>
   );
 };
 
-export default TextAreaInput;
+export default TextInput;
