@@ -9,7 +9,7 @@ import logo from "../../images/logo.png";
 
 const HomeAdmin = () => {
   const cards = [
-    { title: "Courses", icon: <FaBook size={60} />, link: "/admin/courses" },
+    { title: "Courses", icon: <FaBook size={60} />, link: "/admin/course" },
     {
       title: "Notes",
       icon: <FaClipboardList size={60} />,

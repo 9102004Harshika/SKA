@@ -14,7 +14,10 @@ import QuizAndNotesDetails from "./components/CourseInfo";
 import AddCourseForm from "./pages/admin/AddCourseForm";
 import Video from "./pages/Video";
 import HomeAdmin from "./pages/admin/HomeAdmin";
-import CoursesAdmin from "./pages/admin/CourseAdmin";
+import CoursesAdmin from "./components/CourseAdminSidebar";
+import CourseAdminLayout from "./layouts/CourseAdminLayout";
+import CourseAdminDashboard from "./pages/admin/CourseDashboard";
+import AddCoursePage from "./pages/admin/AddCoursePage";
 
 const App = () => {
   return (
@@ -34,10 +37,15 @@ const App = () => {
             <Route path="/courses" element={<Courses />} />
             <Route path="/coursedetail" element={<CourseDetail />} />
 
-            {/* admin pages */}
-            <Route path="/admin/home" element={<HomeAdmin />} />
-            <Route path="/admin/courses" element={<CoursesAdmin />} />
-            <Route path="/admin/courses/add" element={<AddCourseForm />} />
+            {/* Admin Pages */}
+            <Route path="/admin" element={<HomeAdmin />} />
+            {/* Course Management Section */}
+            <Route path="/admin/course" element={<CourseAdminLayout />}>
+              <Route index element={<CourseAdminDashboard />} />
+              <Route path="create" element={<AddCoursePage />} />
+              <Route path="update" element={<AddCourseForm />} />
+              {/* <Route path="delete" element={<DeleteCourse />} /> */}
+            </Route>
 
             {/* Route used for dedicated page of component testing */}
             <Route path="/testing" element={<Video />} />
