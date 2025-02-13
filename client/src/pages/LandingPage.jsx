@@ -1,8 +1,9 @@
 import React from "react";
+import Footer from "../components/Footer";
 
 const Landing = () => {
   return (
-    <section className="bg-gradient-to-b from-secondary to-primary py-12 px-6 text-center">
+    <section className="bg-gradient-to-b font-body from-secondary to-primary pt-12 text-center">
       <div className="container mx-auto max-w-5xl">
         {/* Header Section */}
         <h2 className="text-4xl sm:text-5xl text-primary font-header font-extrabold mb-6 leading-tight">
@@ -39,15 +40,15 @@ const Landing = () => {
           </a>
           <a
             className="text-lg sm:text-xl text-white bg-accent border border-secondary hover:bg-secondary hover:text-white transition-colors px-6 py-3 rounded-lg shadow-lg"
-            href="/home"
+            href="/app/home"
           >
             Home Page
           </a>
           <a
             className="text-lg sm:text-xl text-white bg-accent border border-secondary hover:bg-secondary hover:text-white transition-colors px-6 py-3 rounded-lg shadow-lg"
-            href="/coursedetail"
+            href="/app/coursedetail"
           >
-           Course Detail
+            Course Detail
           </a>
         </div>
       </div>
@@ -76,6 +77,7 @@ const Landing = () => {
           </li>
         </ul>
       </div>
+      <Footer />
     </section>
   );
 };

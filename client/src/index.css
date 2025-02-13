@@ -409,7 +409,7 @@ h1 {
   width: 100%; 
 }
 
- @media (max-width:400px) {
+ @media (max-width:430px) {
   .course-page{
     overflow-x: hidden;
   }
@@ -468,13 +468,6 @@ h1 {
   
   .ratings > *:nth-child(3),.metadata>*:nth-child(5) {
     flex-basis: 100%; /* Forces the third element to take the full width */
-  }
-  .tabs{
-    font-size: smaller;
-    margin-left: -50px;
-  }
-  .tabs ul{
-    gap: 1rem;
   }
   .about,.topics,.modules,.demo,.notes{
     margin-left: -70px;

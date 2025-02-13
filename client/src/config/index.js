@@ -156,11 +156,11 @@ export const forgotPasswordForm = [
 ];
 
 export const navigationLinksDesktop = [
-  { label: "Courses", link: "/courses", icon: <FaBook /> },
-  { label: "Quiz", link: "/quiz", icon: <FaQuestionCircle /> },
-  { label: "Notes", link: "/notes", icon: <FaFileAlt /> },
-  { label: "Tuitions", link: "/tuitions", icon: <FaChalkboardTeacher /> },
-  { label: "Career Guidance", link: "/career-guidance", icon: <FaLightbulb /> },
+  { label: "Courses", link: "courses", icon: <FaBook /> },
+  { label: "Quiz", link: "quiz", icon: <FaQuestionCircle /> },
+  { label: "Notes", link: "notes", icon: <FaFileAlt /> },
+  { label: "Tuitions", link: "tuitions", icon: <FaChalkboardTeacher /> },
+  { label: "Career Guidance", link: "career-guidance", icon: <FaLightbulb /> },
 ];
 export const navigationLinksMoreItems = [
   { label: "My Profile", link: "/profile", icon: <FaUser /> },
@@ -170,15 +170,15 @@ export const navigationLinksMoreItems = [
 ];
 
 export const navigationLinksMobile = [
-  { label: "Courses", link: "/courses", icon: <FaBook /> },
-  { label: "Quiz", link: "/quiz", icon: <FaQuestionCircle /> },
-  { label: "Notes", link: "/notes", icon: <FaFileAlt /> },
-  { label: "Tuitions", link: "/tuitions", icon: <FaChalkboardTeacher /> },
-  { label: "Career Guidance", link: "/career-guidance", icon: <FaLightbulb /> },
-  { label: "Scholarship", link: "/scholarship", icon: <IoSchool /> },
-  { label: "Question Paper", link: "/question-paper", icon: <FaFileAlt /> },
-  { label: "My Profile", link: "/profile", icon: <FaUser /> },
-  { label: "Logout", link: "/logout", icon: <FaSignOutAlt /> },
+  { label: "Courses", link: "courses", icon: <FaBook /> },
+  { label: "Quiz", link: "quiz", icon: <FaQuestionCircle /> },
+  { label: "Notes", link: "notes", icon: <FaFileAlt /> },
+  { label: "Tuitions", link: "tuitions", icon: <FaChalkboardTeacher /> },
+  { label: "Career Guidance", link: "career-guidance", icon: <FaLightbulb /> },
+  { label: "Scholarship", link: "scholarship", icon: <IoSchool /> },
+  { label: "Question Paper", link: "question-paper", icon: <FaFileAlt /> },
+  { label: "My Profile", link: "profile", icon: <FaUser /> },
+  { label: "Logout", link: "clogout", icon: <FaSignOutAlt /> },
 ];
 
 // Notifications Example
@@ -371,17 +371,17 @@ export const courseMaterialConfig = [
       {
         title: "Introduction to Chapter 1",
         link: "https://example.com/videos/chapter1-intro",
-        time:'1 hour'
+        time: "1 hour",
       },
       {
         title: "Key Formulas and Applications",
         link: "https://example.com/videos/chapter1-formulas",
-        time:'2 hour'
+        time: "2 hour",
       },
       {
         title: "Problem Solving Techniques",
         link: "https://example.com/videos/chapter1-problems",
-        time:'1 hour'
+        time: "1 hour",
       },
     ],
     reviews: [
