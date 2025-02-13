@@ -42,7 +42,7 @@ const App = () => {
             <Route path="/app" element={<MainLayout />}>
               <Route path="home" element={<Home />} />
               <Route path="courses" element={<Courses />} />
-              <Route path="coursedetail" element={<CourseDetail />} />
+              <Route path="coursedetail" element={<CourseDetail />} caseSensitive/>
             </Route>
 
             {/* Admin Pages */}
