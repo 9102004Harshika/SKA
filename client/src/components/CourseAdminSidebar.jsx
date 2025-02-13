@@ -1,3 +1,5 @@
+
+
 import {
   AiOutlineDashboard,
   AiOutlineShoppingCart,
@@ -68,14 +70,13 @@ function CourseAdminSidebar({ open, setOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [activeMenuItem, setActiveMenuItem] = useState("dashboard");
+  const [activeMenuItem, setActiveMenuItem] = useState(null);
 
   // 🔹 Update activeMenuItem when URL changes
   useEffect(() => {
     const currentItem =
-      adminSidebarMenuItems.find((item) =>
-        location.pathname.includes(item.path)
-      )?.id || "coursedashboard";
+      adminSidebarMenuItems.find((item) => item.path === location.pathname)
+        ?.id || null;
     setActiveMenuItem(currentItem);
   }, [location.pathname]); // Runs when location.pathname changes
 

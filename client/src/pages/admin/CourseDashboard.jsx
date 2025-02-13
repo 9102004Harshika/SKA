@@ -2,7 +2,7 @@ import TextInput from "../../ui/textInput";
 
 function CourseAdminDashboard() {
   return (
-    <div className="flex-1 p-6" id="coursedashboard">
+    <div className="flex-1 p-6 mx-10 " id="coursedashboard">
       <input
         type="text"
         placeholder="Search courses..."

@@ -6,16 +6,16 @@ function CourseAdminLayout() {
   const [openSidebar, setOpenSidebar] = useState(false);
 
   return (
-    <div className="min-h-screen w-full flex flex-col">
-      <div className="flex min-h-screen w-full">
-        {/* Course Sidebar */}
+    <div className="min-h-screen w-full flex">
+      {/* Fixed Sidebar */}
+      <div className="h-screen fixed top-0 left-0 z-50">
         <CourseAdminSidebar open={openSidebar} setOpen={setOpenSidebar} />
-        <div className="flex flex-1 flex-col">
-          {/* Course Page Body */}
-          <main className="flex-1 flex-col flex bg-muted/40 p-4 md:p-6">
-            <Outlet />
-          </main>
-        </div>
+      </div>
+      {/* Course Page Body */}
+      <div className="flex-1 flex flex-col ml-[250px]">
+        <main className="flex-1 flex flex-col bg-muted/40 p-4 md:p-6">
+          <Outlet />
+        </main>
       </div>
       {/* Admin Footer */}
       {/* <FooterAdmin /> */}
