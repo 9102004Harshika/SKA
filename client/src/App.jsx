@@ -18,11 +18,15 @@ import CoursesAdmin from "./components/CourseAdminSidebar";
 import CourseAdminLayout from "./layouts/CourseAdminLayout";
 import CourseAdminDashboard from "./pages/admin/CourseDashboard";
 import AddCoursePage from "./pages/admin/AddCoursePage";
+import MainLayout from "./layouts/MainLayout";
+import TermsConditions from "./components/Terms&Conditions";
+import NotFound from "./pages/NotFound";
+import Unauth from "./pages/Unauth";
 
 const App = () => {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen font-body">
         {/* <Navbar /> */}
         <main className="flex-grow">
           {/* This ensures toasts are shown across all pages */}
@@ -33,9 +37,13 @@ const App = () => {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enrollment" element={<Enrollment />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/coursedetail" element={<CourseDetail />} />
+
+            {/* Users pages after auth  */}
+            <Route path="/app" element={<MainLayout />}>
+              <Route path="home" element={<Home />} />
+              <Route path="courses" element={<Courses />} />
+              <Route path="coursedetail" element={<CourseDetail />} />
+            </Route>
 
             {/* Admin Pages */}
             <Route path="/admin" element={<HomeAdmin />} />
@@ -46,6 +54,10 @@ const App = () => {
               <Route path="update" element={<AddCourseForm />} />
               {/* <Route path="delete" element={<DeleteCourse />} /> */}
             </Route>
+
+            <Route path="/unauth" element={<Unauth />} />
+            <Route path="/terms-and-conditions" element={<TermsConditions />} />
+            <Route path="*" element={<NotFound />} />
 
             {/* Route used for dedicated page of component testing */}
             <Route path="/testing" element={<Video />} />

@@ -5,8 +5,7 @@ import { courses } from "../config";
 import Slider from "../ui/slider";
 const Home = () => {
   return (
-    <div >
-      <Navbar />
+    <div>
       <Carousel />
       {/* 
       <h1>Resume wheres left...(Videos Pending) </h1>
@@ -14,7 +13,11 @@ const Home = () => {
       <h1>One Shot Videos... (Videos) </h1>
       <h1>Small Videos... (Videos) </h1>
       <h1>Featured Courses... (Courses shown as carousel)</h1> */}
-     <Slider header={"Top Picks For You"} description={"Below are the top-picked courses curated just for you."}  info={courses}/>
+      <Slider
+        header={"Top Picks For You"}
+        description={"Below are the top-picked courses curated just for you."}
+        info={courses}
+      />
     </div>
   );
 };

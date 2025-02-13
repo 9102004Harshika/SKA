@@ -9,16 +9,19 @@ import {
   FaChevronDown,
   FaPhoneAlt,
   FaArrowRight,
+  FaInfoCircle,
+  FaBook,
+  FaStickyNote,
 } from "react-icons/fa";
+
 import { Button } from "../ui/button";
-import Navbar from "../components/Navbar";
 import { PiStudent } from "react-icons/pi";
 import { CgSandClock } from "react-icons/cg";
 import { GoStarFill } from "react-icons/go";
 import { IoMdCheckmark } from "react-icons/io";
 import { PiVideoCameraFill } from "react-icons/pi";
 import { GoClock } from "react-icons/go";
-import sir from "../images/sir.png"
+import sir from "../images/sir.png";
 import { LuTvMinimalPlay } from "react-icons/lu";
 import React from "react";
 
@@ -145,82 +148,87 @@ const CourseDetailPage = () => {
 
   return (
     <div className="space-y-0">
-      <Navbar />
       <div className="course-page flex">
         <div className="course-content flex-1">
-        <div className="hero-section flex-grow">
-  <div className="content">
-    <p className="breadcrumb font-body mb-5 ">
-      Home &gt; Education &gt; (Hons) Business and Management
-    </p>
-    <h1 className="font-header ">{course.courseTitle}</h1>
-    <p className="description font-body">{course.courseDescription}</p>
-     {/* Price Section */}
-     <div className="price-section font-body flex gap-4">
-      <p className="md:text-5xl text-xl  font-bold text-accent">₹{course.discountedPrice}</p>
-      <p className="md:text-3xl text-xl text-gray-500 line-through">₹{course.originalPrice}</p>
-      <p className="md:text-2xl  text-lg ">( {course.discountPercentage}% off )</p>
-    </div>
-    <div className="metadata flex gap-10 font-body">
-      <p className="inline-flex items-center gap-4">
-        <span className="md:text-3xl text-xl">
-          <FaChalkboardTeacher />
-        </span>
-        <span>Instructor: John Doe</span>
-      </p>
-      <p className="inline-flex items-center gap-2">
-        <span className="md:text-3xl text-xl">
-          <PiStudent />
-        </span>
-        20,000+ Learners
-      </p>
-      <p className="inline-flex items-center gap-2">
-        <span className="md:text-3xl text-xl">
-          <CgSandClock />
-        </span>
-        Duration: 3 months
-      </p>
-    </div>
+          <div className="hero-section flex-grow">
+            <div className="content">
+              <p className="breadcrumb font-body mb-5 ">
+                Home &gt; Education &gt; (Hons) Business and Management
+              </p>
+              <h1 className="font-header ">{course.courseTitle}</h1>
+              <p className="description font-body">
+                {course.courseDescription}
+              </p>
+              {/* Price Section */}
+              <div className="price-section font-body flex gap-4">
+                <p className="md:text-5xl text-xl  font-bold text-accent">
+                  ₹{course.discountedPrice}
+                </p>
+                <p className="md:text-3xl text-xl text-gray-500 line-through">
+                  ₹{course.originalPrice}
+                </p>
+                <p className="md:text-2xl  text-lg ">
+                  ( {course.discountPercentage}% off )
+                </p>
+              </div>
+              <div className="metadata flex gap-10 font-body">
+                <p className="inline-flex items-center gap-4">
+                  <span className="md:text-3xl text-xl">
+                    <FaChalkboardTeacher />
+                  </span>
+                  <span>Instructor: John Doe</span>
+                </p>
+                <p className="inline-flex items-center gap-2">
+                  <span className="md:text-3xl text-xl">
+                    <PiStudent />
+                  </span>
+                  20,000+ Learners
+                </p>
+                <p className="inline-flex items-center gap-2">
+                  <span className="md:text-3xl text-xl">
+                    <CgSandClock />
+                  </span>
+                  Duration: 3 months
+                </p>
+              </div>
 
-    <div className="ratings font-body flex gap-4">
-      <span className="text-[#f4a261] inline-flex items-center gap-2 text-xl">
-        4.8 <GoStarFill />
-      </span>
-      <p>(1,249 ratings)</p>
-      <p>{course.studentCount} Students Enrolled</p>
-    </div>
-
-   
-  </div>
-</div>
+              <div className="ratings font-body flex gap-4">
+                <span className="text-[#f4a261] inline-flex items-center gap-2 text-xl">
+                  4.8 <GoStarFill />
+                </span>
+                <p>(1,249 ratings)</p>
+                <p>{course.studentCount} Students Enrolled</p>
+              </div>
+            </div>
+          </div>
 
           {/* tabs section */}
           <div
-            className={`tabs  font-body font-bold ${
-              isSticky ? "sticky-tabs" : ""
+            className={`tabs font-body md:block hidden text-sm -ml-[50px] font-bold ${
+              isSticky ? "sticky-tabs " : ""
             }`}
           >
-            <ul>
+            <ul className="gap-1 sm:gap-4 ">
               {[
-                "About",
-                "Modules",
-                "Quiz & Notes",
-                "Instructor",
-                "Reviews",
+                { name: "About", icon: <FaInfoCircle size={20} /> },
+                { name: "Modules", icon: <FaBook size={20} /> },
+                { name: "Quiz & Notes", icon: <FaStickyNote size={20} /> },
+                { name: "Instructor", icon: <FaChalkboardTeacher size={20} /> },
+                { name: "Reviews", icon: <FaStar size={20} /> },
               ].map((tab) => (
                 <li
-                  key={tab}
-                  className={activeTab === tab ? "active" : ""}
+                  key={tab.name}
+                  className={activeTab === tab.name ? "active" : ""}
                   onClick={() => {
-                    setActiveTab(tab)
-                     document
-                     .getElementById(`${tab}`)
-                     .scrollIntoView({ behavior: "smooth" })
-                    }
-                    }
+                    setActiveTab(tab.name);
+                    document
+                      .getElementById(`${tab.name}`)
+                      .scrollIntoView({ behavior: "smooth" });
+                  }}
                 >
-                  {tab}
-                  {(activeTab === tab )&& (
+                  <span className="tab-icon block sm:hidden">{tab.icon}</span>
+                  <span className="tab-name hidden sm:block">{tab.name}</span>
+                  {activeTab === tab.name && (
                     <hr
                       className={`active-tab-hr ${
                         isSticky ? "active-stickytab-hr " : ""
@@ -264,7 +272,7 @@ const CourseDetailPage = () => {
             <p className="font-body text-gray-500  w-[62%] pt-3 pl-10 leading-8 indent-[40px]">
               {course.courseDescription}
             </p>
-            <p className="pl-[70px] pt-5 flex gap-2 inline-flex items-center text-center">
+            <p className="pl-[70px] pt-5 gap-2 inline-flex items-center text-center">
               <span className="inline-flex items-center text-center font-body text-gray-500 gap-2">
                 <PiVideoCameraFill className="text-lg" />
                 {course.modules.length} Lectures
@@ -275,14 +283,14 @@ const CourseDetailPage = () => {
               </span>
             </p>
             {course.modules && course.modules.length > 0 ? (
-              <div className="moduleDetails md:space-y-6 md:mt-10 md:pr-[650px] mt-5 space-y-10 pr-10 md:pl-[65px]">
+              <div className="moduleDetails md:space-y-6 md:mt-10 md:pr-[650px]  mt-5 space-y-10 pr-10  md:pl-[65px]">
                 {course.modules.map((module, index) => (
                   <div
                     key={index}
                     className="flex justify-between items-center p-4 bg-primary  shadow-xl hover:shadow-2xl transition-shadow"
                   >
                     {/* Module Details */}
-                    <div className="space-y-3 p-2 w-full">
+                    <div className="space-y-3 p-2 md:w-full w-screen ">
                       <p className="text-xl  font-semibold font-header text-background">
                         {module.name}
                       </p>
@@ -341,7 +349,7 @@ const CourseDetailPage = () => {
                   approach.
                 </p>
                 <div className="md:inline-flex hidden items-center pt-5 space-x-2 hover:space-x-4 hover:cursor-pointer">
-                  <span >See the demo </span>
+                  <span>See the demo </span>
                   <span>
                     <FaArrowRight />
                   </span>
@@ -405,77 +413,82 @@ const CourseDetailPage = () => {
               </div>
             </div>
           </div>
-      {/* instructor sectytion */}
-      <div id="Instructor" className="instructor pt-[95px] px-10 md:px-20 lg:px-32">
-  <h2 className="font-header text-primary text-4xl text-center md:text-left ">
-    Know Our Instructor
-  </h2>
+          {/* instructor sectytion */}
+          <div
+            id="Instructor"
+            className="instructor pt-[95px] px-10 md:px-20 lg:px-32"
+          >
+            <h2 className="font-header text-primary text-4xl text-center md:text-left ">
+              Know Our Instructor
+            </h2>
 
-  <div className="flex flex-col md:flex-row gap-10 mt-10 md:ml-[-10px]  items-center md:items-start">
-    {/* Instructor Image */}
-    <div className="w-[250px] h-[250px] overflow-hidden md:ml-[-10px] ml-[-500px] rounded-full shadow-2xl flex-shrink-0 border-2 border-primary ">
-      <img
-        src={sir} // Replace with the instructor's image URL
-        alt="Instructor"
-        className="w-full h-full object-cover"
-      />
-    </div>
+            <div className="flex flex-col md:flex-row gap-10 mt-10 md:ml-[-10px]  items-center md:items-start">
+              {/* Instructor Image */}
+              <div className="w-[250px] h-[250px] overflow-hidden md:ml-[-10px] ml-[-500px] rounded-full shadow-2xl flex-shrink-0 border-2 border-primary ">
+                <img
+                  src={sir} // Replace with the instructor's image URL
+                  alt="Instructor"
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
-    {/* Instructor Details */}
-    <div className="space-y-4 md:w-2/3">
-      {/* Name and Education */}
-      <p className="text-2xl font-semibold font-header text-primary">
-        {course.instructor.name}
-        <span className="text-sm text-gray-500 ml-2">
-          ( {course.instructor.education} | {course.instructor.experience} years )
-        </span>
-      </p>
-
-      {/* Role */}
-      <p className="text-xl text-gray-500 font-semibold">
-        {course.instructor.role}
-      </p>
-
-      {/* Bio */}
-      <p className="font-body text-gray-500 leading-7  md:w-[72%] w-[42%]">
-        {course.instructor.bio}
-      </p>
-    </div>
-  </div>
-</div>
-
-           {/* Reviews section */}
-           <div className="pt-[50px] pl-20 ml-5 z-0">
-           <div className="pt-[50px]  ml-5"
-           ><h2 className="font-header text-primary text-4xl">
-                Leaner Review
-              </h2></div>
-           </div>
-          {/* queries section */}
-            <div className="pt-[50px] pb-10 pr-[650px] pl-20">
-              <div
-                className="p-6 rounded-sm mt-8 bg-background"
-                style={{ boxShadow: "0px 15px 50px -5px rgb(184, 169, 169)" }}
-              >
-                <h3 className="text-xl font-semibold mb-4 text-primary">
-                  Have Any Questions?
-                </h3>
-                <p className="text-gray-700 mb-6">
-                  We're here to help! Feel free to reach out to us for any
-                  queries or support.
+              {/* Instructor Details */}
+              <div className="space-y-4 md:w-2/3">
+                {/* Name and Education */}
+                <p className="text-2xl font-semibold font-header text-primary">
+                  {course.instructor.name}
+                  <span className="text-sm text-gray-500 ml-2">
+                    ( {course.instructor.education} |{" "}
+                    {course.instructor.experience} years )
+                  </span>
                 </p>
-                <a
-                  href="tel:+1234567890"
-                  className="inline-flex items-center bg-accent text-white px-6 py-3 rounded-md font-semibold hover:bg-primary transition-colors shadow-md"
-                >
-                  <FaPhoneAlt className="mr-2" />
-                  Call Us: +91 93426 75932
-                </a>
+
+                {/* Role */}
+                <p className="text-xl text-gray-500 font-semibold">
+                  {course.instructor.role}
+                </p>
+
+                {/* Bio */}
+                <p className="font-body text-gray-500 leading-7  md:w-[72%] w-[42%]">
+                  {course.instructor.bio}
+                </p>
               </div>
             </div>
-        </div> 
+          </div>
+
+          {/* Reviews section */}
+          <div className="pt-[50px] pl-20 ml-5 z-0">
+            <div className="pt-[50px]  ml-5">
+              <h2 className="font-header text-primary text-4xl">
+                Leaner Review
+              </h2>
+            </div>
+          </div>
+          {/* queries section */}
+          <div className="pt-[50px] pb-10 pr-[650px] pl-20">
+            <div
+              className="p-6 rounded-sm mt-8 bg-background"
+              style={{ boxShadow: "0px 15px 50px -5px rgb(184, 169, 169)" }}
+            >
+              <h3 className="text-xl font-semibold mb-4 text-primary">
+                Have Any Questions?
+              </h3>
+              <p className="text-gray-700 mb-6">
+                We're here to help! Feel free to reach out to us for any queries
+                or support.
+              </p>
+              <a
+                href="tel:+1234567890"
+                className="inline-flex items-center bg-accent text-white px-6 py-3 rounded-md font-semibold hover:bg-primary transition-colors shadow-md"
+              >
+                <FaPhoneAlt className="mr-2" />
+                Call Us: +91 93426 75932
+              </a>
+            </div>
+          </div>
+        </div>
         {/* Card Section */}
-        
+
         <div
           className={`card md:block hidden  ${
             isFixed
@@ -501,15 +514,19 @@ const CourseDetailPage = () => {
             {[
               { label: "Class", value: `${course.class}th` },
               { label: "Board", value: `${course.board}` },
-              { label: "Stream", value:`${course.stream}` },
-              { label: "Subject", value:`${course.subject}`},
+              { label: "Stream", value: `${course.stream}` },
+              { label: "Subject", value: `${course.subject}` },
               isFixed && {
                 label: "Price",
                 value: (
                   <>
                     <span className="text-primary mr-2">{`₹${course.discountedPrice}`}</span>{" "}
-                    <span className="line-through text-gray-500 mr-2">{`₹${course.originalPrice}`} </span>
-                    <span className="text-sm text-accent">({course.discountPercentage}% off)</span>
+                    <span className="line-through text-gray-500 mr-2">
+                      {`₹${course.originalPrice}`}{" "}
+                    </span>
+                    <span className="text-sm text-accent">
+                      ({course.discountPercentage}% off)
+                    </span>
                   </>
                 ),
                 isBold: true,
@@ -521,8 +538,12 @@ const CourseDetailPage = () => {
                   isFixed ? "text-base" : ""
                 }`}
               >
-                <p className={item.isBold ? "font-bold text-primary" : ""}>{item.label}</p>
-                <p className={item.isBold ? "font-bold text-primary" : ""}>{item.value}</p>
+                <p className={item.isBold ? "font-bold text-primary" : ""}>
+                  {item.label}
+                </p>
+                <p className={item.isBold ? "font-bold text-primary" : ""}>
+                  {item.value}
+                </p>
               </li>
             ))}
           </ul>

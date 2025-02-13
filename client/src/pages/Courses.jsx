@@ -33,7 +33,6 @@ const pages = [
 const Courses = () => {
   return (
     <div>
-      <Navbar />
       ReactDOM.render(
       <Breadcrumb pages={pages} />, document.getElementById('root'));
     </div>

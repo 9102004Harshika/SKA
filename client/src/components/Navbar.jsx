@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { FaSearch, FaEllipsisV } from "react-icons/fa";
 import logo from "../images/logo.png";
@@ -28,8 +27,8 @@ const Navbar = () => {
 
   // Reference for the second row of navigation links (for GSAP animation)
   const navLinksRef = useRef(null);
-  const firstRowRef=useRef(null)
-  const mobileLinksRef=useRef(null)
+  const firstRowRef = useRef(null);
+  const mobileLinksRef = useRef(null);
   // Close dropdowns if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -54,7 +53,7 @@ const Navbar = () => {
   // Trigger GSAP animation on load for the second row
   useEffect(() => {
     const tl = gsap.timeline();
-  
+
     // Animate the first row (e.g., logo or main navbar container)
     tl.fromTo(
       ".navbar-first-row",
@@ -69,7 +68,7 @@ const Navbar = () => {
         duration: 0.6, // Reduced duration
       }
     );
-  
+
     // Animate the first row navigation links
     gsap.fromTo(
       firstRowRef.current.children,
@@ -89,7 +88,7 @@ const Navbar = () => {
         duration: 0.8, // Shortened duration
       }
     );
-  
+
     // Animate the second row navigation links (if applicable)
     gsap.fromTo(
       navLinksRef.current.children,
@@ -110,7 +109,6 @@ const Navbar = () => {
       }
     );
   }, []);
-  
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -135,8 +133,6 @@ const Navbar = () => {
     }
   }, [isMenuOpen]);
 
-
-  
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const toggleNotificationDropdown = () =>
@@ -148,7 +144,10 @@ const Navbar = () => {
     <>
       <nav className=" relative z-20 bg-primary">
         {/* First Row */}
-   <div className="flex  items-center justify-between px-4 py-2 " ref={firstRowRef}>
+        <div
+          className="flex  items-center justify-between px-4 py-2 "
+          ref={firstRowRef}
+        >
           {/* Menu Icon for Mobile - Use Hamburger component */}
           <div className="sm:hidden text-background mr-2">
             <Hamburger toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
@@ -156,7 +155,7 @@ const Navbar = () => {
 
           {/* Logo */}
           <div className="sm:text-left">
-            <a href="/home" className="flex items-center">
+            <a href="home" className="flex items-center">
               <img
                 src={logo}
                 alt="Company Logo"
@@ -187,54 +186,59 @@ const Navbar = () => {
             </div>
 
             {/* Notification and Triple Dot */}
-        {/* Notification Dropdown */}
-<div className="relative" ref={notificationDropdownRef}>
-  <Notification onClick={toggleNotificationDropdown} count={count} />
-  {isNotificationDropdownOpen && (
-  <div
-    className="absolute -right-5 top-12 rounded-xl overflow-hidden z-100" // Added top positioning and z-index
-    style={{
-      boxShadow: isNotificationDropdownOpen
-        ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
-        : "none",
-    }}
-  >
-    <ul>
-      <NotificationDropDown />
-    </ul>
-  </div>
-)}
-</div>
+            {/* Notification Dropdown */}
+            <div className="relative" ref={notificationDropdownRef}>
+              <Notification
+                onClick={toggleNotificationDropdown}
+                count={count}
+              />
+              {isNotificationDropdownOpen && (
+                <div
+                  className="absolute -right-5 top-12 rounded-xl overflow-hidden z-100" // Added top positioning and z-index
+                  style={{
+                    boxShadow: isNotificationDropdownOpen
+                      ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
+                      : "none",
+                  }}
+                >
+                  <ul>
+                    <NotificationDropDown />
+                  </ul>
+                </div>
+              )}
+            </div>
 
-{/* Triple Dot Dropdown */}
-<div className="hidden sm:block relative" ref={moreItemsDropdownRef}>
-  <button
-    onClick={toggleMoreItemsDropdown}
-    className="focus:outline-none"
-  >
-    <FaEllipsisV className="text-xl cursor-pointer" />
-  </button>
+            {/* Triple Dot Dropdown */}
+            <div
+              className="hidden sm:block relative"
+              ref={moreItemsDropdownRef}
+            >
+              <button
+                onClick={toggleMoreItemsDropdown}
+                className="focus:outline-none"
+              >
+                <FaEllipsisV className="text-xl cursor-pointer" />
+              </button>
 
-  {isMoreItemsDropdownOpen && (
-  <div
-    className="absolute right-0 mt-2 z-50 rounded-xl overflow-hidden" // Ensured z-index is high enough
-    style={{
-      boxShadow: isMoreItemsDropdownOpen
-        ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
-        : "none",
-    }}
-  >
-    <DropDown />
-  </div>
-)}
-</div>
-
+              {isMoreItemsDropdownOpen && (
+                <div
+                  className="absolute right-0 mt-2 z-50 rounded-xl overflow-hidden" // Ensured z-index is high enough
+                  style={{
+                    boxShadow: isMoreItemsDropdownOpen
+                      ? "rgba(0, 0, 0, 0.56) 40px 40px 40px 15px"
+                      : "none",
+                  }}
+                >
+                  <DropDown />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Mobile Search Bar */}
         <div className="sm:hidden  bg-secondary px-4 py-2">
-          <div className="flex items-center rounded-md px-2" >
+          <div className="flex items-center rounded-md px-2">
             <input
               type="text"
               placeholder="Search..."
@@ -285,16 +289,14 @@ const Navbar = () => {
           </div>
 
           {/* Menu Items */}
-          <div className="flex flex-col space-y-2 px-4"  ref={mobileLinksRef}>
+          <div className="flex flex-col space-y-2 px-4" ref={mobileLinksRef}>
             <img src={logo} alt="" className="w-20 self-center" />
             {navigationLinksMobile.map((item, index) => (
               <a
                 key={index}
                 href={item.link}
                 className={`text-background flex items-center px-4 py-2 rounded-full space-x-2 ${
-                  item.label === "Logout"
-                    ? "hover:bg-error"
-                    : "hover:bg-accent"
+                  item.label === "Logout" ? "hover:bg-error" : "hover:bg-accent"
                 }`}
               >
                 {item.icon}
