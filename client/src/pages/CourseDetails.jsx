@@ -13,7 +13,7 @@ import {
   FaBook,
   FaStickyNote,
 } from "react-icons/fa";
-
+import styled from "styled-components";
 import { Button } from "../ui/button";
 import { PiStudent } from "react-icons/pi";
 import { CgSandClock } from "react-icons/cg";
@@ -24,7 +24,332 @@ import { GoClock } from "react-icons/go";
 import sir from "../images/sir.png";
 import { LuTvMinimalPlay } from "react-icons/lu";
 import React from "react";
+const StyledWrapper = styled.div`
+.course-page {
+  font-family: Arial, sans-serif;
+}
 
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: linear-gradient(
+      to right,
+      #333 0%,
+      rgb(24, 32, 83) 45%,       /* Deep blue in the middle */
+      rgba(32, 43, 88, 0.85) 65%, /* Semi-transparent blue towards the right */
+      transparent 100% /* Fading out to transparent white */
+    ),
+    url('https://wallpapercave.com/wp/wp2417737.jpg');
+  background-size: cover; /* Ensures image covers the full section */
+  background-repeat: no-repeat;
+  background-position: center; /* Centers the image */
+  color: white;
+  padding: 2rem;
+  height: 550px; /* Adjust height as needed */
+ width: 100vw;
+}
+
+.content {
+  max-width: 60%;
+  padding-left: 5%;
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+h1 {
+  font-size: 3.5rem;
+  line-height: 4rem;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.8rem;
+  width: 80%;
+}
+
+.metadata {
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+
+.ratings {
+  font-size: 1rem;
+}
+
+.card {
+  background: hsl( 60 ,56% ,91%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5),0 5px 10px rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  max-width: 350px;
+  text-align: center;
+  margin-right: 80px;
+  z-index: 50;
+  transition: box-shadow 0.3s ease-in-out;
+}
+.course-image {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.enroll-button {
+  background: black;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.tabs {
+  background: #f5f5dc;
+  padding-left: 7%;
+  padding-top: 2%;
+  font-size: large;
+  display: flex;
+  padding-bottom: 0.11%;
+  
+}
+.price-section {
+  display: flex;
+  gap: 16px; /* Space between the prices */
+  align-items: center; /* Vertically center the prices */
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.tabs ul {
+  list-style: none;
+  display: flex;
+  gap: 4rem;
+  cursor:pointer;
+}
+
+.active-tab-hr {
+  border: 0;
+  height: 4px; /* Set height for the hr line */
+  background-color: #000080; /* Set your preferred border color */
+  width: 80%; /* Adjust the width of the hr line */
+  margin-top: 20px; /* Space between the tab and hr line */
+  
+}
+
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+.fade-out {
+  animation: fadeOut 0.1s ease-out forwards;
+  opacity: 0;
+}
+
+.card.is-fixed {
+  box-shadow: 0 2px 3px rgba(73, 72, 72, 0.5),0 2px 3px rgba(104, 103, 103, 0.6);;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+
+
+.tabs {
+  background: #f5f2dc; 
+  z-index: 10;
+}
+
+.sticky-tabs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease-in-out; 
+  background: #000080; 
+  color: #f5f2dc;
+  padding-bottom: 2px;
+}
+
+
+
+.active-tab-hr {
+  border: 1px solid #000080; 
+  width: 100%;
+}
+.active-stickytab-hr {
+  border: 1px solid #f5f2dc;
+  background-color: #f5f2dc; 
+  width: 100%; 
+}
+
+ @media (max-width:430px) {
+  .course-page{
+    overflow-x: hidden;
+  }
+  .breadcrumb{
+    font-size: 0.7rem;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    margin-left: -10px; 
+  }
+  h1{
+    font-size: 1.8rem;
+    display: flex;
+    width: 275px;
+    line-height: 2.5rem;
+    margin-bottom: 10px;
+   margin-left: -10px; 
+  }
+  .hero-section{
+    height: 500px;
+    background-image: none;
+    background: linear-gradient(
+      to right,
+      #333 0%,
+      #000080 45%,
+      #2c2ca0 95%
+    )
+  }
+  .description{
+    font-size: 0.7rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.8rem;
+  width: 250px;
+  }
+  .price-section{
+    margin-top: -10px;
+    white-space: nowrap;
+    gap: 10px;
+    font-size: small;
+  }
+  .metadata {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+    font-size: small;
+    display: none;
+  }
+  
+  .ratings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Optional: adds space between the elements */
+    max-width: 100%; /* Ensure it doesn't overflow */
+    margin-top: 20px;
+  }
+  
+  .ratings > *:nth-child(3),.metadata>*:nth-child(5) {
+    flex-basis: 100%; /* Forces the third element to take the full width */
+  }
+  .about,.topics,.modules,.demo,.notes{
+    margin-left: -70px;
+  }
+  .about h2,.topics h2 ,.modules h2,.demo h2,.notes h2,.instructor h2{
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
+  .about p,.notes p{
+    width: 45%;
+    text-indent: 10px;
+    margin-left: -30px;
+    margin-top:-20px;
+    font-size: small;
+  }
+  .topics ul {
+    display: grid;
+    grid-template-columns: 1fr; /* Makes a single column */
+    gap: 10px; /* Adjust the gap between items */
+    font-size: small;
+    margin-top:-20px;
+  }
+  .topics{
+    margin-top:-20px;
+  }
+  .sticky-tabs{
+    margin-left: -10px; 
+  }
+  .sticky-tabs ul{
+    padding: 5px;
+  }
+  .active-stickytab-hr{
+    padding-bottom: 0px;
+    margin-bottom: -10px;
+  }
+  .modules p{
+    font-size: small;
+    text-indent: 0px;
+    width: 38%;
+    margin-left:-35px;
+  }
+  .moduleDetails {
+    width: 37%;
+  }
+  .moduleDetails p{
+    margin-left:0px;
+  }
+  .moduleDetails a{
+    padding: 5px;
+    font-size: small;
+  }
+ .demo{
+  font-size: small;
+ }
+ .demo p{
+  margin-top: -30px;
+  margin-left: -25px;
+  line-height: 2rem;
+ }
+ .demo h2{
+  margin-left: -25px;
+  margin-top: -30px;
+ }
+ .demo iframe{
+  margin-top: 10px;
+  height: 250px;
+  width: 350px;
+  margin-left: -30px;
+ }
+ .notes h2{
+    margin-left: -20px;
+ }
+ 
+ .notesCard p,.quizCard p{
+   width: 75%;
+   margin-left: 10px;
+   margin-top: 10px;
+ }
+ .quizCard{
+  margin-top: 20px;
+ }
+ .instructor h2{
+  margin-left: -690px;
+ }
+ .instructor p{
+  margin-left: -20px;
+ }
+} 
+
+`
 const CourseDetailPage = () => {
   const { id } = useParams(); // Get course ID from URL
   const [course, setCourse] = useState(null); // State to store course details
@@ -147,7 +472,7 @@ const CourseDetailPage = () => {
   }, 0);
 
   return (
-    <div className="space-y-0">
+    <StyledWrapper className="space-y-0">
       <div className="course-page flex">
         <div className="course-content flex-1">
           <div className="hero-section flex-grow">
@@ -192,13 +517,14 @@ const CourseDetailPage = () => {
                 </p>
               </div>
 
-              <div className="ratings font-body flex gap-4">
-                <span className="text-[#f4a261] inline-flex items-center gap-2 text-xl">
-                  4.8 <GoStarFill />
-                </span>
-                <p>(1,249 ratings)</p>
-                <p>{course.studentCount} Students Enrolled</p>
-              </div>
+              <div className="ratings font-body flex flex-wrap sm:flex-nowrap items-center gap-2 text-sm sm:text-base">
+  <p className="text-[#f4a261] inline-flex items-center gap-1 sm:gap-2 text-lg sm:text-xl">
+    4.8 <GoStarFill />
+  </p>
+  <p className="whitespace-nowrap">(1,249 ratings)</p>
+  <p className="whitespace-nowrap">{course.studentCount} Students Enrolled</p>
+</div>
+
             </div>
           </div>
 
@@ -555,7 +881,7 @@ const CourseDetailPage = () => {
           />
         </div>
       </div>
-    </div>
+    </StyledWrapper>
   );
 };
 
