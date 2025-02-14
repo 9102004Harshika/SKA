@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const InputGroup = styled.div`
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Nunito", "serif";
   margin: 1em 0;
   position: relative;
 `;
@@ -41,6 +41,7 @@ const Label = styled.label`
     padding: 0.4em;
     background-color: #f5f5db;
     color: hsl(26.53, 86.98%, 66.86%);
+    font-weight: 900;
   }
 `;
 

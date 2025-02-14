@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const TextAreaGroup = styled.div`
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Nunito", "serif";
   margin: 1em 0;
   position: relative;
 `;
@@ -11,7 +11,7 @@ const TextArea = styled.textarea`
   font-size: 100%;
   padding: 0.8em;
   outline: none;
-  border: 2px solid rgb(200, 200, 200);
+  border: 2px solid #000080;
   background-color: transparent;
   border-radius: 10px;
   width: 100%;
@@ -21,7 +21,7 @@ const TextArea = styled.textarea`
 
   &:focus,
   &:valid {
-    border-color: #000080;
+    border-color: hsl(26.53, 86.98%, 66.86%);
   }
 `;
 
@@ -42,6 +42,8 @@ const Label = styled.label`
     margin-left: 1.3em;
     padding: 0.4em;
     background-color: #f5f5db;
+    color: hsl(26.53, 86.98%, 66.86%);
+    font-weight: 900;
   }
 `;
 
