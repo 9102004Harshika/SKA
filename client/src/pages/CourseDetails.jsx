@@ -201,7 +201,7 @@ h1 {
   width: 100%; 
 }
 
- @media (max-width:430px) {
+ @media (max-width:430px)  {
   .course-page{
     overflow-x: hidden;
   }
@@ -264,16 +264,24 @@ h1 {
   .about,.topics,.modules,.demo,.notes{
     margin-left: -70px;
   }
-  .about h2,.topics h2 ,.modules h2,.demo h2,.notes h2,.instructor h2{
+  .about h2,.topics h2 ,.demo h2,.instructor h2{
     font-size: 1.5rem;
     line-height: 1.5rem;
   }
+  .modules h2,.notes h2{
+  font-size: 1.5rem;
+  line-height: 2rem;
+  width:35%;
+  }
   .about p,.notes p{
-    width: 45%;
+    width: 40%;
     text-indent: 10px;
     margin-left: -30px;
     margin-top:-20px;
     font-size: small;
+  }
+  .tabs ul{
+    gap:3rem
   }
   .topics ul {
     display: grid;
@@ -298,9 +306,18 @@ h1 {
   .modules p{
     font-size: small;
     text-indent: 0px;
-    width: 38%;
+    width: 35%;
     margin-left:-35px;
   }
+    .notes p{
+    font-size: small;
+    text-indent: 0px;
+    width: 40%;
+    margin-left:-55px;
+    }
+    .notesCard,.quizCard{
+    margin-left:-55px;
+    }
   .moduleDetails {
     width: 37%;
   }
@@ -318,6 +335,7 @@ h1 {
   margin-top: -30px;
   margin-left: -25px;
   line-height: 2rem;
+  width:90%;
  }
  .demo h2{
   margin-left: -25px;
@@ -348,6 +366,8 @@ h1 {
   margin-left: -20px;
  }
 } 
+
+
 
 `
 const CourseDetailPage = () => {
@@ -534,7 +554,7 @@ const CourseDetailPage = () => {
               isSticky ? "sticky-tabs " : ""
             }`}
           >
-            <ul className="gap-1 sm:gap-4 ">
+            <ul className="gap-1 md:gap-2 ">
               {[
                 { name: "About", icon: <FaInfoCircle size={20} /> },
                 { name: "Modules", icon: <FaBook size={20} /> },
@@ -552,7 +572,7 @@ const CourseDetailPage = () => {
                       .scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  <span className="tab-icon block sm:hidden">{tab.icon}</span>
+                  <span className="tab-icon block md:hidden  ">{tab.icon}</span>
                   <span className="tab-name hidden sm:block">{tab.name}</span>
                   {activeTab === tab.name && (
                     <hr
@@ -750,7 +770,7 @@ const CourseDetailPage = () => {
 
             <div className="flex flex-col md:flex-row gap-10 mt-10 md:ml-[-10px]  items-center md:items-start">
               {/* Instructor Image */}
-              <div className="w-[250px] h-[250px] overflow-hidden md:ml-[-10px] ml-[-500px] rounded-full shadow-2xl flex-shrink-0 border-2 border-primary ">
+              <div className="w-[250px] h-[250px] overflow-hidden md:ml-[-10px] ml-[-600px] rounded-full shadow-2xl flex-shrink-0 border-2 border-primary ">
                 <img
                   src={sir} // Replace with the instructor's image URL
                   alt="Instructor"
@@ -763,7 +783,8 @@ const CourseDetailPage = () => {
                 {/* Name and Education */}
                 <p className="text-2xl font-semibold font-header text-primary">
                   {course.instructor.name}
-                  <span className="text-sm text-gray-500 ml-2">
+                  <br className="md:hidden" /> 
+                  <span className="text-sm text-gray-500 md:ml-2 ml-[-1px]">
                     ( {course.instructor.education} |{" "}
                     {course.instructor.experience} years )
                   </span>
@@ -775,7 +796,7 @@ const CourseDetailPage = () => {
                 </p>
 
                 {/* Bio */}
-                <p className="font-body text-gray-500 leading-7  md:w-[72%] w-[42%]">
+                <p className="font-body text-gray-500 leading-7  md:w-[72%] w-[35%]">
                   {course.instructor.bio}
                 </p>
               </div>
@@ -784,7 +805,7 @@ const CourseDetailPage = () => {
 
           {/* Reviews section */}
           <div className="pt-[50px] pl-20 ml-5 z-0">
-            <div className="pt-[50px]  ml-5">
+            <div className="pt-[50px]  ml-8">
               <h2 className="font-header text-primary text-4xl">
                 Leaner Review
               </h2>
