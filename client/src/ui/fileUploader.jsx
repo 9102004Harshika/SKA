@@ -18,7 +18,7 @@ const Container = styled.div`
   justify-content: flex-end;
   padding: 10px;
   background: linear-gradient(135deg, #b7e1ff, #000080);
-  border-radius: 15px;
+  border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   height: calc(var(--folder-H) * 1.7);
   width: 160px; /* Slightly increased width */
@@ -104,7 +104,7 @@ const FileInput = styled.input`
   display: none;
 `;
 
-const FileUploader = () => {
+const FileUploader = ({ label, ...props }) => {
   return (
     <Container>
       <Folder>
@@ -116,7 +116,7 @@ const FileUploader = () => {
       </Folder>
       <FileLabel>
         <FileInput type="file" />
-        Choose a file
+        {label}
       </FileLabel>
     </Container>
   );
