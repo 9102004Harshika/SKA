@@ -261,12 +261,15 @@ h1 {
   .ratings > *:nth-child(3),.metadata>*:nth-child(5) {
     flex-basis: 100%; /* Forces the third element to take the full width */
   }
-  .about,.topics,.modules,.demo,.notes{
+  .about,.topics,.modules,.demo,.notes,.review{
     margin-left: -70px;
   }
-  .about h2,.topics h2 ,.demo h2,.instructor h2{
+  .about h2,.topics h2 ,.demo h2,.instructor h2,.review h2{
     font-size: 1.5rem;
-    line-height: 1.5rem;
+    line-height: 2rem;
+  }
+  .review h2{
+   margin-left: -30px;
   }
   .modules h2,.notes h2{
   font-size: 1.5rem;
@@ -279,6 +282,7 @@ h1 {
     margin-left: -30px;
     margin-top:-20px;
     font-size: small;
+    line-height:1.8rem;
   }
   .tabs ul{
     gap:3rem
@@ -573,7 +577,7 @@ const CourseDetailPage = () => {
                   }}
                 >
                   <span className="tab-icon block md:hidden  ">{tab.icon}</span>
-                  <span className="tab-name hidden sm:block">{tab.name}</span>
+                  <span className="tab-name hidden sm:block mb-2">{tab.name}</span>
                   {activeTab === tab.name && (
                     <hr
                       className={`active-tab-hr ${
@@ -804,7 +808,7 @@ const CourseDetailPage = () => {
           </div>
 
           {/* Reviews section */}
-          <div className="pt-[50px] pl-20 ml-5 z-0">
+          <div className="review pt-[50px] pl-20 ml-5 z-0">
             <div className="pt-[50px]  ml-8">
               <h2 className="font-header text-primary text-4xl">
                 Leaner Review
