@@ -87,7 +87,7 @@ const FileLabel = styled.label`
   text-align: center;
   background: rgba(255, 255, 255, 0.2);
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background var(--transition) ease;
   display: inline-block;

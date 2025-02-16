@@ -13,7 +13,7 @@ const TextArea = styled.textarea`
   outline: none;
   border: 2px solid #000080;
   background-color: transparent;
-  border-radius: 10px;
+  border-radius: 4px;
   width: 100%;
   min-height: 100px;
   transition: border-color 0.3s ease;
