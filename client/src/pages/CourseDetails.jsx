@@ -201,175 +201,243 @@ h1 {
   width: 100%; 
 }
 
- @media (max-width:430px)  {
-  .course-page{
+ @media (max-width: 430px) {
+  .course-page {
     overflow-x: hidden;
   }
-  .breadcrumb{
+
+  .breadcrumb {
     font-size: 0.7rem;
     flex-wrap: nowrap;
     white-space: nowrap;
-    margin-left: -10px; 
+    margin-left: -10px;
   }
-  h1{
+
+  h1 {
     font-size: 1.8rem;
     display: flex;
     width: 275px;
     line-height: 2.5rem;
     margin-bottom: 10px;
-   margin-left: -10px; 
+    margin-left: -10px;
+    flex-grow: 1; /* Ensures it expands */
   }
-  .hero-section{
+
+  .hero-section {
     height: 500px;
     background-image: none;
-    background: linear-gradient(
-      to right,
-      #333 0%,
-      #000080 45%,
-      #2c2ca0 95%
-    )
+    background: linear-gradient(to right, #333 0%, #000080 45%, #2c2ca0 95%);
+    flex-grow: 1;
   }
-  .description{
+
+  .description {
     font-size: 0.7rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.8rem;
-  width: 250px;
+    margin-bottom: 1.5rem;
+    line-height: 1.8rem;
+    width: 250px;
+    flex-grow: 1;
   }
-  .price-section{
+
+  .price-section {
     margin-top: -10px;
     white-space: nowrap;
     gap: 10px;
     font-size: small;
+    flex-grow: 1;
   }
+
   .metadata {
     margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; 
+    gap: 20px;
     font-size: small;
     display: none;
+    flex-grow: 1;
   }
-  
+
   .ratings {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px; /* Optional: adds space between the elements */
-    max-width: 100%; /* Ensure it doesn't overflow */
+    gap: 10px;
+    max-width: 100%;
     margin-top: 20px;
+    flex-grow: 1;
   }
-  
-  .ratings > *:nth-child(3),.metadata>*:nth-child(5) {
-    flex-basis: 100%; /* Forces the third element to take the full width */
+
+  .ratings > *:nth-child(3),
+  .metadata > *:nth-child(5) {
+    flex-basis: 100%;
   }
-  .about,.topics,.modules,.demo,.notes,.review{
+
+  .about,
+  .topics,
+  .modules,
+  .demo,
+  .notes,
+  .review {
     margin-left: -70px;
+    flex-grow: 1;
   }
-  .about h2,.topics h2 ,.demo h2,.instructor h2,.review h2{
+
+  .about h2,
+  .topics h2,
+  .demo h2,
+  .instructor h2,
+  .review h2 {
     font-size: 1.5rem;
     line-height: 2rem;
+    flex-grow: 1;
   }
-  .review h2{
-   margin-left: -30px;
+
+  .review h2 {
+    margin-left: -30px;
   }
-  .modules h2,.notes h2{
-  font-size: 1.5rem;
-  line-height: 2rem;
-  width:35%;
+
+  .modules h2,
+  .notes h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    width: 30%;
   }
-  .about p,.notes p{
-    width: 40%;
+
+  .about p,
+  .notes p {
+    width: 37%;
     text-indent: 10px;
     margin-left: -30px;
-    margin-top:-20px;
+    margin-top: -20px;
     font-size: small;
-    line-height:1.8rem;
+    line-height: 1.8rem;
+    flex-grow: 1;
   }
-  .tabs ul{
-    gap:3rem
+
+  .tabs ul {
+    gap: 3rem;
+    flex-grow: 1;
   }
+
   .topics ul {
     display: grid;
-    grid-template-columns: 1fr; /* Makes a single column */
-    gap: 10px; /* Adjust the gap between items */
+    grid-template-columns: 1fr;
+    gap: 10px;
     font-size: small;
-    margin-top:-20px;
+    margin-top: -20px;
+    flex-grow: 1;
   }
-  .topics{
-    margin-top:-20px;
+
+  .topics {
+    margin-top: -20px;
+    flex-grow: 1;
   }
-  .sticky-tabs{
-    margin-left: -10px; 
+
+  .sticky-tabs {
+    margin-left: -10px;
   }
-  .sticky-tabs ul{
+
+  .sticky-tabs ul {
     padding: 5px;
   }
-  .active-stickytab-hr{
+
+  .active-stickytab-hr {
     padding-bottom: 0px;
     margin-bottom: -10px;
   }
-  .modules p{
+
+  .modules p {
     font-size: small;
     text-indent: 0px;
-    width: 35%;
-    margin-left:-35px;
+    width: 33%;
+    margin-left: -35px;
+    flex-grow: 1;
   }
-    .notes p{
+
+  .notes p {
     font-size: small;
     text-indent: 0px;
     width: 40%;
-    margin-left:-55px;
-    }
-    .notesCard,.quizCard{
-    margin-left:-55px;
-    }
+    margin-left: -55px;
+    flex-grow: 1;
+  }
+
+  .notesCard,
+  .quizCard {
+    margin-left: -55px;
+    flex-grow: 1;
+  }
+
   .moduleDetails {
-    width: 37%;
+    width: 33%;
+    flex-grow: 1;
   }
-  .moduleDetails p{
-    margin-left:0px;
+
+  .moduleDetails p {
+    margin-left: 0px;
   }
-  .moduleDetails a{
+
+  .moduleDetails a {
     padding: 5px;
     font-size: small;
   }
- .demo{
-  font-size: small;
- }
- .demo p{
-  margin-top: -30px;
-  margin-left: -25px;
-  line-height: 2rem;
-  width:90%;
- }
- .demo h2{
-  margin-left: -25px;
-  margin-top: -30px;
- }
- .demo iframe{
-  margin-top: 10px;
-  height: 250px;
-  width: 350px;
-  margin-left: -30px;
- }
- .notes h2{
+
+  .demo {
+    font-size: small;
+    flex-grow: 1;
+  }
+
+  .demo p {
+    margin-top: -30px;
+    margin-left: -25px;
+    line-height: 2rem;
+    width: 80%;
+  }
+
+  .demo h2 {
+    margin-left: -25px;
+    margin-top: -30px;
+  }
+
+  .demo iframe {
+    margin-top: 10px;
+    height: 250px;
+    width: 350px;
+    margin-left: -30px;
+  }
+
+  .notes h2 {
     margin-left: -20px;
- }
- 
- .notesCard p,.quizCard p{
-   width: 75%;
-   margin-left: 10px;
-   margin-top: 10px;
- }
- .quizCard{
-  margin-top: 20px;
- }
- .instructor h2{
-  margin-left: -690px;
- }
- .instructor p{
-  margin-left: -20px;
- }
-} 
+  }
+
+  .notesCard p,
+  .quizCard p {
+    width: 75%;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+
+  .quizCard {
+    margin-top: 20px;
+  }
+
+  .instructor h2 {
+    margin-left: -690px;
+  }
+
+  .instructor p {
+    margin-left: -20px;
+    width: 31%;
+    flex-grow: 1;
+  }
+}
+@media (min-width:768px) and (max-width: 1023px){
+    .hero-section {
+       width:100%;
+    }   
+    .not-fixed{
+      margin-right:-450px
+    }
+
+}
 
 
 
@@ -774,13 +842,15 @@ const CourseDetailPage = () => {
 
             <div className="flex flex-col md:flex-row gap-10 mt-10 md:ml-[-10px]  items-center md:items-start">
               {/* Instructor Image */}
-              <div className="w-[250px] h-[250px] overflow-hidden md:ml-[-10px] ml-[-600px] rounded-full shadow-2xl flex-shrink-0 border-2 border-primary ">
-                <img
-                  src={sir} // Replace with the instructor's image URL
-                  alt="Instructor"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <div className="w-[150px] h-[150px] md:w-[250px] md:h-[250px] overflow-hidden rounded-full shadow-2xl flex-shrink-0 border-2 border-primary 
+                ml-[-750px] md:ml-[-10px]"> 
+  <img
+    src={sir} // Replace with the instructor's image URL
+    alt="Instructor"
+    className="w-full h-full object-cover"
+  />
+</div>
+
 
               {/* Instructor Details */}
               <div className="space-y-4 md:w-2/3">
@@ -844,7 +914,7 @@ const CourseDetailPage = () => {
           className={`card md:block hidden  ${
             isFixed
               ? "is-fixed fixed top-[25px] right-0 w-[50%]  transform transition-all duration-500  flex-grow"
-              : "absolute top-[460px] right-0 transform translate-y-[-50%] transition-all duration-500 flex-grow"
+              : "not-fixed absolute top-[460px] right-0 transform translate-y-[-50%] transition-all duration-500 flex-grow"
           } ${isScrolled ? "fade-out" : ""}`}
         >
           {!isFixed && (
