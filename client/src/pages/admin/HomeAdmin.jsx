@@ -6,6 +6,7 @@ import {
   FaTachometerAlt,
 } from "react-icons/fa";
 import logo from "../../images/logo.png";
+import FooterAdmin from "../../components/FooterAdmin";
 
 const HomeAdmin = () => {
   const cards = [
@@ -56,6 +57,7 @@ const HomeAdmin = () => {
       <div className="font-bold my-10 text-2xl font-highlight">
         शिक्षा ही वह तलवार है, जो अंधकार को चीर सकती है।
       </div>
+      <FooterAdmin />
     </div>
   );
 };

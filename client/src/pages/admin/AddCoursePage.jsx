@@ -11,12 +11,25 @@ const AddCoursePage = () => {
         Create New Course
       </h2>
       <div className="space-y-6 mx-10">
-        {" "}
         {/* Applied mx-10 to inputs */}
-        <TextInput label="Name" type="text" />
-        <TextInput label="Tutor" type="text" />
-        <TextInput label="Videos" type="number" />
-        <TextAreaInput label="Description" type="text" />
+        <form action="" className="">
+          <div className="flex gap-10">
+            <div className="flex-1">
+              <TextInput label="Name" type="text" />
+              <TextAreaInput label="Description" type="text" />
+              <div className="flex justify-between">
+                <TextInput label="Original Price" type="number" />
+                <TextInput label="Discounted Price" type="number" />
+              </div>
+              <TextInput label="Duration" type="number" />
+            </div>
+            <div className="p-8 border-2 border-primary flex flex-col items-center justify-center gap-10 rounded-xl">
+              <label htmlFor="">Add Course Banner Image</label>
+              <ImageUploader label="Upload Image" />
+            </div>
+          </div>
+        </form>
+        {/* <TextInput label="Tutor" type="text" />
         <TextAreaInput
           label="Course Description"
           name="courseDescription"
@@ -26,7 +39,7 @@ const AddCoursePage = () => {
         <div className="flex gap-10">
           <FileUploader label="Upload Video" />
           <ImageUploader label="Upload Image" />
-        </div>
+        </div> */}
       </div>
     </div>
   );
