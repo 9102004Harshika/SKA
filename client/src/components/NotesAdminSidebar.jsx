@@ -13,25 +13,25 @@ const adminSidebarMenuItems = [
   {
     id: "dashboard",
     label: "Dashboard",
-    path: "/admin/course",
+    path: "/admin/notes",
     icon: <AiOutlineDashboard size={24} />,
   },
   {
     id: "create",
-    label: "Add New Course",
-    path: "/admin/course/create",
+    label: "Add New Notes",
+    path: "/admin/notes/create",
     icon: <AiOutlineShoppingCart size={24} />,
   },
   {
     id: "edit",
-    label: "Edit Course",
-    path: "/admin/course/update",
+    label: "Edit Notes",
+    path: "/admin/notes/update",
     icon: <AiOutlineCheckCircle size={24} />,
   },
   {
     id: "delete",
-    label: "Delete Course",
-    path: "/admin/course/delete",
+    label: "Delete Notes",
+    path: "/admin/notes/delete",
     icon: <AiOutlinePicture size={24} />,
   },
 ];
@@ -64,7 +64,7 @@ function MenuItems({ setOpen, activeMenuItem, setActiveMenuItem }) {
   );
 }
 
-function CourseAdminSidebar({ open, setOpen }) {
+function NotesAdminSidebar({ open, setOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -94,4 +94,4 @@ function CourseAdminSidebar({ open, setOpen }) {
   );
 }
 
-export default CourseAdminSidebar;
+export default NotesAdminSidebar;
