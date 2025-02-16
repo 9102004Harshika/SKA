@@ -23,7 +23,7 @@ const AddCoursePage = () => {
               </div>
               <TextInput label="Duration" type="number" />
             </div>
-            <div className="p-8 border-2 border-primary flex flex-col items-center justify-center gap-10 rounded-xl">
+            <div className="p-8 border-2 border-primary flex flex-col items-center justify-center gap-10 rounded-md">
               <label htmlFor="">Add Course Banner Image</label>
               <ImageUploader label="Upload Image" />
             </div>

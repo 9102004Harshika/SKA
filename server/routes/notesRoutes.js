@@ -9,14 +9,14 @@ import {
 
 const router = express.Router();
 
-// Create a new note
-router.post("/add", createNote);
-
 // Get all notes
 router.get("/get", getAllNotes);
 
 // Route to get a note by ID
 router.get("/:id", getNoteById);
+
+// Create a new note
+router.post("/add", createNote);
 
 // Route to update a note by ID
 router.put("/:id", updateNote);
