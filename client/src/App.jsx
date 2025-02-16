@@ -8,13 +8,12 @@ import { Toaster } from "./components/Toaster";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
-import Slider from "./ui/slider";
 import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
 import AddCourseForm from "./pages/admin/AddCourseForm";
 import Video from "./pages/Video";
 import HomeAdmin from "./pages/admin/HomeAdmin";
-import CoursesAdmin from "./components/CourseAdminSidebar";
+import NotesAdminLayout from "./layouts/NotesAdminLayout";
 import CourseAdminLayout from "./layouts/CourseAdminLayout";
 import CourseAdminDashboard from "./pages/admin/CourseDashboard";
 import AddCoursePage from "./pages/admin/AddCoursePage";
@@ -22,6 +21,7 @@ import MainLayout from "./layouts/MainLayout";
 import TermsConditions from "./components/Terms&Conditions";
 import NotFound from "./pages/NotFound";
 import Unauth from "./pages/Unauth";
+import AddNotesPage from "./pages/admin/AddNotesPage";
 
 const App = () => {
   return (
@@ -42,7 +42,11 @@ const App = () => {
             <Route path="/app" element={<MainLayout />}>
               <Route path="home" element={<Home />} />
               <Route path="courses" element={<Courses />} />
-              <Route path="coursedetail" element={<CourseDetail />} caseSensitive/>
+              <Route
+                path="coursedetail"
+                element={<CourseDetail />}
+                caseSensitive
+              />
             </Route>
 
             {/* Admin Pages */}
@@ -53,6 +57,12 @@ const App = () => {
               <Route path="create" element={<AddCoursePage />} />
               <Route path="update" element={<AddCourseForm />} />
               {/* <Route path="delete" element={<DeleteCourse />} /> */}
+            </Route>
+            <Route path="/admin/notes" element={<NotesAdminLayout />}>
+              {/* <Route index element={<NotesAdminDashboard />} /> */}
+              <Route path="create" element={<AddNotesPage />} />
+              {/* <Route path="update" element={<UpdateNotesPage />} /> */}
+              {/* <Route path="delete" element={<DeleteNotesPage />} /> */}
             </Route>
 
             <Route path="/unauth" element={<Unauth />} />
