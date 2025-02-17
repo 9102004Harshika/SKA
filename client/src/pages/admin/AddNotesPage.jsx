@@ -91,8 +91,12 @@ const AddNotesPage = () => {
         "http://localhost:5000/api/notes/add",
         updatedFormData
       );
-      console.log("Note Data Inserted Successfully:", response1.data);
-  
+      toast({
+        title: "Notes Created Successfully",
+        description: `You have successfully created notes for the subject ${updatedFormData.subject}`,
+        variant: "success",
+      })
+   
     } catch (error) {
       console.error("Error uploading files:", error);
     } finally {
