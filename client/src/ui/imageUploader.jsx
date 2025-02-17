@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useState} from "react";
+
 import styled, { keyframes } from "styled-components";
 
 // Floating Animation for the Logo (Continuous)
@@ -98,16 +99,34 @@ const FileLabel = styled.label`
   }
 `;
 
-const ImageUploader = ({ label, ...props }) => {
+const ImageUploader = ({ label, onChange, ...props }) => {
+  const [fileUrl, setFileUrl] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Check if file is an image
+      if (!file.type.startsWith("image/")) {
+        alert("Only image files are allowed!");
+        return;
+      }
+      const url = URL.createObjectURL(file);
+      setFileUrl(url);
+      onChange && onChange(url); // Pass file URL to parent
+    }
+  };
+
   return (
     <Container>
       <ImageIcon />
       <FileLabel>
-        <FileInput type="file" />
+        <FileInput type="file" accept="image/*"  onChange={handleFileChange} {...props} />
         {label}
       </FileLabel>
+      {fileUrl && <p style={{ color: "#f5f5db", fontSize: "12px" }}>File Selected!</p>}
     </Container>
   );
 };
+
 
 export default ImageUploader;

@@ -32,7 +32,7 @@ const RadioButton = ({ name, options, checked, onChange }) => {
 const StyledWrapper = styled.div`
   .radio-input {
     display: flex;
-    gap: 16px; /* Space between the radio buttons */
+    gap: 10px; /* Space between the radio buttons */
     flex-wrap: wrap; /* Allow wrapping of radio buttons */
   }
 
@@ -115,9 +115,7 @@ const StyledWrapper = styled.div`
   /* For laptops and above (screens above 768px), display 3 radio buttons in one line */
   @media (min-width: 768px) {
     .radio-b {
-      width: calc(
-        28.33% - 10px
-      ); /* Each radio button takes up 1/3 of the space */
+      width: auto /* Each radio button takes up 1/3 of the space */
     }
   }
 

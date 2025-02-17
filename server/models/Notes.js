@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 const notesSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  title: { type: String, required: true },
   description: { type: String, required: true },
-  createdBy: { type: String },
-  coverImage: { type: String },
-  notesSrc: { type: String },
+  writtenBy: { type: String },
+  coverImageUrl: { type: String },
+  pdfUrl: { type: String },
   visibility: { type: String },
+  subject:{type:String},
+  classFor:{type:String}
 });
 
 const Notes = mongoose.model("Notes", notesSchema);

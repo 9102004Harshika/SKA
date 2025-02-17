@@ -6,6 +6,7 @@ import FileUploader from "../../ui/fileUploader";
 import { Button } from "../../ui/button";
 import { RadioButton } from "../../ui/radioButton";
 import axios from "axios";
+import { toast } from "../../components/use-toast";
 
 const AddNotesPage = () => {
   const [formData, setFormData] = useState({
@@ -27,64 +28,79 @@ const AddNotesPage = () => {
     { value: "paid", text: "Paid" },
     { value: "free", text: "Free" },
   ];
-
-  // Upload File to Cloudinary
-  const uploadToCloudinary = async (file, folder) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "your_upload_preset"); // Set Cloudinary preset
-    formData.append("folder", folder); // Cloudinary folder
-
-    try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/your_cloudinary_name/upload",
-        formData
-      );
-      return response.data.secure_url; // Get file URL
-    } catch (error) {
-      console.error("Cloudinary upload error:", error);
-      return null;
-    }
-  };
-
-  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      let coverImageUrl = formData.coverImageUrl;
-      let pdfUrl = formData.pdfUrl;
-
-      // Upload Cover Image
-      if (coverImage) {
-        coverImageUrl = await uploadToCloudinary(coverImage, "notes_covers");
-      }
-
-      // Upload PDF
-      if (pdfFile) {
-        pdfUrl = await uploadToCloudinary(pdfFile, "notes_pdfs");
-      }
-
-      // Prepare data
-      const payload = {
+      // Function to upload file to Cloudinary with dynamic preset based on file type
+      const uploadToCloudinary = async (file, preset) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", preset); // Use different presets for image and PDF
+  
+        const response = await fetch("https://api.cloudinary.com/v1_1/dsnsi0ioz/upload", {
+          method: "POST",
+          body: formData,
+        });
+  
+        const data = await response.json();
+        return data.secure_url; // Get uploaded file URL
+      };
+  
+      // Convert Blob URL to File before uploading
+      const convertBlobUrlToFile = async (blobUrl, filename) => {
+        const response = await fetch(blobUrl);
+        const blob = await response.blob();
+        const file = new File([blob], filename, { type: blob.type });
+        return file;
+      };
+  
+      // Function to determine which preset to use
+      const getUploadPreset = (fileType) => {
+        // Different presets for image and PDF
+        if (fileType.startsWith("image/")) {
+          return "Shree Kalam Academy"; // Image preset (you can configure this in Cloudinary)
+        } else if (fileType === "application/pdf") {
+          return "Notes_Pdf"; // PDF preset (you can configure this in Cloudinary)
+        }
+        return "default"; // Default preset if no match
+      };
+  
+      // Upload cover image if available
+      const coverImageUrl = formData.coverImageUrl
+        ? await convertBlobUrlToFile(formData.coverImageUrl, "cover_image.jpg").then((file) =>
+            uploadToCloudinary(file, getUploadPreset(file.type)) // Use preset based on file type
+          )
+        : null;
+  
+      // Upload PDF if available
+      const pdfUrl = formData.pdfUrl
+        ? await convertBlobUrlToFile(formData.pdfUrl, "note.pdf").then((file) =>
+            uploadToCloudinary(file, getUploadPreset(file.type)) // Use preset based on file type
+          )
+        : null;
+  
+      // Update form data with uploaded URLs
+      const updatedFormData = {
         ...formData,
         coverImageUrl,
         pdfUrl,
       };
-
-      // Send data to backend
-      await axios.post("your_backend_api_url/notes", payload);
-
-      alert("Notes created successfully!");
-      setLoading(false);
+  
+      const response1 = await axios.post(
+        "http://localhost:5000/api/notes/add",
+        updatedFormData
+      );
+      console.log("Note Data Inserted Successfully:", response1.data);
+  
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Error submitting notes.");
+      console.error("Error uploading files:", error);
+    } finally {
       setLoading(false);
     }
   };
-
+  
+  
   return (
     <div className="mx-10 font-body">
       <h2 className="mb-10 font-header text-3xl font-semibold text-center">
@@ -128,7 +144,7 @@ const AddNotesPage = () => {
                 label="Upload Image"
                 id="imageUpload"
                 required
-                onChange={(file) => setCoverImage(file)}
+                onChange={(file)=> setFormData({ ...formData, coverImageUrl: file})}
               />
             </div>
           </div>
@@ -139,7 +155,7 @@ const AddNotesPage = () => {
                 label="Upload PDF"
                 id="pdfUpload"
                 required
-                onChange={(file) => setPdfFile(file)}
+                onChange={(file)=> setFormData({ ...formData, pdfUrl: file})}
               />
             </div>
             <div className="flex-1 flex flex-col justify-between">
@@ -163,17 +179,20 @@ const AddNotesPage = () => {
               />
             </div>
           </div>
-          <div className="flex align-center">
-            <RadioButton
-              name="visibility"
-              options={visibilityOptions}
-              checked={formData.visibility}
-              onChange={(e) =>
-                setFormData({ ...formData, visibility: e.target.value })
-              }
-            />
-          </div>
-          <div className="flex justify-between mt-6 gap-6">
+          
+          
+          <label className="block text-lg  font-bold ">Access Type</label>
+           <RadioButton 
+           name="visibility"
+           options={visibilityOptions}
+           checked={formData.visibility}
+           onChange={(e) =>
+            setFormData({ ...formData, visibility: e.target.value })}
+           />
+         
+              
+                  
+          <div className="flex justify-between mt-1 gap-6">
             <Button
               text="Create Notes"
               size="lg"
