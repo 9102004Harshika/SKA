@@ -7,19 +7,30 @@ import { Button } from "../../ui/button";
 import { RadioButton } from "../../ui/radioButton";
 import axios from "axios";
 import { toast } from "../../components/use-toast";
-
+const Modal = ({ isOpen, message }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+        <h2 className="text-xl font-semibold">{message}</h2>
+      </div>
+    </div>
+  );
+};
 const AddNotesPage = () => {
   const [formData, setFormData] = useState({
     title: "",
     subject: "",
     classFor: "",
+    board:"",
     description: "",
     writtenBy: "",
     visibility: "free",
     coverImageUrl: "",
     pdfUrl: "",
-  });
 
+  });
+  const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
   const [coverImage, setCoverImage] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -31,6 +42,7 @@ const AddNotesPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setModalVisible(true); // Show modal when submission starts
     try {
       // Function to upload file to Cloudinary with dynamic preset based on file type
       const uploadToCloudinary = async (file, preset) => {
@@ -86,7 +98,6 @@ const AddNotesPage = () => {
         coverImageUrl,
         pdfUrl,
       };
-  
       const response1 = await axios.post(
         "http://localhost:5000/api/notes/add",
         updatedFormData
@@ -101,6 +112,7 @@ const AddNotesPage = () => {
       console.error("Error uploading files:", error);
     } finally {
       setLoading(false);
+      setModalVisible(false); // Hide modal after submission
     }
   };
   
@@ -162,7 +174,18 @@ const AddNotesPage = () => {
                 onChange={(file)=> setFormData({ ...formData, pdfUrl: file})}
               />
             </div>
+
             <div className="flex-1 flex flex-col justify-between">
+            <TextInput
+                label="Board"
+                type="number"
+                required
+                value={formData.board}
+                onChange={(e) =>
+                  setFormData({ ...formData, board: e.target.value })
+                }
+              />
+            
               <TextAreaInput
                 label="Description"
                 name="description"
@@ -181,6 +204,7 @@ const AddNotesPage = () => {
                   setFormData({ ...formData, writtenBy: e.target.value })
                 }
               />
+              
             </div>
           </div>
           
@@ -227,6 +251,7 @@ const AddNotesPage = () => {
           </div>
         </form>
       </div>
+      <Modal isOpen={modalVisible} message="Please wait, do not refresh. Content is uploading..." />
     </div>
   );
 };

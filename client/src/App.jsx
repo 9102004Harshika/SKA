@@ -24,6 +24,7 @@ import Unauth from "./pages/Unauth";
 import AddNotesPage from "./pages/admin/AddNotesPage";
 import Notes from "./pages/Notes";
 
+
 const App = () => {
   return (
     <Router>

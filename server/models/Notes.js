@@ -7,7 +7,8 @@ const notesSchema = new mongoose.Schema({
   pdfUrl: { type: String },
   visibility: { type: String },
   subject:{type:String},
-  classFor:{type:String}
+  classFor:{type:String},
+  board:{type:String}
 });
 
 const Notes = mongoose.model("Notes", notesSchema);
