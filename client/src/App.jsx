@@ -22,6 +22,7 @@ import TermsConditions from "./components/Terms&Conditions";
 import NotFound from "./pages/NotFound";
 import Unauth from "./pages/Unauth";
 import AddNotesPage from "./pages/admin/AddNotesPage";
+import Notes from "./pages/Notes";
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/app" element={<MainLayout />}>
               <Route path="home" element={<Home />} />
               <Route path="courses" element={<Courses />} />
+              <Route path="notes" element={<Notes />} />
               <Route
                 path="coursedetail"
                 element={<CourseDetail />}
