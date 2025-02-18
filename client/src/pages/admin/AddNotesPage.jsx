@@ -7,16 +7,7 @@ import { Button } from "../../ui/button";
 import { RadioButton } from "../../ui/radioButton";
 import axios from "axios";
 import { toast } from "../../components/use-toast";
-const Modal = ({ isOpen, message }) => {
-  if (!isOpen) return null;
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-        <h2 className="text-xl font-semibold">{message}</h2>
-      </div>
-    </div>
-  );
-};
+import Modal from '../../components/Modal'
 const AddNotesPage = () => {
   const [formData, setFormData] = useState({
     title: "",
@@ -30,7 +21,10 @@ const AddNotesPage = () => {
     pdfUrl: "",
 
   });
-  const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const [coverImage, setCoverImage] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -42,7 +36,7 @@ const AddNotesPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setModalVisible(true); // Show modal when submission starts
+    openModal()
     try {
       // Function to upload file to Cloudinary with dynamic preset based on file type
       const uploadToCloudinary = async (file, preset) => {
@@ -112,7 +106,7 @@ const AddNotesPage = () => {
       console.error("Error uploading files:", error);
     } finally {
       setLoading(false);
-      setModalVisible(false); // Hide modal after submission
+      closeModal()
     }
   };
   
@@ -251,7 +245,10 @@ const AddNotesPage = () => {
           </div>
         </form>
       </div>
-      <Modal isOpen={modalVisible} message="Please wait, do not refresh. Content is uploading..." />
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <h2 className="text-lg font-semibold">Please Wait</h2>
+        <p>Content is uploading...</p>
+      </Modal>
     </div>
   );
 };
