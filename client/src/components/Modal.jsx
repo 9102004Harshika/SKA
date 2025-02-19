@@ -1,8 +1,8 @@
-// src/components/Modal.js
 import React from 'react';
 import PropTypes from 'prop-types';
+import CircularProgress from '../ui/progressBar';
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children ,progress}) => {
   if (!isOpen) return null; // Don't render the modal if it's closed
 
   return (
@@ -19,6 +19,9 @@ const Modal = ({ isOpen, onClose, children }) => {
           <span className="text-2xl">&times;</span>
         </button>
         {children}
+        <div className="flex justify-center items-center mt-4">
+          <CircularProgress progress={progress} />
+        </div>
       </div>
     </div>
   );

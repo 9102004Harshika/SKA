@@ -28,88 +28,179 @@ const AddNotesPage = () => {
   const [coverImage, setCoverImage] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const[progress,setProgress]=useState()
   const visibilityOptions = [
     { value: "paid", text: "Paid" },
     { value: "free", text: "Free" },
   ];
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   openModal()
+  //   setProgress(0)
+  //   try {
+  //     // Function to upload file to Cloudinary with dynamic preset based on file type
+  //     const uploadToCloudinary = async (file, preset) => {
+  //       const formData = new FormData();
+  //       formData.append("file", file);
+  //       formData.append("upload_preset", preset);
+      
+  //       try {
+  //         const response = await axios.post(
+  //           "https://api.cloudinary.com/v1_1/dsnsi0ioz/upload",
+  //           formData,
+  //           {
+  //             onUploadProgress: (progressEvent) => {
+  //               const fileProgress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+  //               setProgress(fileProgress);
+  //             },
+  //           }
+  //         );
+      
+  //         return response.data.secure_url; // Return uploaded file URL
+  //       } catch (error) {
+  //         console.error("Error uploading file:", error);
+  //         throw error;
+  //       }
+  //     };
+      
+  //     // Convert Blob URL to File before uploading
+  //     const convertBlobUrlToFile = async (blobUrl, filename) => {
+  //       const response = await fetch(blobUrl);
+  //       const blob = await response.blob();
+  //       const file = new File([blob], filename, { type: blob.type });
+  //       return file;
+  //     };
+  
+  //     // Function to determine which preset to use
+  //     const getUploadPreset = (fileType) => {
+  //       // Different presets for image and PDF
+  //       if (fileType.startsWith("image/")) {
+  //         return "Shree Kalam Academy"; // Image preset (you can configure this in Cloudinary)
+  //       } else if (fileType === "application/pdf") {
+  //         return "Notes_Pdf"; // PDF preset (you can configure this in Cloudinary)
+  //       }
+  //       return "default"; // Default preset if no match
+  //     };
+  
+  //     // Upload cover image if available
+  //     const coverImageUrl = formData.coverImageUrl
+  //       ? await convertBlobUrlToFile(formData.coverImageUrl, "cover_image.jpg").then((file) =>
+  //           uploadToCloudinary(file, getUploadPreset(file.type)) // Use preset based on file type
+  //         )
+  //       : null;
+  
+  //     // Upload PDF if available
+  //     const pdfUrl = formData.pdfUrl
+  //       ? await convertBlobUrlToFile(formData.pdfUrl, "note.pdf").then((file) =>
+  //           uploadToCloudinary(file, getUploadPreset(file.type)) // Use preset based on file type
+  //         )
+  //       : null;
+  
+  //     // Update form data with uploaded URLs
+  //     const updatedFormData = {
+  //       ...formData,
+  //       coverImageUrl,
+  //       pdfUrl,
+  //     };
+  //     const response1 = await axios.post(
+  //       "http://localhost:5000/api/notes/add",
+  //       updatedFormData
+  //     );
+  //     toast({
+  //       title: "Notes Created Successfully",
+  //       description: `You have successfully created notes for the subject ${updatedFormData.subject}`,
+  //       variant: "success",
+  //     })
+   
+  //   } catch (error) {
+  //     console.error("Error uploading files:", error);
+  //   } finally {
+  //     setLoading(false);
+  //     closeModal()
+      
+  //   }
+  // };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    openModal()
+    openModal();
+    setProgress(0);
+  
     try {
-      // Function to upload file to Cloudinary with dynamic preset based on file type
-      const uploadToCloudinary = async (file, preset) => {
+      const uploadToCloudinary = async (file, preset, setFileProgress) => {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", preset); // Use different presets for image and PDF
+        formData.append("upload_preset", preset);
   
-        const response = await fetch("https://api.cloudinary.com/v1_1/dsnsi0ioz/upload", {
-          method: "POST",
-          body: formData,
-        });
-  
-        const data = await response.json();
-        return data.secure_url; // Get uploaded file URL
+        return axios.post("https://api.cloudinary.com/v1_1/dsnsi0ioz/upload", formData, {
+          onUploadProgress: (progressEvent) => {
+            const fileProgress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+            setFileProgress(fileProgress);
+          },
+        }).then((response) => response.data.secure_url);
       };
   
-      // Convert Blob URL to File before uploading
       const convertBlobUrlToFile = async (blobUrl, filename) => {
         const response = await fetch(blobUrl);
         const blob = await response.blob();
-        const file = new File([blob], filename, { type: blob.type });
-        return file;
+        return new File([blob], filename, { type: blob.type });
       };
   
-      // Function to determine which preset to use
       const getUploadPreset = (fileType) => {
-        // Different presets for image and PDF
-        if (fileType.startsWith("image/")) {
-          return "Shree Kalam Academy"; // Image preset (you can configure this in Cloudinary)
-        } else if (fileType === "application/pdf") {
-          return "Notes_Pdf"; // PDF preset (you can configure this in Cloudinary)
-        }
-        return "default"; // Default preset if no match
+        if (fileType.startsWith("image/")) return "Shree Kalam Academy";
+        if (fileType === "application/pdf") return "Notes_Pdf";
+        return "default";
       };
   
-      // Upload cover image if available
-      const coverImageUrl = formData.coverImageUrl
-        ? await convertBlobUrlToFile(formData.coverImageUrl, "cover_image.jpg").then((file) =>
-            uploadToCloudinary(file, getUploadPreset(file.type)) // Use preset based on file type
-          )
-        : null;
+      let coverProgress = 0;
+      let pdfProgress = 0;
   
-      // Upload PDF if available
-      const pdfUrl = formData.pdfUrl
-        ? await convertBlobUrlToFile(formData.pdfUrl, "note.pdf").then((file) =>
-            uploadToCloudinary(file, getUploadPreset(file.type)) // Use preset based on file type
-          )
-        : null;
-  
-      // Update form data with uploaded URLs
-      const updatedFormData = {
-        ...formData,
-        coverImageUrl,
-        pdfUrl,
+      const setCoverProgress = (value) => {
+        coverProgress = value;
+        setProgress(Math.round((coverProgress + pdfProgress) / 2)); // Keep progress within 0-100
       };
-      const response1 = await axios.post(
-        "http://localhost:5000/api/notes/add",
-        updatedFormData
-      );
+  
+      const setPdfProgress = (value) => {
+        pdfProgress = value;
+        setProgress(Math.round((coverProgress + pdfProgress) / 2)); // Keep progress within 0-100
+      };
+  
+      // Convert & Upload Both Files in Parallel
+      const coverImageFile = formData.coverImageUrl
+        ? await convertBlobUrlToFile(formData.coverImageUrl, "cover_image.jpg")
+        : null;
+      const pdfFile = formData.pdfUrl
+        ? await convertBlobUrlToFile(formData.pdfUrl, "note.pdf")
+        : null;
+  
+      const [coverImageUrl, pdfUrl] = await Promise.all([
+        coverImageFile ? uploadToCloudinary(coverImageFile, getUploadPreset(coverImageFile.type), setCoverProgress) : null,
+        pdfFile ? uploadToCloudinary(pdfFile, getUploadPreset(pdfFile.type), setPdfProgress) : null,
+      ]);
+  
+      // Ensure progress reaches 100% only when everything is done
+      setProgress(100);
+  
+      // Send form data to backend
+      const updatedFormData = { ...formData, coverImageUrl, pdfUrl };
+      await axios.post("http://localhost:5000/api/notes/add", updatedFormData);
+  
+      // Close modal & Show success toast
+      closeModal();
       toast({
         title: "Notes Created Successfully",
-        description: `You have successfully created notes for the subject ${updatedFormData.subject}`,
+        description: `You have successfully created notes for ${updatedFormData.subject}`,
         variant: "success",
-      })
-   
+      });
+  
     } catch (error) {
       console.error("Error uploading files:", error);
     } finally {
       setLoading(false);
-      closeModal()
     }
   };
-  
   
   return (
     <div className="mx-10 font-body">
@@ -245,9 +336,8 @@ const AddNotesPage = () => {
           </div>
         </form>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <h2 className="text-lg font-semibold">Please Wait</h2>
-        <p>Content is uploading...</p>
+      <Modal isOpen={isModalOpen} onClose={closeModal} progress={progress} >
+        <h2 className="text-lg text-primary font-semibold">Please Wait , Content is uploading...</h2>
       </Modal>
     </div>
   );

@@ -23,7 +23,8 @@ import NotFound from "./pages/NotFound";
 import Unauth from "./pages/Unauth";
 import AddNotesPage from "./pages/admin/AddNotesPage";
 import Notes from "./pages/Notes";
-
+import CircularProgress from "./ui/progressBar";
+import Modal from "./components/Modal";
 
 const App = () => {
   return (
@@ -34,7 +35,7 @@ const App = () => {
           {/* This ensures toasts are shown across all pages */}
           <Toaster />
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<CircularProgress />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enrollment" element={<Enrollment />} />
