@@ -48,7 +48,7 @@ const Notes = () => {
             <div className="flex flex-col justify-between px-4 flex-1">
               <h3 className="text-xl font-bold text-primary">{note.title}</h3>
               <p className="text-sm text-accent">
-                {note.subject} (Class {note.classFor})
+                {note.subject} (Class {note.classFor}) || {note.board}
               </p>
               <p className="text-gray-700 line-clamp-3">{note.description}</p>
               <p className="text-gray-500 text-sm mt-2">
