@@ -1,8 +1,8 @@
 import {
   AiOutlineDashboard,
-  AiOutlineShoppingCart,
-  AiOutlineCheckCircle,
-  AiOutlinePicture,
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineFileAdd,
 } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,19 +20,19 @@ const adminSidebarMenuItems = [
     id: "create",
     label: "Add New Notes",
     path: "/admin/notes/create",
-    icon: <AiOutlineShoppingCart size={24} />,
+    icon: <AiOutlineFileAdd size={24} />,
   },
   {
     id: "edit",
     label: "Edit Notes",
     path: "/admin/notes/update",
-    icon: <AiOutlineCheckCircle size={24} />,
+    icon: <AiOutlineEdit size={24} />,
   },
   {
     id: "delete",
     label: "Delete Notes",
     path: "/admin/notes/delete",
-    icon: <AiOutlinePicture size={24} />,
+    icon: <AiOutlineDelete size={24} />,
   },
 ];
 
