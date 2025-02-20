@@ -141,8 +141,6 @@ label {
   }
 }
 
-
-
 .reveal {
   opacity: 0;
   transform: translateY(30px); /* Slight upward motion */
