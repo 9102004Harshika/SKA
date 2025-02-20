@@ -25,18 +25,8 @@ const UpdateNotesPage = () => {
     fetchNotes();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this note?")) return;
-    try {
-      await axios.delete(`http://localhost:5000/api/notes/delete/${id}`);
-      setNotes(notes.filter((note) => note._id !== id)); // Remove deleted note
-    } catch (err) {
-      setError("Failed to delete the note.");
-    }
-  };
-
   const handleUpdate = (id) => {
-    navigate(`/update/edit/${id}`); // Navigate to update page with note ID
+    navigate(`/admin/notes/edit/${id}`); // Navigate to update page with note ID
   };
 
   const filteredNotes = notes.filter((note) =>
@@ -106,7 +96,7 @@ const UpdateNotesPage = () => {
                   <td className="border border-primary p-3 text-center">
                     <button
                       onClick={() => handleUpdate(note._id)}
-                      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                      className="px-4 py-2 bg-accent text-background rounded-md hover:bg-secondary"
                     >
                       <FaEdit />
                     </button>
