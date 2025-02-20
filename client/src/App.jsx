@@ -28,6 +28,7 @@ import CircularProgress from "./ui/progressBar";
 import Modal from "./components/Modal";
 import DeleteNotesPage from "./pages/admin/DeleteNotesPage";
 import NotesDashboard from "./pages/admin/NotesDashboard";
+import EditNotesPage from "./pages/admin/EditNotesPage";
 
 const App = () => {
   return (
@@ -71,6 +72,8 @@ const App = () => {
               <Route index element={<NotesDashboard />} />
               <Route path="create" element={<AddNotesPage />} />
               <Route path="update" element={<UpdateNotesPage />} />
+              <Route path="edit/:id" element={<EditNotesPage />} />
+
               <Route path="delete" element={<DeleteNotesPage />} />
             </Route>
 
