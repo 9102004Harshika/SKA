@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa"; // Import edit icon
+import CircularProgress from "../../ui/progressBar";
 
 const UpdateNotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -35,7 +36,7 @@ const UpdateNotesPage = () => {
 
   return (
     <div className="md:ml-8">
-      <h2 className="text-3xl font-header font-semibold text-center mb-6">
+      <h2 className="text-3xl font-header font-semibold md:tracking-wide text-center mb-6">
         Update Notes
       </h2>
 
@@ -49,7 +50,7 @@ const UpdateNotesPage = () => {
       />
 
       {loading ? (
-        <p className="text-gray-600">Loading...</p>
+        <p className="text-gray-600">Loading!!! Please Wait...</p>
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : filteredNotes.length === 0 ? (
