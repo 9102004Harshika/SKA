@@ -22,6 +22,7 @@ import TermsConditions from "./components/Terms&Conditions";
 import NotFound from "./pages/NotFound";
 import Unauth from "./pages/Unauth";
 import AddNotesPage from "./pages/admin/AddNotesPage";
+import UpdateNotesPage from "./pages/admin/UpdateNotesPage";
 import Notes from "./pages/Notes";
 import CircularProgress from "./ui/progressBar";
 import Modal from "./components/Modal";
@@ -62,10 +63,12 @@ const App = () => {
               <Route path="update" element={<AddCourseForm />} />
               {/* <Route path="delete" element={<DeleteCourse />} /> */}
             </Route>
+
+            {/* notes section of admin */}
             <Route path="/admin/notes" element={<NotesAdminLayout />}>
               {/* <Route index element={<NotesAdminDashboard />} /> */}
               <Route path="create" element={<AddNotesPage />} />
-              {/* <Route path="update" element={<UpdateNotesPage />} /> */}
+              <Route path="update" element={<UpdateNotesPage />} />
               {/* <Route path="delete" element={<DeleteNotesPage />} /> */}
             </Route>
 
