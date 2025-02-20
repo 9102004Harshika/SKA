@@ -26,6 +26,8 @@ import UpdateNotesPage from "./pages/admin/UpdateNotesPage";
 import Notes from "./pages/Notes";
 import CircularProgress from "./ui/progressBar";
 import Modal from "./components/Modal";
+import DeleteNotesPage from "./pages/admin/DeleteNotesPage";
+import NotesDashboard from "./pages/admin/NotesDashboard";
 
 const App = () => {
   return (
@@ -66,10 +68,10 @@ const App = () => {
 
             {/* notes section of admin */}
             <Route path="/admin/notes" element={<NotesAdminLayout />}>
-              {/* <Route index element={<NotesAdminDashboard />} /> */}
+              <Route index element={<NotesDashboard />} />
               <Route path="create" element={<AddNotesPage />} />
               <Route path="update" element={<UpdateNotesPage />} />
-              {/* <Route path="delete" element={<DeleteNotesPage />} /> */}
+              <Route path="delete" element={<DeleteNotesPage />} />
             </Route>
 
             <Route path="/unauth" element={<Unauth />} />
