@@ -6,9 +6,10 @@ const notesSchema = new mongoose.Schema({
   coverImageUrl: { type: String },
   pdfUrl: { type: String },
   visibility: { type: String },
-  subject:{type:String},
-  classFor:{type:String},
-  board:{type:String}
+  subject: { type: String },
+  classFor: { type: String },
+  board: { type: String },
+  createdOn: { type: Date, default: Date.now },
 });
 
 const Notes = mongoose.model("Notes", notesSchema);
