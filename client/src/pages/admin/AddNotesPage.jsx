@@ -146,7 +146,7 @@ const AddNotesPage = () => {
 
   return (
     <div className="mx-10 font-body">
-      <h2 className="mb-10 font-header text-3xl font-semibold text-center">
+      <h2 className="mb-10 font-header text-3xl font-semibold md:tracking-wide text-center">
         Create New Notes
       </h2>
       <div className="space-y-6 mx-10">
