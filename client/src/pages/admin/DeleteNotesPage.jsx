@@ -98,7 +98,7 @@ const DeleteNotesPage = () => {
                     {note.subject}
                   </td>
                   <td className="border border-primary p-3 text-center">
-                    {note.createdOn}
+                    {new Date(note.createdOn).toLocaleString()}
                   </td>
                   <td className="border border-primary p-3 text-center">
                     <button

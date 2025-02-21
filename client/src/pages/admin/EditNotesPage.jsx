@@ -4,6 +4,9 @@ import axios from "axios";
 import TextAreaInput from "../../ui/textarea";
 import TextInput from "../../ui/textInput";
 import { Button } from "../../ui/button";
+import FileUploader from "../../ui/fileUploader";
+import ImageUploader from "../../ui/imageUploader";
+import { RadioButton } from "../../ui/radioButton";
 
 const EditNotesPage = () => {
   const { id } = useParams();
@@ -18,6 +21,11 @@ const EditNotesPage = () => {
     coverImageUrl: "",
     pdfUrl: "",
   });
+
+  const visibilityOptions = [
+    { value: "paid", text: "Paid" },
+    { value: "free", text: "Free" },
+  ];
 
   useEffect(() => {
     const fetchNoteDetails = async () => {
@@ -91,25 +99,39 @@ const EditNotesPage = () => {
                 value={note.description}
                 onChange={handleChange}
               />
+              <div className="flex gap-6">
+                <label className="block text-lg  font-bold ">
+                  Access Type:
+                </label>
+                <RadioButton
+                  name="visibility"
+                  options={visibilityOptions}
+                  // checked={formData.visibility}
+                  // onChange={(e) =>
+                  // setFormData({ ...formData, visibility: e.target.value })
+                  // }
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col gap-4 items-center justify-center p-8 border-2 border-primary rounded-md">
+            <div className="flex flex-col  items-center justify-center px-4 py-2 border-2 border-primary rounded-md">
               <label>Cover Image</label>
               {note.coverImageUrl ? (
                 <div className="flex flex-col items-center">
                   <img
                     src={note.coverImageUrl}
                     alt="Cover"
-                    className="w-40 h-40 object-cover rounded-md"
+                    className="w-30 h-40 object-cover rounded-md"
                   />
                   <Button
                     text="Remove Image"
-                    variant="danger"
+                    variant="secondary"
+                    size="xs"
                     onClick={() => removeFile("image")}
                   />
                 </div>
               ) : (
-                <input
+                <ImageUploader
                   type="file"
                   accept="image/*"
                   onChange={(e) =>
@@ -138,7 +160,7 @@ const EditNotesPage = () => {
                   />
                 </div>
               ) : (
-                <input
+                <FileUploader
                   type="file"
                   accept="application/pdf"
                   onChange={(e) =>
