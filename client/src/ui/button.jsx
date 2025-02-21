@@ -33,7 +33,7 @@ const StyledWrapper = styled.div`
     cursor: pointer;
     position: relative;
     padding: ${({ size }) => (size === "sm" ? "5px" : "8px")};
-    margin-bottom: ${({ size }) => (size === "sm" ? "2px" : "20px")};
+    margin-bottom: ${({ size }) => (size === "sm" ? "2px" : "15px")};
     text-transform: capitalize;
     font-weight: bold;
     font-size: 14px;
@@ -93,7 +93,7 @@ const StyledWrapper = styled.div`
         ? "hsl(240, 100%, 25%)"
         : variant === "secondary"
         ? "hsl(205, 100% ,85.88%)"
-        :variant === "course"
+        : variant === "course"
         ? "#000080"
         : "hsl(26.53 ,86.98%, 66.86%)"};
     overflow: hidden;
@@ -144,7 +144,7 @@ const StyledWrapper = styled.div`
 
   .button_text {
     position: relative;
-    font-size:18px;
+    font-size: 18px;
     color: ${({ variant }) =>
       variant === "primary" || variant === "course"
         ? "white"
