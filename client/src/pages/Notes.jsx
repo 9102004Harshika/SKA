@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaFilePdf, FaBook, FaUniversity } from "react-icons/fa";
 import Filters from "../components/Filters";
+import PdfViewer from "../components/PdfViewer";
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showPdf, setShowPdf] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
     subject: {},
     classFor: {},
@@ -26,41 +28,52 @@ const Notes = () => {
   }, []);
   const formatClassFor = (classFor) => `${classFor}th`;
 
-const filteredNotes = notes.filter((note) => {
-  // Get selected filters
-  const selectedBoards = Object.keys(selectedFilters.board).filter((b) => selectedFilters.board[b]);
-  const selectedClasses = Object.keys(selectedFilters.classFor).filter((c) => selectedFilters.classFor[c]);
-  const selectedSubjects = Object.keys(selectedFilters.subject).filter((s) => selectedFilters.subject[s]);
+  const filteredNotes = notes.filter((note) => {
+    // Get selected filters
+    const selectedBoards = Object.keys(selectedFilters.board).filter(
+      (b) => selectedFilters.board[b]
+    );
+    const selectedClasses = Object.keys(selectedFilters.classFor).filter(
+      (c) => selectedFilters.classFor[c]
+    );
+    const selectedSubjects = Object.keys(selectedFilters.subject).filter(
+      (s) => selectedFilters.subject[s]
+    );
 
-  // Apply board filter
-  const boardMatch = selectedBoards.length === 0 || selectedBoards.includes(note.board);
+    // Apply board filter
+    const boardMatch =
+      selectedBoards.length === 0 || selectedBoards.includes(note.board);
 
-  // Convert backend classFor to frontend format before filtering
-  const formattedClassFor = formatClassFor(note.classFor);
-  const classMatch = selectedClasses.length === 0 || selectedClasses.includes(formattedClassFor);
+    // Convert backend classFor to frontend format before filtering
+    const formattedClassFor = formatClassFor(note.classFor);
+    const classMatch =
+      selectedClasses.length === 0 ||
+      selectedClasses.includes(formattedClassFor);
 
-  // Apply subject filter
-  const subjectMatch = selectedSubjects.length === 0 || selectedSubjects.includes(note.subject);
+    // Apply subject filter
+    const subjectMatch =
+      selectedSubjects.length === 0 || selectedSubjects.includes(note.subject);
 
-  return boardMatch && classMatch && subjectMatch;
-});
+    return boardMatch && classMatch && subjectMatch;
+  });
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
   if (error) return <p className="text-center text-red-600">{error}</p>;
 
   return (
     <div className="flex min-h-screen">
-      <Filters notes={notes} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}/>
-      <div >
-      <div className="flex justify-between px-10 mt-10 ">
-            <div>Total Number of items</div>
-            <div>Total Number of items</div>
-          </div>
+      <Filters
+        notes={notes}
+        selectedFilters={selectedFilters}
+        setSelectedFilters={setSelectedFilters}
+      />
+      <div>
+        <div className="flex justify-between px-10 mt-10 ">
+          <div>Total Number of items</div>
+          <div>Total Number of items</div>
+        </div>
         <div className="flex flex-wrap px-10 pb-20 pt-10  gap-4">
-
-         
           {filteredNotes.length > 0 ? (
             filteredNotes.map((note, index) => (
-
               <div
                 key={index}
                 className="bg-secondary rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 max-w-xs flex-grow"
@@ -96,14 +109,18 @@ const filteredNotes = notes.filter((note) => {
                   </div>
                   <div className="mt-4 flex justify-between items-center font-body">
                     {note.pdfUrl && (
-                      <a
-                        href={note.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary font-medium flex items-center gap-1 hover:underline"
+                      <button
+                        onClick={() => setShowPdf(true)}
+                        className="bg-green-600 text-white px-4 py-2 rounded"
                       >
-                        <FaFilePdf /> View PDF
-                      </a>
+                        Open PDF
+                      </button>
+                    )}
+                    {showPdf && (
+                      <PdfViewer
+                        pdfUrl={note.pdfUrl}
+                        onClose={() => setShowPdf(false)}
+                      />
                     )}
                     <button className="bg-primary text-white px-3 py-1 rounded-md text-sm flex items-center gap-1 hover:bg-blue-600">
                       View Details
@@ -119,7 +136,6 @@ const filteredNotes = notes.filter((note) => {
           )}
         </div>
       </div>
-
     </div>
   );
 };
