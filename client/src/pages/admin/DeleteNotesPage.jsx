@@ -29,7 +29,7 @@ const DeleteNotesPage = () => {
 
     try {
       // Step 1: Delete the image and PDF from Cloudinary
-      await axios.post("http://localhost:5000/api/deleteFile", {
+      await axios.post("http://localhost:5000/api/files/deleteFile", {
         coverImageUrl: note.coverImageUrl,
         pdfUrl: note.pdfUrl,
       });

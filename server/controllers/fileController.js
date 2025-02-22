@@ -1,39 +1,38 @@
+
+
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 
 dotenv.config();
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: "dsnsi0ioz",
+  api_key: "115164128321569 ",
+  api_secret: "U4yfSAU5B1TDUPQh7eZFT3kGwp8",
 });
 
-// Function to extract public_id from Cloudinary URL
+// Function to extract public_id and resource_type from Cloudinary URL
 const getPublicIdFromUrl = (fileUrl) => {
-  const parts = fileUrl.split("/");
-  let filename = parts[parts.length - 1].split("?")[0]; // Remove query params if present
-  const filenameParts = filename.split(".");
+  try {
+    // Extracts everything after '/upload/' and removes file extension
+    const match = fileUrl.match(/\/upload\/(?:v\d+\/)?([^?]+)/);
+    if (!match || !match[1]) throw new Error("Invalid file URL format.");
 
-  // Ensure filename has an extension
-  if (filenameParts.length < 2) {
-    throw new Error("Invalid file URL format.");
+    let publicIdWithExt = match[1]; // This includes file extension
+    let publicId = publicIdWithExt.replace(/\.[^.]+$/, ""); // Removes file extension
+
+    let fileType = "image"; // Default type
+    if (fileUrl.includes("/notes_pdf/")) fileType = "raw"; // PDFs should be "raw"
+    else if (fileUrl.match(/\.(mp4|avi|mov|mkv|webm)$/)) fileType = "video";
+
+    return { publicId, fileType };
+  } catch (error) {
+    throw new Error(`Error extracting public ID: ${error.message}`);
   }
-
-  const extension = filenameParts.pop().toLowerCase(); // Get the last part as extension
-  const publicId = filenameParts.join("."); // Join the remaining parts as the public ID
-
-  // Determine file type
-  let fileType = "image"; // Default type
-  if (["pdf", "docx", "pptx"].includes(extension)) {
-    fileType = "raw";
-  } else if (["mp4", "avi", "mov", "mkv", "webm"].includes(extension)) {
-    fileType = "video";
-  }
-
-  return { publicId, fileType };
 };
 
-// Delete from cloudinary
+
+
+// Delete from Cloudinary
 export const deleteFile = async (req, res) => {
   try {
     const { coverImageUrl, pdfUrl } = req.body;
@@ -41,19 +40,32 @@ export const deleteFile = async (req, res) => {
       return res.status(400).json({ message: "File URLs are required" });
     }
 
-    if (coverImageUrl) {
-      const { publicId, fileType } = getPublicIdFromUrl(coverImageUrl);
-      await cloudinary.uploader.destroy(publicId, { resource_type: fileType });
+    const deletionResults = [];
+    const fileUrls = [coverImageUrl, pdfUrl].filter(url => url); // Ensure no undefined values
+
+    for (let fileUrl of fileUrls) {
+      try {
+        const { publicId, fileType } = getPublicIdFromUrl(fileUrl);
+        console.log(`Deleting: ${publicId}, Type: ${fileType}`);
+
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: fileType });
+        console.log(`Cloudinary Response:`, result);
+
+        deletionResults.push({
+          file: fileUrl,
+          status: result.result === "ok" ? "deleted" : "not found"
+        });
+      } catch (error) {
+        console.error(`Failed to delete ${fileUrl}:`, error.message);
+        deletionResults.push({ file: fileUrl, status: "failed" });
+      }
     }
 
-    if (pdfUrl) {
-      const { publicId, fileType } = getPublicIdFromUrl(pdfUrl);
-      await cloudinary.uploader.destroy(publicId, { resource_type: fileType });
-    }
-
-    res.status(200).json({ message: "Files deleted successfully" });
+    return res.status(200).json({ message: "File deletion process completed", results: deletionResults });
   } catch (error) {
-    console.error("Error deleting file:", error);
-    res.status(500).json({ message: "Failed to delete files" });
+    console.error("Error in deleteFile function:", error);
+    return res.status(500).json({ message: "Failed to delete files", error: error.message });
   }
 };
+
+
