@@ -29,6 +29,7 @@ import Modal from "./components/Modal";
 import DeleteNotesPage from "./pages/admin/DeleteNotesPage";
 import NotesDashboard from "./pages/admin/NotesDashboard";
 import EditNotesPage from "./pages/admin/EditNotesPage";
+import PdfViewer from "./components/PdfViewer";
 
 const App = () => {
   return (
@@ -82,7 +83,16 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
 
             {/* Route used for dedicated page of component testing */}
-            <Route path="/testing" element={<Video />} />
+            <Route
+              path="/testing"
+              element={
+                <PdfViewer
+                  pdfUrl={
+                    "https://res.cloudinary.com/dsnsi0ioz/image/upload/v1740063791/Ska/notes_pdf/wuuaghharvz0wryobhzc.pdf"
+                  }
+                />
+              }
+            />
           </Routes>
         </main>
         {/* <Footer /> */}
