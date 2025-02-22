@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { toast } from "../../components/use-toast";
 
 const DeleteNotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -23,14 +24,36 @@ const DeleteNotesPage = () => {
     fetchNotes();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (note) => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/notes/delete/${id}`);
-      setNotes(notes.filter((note) => note._id !== id)); // Remove deleted note
+      // Step 1: Delete the image and PDF from Cloudinary
+      await axios.post("http://localhost:5000/api/deleteFile", {
+        coverImageUrl: note.coverImageUrl,
+        pdfUrl: note.pdfUrl,
+      });
+
+      // Step 2: Delete the note from the database
+      await axios.delete(`http://localhost:5000/api/notes/delete/${note._id}`);
+
+      // Step 3: Update state to remove deleted note
+      setNotes(notes.filter((n) => n._id !== note._id));
+
+      // Step 4: Show success toast
+      toast({
+        title: "Notes Deleted Successfully",
+        description: `You have successfully deleted the note for ${note.subject}`,
+        variant: "success",
+      });
     } catch (err) {
+      console.error("Error deleting note:", err);
       setError("Failed to delete the note.");
+      toast({
+        title: "Error Deleting Note",
+        description: "Something went wrong while deleting the note.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -102,7 +125,7 @@ const DeleteNotesPage = () => {
                   </td>
                   <td className="border border-primary p-3 text-center">
                     <button
-                      onClick={() => handleDelete(note._id)}
+                      onClick={() => handleDelete(note)}
                       className="px-4 py-2 bg-accent text-background rounded-md hover:bg-red-600"
                     >
                       <RiDeleteBin6Line />
