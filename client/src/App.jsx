@@ -74,7 +74,6 @@ const App = () => {
               <Route path="create" element={<AddNotesPage />} />
               <Route path="update" element={<UpdateNotesPage />} />
               <Route path="edit/:id" element={<EditNotesPage />} />
-
               <Route path="delete" element={<DeleteNotesPage />} />
             </Route>
 
@@ -86,11 +85,7 @@ const App = () => {
             <Route
               path="/testing"
               element={
-                <PdfViewer
-                  pdfUrl={
-                    "https://res.cloudinary.com/dsnsi0ioz/image/upload/v1740063791/Ska/notes_pdf/wuuaghharvz0wryobhzc.pdf"
-                  }
-                />
+                <PdfViewer src="https://res.cloudinary.com/dsnsi0ioz/image/upload/v1740063791/Ska/notes_pdf/wuuaghharvz0wryobhzc.pdf" />
               }
             />
           </Routes>

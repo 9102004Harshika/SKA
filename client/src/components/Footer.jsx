@@ -138,7 +138,12 @@ const Footer = () => {
         <div>
           <span>
             Made with <span className="text-red-700">♥</span> by{" "}
-            <a href="" className="text-secondary">
+            <a
+              href="https://abhikatechsolution.netlify.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-secondary"
+            >
               Abhika Tech Solutions
             </a>
           </span>
