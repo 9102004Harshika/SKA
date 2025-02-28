@@ -29,13 +29,16 @@ const DeleteNotesPage = () => {
 
     try {
       // Step 1: Delete the image and PDF from Cloudinary
+
       await axios.post("http://localhost:5000/api/files/deleteFile", {
         coverImageUrl: note.coverImageUrl,
         pdfUrl: note.pdfUrl,
       });
+      console.log("Deleted from cloudinary !!!");
 
       // Step 2: Delete the note from the database
       await axios.delete(`http://localhost:5000/api/notes/delete/${note._id}`);
+      console.log("Deleted from MongoDB !!!");
 
       // Step 3: Update state to remove deleted note
       setNotes(notes.filter((n) => n._id !== note._id));
