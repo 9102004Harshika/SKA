@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaFilePdf, FaBook, FaUniversity } from "react-icons/fa";
 import Filters from "../components/Filters";
 import PdfViewer from "../components/PdfViewer";
+import { IoBook } from "react-icons/io5";
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,49 +72,50 @@ const Notes = () => {
           <div>Total Number of items</div>
           <div>Total Number of items</div>
         </div>
-        <div className="flex flex-wrap px-10 pb-20 pt-10  gap-4">
+        <div className="flex flex-wrap px-10 pb-20 pt-10 gap-4">
           {filteredNotes.length > 0 ? (
             filteredNotes.map((note, index) => (
               <div
                 key={index}
-                className="bg-secondary rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 max-w-xs flex-grow"
-                style={{ minWidth: "250px", maxWidth: "280px" }} // Adjust min/max width to maintain 4 in a row
+                className="bg-secondary rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 flex-wrap"
+                style={{ minWidth: "180px", maxWidth: "250px" }} // More flexibility in width
               >
                 {/* Cover Image */}
                 <div className="w-full flex justify-center">
                   <img
                     src={note.coverImageUrl}
                     alt={note.title}
-                    className="w-full h-52 object-cover"
+                    className="w-full h- sm:h-36 md:h-40 object-cover"
                   />
                 </div>
 
                 {/* Card Content */}
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold font-header tracking-wide text-primary mb-1">
-                    {note.title}
+                <div className="p-3 md:p-4">
+                  <h2 className="text-lg sm:text-sm md:text-base font-semibold font-header tracking-wide text-primary mb-1">
+                    {note.title} ({note.subject})
                   </h2>
-                  <div className="mt-3 space-y-2 text-sm text-gray-600 font-body">
-                    <div className="flex items-center gap-2">
-                      <FaBook className="text-gray-500" />{" "}
-                      <span>Subject: {note.subject}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FaUniversity className="text-gray-500" />{" "}
+                  <div className="mt-2 space-y-1 text-xs sm:text-xs md:text-sm text-gray-600 font-body">
+                    {/* <div className="flex items-center gap-1">
+                      <FaBook className="text-gray-500 text-sm sm:text-xs" />{" "}
+                      <span>Subject: </span>
+                    </div> */}
+                    <div className="flex items-center gap-1">
+                      <FaUniversity className="text-gray-500 text-sm sm:text-xs" />{" "}
                       <span>Board: {note.board}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <FaFilePdf className="text-gray-500" />{" "}
+                    <div className="flex items-center gap-1">
+                      <FaFilePdf className="text-gray-500 text-sm sm:text-xs" />{" "}
                       <span>Class: {note.classFor}</span>
                     </div>
                   </div>
-                  <div className="mt-4 flex justify-between items-center font-body">
+                  <div className="mt-3 flex justify-start items-center font-body">
                     {note.pdfUrl && (
                       <button
                         onClick={() => setShowPdf(true)}
-                        className="bg-green-600 text-white px-4 py-2 rounded"
+                        className="bg-primary text-white px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm rounded flex items-center gap-2 "
                       >
-                        Open PDF
+                        <IoBook />
+                        Open Book
                       </button>
                     )}
                     {showPdf && (
@@ -122,9 +124,6 @@ const Notes = () => {
                         onClose={() => setShowPdf(false)}
                       />
                     )}
-                    <button className="bg-primary text-white px-3 py-1 rounded-md text-sm flex items-center gap-1 hover:bg-blue-600">
-                      View Details
-                    </button>
                   </div>
                 </div>
               </div>
