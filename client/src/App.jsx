@@ -40,7 +40,7 @@ const App = () => {
           {/* This ensures toasts are shown across all pages */}
           <Toaster />
           <Routes>
-            <Route path="/" element={<CircularProgress />} />
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enrollment" element={<Enrollment />} />
