@@ -19,9 +19,9 @@ router.get("/:id", getNoteById);
 router.post("/add", createNote);
 
 // Route to update a note by ID
-router.put("/:id", updateNote);
+router.put("/update/:id", updateNote);
 
 // Route to delete a note by ID
-router.delete("/:id", deleteNote);
+router.delete("/delete/:id", deleteNote);
 
 export default router;
