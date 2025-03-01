@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { toast } from "../../components/use-toast";
+import { deleteFile } from "../../logic/notes/deleteNotes";
 
 const DeleteNotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -23,42 +23,6 @@ const DeleteNotesPage = () => {
 
     fetchNotes();
   }, []);
-
-  const handleDelete = async (note) => {
-    if (!window.confirm("Are you sure you want to delete this note?")) return;
-
-    try {
-      // Step 1: Delete the image and PDF from Cloudinary
-
-      await axios.post("http://localhost:5000/api/files/deleteFile", {
-        coverImageUrl: note.coverImageUrl,
-        pdfUrl: note.pdfUrl,
-      });
-      console.log("Deleted from cloudinary !!!");
-
-      // Step 2: Delete the note from the database
-      await axios.delete(`http://localhost:5000/api/notes/delete/${note._id}`);
-      console.log("Deleted from MongoDB !!!");
-
-      // Step 3: Update state to remove deleted note
-      setNotes(notes.filter((n) => n._id !== note._id));
-
-      // Step 4: Show success toast
-      toast({
-        title: "Notes Deleted Successfully",
-        description: `You have successfully deleted the note for ${note.subject}`,
-        variant: "success",
-      });
-    } catch (err) {
-      console.error("Error deleting note:", err);
-      setError("Failed to delete the note.");
-      toast({
-        title: "Error Deleting Note",
-        description: "Something went wrong while deleting the note.",
-        variant: "destructive",
-      });
-    }
-  };
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -86,11 +50,11 @@ const DeleteNotesPage = () => {
       ) : filteredNotes.length === 0 ? (
         <p className="text-gray-600">No notes found.</p>
       ) : (
-        <div className="overflow-x-auto rounded-sm  overflow-hidden">
+        <div className="overflow-x-auto rounded-sm overflow-hidden">
           <table className="min-w-full border-collapse border border-primary rounded-sm">
             <thead>
               <tr className="border-primary">
-                <th className="border bg-secondary  border-primary p-3 text-left">
+                <th className="border bg-secondary border-primary p-3 text-left">
                   Title
                 </th>
                 <th className="border bg-secondary border-primary p-3 text-center">
@@ -128,7 +92,7 @@ const DeleteNotesPage = () => {
                   </td>
                   <td className="border border-primary p-3 text-center">
                     <button
-                      onClick={() => handleDelete(note)}
+                      onClick={() => deleteFile(note, setNotes)}
                       className="px-4 py-2 bg-accent text-background rounded-md hover:bg-red-600"
                     >
                       <RiDeleteBin6Line />
