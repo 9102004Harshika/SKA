@@ -5,9 +5,8 @@ import ImageUploader from "../../ui/imageUploader";
 import FileUploader from "../../ui/fileUploader";
 import { Button } from "../../ui/button";
 import { RadioButton } from "../../ui/radioButton";
-import axios from "axios";
-import { toast } from "../../components/use-toast";
 import Modal from "../../components/Modal";
+import useAddNotes from "../../logic/notes/createNotes";
 const AddNotesPage = () => {
   const [formData, setFormData] = useState({
     title: "",
@@ -21,113 +20,17 @@ const AddNotesPage = () => {
     pdfUrl: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const { handleSubmit, loading, progress } = useAddNotes();
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const [coverImage, setCoverImage] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState();
   const visibilityOptions = [
     { value: "paid", text: "Paid" },
     { value: "free", text: "Free" },
   ];
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    openModal();
-    setProgress(0);
-
-    try {
-      const uploadToCloudinary = async (file, preset, setFileProgress) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", preset);
-
-        return axios
-          .post("https://api.cloudinary.com/v1_1/dsnsi0ioz/upload", formData, {
-            onUploadProgress: (progressEvent) => {
-              const fileProgress = Math.round(
-                (progressEvent.loaded / progressEvent.total) * 100
-              );
-              setFileProgress(fileProgress);
-            },
-          })
-          .then((response) => response.data.secure_url);
-      };
-
-      const convertBlobUrlToFile = async (blobUrl, filename) => {
-        const response = await fetch(blobUrl);
-        const blob = await response.blob();
-        return new File([blob], filename, { type: blob.type });
-      };
-
-      const getUploadPreset = (fileType) => {
-        if (fileType.startsWith("image/")) return "Shree Kalam Academy";
-        if (fileType === "application/pdf") return "Notes_Pdf";
-        return "default";
-      };
-
-      let coverProgress = 0;
-      let pdfProgress = 0;
-
-      const setCoverProgress = (value) => {
-        coverProgress = value;
-        setProgress(Math.round((coverProgress + pdfProgress) / 2)); // Keep progress within 0-100
-      };
-
-      const setPdfProgress = (value) => {
-        pdfProgress = value;
-        setProgress(Math.round((coverProgress + pdfProgress) / 2)); // Keep progress within 0-100
-      };
-
-      // Convert & Upload Both Files in Parallel
-      const coverImageFile = formData.coverImageUrl
-        ? await convertBlobUrlToFile(formData.coverImageUrl, "cover_image.jpg")
-        : null;
-      const pdfFile = formData.pdfUrl
-        ? await convertBlobUrlToFile(formData.pdfUrl, "note.pdf")
-        : null;
-
-      const [coverImageUrl, pdfUrl] = await Promise.all([
-        coverImageFile
-          ? uploadToCloudinary(
-              coverImageFile,
-              getUploadPreset(coverImageFile.type),
-              setCoverProgress
-            )
-          : null,
-        pdfFile
-          ? uploadToCloudinary(
-              pdfFile,
-              getUploadPreset(pdfFile.type),
-              setPdfProgress
-            )
-          : null,
-      ]);
-
-      // Ensure progress reaches 100% only when everything is done
-      setProgress(100);
-
-      // Send form data to backend
-      const updatedFormData = { ...formData, coverImageUrl, pdfUrl };
-      await axios.post("http://localhost:5000/api/notes/add", updatedFormData);
-
-      // Close modal & Show success toast
-      closeModal();
-      toast({
-        title: "Notes Created Successfully",
-        description: `You have successfully created notes for ${updatedFormData.subject}`,
-        variant: "success",
-      });
-      resetForm();
-    } catch (error) {
-      console.error("Error uploading files:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+ 
   const resetForm = () => {
     setFormData({
       title: "",
@@ -150,7 +53,9 @@ const AddNotesPage = () => {
         Create New Notes
       </h2>
       <div className="space-y-6 mx-10">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form  onSubmit={(e) =>
+            handleSubmit(e, formData, setFormData, openModal, closeModal, resetForm)
+          } className="flex flex-col gap-6">
           <div className="flex gap-10">
             <div className="flex-1 flex flex-col justify-between">
               <TextInput

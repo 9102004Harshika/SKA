@@ -1,3 +1,4 @@
+import Notes from "../models/Notes.js";
 import {cloudinary} from "../utils/cloudinary.js"
 cloudinary.config({
   cloud_name: "dsnsi0ioz",
@@ -20,10 +21,7 @@ export const deleteFile = async (req, res) => {
     const pdf = getUrl(pdfUrl);
 
     const imageResult = await cloudinary.uploader.destroy(image);
-    console.log(imageResult);
-
     const pdfResult = await cloudinary.uploader.destroy(pdf);
-    console.log(pdfResult);
 
     res.status(200).json({ message: "Files deleted successfully", imageResult, pdfResult });
   } catch (error) {
@@ -31,5 +29,24 @@ export const deleteFile = async (req, res) => {
     res.status(500).json({ message: "Error deleting files", error });
   }
 };
+export const deleteUrl=async(req,res)=>{
+  try{
+     const {url,note}=req.body
+     const notes = await Notes.findById(note);
+    if (!notes) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+     const file=getUrl(url)
+     const fileResult=await cloudinary.uploader.destroy(file);
+     notes.coverImageUrl = null;
+     notes.pdfUrl = null;
+    await notes.save();
+     res.status(200).json({message:"File deleted successfully",fileResult})
+  }
+  catch(error){
+      console.error(error)
+      res.status(500).json({message:"Error Deleting files",er})
+  }
+}
 
 

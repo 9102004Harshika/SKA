@@ -1,91 +1,89 @@
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "../../components/use-toast";
 
-export const handleSubmit = async (
-  e,
-  formData,
-  setFormData,
-  setLoading,
-  setProgress,
-  openModal,
-  closeModal,
-  resetForm
-) => {
-  e.preventDefault();
-  setLoading(true);
-  openModal();
+const useAddNotes = () => {
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  try {
-    // Upload Cover Image
-    let coverImageUrl = "";
-    if (formData.coverImageUrl) {
-      const imageFormData = new FormData();
-      imageFormData.append("file", formData.coverImageUrl);
-      imageFormData.append("upload_preset", "your_cloudinary_preset");
+  const handleSubmit = async (
+    e,
+    formData,
+    setFormData,
+    openModal,
+    closeModal,
+    resetForm
+  ) => {
+    e.preventDefault();
+    setLoading(true);
+    openModal();
+    setProgress(0);
 
-      const imageRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload",
-        imageFormData,
-        {
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            );
-            setProgress(progress);
-          },
-        }
-      );
-      coverImageUrl = imageRes.data.secure_url;
-    }
+    try {
+      const uploadToCloudinary = async (file, preset) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", preset);
 
-    // Upload PDF File
-    let pdfUrl = "";
-    if (formData.pdfUrl) {
-      const pdfFormData = new FormData();
-      pdfFormData.append("file", formData.pdfUrl);
-      pdfFormData.append("upload_preset", "your_cloudinary_preset");
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dsnsi0ioz/upload",
+          formData,
+          {
+            onUploadProgress: (progressEvent) => {
+              const fileProgress = Math.round(
+                (progressEvent.loaded / progressEvent.total) * 100
+              );
+              setProgress(fileProgress);
+            },
+          }
+        );
+        return response.data.secure_url;
+      };
 
-      const pdfRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/your_cloud_name/raw/upload",
-        pdfFormData,
-        {
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            );
-            setProgress(progress);
-          },
-        }
-      );
-      pdfUrl = pdfRes.data.secure_url;
-    }
+      const convertBlobUrlToFile = async (blobUrl, filename) => {
+        const response = await fetch(blobUrl);
+        const blob = await response.blob();
+        return new File([blob], filename, { type: blob.type });
+      };
 
-    // Submit final form data
-    const response = await axios.post("/api/notes", {
-      title: formData.title,
-      subject: formData.subject,
-      classFor: formData.classFor,
-      board: formData.board,
-      description: formData.description,
-      writtenBy: formData.writtenBy,
-      visibility: formData.visibility,
-      coverImageUrl,
-      pdfUrl,
-    });
+      let coverImageUrl = "";
+      let pdfUrl = "";
 
-    if (response.status === 201) {
+      if (formData.coverImageUrl) {
+        const coverImageFile = await convertBlobUrlToFile(
+          formData.coverImageUrl,
+          "cover_image.jpg"
+        );
+        coverImageUrl = await uploadToCloudinary(coverImageFile, "Shree Kalam Academy");
+      }
+
+      if (formData.pdfUrl) {
+        const pdfFile = await convertBlobUrlToFile(formData.pdfUrl, "note.pdf");
+        pdfUrl = await uploadToCloudinary(pdfFile, "Notes_Pdf");
+      }
+
+      setProgress(100);
+
+      const updatedFormData = { ...formData, coverImageUrl, pdfUrl };
+      await axios.post("http://localhost:5000/api/notes/add", updatedFormData);
+
       toast({
         title: "Notes Created Successfully",
-        // description: `You have successfully created notes for ${updatedFormData.subject}`,
+        description: `You have successfully created notes for ${updatedFormData.subject}`,
         variant: "success",
       });
+
       resetForm();
+      closeModal();
+    } catch (error) {
+      console.error("Error creating notes:", error);
+      toast.error("Failed to create notes. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error creating notes:", error);
-    toast.error("Failed to create notes. Please try again.");
-  } finally {
-    setLoading(false);
-    closeModal();
-  }
+  };
+
+  return { handleSubmit, loading, progress };
 };
+
+export default useAddNotes;

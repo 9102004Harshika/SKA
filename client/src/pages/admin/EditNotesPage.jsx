@@ -8,7 +8,7 @@ import ImageUploader from "../../ui/imageUploader";
 import { RadioButton } from "../../ui/radioButton";
 
 const EditNotesPage = () => {
-  const { note, handleChange, handleSubmit, setNote } = useUpdateNotes();
+  const { note, handleChange, handleSubmit, setNote ,deleteFile} = useUpdateNotes();
 
   const visibilityOptions = [
     { value: "paid", text: "Paid" },
@@ -64,18 +64,21 @@ const EditNotesPage = () => {
                     text="Remove Image"
                     variant="secondary"
                     size="xs"
-                    onClick={() => setNote({ ...note, coverImageUrl: "" })}
+                    onClick={() => {
+                      setNote({ ...note, coverImageUrl: "" })
+                      deleteFile(note.coverImageUrl)
+                    }}
                   />
                 </div>
               ) : (
                 <ImageUploader
-                  type="file"
-                  accept="image/*"
-                  label={"Upload Image"}
-                  onChange={(e) =>
-                    setNote({ ...note, coverImageUrl: e.target.files[0] })
-                  }
-                />
+                label="Upload Image"
+                id="imageUpload"
+                required
+                onChange={(file) =>
+                  setNote({ ...note, coverImageUrl: file })
+                }
+              />
               )}
             </div>
           </div>
@@ -94,18 +97,18 @@ const EditNotesPage = () => {
                   <Button
                     text="Remove PDF"
                     variant="danger"
-                    onClick={() => setNote({ ...note, pdfUrl: "" })}
+                    onClick={() => {
+                      setNote({ ...note, pdfUrl: "" })
+                      deleteFile(note.pdfUrl)}}
                   />
                 </div>
               ) : (
                 <FileUploader
-                  type="file"
-                  accept="application/pdf"
-                  label={"Upload PDF"}
-                  onChange={(e) =>
-                    setNote({ ...note, pdfUrl: e.target.files[0] })
-                  }
-                />
+                label="Upload PDF"
+                id="pdfUpload"
+                required
+                onChange={(file) => setNote({ ...note, pdfUrl: file })}
+              />
               )}
             </div>
 
@@ -152,6 +155,7 @@ const EditNotesPage = () => {
               variant="primary"
               type="submit"
               className="w-full"
+              onClick={console.log("updated succesfully")}
             />
             <Button
               text="Clear All"
