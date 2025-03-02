@@ -18,7 +18,8 @@ const Home = () => {
         description={"Below are the top-picked courses curated just for you."}
         info={courses}
       />
-      {/* Notes Carousel  */}a
+      {/* Notes Carousel  */}
+      <h1>Featured Notes</h1>
     </div>
   );
 };
