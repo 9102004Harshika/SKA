@@ -48,7 +48,7 @@ const App = () => {
 
             {/* Users pages after auth  */}
             <Route path="/app" element={<MainLayout />}>
-              <Route path="home" element={<Home />} />
+              <Route index element={<Home />} />
               <Route path="courses" element={<Courses />} />
               <Route path="notes" element={<Notes />} />
               <Route
