@@ -1,6 +1,5 @@
 import React from "react";
 import Carousel from "../components/Carousel";
-import Navbar from "../components/Navbar";
 import { courses } from "../config";
 import Slider from "../ui/slider";
 const Home = () => {
@@ -13,11 +12,13 @@ const Home = () => {
       <h1>One Shot Videos... (Videos) </h1>
       <h1>Small Videos... (Videos) </h1>
       <h1>Featured Courses... (Courses shown as carousel)</h1> */}
+      {/* Courses Carousel  */}
       <Slider
         header={"Top Picks For You"}
         description={"Below are the top-picked courses curated just for you."}
         info={courses}
       />
+      {/* Notes Carousel  */}a
     </div>
   );
 };

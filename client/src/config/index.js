@@ -156,29 +156,37 @@ export const forgotPasswordForm = [
 ];
 
 export const navigationLinksDesktop = [
-  { label: "Courses", link: "courses", icon: <FaBook /> },
-  { label: "Quiz", link: "quiz", icon: <FaQuestionCircle /> },
-  { label: "Notes", link: "notes", icon: <FaFileAlt /> },
-  { label: "Tuitions", link: "tuitions", icon: <FaChalkboardTeacher /> },
-  { label: "Career Guidance", link: "career-guidance", icon: <FaLightbulb /> },
+  { label: "Courses", link: "/app/courses", icon: <FaBook /> },
+  { label: "Quiz", link: "/app/quiz", icon: <FaQuestionCircle /> },
+  { label: "Notes", link: "/app/notes", icon: <FaFileAlt /> },
+  { label: "Tuitions", link: "/app/tuitions", icon: <FaChalkboardTeacher /> },
+  {
+    label: "Career Guidance",
+    link: "/app/career-guidance",
+    icon: <FaLightbulb />,
+  },
 ];
 export const navigationLinksMoreItems = [
-  { label: "My Profile", link: "/profile", icon: <FaUser /> },
-  { label: "Question Paper", link: "/question-paper", icon: <FaFileAlt /> },
-  { label: "Scholarship", link: "/scholarship", icon: <IoSchool /> },
-  { label: "Logout", link: "/logout", icon: <FaSignOutAlt /> },
+  { label: "My Profile", link: "/app/profile", icon: <FaUser /> },
+  { label: "Question Paper", link: "/app/question-paper", icon: <FaFileAlt /> },
+  { label: "Scholarship", link: "/app/scholarship", icon: <IoSchool /> },
+  { label: "Logout", link: "/app/logout", icon: <FaSignOutAlt /> },
 ];
 
 export const navigationLinksMobile = [
-  { label: "Courses", link: "courses", icon: <FaBook /> },
-  { label: "Quiz", link: "quiz", icon: <FaQuestionCircle /> },
-  { label: "Notes", link: "notes", icon: <FaFileAlt /> },
-  { label: "Tuitions", link: "tuitions", icon: <FaChalkboardTeacher /> },
-  { label: "Career Guidance", link: "career-guidance", icon: <FaLightbulb /> },
-  { label: "Scholarship", link: "scholarship", icon: <IoSchool /> },
-  { label: "Question Paper", link: "question-paper", icon: <FaFileAlt /> },
-  { label: "My Profile", link: "profile", icon: <FaUser /> },
-  { label: "Logout", link: "clogout", icon: <FaSignOutAlt /> },
+  { label: "Courses", link: "/app/courses", icon: <FaBook /> },
+  { label: "Quiz", link: "/app/quiz", icon: <FaQuestionCircle /> },
+  { label: "Notes", link: "/app/notes", icon: <FaFileAlt /> },
+  { label: "Tuitions", link: "/app/tuitions", icon: <FaChalkboardTeacher /> },
+  {
+    label: "Career Guidance",
+    link: "/app/career-guidance",
+    icon: <FaLightbulb />,
+  },
+  { label: "Scholarship", link: "/app/scholarship", icon: <IoSchool /> },
+  { label: "Question Paper", link: "/app/question-paper", icon: <FaFileAlt /> },
+  { label: "My Profile", link: "/app/profile", icon: <FaUser /> },
+  { label: "Logout", link: "/app/logout", icon: <FaSignOutAlt /> },
 ];
 
 // Notifications Example
