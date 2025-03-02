@@ -12,7 +12,7 @@ export const deleteFile = async (note, setNotes) => {
     });
     console.log("Deleted from Cloudinary!");
 
-    // Step 2: Delete the note from the database
+    // // Step 2: Delete the note from the database
     await axios.delete(`http://localhost:5000/api/notes/delete/${note._id}`);
     console.log("Deleted from MongoDB!");
 
