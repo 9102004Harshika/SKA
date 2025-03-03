@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { FaFilePdf, FaBook, FaUniversity } from "react-icons/fa";
+import { FaFilePdf, FaUniversity } from "react-icons/fa";
+import { IoBook } from "react-icons/io5";
+import gsap from "gsap";
 import Filters from "../components/Filters";
 import PdfViewer from "../components/PdfViewer";
-import { IoBook } from "react-icons/io5";
+import Select from "../ui/select";
+import { motion } from "framer-motion";
+import { FaStickyNote } from "react-icons/fa";
+
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPdf, setShowPdf] = useState(false);
+  const [sortOption, setSortOption] = useState("default");
   const [selectedFilters, setSelectedFilters] = useState({
     subject: {},
     classFor: {},
     board: {},
   });
+
+  const cardsRef = useRef(null);
+  const filtersRef = useRef(null);
+
   useEffect(() => {
     const fetchNotes = async () => {
       try {
@@ -27,10 +37,33 @@ const Notes = () => {
     };
     fetchNotes();
   }, []);
+
+  useEffect(() => {
+    // Animate Filters section
+    if (filtersRef.current) {
+      gsap.from(filtersRef.current, {
+        x: -50,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+    }
+
+    // Animate Notes Cards
+    if (cardsRef.current) {
+      gsap.fromTo(
+        cardsRef.current.children,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }
+      );
+    }
+  }, [notes]);
+
+  const sortOptions = ["Latest", "A to Z", "Z to A", "Older"];
+
   const formatClassFor = (classFor) => `${classFor}th`;
 
   const filteredNotes = notes.filter((note) => {
-    // Get selected filters
     const selectedBoards = Object.keys(selectedFilters.board).filter(
       (b) => selectedFilters.board[b]
     );
@@ -41,97 +74,113 @@ const Notes = () => {
       (s) => selectedFilters.subject[s]
     );
 
-    // Apply board filter
     const boardMatch =
       selectedBoards.length === 0 || selectedBoards.includes(note.board);
-
-    // Convert backend classFor to frontend format before filtering
     const formattedClassFor = formatClassFor(note.classFor);
     const classMatch =
       selectedClasses.length === 0 ||
       selectedClasses.includes(formattedClassFor);
-
-    // Apply subject filter
     const subjectMatch =
       selectedSubjects.length === 0 || selectedSubjects.includes(note.subject);
 
     return boardMatch && classMatch && subjectMatch;
   });
+
+  const sortedNotes = [...filteredNotes].sort((a, b) => {
+    if (sortOption === "Latest") {
+      return new Date(b.createdOn) - new Date(a.createdOn);
+    } else if (sortOption === "Older") {
+      return new Date(a.createdOn) - new Date(b.createdOn);
+    } else if (sortOption === "A to Z") {
+      return a.title.localeCompare(b.title);
+    } else if (sortOption === "Z to A") {
+      return b.title.localeCompare(a.title);
+    }
+    return 0;
+  });
+
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
   if (error) return <p className="text-center text-red-600">{error}</p>;
 
   return (
     <div className="flex min-h-screen">
-      <Filters
-        notes={notes}
-        selectedFilters={selectedFilters}
-        setSelectedFilters={setSelectedFilters}
-      />
-      <div>
-        <div className="flex justify-between px-10 mt-10 ">
-          <div>Total Number of items</div>
-          <div>Total Number of items</div>
+      <div ref={filtersRef}>
+        <Filters
+          notes={notes}
+          selectedFilters={selectedFilters}
+          setSelectedFilters={setSelectedFilters}
+        />
+      </div>
+      <div className="flex-1 px-6">
+        <div className="flex justify-between items-center mt-10">
+          <div className="text-lg font-semibold">
+            Books Available:{" "}
+            <span className="text-accent">{sortedNotes.length}</span>
+          </div>
+          <div className="min-w-32">
+            <Select
+              menuTitle="Sort By"
+              onClick={() => setShowPdf(false)}
+              submenuItems={sortOptions}
+              onSelect={(option) => setSortOption(option)}
+            />
+          </div>
         </div>
-        <div className="flex flex-wrap px-10 pb-20 pt-10 gap-4">
-          {filteredNotes.length > 0 ? (
-            filteredNotes.map((note, index) => (
+        <div
+          ref={cardsRef}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6"
+        >
+          {sortedNotes.length > 0 ? (
+            sortedNotes.map((note, index) => (
               <div
                 key={index}
-                className="bg-secondary rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 flex-wrap"
-                style={{ minWidth: "180px", maxWidth: "250px" }} // More flexibility in width
+                className="bg-secondary rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 flex flex-col justify-between"
               >
-                {/* Cover Image */}
-                <div className="w-full flex justify-center">
+                <div>
                   <img
                     src={note.coverImageUrl}
                     alt={note.title}
-                    className="w-full h- sm:h-36 md:h-40 object-cover"
+                    className="w-full h-60 object-cover object-top"
                   />
+                  <div className="px-4 pt-4">
+                    <h2 className="text-lg font-semibold text-primary mb-1">
+                      {note.title} ({note.subject})
+                    </h2>
+                    <div className="text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <FaUniversity className="text-gray-500" />
+                        <span>Board: {note.board}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <FaFilePdf className="text-gray-500" />
+                        <span>Class: {note.classFor}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                {/* Card Content */}
-                <div className="p-3 md:p-4">
-                  <h2 className="text-lg sm:text-sm md:text-base font-semibold font-header tracking-wide text-primary mb-1">
-                    {note.title} ({note.subject})
-                  </h2>
-                  <div className="mt-2 space-y-1 text-xs sm:text-xs md:text-sm text-gray-600 font-body">
-                    {/* <div className="flex items-center gap-1">
-                      <FaBook className="text-gray-500 text-sm sm:text-xs" />{" "}
-                      <span>Subject: </span>
-                    </div> */}
-                    <div className="flex items-center gap-1">
-                      <FaUniversity className="text-gray-500 text-sm sm:text-xs" />{" "}
-                      <span>Board: {note.board}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <FaFilePdf className="text-gray-500 text-sm sm:text-xs" />{" "}
-                      <span>Class: {note.classFor}</span>
-                    </div>
-                  </div>
-                  <div className="mt-3 flex justify-start items-center font-body">
-                    {note.pdfUrl && (
-                      <button
-                        onClick={() => setShowPdf(true)}
-                        className="bg-primary text-white px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm rounded flex items-center gap-2 "
-                      >
-                        <IoBook />
-                        Open Book
-                      </button>
-                    )}
-                    {showPdf && (
-                      <PdfViewer
-                        pdfUrl={note.pdfUrl}
-                        onClose={() => setShowPdf(false)}
-                      />
-                    )}
-                  </div>
+                <div className="mt-3 self-end p-4">
+                  {note.pdfUrl && (
+                    <button
+                      onClick={() => setShowPdf(true)}
+                      className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2"
+                    >
+                      <IoBook /> Open Book
+                    </button>
+                  )}
+                  {showPdf && (
+                    <PdfViewer
+                      pdfUrl={note.pdfUrl}
+                      onClose={() => setShowPdf(false)}
+                    />
+                  )}
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center w-full">
-              No notes available.
-            </p>
+            <div className="flex flex-col items-center justify-center col-span-full text-primary mt-10">
+              <FaStickyNote className="text-4xl text-primary mb-2" />
+              <p className="text-lg font-semibold">No notes available</p>
+            </div>
           )}
         </div>
       </div>
