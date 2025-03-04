@@ -87,7 +87,7 @@ const App = () => {
             <Route
               path="/testing"
               element={
-                <PdfViewer src="https://res.cloudinary.com/dsnsi0ioz/image/upload/v1740063791/Ska/notes_pdf/wuuaghharvz0wryobhzc.pdf" />
+                <PdfViewer src="https://res.cloudinary.com/dsnsi0ioz/image/upload/v1741008946/Ska/notes_pdf/zvfm1txhvb3krp0yqudu.pdf" />
               }
             />
           </Routes>
