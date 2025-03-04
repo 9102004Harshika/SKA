@@ -30,6 +30,7 @@ import DeleteNotesPage from "./pages/admin/DeleteNotesPage";
 import NotesDashboard from "./pages/admin/NotesDashboard";
 import EditNotesPage from "./pages/admin/EditNotesPage";
 import PdfViewer from "./components/PdfViewer";
+import NotesDetail from "./pages/NotesDetail";
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
               <Route index element={<Home />} />
               <Route path="courses" element={<Courses />} />
               <Route path="notes" element={<Notes />} />
+              <Route path="notes/:id" element={<NotesDetail />} />
               <Route
                 path="coursedetail"
                 element={<CourseDetail />}

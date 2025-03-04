@@ -6,8 +6,9 @@ import gsap from "gsap";
 import Filters from "../components/Filters";
 import PdfViewer from "../components/PdfViewer";
 import Select from "../ui/select";
-import { motion } from "framer-motion";
+import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { FaStickyNote } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
@@ -21,6 +22,7 @@ const Notes = () => {
     board: {},
   });
 
+  const navigate = useNavigate();
   const cardsRef = useRef(null);
   const filtersRef = useRef(null);
 
@@ -100,7 +102,13 @@ const Notes = () => {
   });
 
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
-  if (error) return <p className="text-center text-red-600">{error}</p>;
+  if (error)
+    return (
+      <div className="flex flex-col items-center justify-center col-span-full text-error mt-10">
+        <MdOutlineReportGmailerrorred className="text-4xl text-error mb-2" />
+        <p className="text-lg font-semibold">{error}</p>
+      </div>
+    );
 
   return (
     <div className="flex min-h-screen">
@@ -133,6 +141,7 @@ const Notes = () => {
           {sortedNotes.length > 0 ? (
             sortedNotes.map((note, index) => (
               <div
+                onClick={() => navigate(`/app/notes/${note._id}`)}
                 key={index}
                 className="bg-secondary rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 flex flex-col justify-between"
               >
@@ -187,5 +196,4 @@ const Notes = () => {
     </div>
   );
 };
-
 export default Notes;
