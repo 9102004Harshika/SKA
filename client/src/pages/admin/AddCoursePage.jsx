@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextInput from "../../ui/textInput";
 import TextAreaInput from "../../ui/textarea";
+import { Button } from "../../ui/button";
+import FileUploader from "../../ui/fileUploader";
 
 function CourseForm() {
   const [courseData, setCourseData] = useState({
@@ -131,9 +133,9 @@ function CourseForm() {
   };
 
   return (
-    <div className="min-h-screen py-10">
-      <div className="max-w-4xl mx-auto p-8">
-        <h1 className="text-3xl font-semibold font-header text-center mb-6">
+    <div className="min-h-screen my-2">
+      <div className="max-w-4xl mx-auto p-4">
+        <h1 className="text-3xl font-semibold md:tracking-wide font-header text-center mb-6">
           Create New Course
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6 flex flex-col">
@@ -166,7 +168,7 @@ function CourseForm() {
             name="aboutCourse"
             value={courseData.aboutCourse}
             onChange={handleChange}
-            label="textarea"
+            label="About Course"
             required
           />
           <textarea
@@ -210,7 +212,7 @@ function CourseForm() {
             placeholder="Last Updated"
             className="input"
           />
-          <div className="flex space-x-4">
+          <div className="flex items-center justify-between space-x-4">
             {/* <input
               type="number"
               placeholder="Original Price"
@@ -236,87 +238,110 @@ function CourseForm() {
               className="input"
             /> */}
             {/* Display Discount Percentage */}
-            <div className="text-lg font-semibold">
+            <div className="text-md p-[14px] rounded-[4px] font-bold border-2 border-primary">
               Discount Percentage: {calculateDiscountPercentage()}%
             </div>
           </div>
-          <input
-            type="text"
+          <TextInput
+            type="number"
             name="class"
             value={courseData.class}
             onChange={handleChange}
-            placeholder="Class"
+            label="Class"
             className="input"
           />
-          <input
+          <TextInput
             type="text"
             name="board"
             value={courseData.board}
             onChange={handleChange}
-            placeholder="Board"
+            label="Board"
             className="input"
           />
-          <input
+          <TextInput
             type="text"
             name="subject"
             value={courseData.subject}
             onChange={handleChange}
-            placeholder="Subject"
+            label="Subject"
             className="input"
           />
-          <input
+          <TextInput
             type="text"
             name="stream"
             value={courseData.stream}
             onChange={handleChange}
-            placeholder="Stream"
+            label="Stream"
             className="input"
           />
-          <input
+          <TextInput
             type="text"
             name="category"
             value={courseData.category}
             onChange={handleChange}
-            placeholder="Category"
+            label="Category"
             className="input"
           />
 
           {/* Modules */}
           <div className="space-y-4">
             {courseData.modules.map((module, index) => (
-              <div key={index} className="space-y-2">
-                <input
-                  type="text"
-                  name="name"
-                  value={module.name}
-                  onChange={(e) => handleModuleChange(index, e)}
-                  placeholder={`Module ${index + 1} Name`}
-                  className="input"
-                  required
-                />
-                <input
-                  type="text"
-                  name="estimatedTime"
-                  value={module.estimatedTime}
-                  onChange={(e) => handleModuleChange(index, e)}
-                  placeholder={`Module ${index + 1} Estimated Time`}
-                  className="input"
-                  required
-                />
-                <input
-                  type="text"
-                  name="videoLink"
-                  value={module.videoLink}
-                  onChange={(e) => handleModuleChange(index, e)}
-                  placeholder={`Module ${index + 1} Video Link`}
-                  className="input"
-                  required
-                />
+              <div
+                key={index}
+                className="space-y-2 flex gap-4 items-center justify-between"
+              >
+                <div className="">
+                  <FileUploader label={"Add Video"} />
+                </div>
+                <div className="flex-1">
+                  <TextInput
+                    type="text"
+                    name="name"
+                    value={module.name}
+                    onChange={(e) => handleModuleChange(index, e)}
+                    label={`Module ${index + 1} Name`}
+                    className="input"
+                    required
+                  />
+                  <TextInput
+                    type="number"
+                    name="estimatedTime"
+                    value={module.estimatedTime}
+                    onChange={(e) => handleModuleChange(index, e)}
+                    label={`Module ${index + 1} Estimated Time`}
+                    className="input"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="videoLink"
+                    value={module.videoLink}
+                    onChange={(e) => handleModuleChange(index, e)}
+                    placeholder={`Module ${index + 1} Video Link`}
+                    className="input"
+                    required
+                  />
+                </div>
               </div>
             ))}
-            <button type="button" onClick={addModule} className="button">
-              Add Module
-            </button>
+            <div className="flex justify-between gap-10">
+              <Button
+                type="button"
+                onClick={addModule}
+                text="Remove Module"
+                size="lg"
+                variant="accent"
+                className="w-full"
+              />
+              <Button
+                type="button"
+                onClick={addModule}
+                text="Add Module"
+                size="lg"
+                variant="primary"
+                className="w-full"
+              />
+            </div>
           </div>
 
           {/* Key Features */}
@@ -384,9 +409,13 @@ function CourseForm() {
           </select>
 
           {/* Submit Button */}
-          <button type="submit" className="button">
-            Submit
-          </button>
+          <Button
+            type="submit"
+            className="button"
+            variant="primary"
+            text="Create Notes"
+            size="lg"
+          />
         </form>
       </div>
     </div>
