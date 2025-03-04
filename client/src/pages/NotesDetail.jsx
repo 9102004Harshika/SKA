@@ -81,76 +81,99 @@ const NotesDetail = () => {
     );
 
   return (
-    <div
-      ref={containerRef}
-      className="mx-auto px-8 mt-10 mb-2 flex flex-col justify-center md:flex-row items-start gap-2"
-    >
-      {/* Book Cover Image */}
+    <div>
+      <nav className="text-sm text-primary my-4 mx-4">
+        <ul className="flex items-center space-x-2">
+          <li>
+            <a to="/" className="hover:underline hover:text-primary">
+              Home
+            </a>
+          </li>
+          <li className="text-accent">{">"}</li>
+          <li>
+            <a to="/notes" className="hover:underline hover:text-primary">
+              Notes
+            </a>
+          </li>
+          <li className="text-accent">{">"}</li>
+          <li className="text-accentadd font-semibold">{note.title}</li>
+        </ul>
+      </nav>
+
       <div
-        ref={imageRef}
-        className="w-full md:w-1/4 flex justify-center items-start rounded-lg"
+        ref={containerRef}
+        className="mx-auto px-8 mt-10 mb-2 flex flex-col justify-center md:flex-row items-start gap-2"
       >
-        <img
-          src={note.coverImageUrl}
-          alt={note.title}
-          className="w-64 md:w-72 md:h-auto shadow-2xl object-contain"
-        />
-      </div>
-
-      {/* Notes Details */}
-      <div ref={textRef} className="w-full md:w-2/3 flex flex-col text-primary">
-        <h1 className="text-3xl md:mt-0 mt-4 font-header text-primary font-bold">
-          {note.title}
-        </h1>
-        <div className="flex items-center my-2">
-          <span>
-            By <strong>{note.writtenBy}</strong>
-          </span>
+        {/* Book Cover Image */}
+        <div
+          ref={imageRef}
+          className="w-full md:w-1/4 flex justify-center items-start rounded-lg"
+        >
+          <img
+            src={note.coverImageUrl}
+            alt={note.title}
+            className="w-64 md:w-72 md:h-auto shadow-2xl object-contain"
+          />
         </div>
 
-        {/* Inline Details Row */}
-        <div className="mt-2 flex flex-wrap gap-2 md:gap-4 text-sm md:text-md">
-          <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
-            <FaBook className="text-primary" />
+        {/* Notes Details */}
+        <div
+          ref={textRef}
+          className="w-full md:w-2/3 flex flex-col text-primary"
+        >
+          <h1 className="text-3xl md:mt-0 mt-4 font-header text-primary font-bold">
+            {note.title}
+          </h1>
+          <div className="flex items-center my-2">
             <span>
-              Subject: <strong>{note.subject}</strong>
+              By <strong>{note.writtenBy}</strong>
             </span>
           </div>
-          <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
-            <FaChalkboardTeacher className="text-primary" />
-            <span>
-              Class: <strong>{note.classFor}</strong>
-            </span>
+
+          {/* Inline Details Row */}
+          <div className="mt-2 flex flex-wrap gap-2 md:gap-4 text-sm md:text-md">
+            <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
+              <FaBook className="text-primary" />
+              <span>
+                Subject: <strong>{note.subject}</strong>
+              </span>
+            </div>
+            <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
+              <FaChalkboardTeacher className="text-primary" />
+              <span>
+                Class: <strong>{note.classFor}</strong>
+              </span>
+            </div>
+            <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
+              <FaSchool className="text-primary" />
+              <span>
+                Board: <strong>{note.board}</strong>
+              </span>
+            </div>
+            <p className="text-justify">{note.description}</p>
           </div>
-          <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
-            <FaSchool className="text-primary" />
-            <span>
-              Board: <strong>{note.board}</strong>
+
+          {/* Last Updated */}
+          <p className="mt-4 text-gray-600 text-sm">
+            Last Updated:{" "}
+            <span className="font-semibold">
+              {new Date(note.createdOn).toLocaleDateString()}
             </span>
-          </div>
-          <p className="text-justify">{note.description}</p>
+          </p>
+
+          {/* Open PDF Button */}
+          {note.pdfUrl && (
+            <div className="mt-6">
+              <button
+                ref={buttonRef}
+                onClick={() => setShowPdf(true)}
+                className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2 shadow-md hover:bg-opacity-90 transition md:w-auto w-full justify-center"
+              >
+                <IoBook /> Open Book
+              </button>
+            </div>
+          )}
         </div>
-
-        {/* Last Updated */}
-        <p className="mt-4 text-gray-600 text-sm">
-          Last Updated:{" "}
-          <span className="font-semibold">
-            {new Date(note.createdOn).toLocaleDateString()}
-          </span>
-        </p>
-
-        {/* Open PDF Button */}
-        {note.pdfUrl && (
-          <div className="mt-6">
-            <button
-              ref={buttonRef}
-              onClick={() => setShowPdf(true)}
-              className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2 shadow-md hover:bg-opacity-90 transition md:w-auto w-full justify-center"
-            >
-              <IoBook /> Open Book
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
