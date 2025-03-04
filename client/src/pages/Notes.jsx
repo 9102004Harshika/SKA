@@ -168,20 +168,14 @@ const Notes = () => {
                   </div>
                 </div>
                 <div className="mt-3 self-end p-4">
-                  {note.pdfUrl && (
+                 
                     <button
                       onClick={() => setShowPdf(true)}
                       className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2"
                     >
-                      <IoBook /> Open Book
+                      <IoBook /> View Details
                     </button>
-                  )}
-                  {showPdf && (
-                    <PdfViewer
-                      pdfUrl={note.pdfUrl}
-                      onClose={() => setShowPdf(false)}
-                    />
-                  )}
+                  
                 </div>
               </div>
             ))

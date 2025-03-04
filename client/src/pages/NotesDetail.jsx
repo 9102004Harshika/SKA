@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { IoBook } from "react-icons/io5";
@@ -12,13 +12,11 @@ const NotesDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPdf, setShowPdf] = useState(false);
-
+  const navigate=useNavigate();
   // Refs for GSAP animations
   const containerRef = useRef(null);
   const imageRef = useRef(null);
   const textRef = useRef(null);
-  const buttonRef = useRef(null);
-
   useEffect(() => {
     const fetchNote = async () => {
       try {
@@ -60,12 +58,6 @@ const NotesDetail = () => {
           delay: 0.5,
           stagger: 0.2,
         }
-      );
-
-      gsap.fromTo(
-        buttonRef.current,
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.8 }
       );
     }
   }, [note]);
@@ -162,17 +154,17 @@ const NotesDetail = () => {
           </p>
 
           {/* Open PDF Button */}
-          {note.pdfUrl && (
+         
             <div className="mt-6">
               <button
-                ref={buttonRef}
-                onClick={() => setShowPdf(true)}
+               
+                onClick={() => navigate(`/pdfViewer/${note._id}`)}
                 className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2 shadow-md hover:bg-opacity-90 transition md:w-auto w-full justify-center"
               >
                 <IoBook /> Open Book
               </button>
             </div>
-          )}
+        
         </div>
       </div>
     </div>
