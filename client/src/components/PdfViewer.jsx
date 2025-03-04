@@ -111,7 +111,7 @@ export default function PDFViewer() {
   }, [loadedPages, numPages]);
 
   return (
-    // added pdf viewer
+    // added pdf viewer in the project 
     <div className="flex flex-col items-center bg-black min-h-screen w-full p-6">
       
       {/* Toolbar */}
