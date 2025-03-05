@@ -10,13 +10,12 @@ import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
-import AddCourseForm from "./pages/admin/AddCourseForm";
+import AddCoursePage from "./pages/admin/AddCoursePage";
 import Video from "./pages/Video";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import NotesAdminLayout from "./layouts/NotesAdminLayout";
 import CourseAdminLayout from "./layouts/CourseAdminLayout";
 import CourseAdminDashboard from "./pages/admin/CourseDashboard";
-import AddCoursePage from "./pages/admin/AddCoursePage";
 import MainLayout from "./layouts/MainLayout";
 import TermsConditions from "./components/Terms&Conditions";
 import NotFound from "./pages/NotFound";
@@ -66,7 +65,7 @@ const App = () => {
             <Route path="/admin/course" element={<CourseAdminLayout />}>
               <Route index element={<CourseAdminDashboard />} />
               <Route path="create" element={<AddCoursePage />} />
-              <Route path="update" element={<AddCourseForm />} />
+              {/* <Route path="create" element={<UpdateCourse />} /> */}
               {/* <Route path="delete" element={<DeleteCourse />} /> */}
             </Route>
 

@@ -7,10 +7,10 @@ const Footer = () => {
         </h1>
         <h2 className="mt-4 text-sm font-light">Contact</h2>
         <address className="not-italic text-background">
-          5534 Somewhere In. The World 22193-10212 <br />
+          Kandivali (W), Mumbai, India 90764-87846 <br />
           <a
             href="mailto:example@gmail.com"
-            className="mt-3 inline-block bg-background text-primary py-2 px-4 rounded-full"
+            className="mt-3 inline-block bg-secondary text-primary py-2 px-4 rounded-full"
           >
             Email Us
           </a>
