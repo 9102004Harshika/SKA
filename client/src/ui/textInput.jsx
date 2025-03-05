@@ -11,12 +11,11 @@ const Input = styled.input`
   font-size: 100%;
   padding: 0.8em;
   outline: none;
-  border: 2px solid #000080;
+  border-bottom: 1px solid #000080;
   background-color: transparent;
-  border-radius: 4px;
   width: 100%;
   transition: border-color 0.3s ease;
-
+  margin-bottom: 10px;
   &:focus,
   &:valid {
     border-color: hsl(26.53, 86.98%, 66.86%);
@@ -24,7 +23,7 @@ const Input = styled.input`
 `;
 
 const Label = styled.label`
-  font-size: 100%;
+  font-size: 90%;
   position: absolute;
   left: 0;
   padding: 0.8em;
@@ -35,13 +34,14 @@ const Label = styled.label`
 
   ${Input}:focus ~ &,
   ${Input}:valid ~ & {
-    transform: translateY(-50%) scale(0.9);
+    transform: translateY(-75%) scale(0.9);
     margin: 0;
-    margin-left: 1.3em;
+    margin-left: -0.8em;
+    margin-bottom: 2px;
     padding: 0em 0.5em 0em 0.5em;
-    background-color: #f5f5db;
+    background-color: transparent;
     color: hsl(26.53, 86.98%, 66.86%);
-    font-weight: 900;
+    font-weight: 700;
   }
 `;
 

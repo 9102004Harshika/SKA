@@ -1,9 +1,28 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import Modal from "../../components/Modal";
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 const NotesDashboard = () => {
-  const [notesCount, setNotesCount] = useState(0);
+  const [notesData, setNotesData] = useState({ paid: 0, free: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -11,7 +30,15 @@ const NotesDashboard = () => {
     const fetchNotes = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/notes/get");
-        setNotesCount(response.data.length);
+
+        const paidNotes = response.data.filter(
+          (note) => note.visibility === "paid"
+        ).length;
+        const freeNotes = response.data.filter(
+          (note) => note.visibility === "free"
+        ).length;
+
+        setNotesData({ paid: paidNotes, free: freeNotes });
       } catch (err) {
         setError("Failed to fetch notes.");
       } finally {
@@ -22,6 +49,19 @@ const NotesDashboard = () => {
     fetchNotes();
   }, []);
 
+  const chartData = {
+    labels: ["Paid Notes", "Free Notes"],
+    datasets: [
+      {
+        label: "Number of Notes",
+        data: [notesData.paid, notesData.free],
+        backgroundColor: ["#FF6384", "#36A2EB"],
+        borderColor: ["#FF6384", "#36A2EB"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <div className="p-6 bg-secondary shadow-md rounded-lg ml-8">
       <h2 className="text-2xl font-semibold text-primary">Notes Dashboard</h2>
@@ -30,9 +70,17 @@ const NotesDashboard = () => {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
-        <p className="text-lg font-medium text-primary">
-          Total Notes: <span className="font-bold">{notesCount}</span>
-        </p>
+        <>
+          <p className="text-lg font-medium text-primary">
+            Paid Notes: <span className="font-bold">{notesData.paid}</span>
+          </p>
+          <p className="text-lg font-medium text-primary">
+            Free Notes: <span className="font-bold">{notesData.free}</span>
+          </p>
+          <div className="mt-6">
+            <Bar data={chartData} />
+          </div>
+        </>
       )}
     </div>
   );
