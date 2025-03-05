@@ -219,13 +219,12 @@ function CourseForm() {
             placeholder="Demo Video URL"
             className="input"
           />
-          <input
+          <TextInput
             type="number"
             name="studentCount"
             value={courseData.studentCount}
             onChange={handleChange}
-            placeholder="Number of Students"
-            className="input"
+            label="Number of Students"
           />
           <input
             type="date"
