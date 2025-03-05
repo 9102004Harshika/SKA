@@ -78,19 +78,19 @@ const App = () => {
               <Route path="delete" element={<DeleteNotesPage />} />
             </Route>
 
-            <Route path="/pdfViewer/:id" element={<PdfViewer />} />
+            <Route path="/pdfViewer" element={<PdfViewer />} />
             <Route path="/unauth" element={<Unauth />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />
             <Route path="*" element={<NotFound />} />
 
             {/* Route used for dedicated page of component testing */}
-            <Route
-              path="/testing"
+            {/* <Route
+              path="/testing/67c5ae15c3106485439a99c5"
               element={
                 <PdfViewer src="https://res.cloudinary.com/dsnsi0ioz/image/upload/v1741008946/Ska/notes_pdf/zvfm1txhvb3krp0yqudu.pdf" 
                 pdfName="Physics Textbook"/>
               }
-            />
+            /> */}
           </Routes>
         </main>
         {/* <Footer /> */}

@@ -1,7 +1,7 @@
 
 
 import { useState, useEffect} from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams,useLocation } from "react-router-dom";
 import { FaPlus, FaMinus, FaExpand,FaRedo,FaColumns } from "react-icons/fa";
 import axios from "axios";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -16,9 +16,9 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 
 export default function PDFViewer() {
-   const {id}=useParams()
+  const location = useLocation();
+  const pdf = location.state; // Get the passed object
   const [numPages, setNumPages] = useState(null);
-   const [note, setNote] = useState(null);
   const [isTwoPageMode, setIsTwoPageMode] = useState(false);
   const [loadedPages, setLoadedPages] = useState(() => {
     return parseInt(localStorage.getItem("loadedPages")) || 1;
@@ -26,7 +26,6 @@ export default function PDFViewer() {
   const [pageWidth, setPageWidth] = useState(900);
   const [isFullPage, setIsFullPage] = useState(false);
   const [rotation, setRotation] = useState(0);
-
   const toggleFitToPage = () => {
     if (!isFullPage) {
       setPageWidth(window.innerWidth);
@@ -35,25 +34,13 @@ export default function PDFViewer() {
     }
     setIsFullPage(!isFullPage);
   };
-  useEffect(() => {
-    const fetchNote = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/notes/${id}`
-        );
-        setNote(response.data);
-      } catch (err) {
-       console.loh("Failed to fetch note details. Please try again later.");
-      }
-    };
-    fetchNote();
-  }, [id]);
+ 
 
   const toggleTwoPageMode = () => {
     setIsTwoPageMode((prev) => !prev);
     setPageWidth((prev) => (isTwoPageMode ? prev * 1.5 : prev / 1.5));
   };
-
+  
   const zoomIn = () => {
     setIsFullPage(false);
     setPageWidth((prevWidth) => Math.min(prevWidth + 50, 1200));
@@ -109,11 +96,10 @@ export default function PDFViewer() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [loadedPages, numPages]);
-
   return (
     <div className="flex flex-col items-center bg-black min-h-screen w-full p-6">
       <div className="w-full h-[65px] bg-[#333333] border-b border-gray-600 flex justify-between items-center px-4 fixed top-0 left-0 z-10">
-        <div>{note.title && <h2 className="text-white text-lg font-semibold">{note.title}</h2>}</div>
+        <div>{pdf.pdfName && <h2 className="text-white text-lg font-semibold">{pdf.pdfName}</h2>}</div>
         <div className="flex items-center gap-2">
           <div className="border-r-2 flex border-gray-600">
             <button className="w-8 h-8 flex items-center justify-center text-white" onClick={zoomOut}><FaMinus size={15} /></button>
@@ -132,9 +118,9 @@ export default function PDFViewer() {
         <div> <h2 className="text-white text-lg font-semibold">Shree Kalam Academy</h2></div>
        
       </div>
-      {note.pdfUrl && (
+      {pdf.src && (
         <div className="flex flex-col items-center mt-[70px] w-full">
-          <Document file={note.pdfUrl} onLoadSuccess={onDocumentLoadSuccess}>
+          <Document file={pdf.src} onLoadSuccess={onDocumentLoadSuccess}>
             {isTwoPageMode
               ? Array.from({ length: Math.ceil(loadedPages / 2) }, (_, index) => {
                   const page1 = index * 2 + 1;

@@ -71,7 +71,7 @@ const NotesDetail = () => {
         <p className="text-lg font-semibold">{error}</p>
       </div>
     );
-
+  const pdf={src:note.pdfUrl,pdfName:note.title}
   return (
     <div>
       <nav className="text-sm text-primary my-4 mx-4">
@@ -158,7 +158,7 @@ const NotesDetail = () => {
             <div className="mt-6">
               <button
                
-                onClick={() => navigate(`/pdfViewer/${note._id}`)}
+                onClick={() => navigate(`/pdfViewer`,{state:pdf})}
                 className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2 shadow-md hover:bg-opacity-90 transition md:w-auto w-full justify-center"
               >
                 <IoBook /> Open Book
