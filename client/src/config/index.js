@@ -411,3 +411,29 @@ export const courseMaterialConfig = [
     ],
   },
 ];
+
+export const boards = [
+  "Maharashtra State Board of Secondary and Higher Secondary Education (MSBSHSE)",
+  "International General Certificate of Secondary Education (IGCSE)",
+  "Indian Certificate of Secondary Education (ICSE)",
+  "Central Board of Secondary Education (CBSE)",
+  "International Baccalaureate (IB)",
+];
+
+export const getClassOptions = (selectedBoard) => {
+  switch (selectedBoard) {
+    case "International General Certificate of Secondary Education (IGCSE)":
+    case "International Baccalaureate (IB)":
+      return ["7th", "8th", "9th", "10th", "11th", "12th"];
+    case "Central Board of Secondary Education (CBSE)":
+    case "Maharashtra State Board of Secondary and Higher Secondary Education (MSBSHSE)":
+      return ["9th", "10th", "11th", "12th"];
+    case "Indian Certificate of Secondary Education (ICSE)":
+      return ["8th", "9th", "10th", "11th", "12th"];
+    default:
+      return [];
+  }
+};
+export const subjects = ["Maths", "Chemistry", "Physics"];
+export const streams = ["Commerce", "Science"];
+export const category = ["One Shot", "Full Video"];

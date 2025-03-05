@@ -4,9 +4,18 @@ import TextInput from "../../ui/textInput";
 import TextAreaInput from "../../ui/textarea";
 import { Button } from "../../ui/button";
 import FileUploader from "../../ui/fileUploader";
+import Select from "../../ui/select";
+import {
+  boards,
+  category,
+  getClassOptions,
+  streams,
+  subjects,
+} from "../../config";
+import ImageUploader from "../../ui/imageUploader";
 
 function CourseForm() {
-  const [courseData, setCourseData] = useState({
+  const initialState = {
     courseTitle: "",
     courseDescription: "",
     courseImage: "",
@@ -28,7 +37,8 @@ function CourseForm() {
     instructor: "",
     notes: [],
     quizzes: [],
-  });
+  };
+  const [courseData, setCourseData] = useState(initialState);
 
   const [instructors, setInstructors] = useState([]);
   const [notes, setNotes] = useState([]);
@@ -140,30 +150,44 @@ function CourseForm() {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6 flex flex-col">
           {/* Text Fields */}
-          <input
-            type="text"
-            name="courseImage"
-            value={courseData.courseImage}
-            onChange={handleChange}
-            placeholder="Course Image URL"
-            className="input"
-            required
-          />
-          <TextInput
-            type="text"
-            name="courseTitle"
-            value={courseData.courseTitle}
-            onChange={handleChange}
-            label={"Course Title"}
-            required
-          />
-          <TextAreaInput
-            name="courseDescription"
-            value={courseData.courseDescription}
-            onChange={handleChange}
-            label="Course Description"
-            required
-          />
+          <div className="flex gap-4 items-center justify-between">
+            <div className="flex-1">
+              <input
+                type="text"
+                name="courseImage"
+                value={courseData.courseImage}
+                onChange={handleChange}
+                placeholder="Course Image URL"
+                className="input"
+                required
+              />
+
+              <TextInput
+                type="text"
+                name="courseTitle"
+                value={courseData.courseTitle}
+                onChange={handleChange}
+                label={"Course Title"}
+                required
+              />
+              <TextAreaInput
+                name="courseDescription"
+                value={courseData.courseDescription}
+                onChange={handleChange}
+                label="Course Description"
+                required
+              />
+            </div>
+            <ImageUploader
+              label="Upload Image"
+              id="imageUpload"
+              // required
+              // onChange={(file) =>
+              //   setFormData({ ...formData, coverImageUrl: file })
+              // }
+            />
+          </div>
+
           <TextAreaInput
             name="aboutCourse"
             value={courseData.aboutCourse}
@@ -171,12 +195,11 @@ function CourseForm() {
             label="About Course"
             required
           />
-          <textarea
+          <TextAreaInput
             name="moduledescription"
             value={courseData.moduledescription}
             onChange={handleChange}
-            placeholder="Module Description"
-            className="textarea"
+            label="Module Description"
             required
           />
           <TextInput
@@ -213,11 +236,6 @@ function CourseForm() {
             className="input"
           />
           <div className="flex items-center justify-between space-x-4">
-            {/* <input
-              type="number"
-              placeholder="Original Price"
-              className="input"
-            /> */}
             <TextInput
               label="Original Price"
               type="number"
@@ -232,57 +250,51 @@ function CourseForm() {
               value={courseData.discountedPrice}
               onChange={handleChange}
             />
-            {/* <input
-              type="number"
-              placeholder="Discounted Price"
-              className="input"
-            /> */}
             {/* Display Discount Percentage */}
             <div className="text-md p-[14px] rounded-[4px] font-bold border-2 border-primary">
               Discount Percentage: {calculateDiscountPercentage()}%
             </div>
           </div>
-          <TextInput
-            type="number"
-            name="class"
-            value={courseData.class}
-            onChange={handleChange}
-            label="Class"
-            className="input"
-          />
-          <TextInput
-            type="text"
-            name="board"
-            value={courseData.board}
-            onChange={handleChange}
-            label="Board"
-            className="input"
-          />
-          <TextInput
-            type="text"
-            name="subject"
-            value={courseData.subject}
-            onChange={handleChange}
-            label="Subject"
-            className="input"
-          />
-          <TextInput
-            type="text"
-            name="stream"
-            value={courseData.stream}
-            onChange={handleChange}
-            label="Stream"
-            className="input"
-          />
-          <TextInput
-            type="text"
-            name="category"
-            value={courseData.category}
-            onChange={handleChange}
-            label="Category"
-            className="input"
+          <Select
+            menuTitle="Board"
+            submenuItems={boards}
+            onSelect={(selectedBoard) => {
+              setCourseData({ ...courseData, board: selectedBoard, class: "" });
+            }}
           />
 
+          <Select
+            menuTitle="Class"
+            submenuItems={getClassOptions(courseData.board)}
+            onSelect={(selectedClass) => {
+              setCourseData({ ...courseData, class: selectedClass });
+            }}
+            disabled={!courseData.board}
+          />
+          <Select
+            menuTitle="Subject"
+            submenuItems={subjects}
+            onSelect={(selectedSubject) => {
+              setCourseData({ ...courseData, subject: selectedSubject });
+            }}
+            disabled={!courseData.stream}
+          />
+
+          <Select
+            menuTitle="Stream"
+            submenuItems={streams}
+            onSelect={(selectedStream) => {
+              setCourseData({ ...courseData, stream: selectedStream });
+            }}
+            disabled={!courseData.board}
+          />
+          <Select
+            menuTitle="Category"
+            submenuItems={category}
+            onSelect={(selectedCategory) => {
+              setCourseData({ ...courseData, category: selectedCategory });
+            }}
+          />
           {/* Modules */}
           <div className="space-y-4">
             {courseData.modules.map((module, index) => (
@@ -324,22 +336,22 @@ function CourseForm() {
                 </div>
               </div>
             ))}
-            <div className="flex justify-between gap-10">
+            <div className="flex justify-evenly items-center gap-10">
               <Button
                 type="button"
                 onClick={addModule}
                 text="Remove Module"
-                size="lg"
+                size="sm"
                 variant="accent"
-                className="w-full"
+                className=""
               />
               <Button
                 type="button"
                 onClick={addModule}
                 text="Add Module"
-                size="lg"
+                size="sm"
                 variant="primary"
-                className="w-full"
+                className=""
               />
             </div>
           </div>
@@ -383,7 +395,6 @@ function CourseForm() {
           </select>
           <select
             name="notes"
-            multiple
             value={courseData.notes}
             onChange={(e) => handleArrayChange(e, "notes")}
             className="select"
@@ -409,13 +420,22 @@ function CourseForm() {
           </select>
 
           {/* Submit Button */}
-          <Button
-            type="submit"
-            className="button"
-            variant="primary"
-            text="Create Notes"
-            size="lg"
-          />
+          <div className="flex gap-4">
+            <Button
+              type="reset"
+              className="button w-full"
+              variant="accent"
+              text={"Reset"}
+              onClick={() => setCourseData(initialState)}
+            />
+            <Button
+              type="submit"
+              className="button w-full"
+              variant="primary"
+              text="Create Notes"
+              size="lg"
+            />
+          </div>
         </form>
       </div>
     </div>
