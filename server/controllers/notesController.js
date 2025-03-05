@@ -14,12 +14,27 @@ export const createNote = async (req, res) => {
 // Get all notes
 export const getAllNotes = async (req, res) => {
   try {
-    const notes = await Notes.find();
+    console.log("Received subject:", req.query.subject); // Debugging
+    console.log("Received classFor:", req.query.classFor); // Debugging
+
+    const { subject ,classFor} = req.query;
+    let filter = { visibility: "paid" };
+    if (subject) {
+      filter.subject = subject;
+    }
+    if (classFor) {
+      // Extract only the number from "11th" → "11"
+      const classNumber = classFor.match(/\d+/)?.[0]; // Extracts numeric part
+      if (classNumber) filter.classFor = classNumber;
+    }
+    const notes = await Notes.find(filter);
     res.status(200).json(notes);
   } catch (error) {
     res.status(400).json({ message: "Error fetching notes", error });
   }
 };
+
+
 
 // Get a note by ID
 export const getNoteById = async (req, res) => {
