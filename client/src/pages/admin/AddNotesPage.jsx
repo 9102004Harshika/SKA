@@ -30,7 +30,6 @@ const AddNotesPage = () => {
     { value: "free", text: "Free" },
   ];
 
- 
   const resetForm = () => {
     setFormData({
       title: "",
@@ -53,9 +52,19 @@ const AddNotesPage = () => {
         Create New Notes
       </h2>
       <div className="space-y-6 mx-10">
-        <form  onSubmit={(e) =>
-            handleSubmit(e, formData, setFormData, openModal, closeModal, resetForm)
-          } className="flex flex-col gap-6">
+        <form
+          onSubmit={(e) =>
+            handleSubmit(
+              e,
+              formData,
+              setFormData,
+              openModal,
+              closeModal,
+              resetForm
+            )
+          }
+          className="flex flex-col gap-6"
+        >
           <div className="flex gap-10">
             <div className="flex-1 flex flex-col justify-between">
               <TextInput
@@ -90,7 +99,7 @@ const AddNotesPage = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-10 items-center justify-center p-8 border-2 border-primary rounded-md">
+            <div className="flex flex-col gap-10 items-center justify-center p-8 border-[1px] border-primary rounded-md">
               <label htmlFor="imageUpload">Add Cover Image</label>
               <ImageUploader
                 label="Upload Image"
@@ -103,7 +112,7 @@ const AddNotesPage = () => {
             </div>
           </div>
           <div className="flex gap-10">
-            <div className="flex flex-col gap-10 items-center justify-center p-8 border-2 border-primary rounded-md">
+            <div className="flex flex-col gap-10 items-center justify-center p-8 border-[1px] border-primary rounded-md">
               <label htmlFor="pdfUpload">Add The PDF File</label>
               <FileUploader
                 label="Upload PDF"
