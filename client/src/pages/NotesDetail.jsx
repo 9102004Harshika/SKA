@@ -12,7 +12,7 @@ const NotesDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPdf, setShowPdf] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   // Refs for GSAP animations
   const containerRef = useRef(null);
   const imageRef = useRef(null);
@@ -71,7 +71,7 @@ const NotesDetail = () => {
         <p className="text-lg font-semibold">{error}</p>
       </div>
     );
-  const pdf={src:note.pdfUrl,pdfName:note.title}
+  const pdf = { src: note.pdfUrl, pdfName: note.title };
   return (
     <div>
       <nav className="text-sm text-primary my-4 mx-4">
@@ -142,11 +142,11 @@ const NotesDetail = () => {
                 Board: <strong>{note.board}</strong>
               </span>
             </div>
-            <p className="text-justify">{note.description}</p>
+            <p className="text-justify text-gray-600">{note.description}</p>
           </div>
 
           {/* Last Updated */}
-          <p className="mt-4 text-gray-600 text-sm">
+          <p className="mt-4  text-sm">
             Last Updated:{" "}
             <span className="font-semibold">
               {new Date(note.createdOn).toLocaleDateString()}
@@ -154,17 +154,15 @@ const NotesDetail = () => {
           </p>
 
           {/* Open PDF Button */}
-         
-            <div className="mt-6">
-              <button
-               
-                onClick={() => navigate(`/pdfViewer`,{state:pdf})}
-                className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2 shadow-md hover:bg-opacity-90 transition md:w-auto w-full justify-center"
-              >
-                <IoBook /> Open Book
-              </button>
-            </div>
-        
+
+          <div className="mt-6">
+            <button
+              onClick={() => navigate(`/app/pdfViewer`, { state: pdf })}
+              className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2 shadow-md hover:bg-opacity-90 transition md:w-auto w-full justify-center"
+            >
+              <IoBook /> Open Book
+            </button>
+          </div>
         </div>
       </div>
     </div>

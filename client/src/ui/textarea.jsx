@@ -10,16 +10,22 @@ const TextAreaGroup = styled.div`
 const TextArea = styled.textarea`
   font-size: 100%;
   padding: 0.8em;
+
   outline: none;
   border-bottom: 1px solid #000080;
   background-color: transparent;
   width: 100%;
-  min-height: 100px;
-  line-height: 20px;
+  min-height: 40px;
+  line-height: 18px;
   transition: border-color 0.3s ease;
   resize: vertical;
-  &:focus,
+  &:focus {
+    border-color: hsl(26.53, 86.98%, 66.86%);
+  }
   &:valid {
+    border-color: #000080;
+  }
+  &:hover {
     border-color: hsl(26.53, 86.98%, 66.86%);
   }
 `;
@@ -35,9 +41,26 @@ const Label = styled.label`
   transition: all 0.3s ease;
   color: #000080;
 
-  ${TextArea}:focus ~ &,
+  ${TextArea}:focus ~ & {
+    transform: translateY(-260%) scale(0.9);
+    margin: 0;
+    margin-left: -0.8em;
+    padding: 0em 0.5em 0em 0.5em;
+    background-color: transparent;
+    color: hsl(26.53, 86.98%, 66.86%);
+    font-weight: 700;
+  }
   ${TextArea}:valid ~ & {
-    transform: translateY(-410%) scale(0.9);
+    transform: translateY(-260%) scale(0.9);
+    margin: 0;
+    margin-left: -0.8em;
+    padding: 0em 0.5em 0em 0.5em;
+    background-color: transparent;
+    color: #000080;
+    font-weight: 700;
+  }
+  ${TextArea}:hover ~ & {
+    transform: translateY(-260%) scale(0.9);
     margin: 0;
     margin-left: -0.8em;
     padding: 0em 0.5em 0em 0.5em;

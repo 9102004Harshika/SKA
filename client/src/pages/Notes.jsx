@@ -29,7 +29,9 @@ const Notes = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/notes/get");
+        const response = await axios.get(
+          "http://localhost:5000/api/notes/getFree"
+        );
         setNotes(response.data);
       } catch (err) {
         setError("Failed to fetch notes. Please try again later.");
@@ -168,14 +170,12 @@ const Notes = () => {
                   </div>
                 </div>
                 <div className="mt-3 self-end p-4">
-                 
-                    <button
-                      onClick={() => setShowPdf(true)}
-                      className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2"
-                    >
-                      <IoBook /> View Details
-                    </button>
-                  
+                  <button
+                    onClick={() => setShowPdf(true)}
+                    className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2"
+                  >
+                    <IoBook /> View Details
+                  </button>
                 </div>
               </div>
             ))
