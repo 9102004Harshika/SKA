@@ -32,6 +32,7 @@ import PdfViewer from "./components/PdfViewer";
 import NotesDetail from "./pages/NotesDetail";
 import FeatureAdminLayout from "./layouts/FeatureAdminLayout";
 import AddCarouselPage from "./pages/admin/AddCarouselPage";
+import Quiz from "./pages/Quiz";
 
 const App = () => {
   return (
@@ -48,13 +49,14 @@ const App = () => {
             <Route path="/enrollment" element={<Enrollment />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
 
+            <Route path="/app/pdfViewer" element={<PdfViewer />} />
             {/* Users pages after auth  */}
             <Route path="/app" element={<MainLayout />}>
               <Route index element={<Home />} />
               <Route path="courses" element={<Courses />} />
+              <Route path="quiz" element={<Quiz />} />
               <Route path="notes" element={<Notes />} />
               <Route path="notes/:id" element={<NotesDetail />} />
-              <Route path="pdfViewer" element={<PdfViewer />} />
               <Route
                 path="coursedetail"
                 element={<CourseDetail />}
