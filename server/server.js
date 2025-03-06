@@ -7,6 +7,7 @@ import courseRoutes from "./routes/courseRoutes.js";
 import instructorRoutes from "./routes/instructorRoutes.js";
 import notesRoutes from "./routes/notesRoutes.js";
 import quizRoutes from "./routes/quizRoutes.js";
+import carouselRoutes from "./routes/carouselRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/notes", notesRoutes);
 app.use("/api/instructors", instructorRoutes);
 app.use("/api/quizzes", quizRoutes);
 app.use("/api/files", fileRoutes);
+app.use("/api/carousel", carouselRoutes);
 
 // Start the server
 app.listen(PORT, () => {
