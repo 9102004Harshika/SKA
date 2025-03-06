@@ -434,6 +434,16 @@ export const getClassOptions = (selectedBoard) => {
       return [];
   }
 };
+export const getSubjects = (selectedClass, selectedStream) => {
+  if (parseInt(selectedClass) > 0 && parseInt(selectedClass) <= 10) {
+    return ["English", "Maths", "History", "Geography", "Science"];
+  } else if (selectedStream === "Commerce") {
+    return ["Statistics", "English","Maths"];
+  } else if (selectedStream === "Science") {
+    return ["Algebra", "Geometry", "Physics", "Chemistry","Maths"];
+  }
+  return [];
+};
 export const subjects = ["Maths", "Chemistry", "Physics"];
 export const streams = ["Commerce", "Science"];
 export const category = ["One Shot", "Full Video"];

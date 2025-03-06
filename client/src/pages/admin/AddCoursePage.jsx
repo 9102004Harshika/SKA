@@ -14,7 +14,7 @@ import {
 } from "../../config";
 import ImageUploader from "../../ui/imageUploader";
 import { Checkbox } from "../../ui/checkBox";
-
+import { getSubjects } from "../../config";
 function CourseForm() {
   const initialState = {
     courseTitle: "",
@@ -131,17 +131,46 @@ function CourseForm() {
     }));
   };
 
-  const handleKeyFeaturesChange = (e) => {
-    const { name } = e.target;
-    setCourseData((prev) => {
-      const updatedKeyFeatures = { ...prev.keyFeatures };
-      updatedKeyFeatures[name] = name; // Set true or false based on checked state
+  const handleNotesChange = () => {
+    setIsNotesChecked(!isNotesChecked); // First, toggle the checkbox state
+  
+    setCourseData((prevData) => {
+      const updatedKeyFeatures = Array.isArray(prevData.keyFeatures) ? [...prevData.keyFeatures] : []; // Ensure it's an array
+  
+      if (!isNotesChecked) {
+        updatedKeyFeatures.push("notes"); // Add "Notes" if checked
+      } else {
+        const index = updatedKeyFeatures.indexOf("notes");
+        if (index !== -1) updatedKeyFeatures.splice(index, 1); // Remove "Notes" if unchecked
+      }
+  
       return {
-        ...prev,
+        ...prevData,
         keyFeatures: updatedKeyFeatures,
       };
     });
   };
+  
+  const handleQuizzesChange = () => {
+    setIsQuizzesChecked(!isQuizzesChecked); // First, toggle the checkbox state
+  
+    setCourseData((prevData) => {
+      const updatedKeyFeatures = Array.isArray(prevData.keyFeatures) ? [...prevData.keyFeatures] : []; // Ensure it's an array
+  
+      if (!isNotesChecked) {
+        updatedKeyFeatures.push("quizzess"); // Add "Notes" if checked
+      } else {
+        const index = updatedKeyFeatures.indexOf("quizzes");
+        if (index !== -1) updatedKeyFeatures.splice(index, 1); // Remove "Notes" if unchecked
+      }
+  
+      return {
+        ...prevData,
+        keyFeatures: updatedKeyFeatures,
+      };
+    });
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -291,31 +320,38 @@ function CourseForm() {
             }}
           />
 
-          <Select
-            menuTitle="Class"
-            submenuItems={getClassOptions(courseData.board)}
-            onSelect={(selectedClass) => {
-              setCourseData({ ...courseData, classFor: selectedClass });
-            }}
-            disabled={!courseData.board}
-          />
-          <Select
-            menuTitle="Subject"
-            submenuItems={subjects}
-            onSelect={(selectedSubject) => {
-              setCourseData({ ...courseData, subject: selectedSubject });
-            }}
-            disabled={!courseData.stream}
-          />
+<Select
+  menuTitle="Class"
+  submenuItems={getClassOptions(courseData.board)}
+  onSelect={(selectedClass) => {
+    setCourseData({ ...courseData, classFor: selectedClass, stream: undefined, subject: "" });
+  }}
+  disabled={!courseData.board}
+/>
 
-          <Select
-            menuTitle="Stream"
-            submenuItems={streams}
-            onSelect={(selectedStream) => {
-              setCourseData({ ...courseData, stream: selectedStream });
-            }}
-            disabled={!courseData.board}
-          />
+{/* Hide Stream dropdown if class is between 1 and 10 */}
+{!(parseInt(courseData.classFor) > 0 && parseInt(courseData.classFor) <= 10) && (
+  <Select
+    menuTitle="Stream"
+    submenuItems={streams}
+    onSelect={(selectedStream) => {
+      setCourseData({ ...courseData, stream: selectedStream || undefined, subject: "" });
+    }}
+    disabled={!courseData.board}
+  />
+)}
+
+<Select
+  menuTitle="Subject"
+  submenuItems={getSubjects(courseData.classFor, courseData.stream)}
+  onSelect={(selectedSubject) => {
+    setCourseData({ ...courseData, subject: selectedSubject });
+  }}
+  disabled={!courseData.classFor || (courseData.classFor > 10 && !courseData.stream)}
+/>
+
+
+         
           <Select
             menuTitle="Category"
             submenuItems={category}
@@ -389,12 +425,12 @@ function CourseForm() {
           <Checkbox
             text="Include Notes"
             checked={isNotesChecked}
-            onChange={() => setIsNotesChecked(!isNotesChecked)}
+            onChange={handleNotesChange}
           />
             <Checkbox
             text="Include Quizzes"
             checked={isQuizzesChecked}
-            onChange={() => setIsQuizzesChecked(!isQuizzesChecked)}
+            onChange={handleQuizzesChange}
           />
           </div>
 
