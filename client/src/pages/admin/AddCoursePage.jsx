@@ -44,6 +44,9 @@ function CourseForm() {
   const [instructors, setInstructors] = useState([]);
   const [notes, setNotes] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
+  const [isNotesChecked, setIsNotesChecked] = useState(false);
+  const [isQuizzesChecked, setIsQuizzesChecked] = useState(false);
+
   useEffect(() => {
     if (!courseData.subject || !courseData.classFor) return; // Fetch only when both are selected
 
@@ -144,21 +147,25 @@ function CourseForm() {
     e.preventDefault();
     const formattedData = {
       ...courseData,
+      class: courseData.classFor,
       discountPercentage: calculateDiscountPercentage(),
       keyFeatures: Array.isArray(courseData.keyFeatures)
         ? courseData.keyFeatures
         : Object.values(courseData.keyFeatures), // Convert object to array of strings if needed
-    };
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/courses/add",
-        formattedData
-      );
-      console.log("Course Created:", response.data);
-    } catch (error) {
-      console.error("Error creating course:", error);
-    }
+      };
+      delete formattedData.classFor;
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/courses/add",
+          formattedData
+        );
+        console.log("Course Created:", response.data);
+      } catch (error) {
+        console.error("Error creating course:", error);
+      }
+      console.log("Submitting Data:", formattedData);
   };
+
 
   return (
     <div className="min-h-screen my-2">
@@ -379,16 +386,16 @@ function CourseForm() {
 
           {/* Key Features */}
           <div className="flex space-x-4">
+          <Checkbox
+            text="Include Notes"
+            checked={isNotesChecked}
+            onChange={() => setIsNotesChecked(!isNotesChecked)}
+          />
             <Checkbox
-              text="Notes"
-              checked={courseData.keyFeatures.notes}
-              onChange={handleKeyFeaturesChange}
-            />
-            <Checkbox
-              text="Quizzes"
-              checked={courseData.keyFeatures.quizzes}
-              onChange={handleKeyFeaturesChange}
-            />
+            text="Include Quizzes"
+            checked={isQuizzesChecked}
+            onChange={() => setIsQuizzesChecked(!isQuizzesChecked)}
+          />
           </div>
 
           {/* Select Fields */}
@@ -406,27 +413,31 @@ function CourseForm() {
               </option>
             ))}
           </select>
-          <select
-            name="notes"
-            value={courseData.notes}
-            onChange={(e) => handleArrayChange(e, "notes")}
-            className="select"
-          >
-            <option value="">Select a Note</option> {/* Default option */}
-            {notes.map((note) => (
-              <option key={note._id} value={note._id}>
-                {note.title} {/* Display the note title */}
-              </option>
-            ))}
-          </select>
+          {isNotesChecked && (
+            <select
+              name="notes"
+              value={courseData.notes}
+              onChange={(e) => handleArrayChange(e, "notes")}
+              className="select"
+            >
+              <option value="">Select a Note</option>
+              {notes.map((note) => (
+                <option key={note._id} value={note._id}>
+                  {note.title}
+                </option>
+              ))}
+            </select>
+          )}
 
-          <select
+        {
+          isQuizzesChecked &&(
+            <select
             name="quizzes"
-            multiple
             value={courseData.quizzes}
             onChange={(e) => handleArrayChange(e, "quizzes")}
             className="select"
           >
+             <option value="">Select a Quiz</option>
             {quizzes.map((quiz) => (
               <option key={quiz.id} value={quiz._id}>
                 {quiz.name}
@@ -434,6 +445,8 @@ function CourseForm() {
             ))}
           </select>
 
+          )
+        }
           {/* Submit Button */}
           <div className="flex gap-4">
             <Button
