@@ -46,7 +46,8 @@ function CourseForm() {
   const [quizzes, setQuizzes] = useState([]);
   const [isNotesChecked, setIsNotesChecked] = useState(false);
   const [isQuizzesChecked, setIsQuizzesChecked] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
     if (!courseData.subject || !courseData.classFor) return; // Fetch only when both are selected
 
@@ -171,9 +172,52 @@ function CourseForm() {
     });
   };
   
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    delete courseData.classFor;
+  
+    const uploadToCloudinary = async (file, preset) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", preset);
+  
+      try {
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dsnsi0ioz/upload",
+          formData,
+          {
+            onUploadProgress: (progressEvent) => {
+              const fileProgress = Math.round(
+                (progressEvent.loaded / progressEvent.total) * 100
+              );
+              setProgress(fileProgress);
+            },
+          }
+        );
+        return response.data.secure_url; // Return the uploaded image URL
+      } catch (error) {
+        console.error("Cloudinary Upload Error:", error);
+        return null; // Handle error case
+      }
+    };
+  
+    const convertBlobUrlToFile = async (blobUrl, filename) => {
+      const response = await fetch(blobUrl);
+      const blob = await response.blob();
+      return new File([blob], filename, { type: blob.type });
+    };
+  
+    let coverImageUrl = "";
+  
+    if (courseData.courseImage) {
+      const coverImageFile = await convertBlobUrlToFile(
+        courseData.courseImage,
+        "cover_image.jpg"
+      );
+      coverImageUrl = await uploadToCloudinary(coverImageFile, "Course_Image");
+    }
+  
     const formattedData = {
       ...courseData,
       class: courseData.classFor,
@@ -181,19 +225,25 @@ function CourseForm() {
       keyFeatures: Array.isArray(courseData.keyFeatures)
         ? courseData.keyFeatures
         : Object.values(courseData.keyFeatures), // Convert object to array of strings if needed
-      };
-      delete formattedData.classFor;
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/api/courses/add",
-          formattedData
-        );
-        console.log("Course Created:", response.data);
-      } catch (error) {
-        console.error("Error creating course:", error);
-      }
-      console.log("Submitting Data:", formattedData);
+      courseImage: coverImageUrl, // Assign the uploaded image URL
+    };
+  
+    console.log("Uploaded Image URL:", coverImageUrl);
+    console.log("Submitting Data:", formattedData);
+  
+    // Uncomment when ready to send data
+    // try {
+    //   const response = await axios.post(
+    //     "http://localhost:5000/api/courses/add",
+    //     formattedData
+    //   );
+    //   console.log("Course Created:", response.data);
+    // } catch (error) {
+    //   console.error("Error creating course:", error);
+    // }
   };
+  
+
 
 
   return (
@@ -206,7 +256,7 @@ function CourseForm() {
           {/* Text Fields */}
           <div className="flex gap-4 items-center justify-between">
             <div className="flex-1">
-              <input
+              {/* <input
                 type="text"
                 name="courseImage"
                 value={courseData.courseImage}
@@ -214,7 +264,7 @@ function CourseForm() {
                 placeholder="Course Image URL"
                 className="input"
                 required
-              />
+              /> */}
 
               <TextInput
                 type="text"
