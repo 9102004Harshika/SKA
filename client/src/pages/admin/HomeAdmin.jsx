@@ -22,9 +22,9 @@ const HomeAdmin = () => {
       link: "/admin/quiz",
     },
     {
-      title: "Dashboard",
+      title: "Features",
       icon: <FaTachometerAlt size={60} />,
-      link: "/admin/dashboard",
+      link: "/admin/feature",
     },
   ];
 

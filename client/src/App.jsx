@@ -30,6 +30,8 @@ import NotesDashboard from "./pages/admin/NotesDashboard";
 import EditNotesPage from "./pages/admin/EditNotesPage";
 import PdfViewer from "./components/PdfViewer";
 import NotesDetail from "./pages/NotesDetail";
+import FeatureAdminLayout from "./layouts/FeatureAdminLayout";
+import AddCarouselPage from "./pages/admin/AddCarouselPage";
 
 const App = () => {
   return (
@@ -69,6 +71,10 @@ const App = () => {
 
               {/* <Route path="create" element={<UpdateCourse />} /> */}
               {/* <Route path="delete" element={<DeleteCourse />} /> */}
+            </Route>
+            <Route path="/admin/feature" element={<FeatureAdminLayout />}>
+              <Route index element={<AddCarouselPage />} />
+              {/* <Route path="create" element={<AddCoursePage />} /> */}
             </Route>
 
             {/* notes section of admin */}

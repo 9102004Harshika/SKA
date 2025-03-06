@@ -11,9 +11,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-creative";
-import { sliderImages } from "../config/index";
+// import { sliderImages } from "../config/index";
+import useCarousel from "../logic/features/createCarousel";
 
 const Carousel = () => {
+  const { carouselItems } = useCarousel();
   return (
     <div className="w-full max-w-full mt-2 md:mt-2">
       <Swiper
@@ -52,26 +54,26 @@ const Carousel = () => {
         }}
         className=""
       >
-        {sliderImages.map((image, index) => (
+        {carouselItems.map((image, index) => (
           <SwiperSlide key={index}>
             <div className="relative w-full h-[0] pb-[56.25%] md:pb-[46.25%] md:h-[320px] lg:h-[480px] bg-cover bg-center">
               {/* Ensure the aspect ratio is maintained and images are responsive */}
               <div className="absolute inset-0 flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
                 <img
-                  src={image.src}
-                  alt={image.alt}
+                  src={image.image}
+                  alt={image.description}
                   className="absolute inset-0 w-full h-full object-cover object-center"
                   style={{
-                    objectFit: 'fit', // Prevent image cropping
-                    width: '100%',
-                    height: '100%',
+                    objectFit: "fit",
+                    width: "100%",
+                    height: "100%",
                   }}
                 />
                 <a
-                  href={image.link}
+                  href="courses"
                   rel="noopener noreferrer"
                   className="absolute bottom-4 right-4 bg-primary text-background rounded-full p-2 shadow-lg hover:text-secondary transition"
-                  aria-label={`Visit ${image.alt}`}
+                  aria-label={`Visit ${image.description}`}
                 >
                   <FaExternalLinkAlt size={20} />
                 </a>
