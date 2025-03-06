@@ -13,6 +13,7 @@ import {
   subjects,
 } from "../../config";
 import ImageUploader from "../../ui/imageUploader";
+import { Checkbox } from "../../ui/checkBox";
 
 function CourseForm() {
   const initialState = {
@@ -45,15 +46,23 @@ function CourseForm() {
   const [quizzes, setQuizzes] = useState([]);
   useEffect(() => {
     if (!courseData.subject || !courseData.classFor) return; // Fetch only when both are selected
-  
+
     const fetchData = async () => {
       try {
-        const instructorsRes = axios.get("http://localhost:5000/api/instructors/get");
-        const notesRes = axios.get(`http://localhost:5000/api/notes/get?subject=${courseData.subject}&classFor=${courseData.classFor}`);
+        const instructorsRes = axios.get(
+          "http://localhost:5000/api/instructors/get"
+        );
+        const notesRes = axios.get(
+          `http://localhost:5000/api/notes/getPaid?subject=${courseData.subject}&classFor=${courseData.classFor}`
+        );
         const quizzesRes = axios.get("http://localhost:5000/api/quizzes/get");
-  
-        const [instructors, notes, quizzes] = await Promise.all([instructorsRes, notesRes, quizzesRes]);
-  
+
+        const [instructors, notes, quizzes] = await Promise.all([
+          instructorsRes,
+          notesRes,
+          quizzesRes,
+        ]);
+
         setInstructors(instructors.data);
         setNotes(notes.data);
         setQuizzes(quizzes.data);
@@ -61,12 +70,10 @@ function CourseForm() {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
-  }, [courseData.subject, courseData.classFor]); // Runs when either changes
-   // Runs only when subject changes
-  // Runs only when subject changes
-  
+  }, [courseData.subject, courseData.classFor]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCourseData((prev) => ({
@@ -74,7 +81,7 @@ function CourseForm() {
       [name]: value,
     }));
   };
- console.log(notes)
+  console.log(notes);
   const handleArrayChange = (e, field) => {
     const values = e.target.value.split(",").map((item) => item.trim());
     setCourseData((prev) => ({
@@ -261,7 +268,7 @@ function CourseForm() {
               onChange={handleChange}
             />
             {/* Display Discount Percentage */}
-            <div className="text-md p-[14px] rounded-[4px] font-bold border-2 border-primary">
+            <div className="text-md p-[14px] font-bold border-b-[1px] border-primary">
               Discount Percentage: {calculateDiscountPercentage()}%
             </div>
           </div>
@@ -269,7 +276,11 @@ function CourseForm() {
             menuTitle="Board"
             submenuItems={boards}
             onSelect={(selectedBoard) => {
-              setCourseData({ ...courseData, board: selectedBoard, classFor: "" });
+              setCourseData({
+                ...courseData,
+                board: selectedBoard,
+                classFor: "",
+              });
             }}
           />
 
@@ -368,24 +379,16 @@ function CourseForm() {
 
           {/* Key Features */}
           <div className="flex space-x-4">
-            <label>
-              <input
-                type="checkbox"
-                name="notes"
-                checked={courseData.keyFeatures.notes}
-                onChange={handleKeyFeaturesChange}
-              />
-              Notes
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="quizzes"
-                checked={courseData.keyFeatures.quizzes}
-                onChange={handleKeyFeaturesChange}
-              />
-              Quizzes
-            </label>
+            <Checkbox
+              text="Notes"
+              checked={courseData.keyFeatures.notes}
+              onChange={handleKeyFeaturesChange}
+            />
+            <Checkbox
+              text="Quizzes"
+              checked={courseData.keyFeatures.quizzes}
+              onChange={handleKeyFeaturesChange}
+            />
           </div>
 
           {/* Select Fields */}
@@ -404,18 +407,18 @@ function CourseForm() {
             ))}
           </select>
           <select
-  name="notes"
-  value={courseData.notes}
-  onChange={(e) => handleArrayChange(e, "notes")}
-  className="select"
->
-  <option value="">Select a Note</option> {/* Default option */}
-  {notes.map((note) => (
-    <option key={note._id} value={note._id}>
-      {note.title} {/* Display the note title */}
-    </option>
-  ))}
-</select>
+            name="notes"
+            value={courseData.notes}
+            onChange={(e) => handleArrayChange(e, "notes")}
+            className="select"
+          >
+            <option value="">Select a Note</option> {/* Default option */}
+            {notes.map((note) => (
+              <option key={note._id} value={note._id}>
+                {note.title} {/* Display the note title */}
+              </option>
+            ))}
+          </select>
 
           <select
             name="quizzes"

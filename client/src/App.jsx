@@ -52,6 +52,7 @@ const App = () => {
               <Route path="courses" element={<Courses />} />
               <Route path="notes" element={<Notes />} />
               <Route path="notes/:id" element={<NotesDetail />} />
+              <Route path="pdfViewer" element={<PdfViewer />} />
               <Route
                 path="coursedetail"
                 element={<CourseDetail />}
@@ -65,6 +66,7 @@ const App = () => {
             <Route path="/admin/course" element={<CourseAdminLayout />}>
               <Route index element={<CourseAdminDashboard />} />
               <Route path="create" element={<AddCoursePage />} />
+
               {/* <Route path="create" element={<UpdateCourse />} /> */}
               {/* <Route path="delete" element={<DeleteCourse />} /> */}
             </Route>
@@ -78,7 +80,6 @@ const App = () => {
               <Route path="delete" element={<DeleteNotesPage />} />
             </Route>
 
-            <Route path="/pdfViewer" element={<PdfViewer />} />
             <Route path="/unauth" element={<Unauth />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />
             <Route path="*" element={<NotFound />} />

@@ -12,12 +12,9 @@ export const createNote = async (req, res) => {
 };
 
 // Get all notes
-export const getAllNotes = async (req, res) => {
+export const getAllPaidNotes = async (req, res) => {
   try {
-    console.log("Received subject:", req.query.subject); // Debugging
-    console.log("Received classFor:", req.query.classFor); // Debugging
-
-    const { subject ,classFor} = req.query;
+    const { subject, classFor } = req.query;
     let filter = { visibility: "paid" };
     if (subject) {
       filter.subject = subject;
@@ -33,8 +30,27 @@ export const getAllNotes = async (req, res) => {
     res.status(400).json({ message: "Error fetching notes", error });
   }
 };
+export const getAllFreeNotes = async (req, res) => {
+  try {
+    let filter = { visibility: "free" };
+    const notes = await Notes.find(filter);
+    res.status(200).json(notes);
+  } catch (error) {
+    res.status(400).json({ message: "Error fetching notes", error });
+  }
+};
 
-
+export const getAllNotes = async (req, res) => {
+  try {
+    const notes = await Notes.find({}); // Fetch all notes
+    res.status(200).json(notes);
+  } catch (error) {
+    console.error("Error fetching notes:", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching notes", error: error.message });
+  }
+};
 
 // Get a note by ID
 export const getNoteById = async (req, res) => {
