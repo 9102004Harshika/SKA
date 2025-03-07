@@ -217,33 +217,33 @@ export const notificationItems = [
   },
 ];
 
-export const sliderImages = [
-  {
-    src: "https://images.hdqwalls.com/download/pixel-art-2-pic-1280x720.jpg",
-    alt: "Image 1",
-    link: "/coursedetail",
-  },
-  {
-    src: "https://th.bing.com/th/id/OIP.BivozdbfNtrq5pzGpmyAvgHaEK?rs=1&pid=ImgDetMain",
-    alt: "Image 2",
-    link: "/coursedetail",
-  },
-  {
-    src: "https://th.bing.com/th/id/OIP.RxYDgZrJHBxz2Uetp5e_BwHaEK?rs=1&pid=ImgDetMain",
-    alt: "Image 3",
-    link: "/coursedetail",
-  },
-  {
-    src: "https://images.wallpaperscraft.com/image/single/triangles_multicolored_pixels_122612_1280x720.jpg",
-    alt: "Image 4",
-    link: "/coursedetail",
-  },
-  {
-    src: "https://images.hdqwalls.com/download/8-bit-pixel-art-city-2o-1280x720.jpg",
-    alt: "Image 5",
-    link: "/coursedetail",
-  },
-];
+// export const sliderImages = [
+//   {
+//     src: "https://images.hdqwalls.com/download/pixel-art-2-pic-1280x720.jpg",
+//     alt: "Image 1",
+//     link: "/coursedetail",
+//   },
+//   {
+//     src: "https://th.bing.com/th/id/OIP.BivozdbfNtrq5pzGpmyAvgHaEK?rs=1&pid=ImgDetMain",
+//     alt: "Image 2",
+//     link: "/coursedetail",
+//   },
+//   {
+//     src: "https://th.bing.com/th/id/OIP.RxYDgZrJHBxz2Uetp5e_BwHaEK?rs=1&pid=ImgDetMain",
+//     alt: "Image 3",
+//     link: "/coursedetail",
+//   },
+//   {
+//     src: "https://images.wallpaperscraft.com/image/single/triangles_multicolored_pixels_122612_1280x720.jpg",
+//     alt: "Image 4",
+//     link: "/coursedetail",
+//   },
+//   {
+//     src: "https://images.hdqwalls.com/download/8-bit-pixel-art-city-2o-1280x720.jpg",
+//     alt: "Image 5",
+//     link: "/coursedetail",
+//   },
+// ];
 
 // Course card configurations:
 export const courses = [
@@ -438,9 +438,9 @@ export const getSubjects = (selectedClass, selectedStream) => {
   if (parseInt(selectedClass) > 0 && parseInt(selectedClass) <= 10) {
     return ["English", "Maths", "History", "Geography", "Science"];
   } else if (selectedStream === "Commerce") {
-    return ["Statistics", "English","Maths"];
+    return ["Statistics", "English", "Maths"];
   } else if (selectedStream === "Science") {
-    return ["Algebra", "Geometry", "Physics", "Chemistry","Maths"];
+    return ["Algebra", "Geometry", "Physics", "Chemistry", "Maths"];
   }
   return [];
 };

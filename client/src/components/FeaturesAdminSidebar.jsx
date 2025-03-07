@@ -1,9 +1,4 @@
-import {
-  AiOutlineDashboard,
-  AiOutlineShoppingCart,
-  AiOutlineCheckCircle,
-  AiOutlinePicture,
-} from "react-icons/ai";
+import { AiOutlinePicture } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../images/logo.png";
@@ -11,28 +6,11 @@ import logo from "../images/logo.png";
 const adminSidebarMenuItems = [
   {
     id: "dashboard",
-    label: "Dashboard",
-    path: "/admin/course",
-    icon: <AiOutlineDashboard size={24} />,
-  },
-  {
-    id: "create",
-    label: "Add New Course",
-    path: "/admin/course/create",
-    icon: <AiOutlineShoppingCart size={24} />,
-  },
-  {
-    id: "edit",
-    label: "Edit Course",
-    path: "/admin/course/update",
-    icon: <AiOutlineCheckCircle size={24} />,
-  },
-  {
-    id: "delete",
-    label: "Delete Course",
-    path: "/admin/course/delete",
+    label: "Carousel Image",
+    path: "/admin/feature",
     icon: <AiOutlinePicture size={24} />,
   },
+  ,
 ];
 
 function MenuItems({ setOpen, activeMenuItem, setActiveMenuItem }) {
@@ -63,7 +41,7 @@ function MenuItems({ setOpen, activeMenuItem, setActiveMenuItem }) {
   );
 }
 
-function CourseAdminSidebar({ open, setOpen }) {
+function FeaturesAdminSidebar({ open, setOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -93,4 +71,4 @@ function CourseAdminSidebar({ open, setOpen }) {
   );
 }
 
-export default CourseAdminSidebar;
+export default FeaturesAdminSidebar;

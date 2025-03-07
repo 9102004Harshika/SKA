@@ -1,6 +1,6 @@
 import React from "react";
 
-const Courses = () => {
+const Quiz = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <h1>Coming Soon...</h1>
@@ -9,4 +9,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default Quiz;
