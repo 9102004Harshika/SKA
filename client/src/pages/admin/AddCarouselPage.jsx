@@ -21,7 +21,6 @@ const AddCarouselPage = () => {
       setFormData({ image: null, description: "" }); // Reset form if success
     }
   };
-
   return (
     <div className="ml-16 mr-10">
       <div className="">
@@ -80,7 +79,7 @@ const AddCarouselPage = () => {
                   className="w-full h-56 object-cover rounded-md shadow"
                 />
                 <button
-                  onClick={() => deleteCarouselItem(item._id)}
+                  onClick={() => deleteCarouselItem(item._id,item.image)}
                   className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-80 hover:opacity-100 transition"
                 >
                   <AiOutlineClose size={18} />

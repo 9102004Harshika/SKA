@@ -16,14 +16,12 @@ const getUrl=(link)=>{
 // Delete from Cloudinary
 export const deleteFile = async (req, res) => {
   try {
-    const { coverImageUrl, pdfUrl } = req.body;
-    const image = getUrl(coverImageUrl);
-    const pdf = getUrl(pdfUrl);
+    const { Url } = req.body;
+    const file = getUrl(Url);
+    
+    const fileResult = await cloudinary.uploader.destroy(file);
 
-    const imageResult = await cloudinary.uploader.destroy(image);
-    const pdfResult = await cloudinary.uploader.destroy(pdf);
-
-    res.status(200).json({ message: "Files deleted successfully", imageResult, pdfResult });
+    res.status(200).json({ message: "Files deleted successfully", fileResult });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting files", error });

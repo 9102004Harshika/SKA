@@ -110,25 +110,21 @@ const useCarousel = () => {
     }
   };
 
-  const deleteCarouselItem = async (item) => {
+  const deleteCarouselItem = async (id,image) => {
     if (!window.confirm("Are you sure you want to delete this carousel item?"))
       return;
 
     try {
-      // Delete image from Cloudinary first
-      // await axios.post("http://localhost:5000/api/files/deleteFile", {
-      //   coverImageUrl: item.image,
-      //   pdfUrl: null,
-      // });
-      // console.log("Deleted from Cloudinary!");
-
-      // Delete from MongoDB
-      await axios.delete(`http://localhost:5000/api/carousel/${item._id}`);
+      await axios.post("http://localhost:5000/api/files/deleteFile",{
+         Url: image,
+      })
+      console.log("Deleted Pdf from cloudinary")
+      await axios.delete(`http://localhost:5000/api/carousel/${id}`);
       console.log("Deleted from MongoDB!");
 
       // Update state
       setCarouselItems(
-        carouselItems.filter((carousel) => carousel._id !== item._id)
+        carouselItems.filter((carousel) => carousel._id !== id)
       );
 
       toast({

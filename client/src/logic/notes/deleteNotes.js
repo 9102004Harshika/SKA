@@ -7,10 +7,14 @@ export const deleteFile = async (note, setNotes) => {
   try {
     // Step 1: Delete the image and PDF from Cloudinary
     await axios.post("http://localhost:5000/api/files/deleteFile", {
-      coverImageUrl: note.coverImageUrl,
-      pdfUrl: note.pdfUrl,
+      Url: note.coverImageUrl,
+     
     });
-    console.log("Deleted from Cloudinary!");
+    console.log("Deleted Image from Cloudinary!");
+    await axios.post("http://localhost:5000/api/files/deleteFile",{
+      Url: note.pdfUrl,
+    })
+    console.log("Deleted Pdf from cloudinary")
 
     // // Step 2: Delete the note from the database
     await axios.delete(`http://localhost:5000/api/notes/delete/${note._id}`);
