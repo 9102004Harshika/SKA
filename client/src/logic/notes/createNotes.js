@@ -12,7 +12,8 @@ const useAddNotes = () => {
     setFormData,
     openModal,
     closeModal,
-    resetForm
+    resetForm,
+    setUploadType
   ) => {
     e.preventDefault();
     setLoading(true);
@@ -54,11 +55,13 @@ const useAddNotes = () => {
           formData.coverImageUrl,
           "cover_image.jpg"
         );
+        setUploadType(coverImageFile.type.replace("$", "").split("/")[0].trim())
         coverImageUrl = await uploadToCloudinary(coverImageFile, "Shree Kalam Academy");
       }
 
       if (formData.pdfUrl) {
         const pdfFile = await convertBlobUrlToFile(formData.pdfUrl, "note.pdf");
+        setUploadType(pdfFile.type.replace("$", "").split("/")[0].trim());
         pdfUrl = await uploadToCloudinary(pdfFile, "Notes_Pdf");
       }
 

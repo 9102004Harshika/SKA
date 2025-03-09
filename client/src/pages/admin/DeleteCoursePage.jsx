@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaEdit } from "react-icons/fa"; // Import edit icon
-import CircularProgress from "../../ui/progressBar";
+import { AiOutlineClose } from "react-icons/ai";
+import { deleteFile } from "../../logic/course/deleteCourse";
 
-const UpdateCoursePage = () => {
+const DeleteCourse = () => {
   const [courses, setCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -23,11 +23,20 @@ const UpdateCoursePage = () => {
         setLoading(false);
       }
     };
+
     fetchNotes();
   }, []);
 
-  const handleUpdate = (id) => {
-    navigate(`/admin/course/edit/${id}`); // Navigate to update page with note ID
+  const handleDeleteClick = (note) => {
+    setSelectedCourse(note);
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedCourse) {
+      deleteFile(selectedCourse, setCourses);
+      setIsModalOpen(false);
+    }
   };
 
   const filteredNotes = courses.filter((course) =>
@@ -37,7 +46,7 @@ const UpdateCoursePage = () => {
   return (
     <div className="md:ml-8">
       <h2 className="text-3xl font-header font-semibold md:tracking-wide text-center mb-6">
-        Update Notes
+        Delete Notes
       </h2>
 
       {/* Search Bar */}
@@ -50,17 +59,17 @@ const UpdateCoursePage = () => {
       />
 
       {loading ? (
-        <p className="text-gray-600">Loading!!! Please Wait...</p>
+        <p className="text-gray-600">Loading...</p>
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : filteredNotes.length === 0 ? (
-        <p className="text-gray-600">No notes found.</p>
+        <p className="text-gray-600">No courses found.</p>
       ) : (
-        <div className="overflow-x-auto rounded-sm">
-          <table className="min-w-full border-collapse border border-primary">
+        <div className="overflow-x-auto rounded-sm overflow-hidden">
+          <table className="min-w-full border-collapse border border-primary rounded-sm">
             <thead>
               <tr className="border-primary">
-                <th className="border bg-secondary border-primary p-3">
+                <th className="border bg-secondary border-primary p-3 text-left">
                   Title
                 </th>
                 <th className="border bg-secondary border-primary p-3 text-center">
@@ -69,14 +78,14 @@ const UpdateCoursePage = () => {
                 <th className="border bg-secondary border-primary p-3 text-center">
                   Board
                 </th>
-                <th className="border bg-secondary border-primary p-3">
+                <th className="border bg-secondary border-primary p-3 text-left">
                   Subject
                 </th>
                 {/* <th className="border bg-secondary border-primary p-3 text-center">
                   Time
                 </th> */}
                 <th className="border bg-secondary border-primary p-3 text-center">
-                  Update
+                  Delete
                 </th>
               </tr>
             </thead>
@@ -90,16 +99,18 @@ const UpdateCoursePage = () => {
                   <td className="border border-primary p-3 text-center">
                     {course.board}
                   </td>
-                  <td className="border border-primary p-3">{course.subject}</td>
+                  <td className="border border-primary p-3 text-left">
+                    {course.subject}
+                  </td>
                   {/* <td className="border border-primary p-3 text-center">
-                    {new Date(note.createdOn).toLocaleString()}
+                    {new Date(course.createdOn).toLocaleString()}
                   </td> */}
                   <td className="border border-primary p-3 text-center">
                     <button
-                      onClick={() => handleUpdate(course._id)}
-                      className="px-4 py-2 bg-accent text-background rounded-md hover:bg-secondary"
+                      onClick={() => handleDeleteClick(course)}
+                      className="px-4 py-2 bg-accent text-background rounded-md hover:bg-red-600"
                     >
-                      <FaEdit />
+                      <RiDeleteBin6Line />
                     </button>
                   </td>
                 </tr>
@@ -108,8 +119,38 @@ const UpdateCoursePage = () => {
           </table>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-background p-6 rounded-lg shadow-lg w-96 relative">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-primary"
+            >
+              <AiOutlineClose size={20} />
+            </button>
+            <h3 className="text-xl font-semibold mb-4">Confirm Deletion</h3>
+            <p>Are you sure you want to delete this Notes?</p>
+            <div className="flex justify-end gap-4 mt-4">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-background rounded-md hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default UpdateCoursePage;
+export default DeleteCourse;

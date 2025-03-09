@@ -17,16 +17,31 @@ const getUrl=(link)=>{
 export const deleteFile = async (req, res) => {
   try {
     const { Url } = req.body;
-    const file = getUrl(Url);
-    
-    const fileResult = await cloudinary.uploader.destroy(file);
 
-    res.status(200).json({ message: "Files deleted successfully", fileResult });
+    if (!Url) {
+      return res.status(400).json({ message: "File URL is required" });
+    }
+
+    const file = getUrl(Url);
+
+    // Determine the resource type
+    let resourceType = "image"; // Default
+    if (Url.includes("/video/upload/")) {
+      resourceType = "video";
+    } else if (Url.includes("/raw/upload/") || Url.endsWith(".pdf")) {
+      resourceType = "raw"; // PDFs and raw files
+    }
+
+    // Delete from Cloudinary
+    const fileResult = await cloudinary.uploader.destroy(file, { resource_type: resourceType });
+
+    res.status(200).json({ message: "File deleted successfully", fileResult });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error deleting files", error });
+
+    res.status(500).json({ message: "Error deleting file", error });
   }
 };
+
 export const deleteUrl=async(req,res)=>{
   try{
      const {url,note}=req.body

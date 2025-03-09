@@ -33,7 +33,10 @@ import NotesDetail from "./pages/NotesDetail";
 import FeatureAdminLayout from "./layouts/FeatureAdminLayout";
 import AddCarouselPage from "./pages/admin/AddCarouselPage";
 import Quiz from "./pages/Quiz";
-
+import UpdateCourse from "./pages/admin/UpdateCoursePage";
+import DeleteCourse from "./pages/admin/DeleteCoursePage";
+import UpdateCoursePage from "./pages/admin/UpdateCoursePage";
+import EditCoursesPage from "./pages/admin/EditCoursesPage";
 const App = () => {
   return (
     <Router>
@@ -70,8 +73,9 @@ const App = () => {
             <Route path="/admin/course" element={<CourseAdminLayout />}>
               <Route index element={<CourseAdminDashboard />} />
               <Route path="create" element={<AddCoursePage />} />
-
-              {/* <Route path="create" element={<UpdateCourse />} /> */}
+              <Route path="update" element={<UpdateCoursePage />} />
+              <Route path="edit/:id" element={<EditCoursesPage />} />
+              <Route path="delete" element={<DeleteCourse />} />
               {/* <Route path="delete" element={<DeleteCourse />} /> */}
             </Route>
             <Route path="/admin/feature" element={<FeatureAdminLayout />}>
@@ -93,13 +97,12 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
 
             {/* Route used for dedicated page of component testing */}
-            {/* <Route
-              path="/testing/67c5ae15c3106485439a99c5"
+            <Route
+              path="/testing"
               element={
-                <PdfViewer src="https://res.cloudinary.com/dsnsi0ioz/image/upload/v1741008946/Ska/notes_pdf/zvfm1txhvb3krp0yqudu.pdf" 
-                pdfName="Physics Textbook"/>
+               <Video/>
               }
-            /> */}
+            />
           </Routes>
         </main>
         {/* <Footer /> */}

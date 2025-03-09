@@ -25,6 +25,7 @@ const AddNotesPage = () => {
   const closeModal = () => setIsModalOpen(false);
   const [coverImage, setCoverImage] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
+  const[uploadType,setUploadType]=useState()
   const visibilityOptions = [
     { value: "paid", text: "Paid" },
     { value: "free", text: "Free" },
@@ -60,7 +61,8 @@ const AddNotesPage = () => {
               setFormData,
               openModal,
               closeModal,
-              resetForm
+              resetForm,
+              setUploadType
             )
           }
           className="flex flex-col gap-6"
@@ -183,9 +185,13 @@ const AddNotesPage = () => {
           </div>
         </form>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} progress={progress}>
+      <Modal isOpen={isModalOpen} progress={progress}>
         <h2 className="text-lg text-primary font-semibold">
-          Please Wait, Content is uploading...
+        Please Wait, 
+  {uploadType === "image" 
+    ? ' Cover Image '
+    : " Notes Pdf "} 
+  is uploading...
         </h2>
       </Modal>
     </div>

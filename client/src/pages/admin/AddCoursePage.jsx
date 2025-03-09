@@ -15,6 +15,10 @@ import {
 import ImageUploader from "../../ui/imageUploader";
 import { Checkbox } from "../../ui/checkBox";
 import { getSubjects } from "../../config";
+import Modal from "../../components/Modal";
+import useAddCourse, { calculateDiscountPercentage } from "../../logic/course/addCourse";
+import VideoUploader from "../../ui/videoUploader";
+
 function CourseForm() {
   const initialState = {
     courseTitle: "",
@@ -40,14 +44,17 @@ function CourseForm() {
     quizzes: [],
   };
   const [courseData, setCourseData] = useState(initialState);
-
+  const { handleSubmit, loading, progress } = useAddCourse();
+const [isModalOpen, setIsModalOpen] = useState(false);
   const [instructors, setInstructors] = useState([]);
   const [notes, setNotes] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [isNotesChecked, setIsNotesChecked] = useState(false);
   const [isQuizzesChecked, setIsQuizzesChecked] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const[uploadType,setUploadType]=useState()
+  const[index,setIndex]=useState()
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   useEffect(() => {
     if (!courseData.subject || !courseData.classFor) return; // Fetch only when both are selected
 
@@ -77,14 +84,22 @@ function CourseForm() {
 
     fetchData();
   }, [courseData.subject, courseData.classFor]);
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    if (e?.target) {
+      const { name, value } = e.target;
+      setCourseData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+  const handleFileChange = (file) => {
     setCourseData((prev) => ({
       ...prev,
-      [name]: value,
+      courseImage: file,
     }));
-  };
+  }
+  
   console.log(notes);
   const handleArrayChange = (e, field) => {
     const values = e.target.value.split(",").map((item) => item.trim());
@@ -94,32 +109,30 @@ function CourseForm() {
     }));
   };
 
-  const handleModuleChange = (index, e) => {
-    const { name, value } = e.target;
-    const modules = [...courseData.modules];
-    modules[index][name] = value;
-    setCourseData((prev) => ({ ...prev, modules }));
+  const handleModuleChange = (index, event) => {
+    const { name, value } = event.target;
+    setCourseData((prevData) => {
+      const updatedModules = [...prevData.modules];
+      updatedModules[index] = { ...updatedModules[index], [name]: value };
+      return { ...prevData, modules: updatedModules };
+    });
   };
+  
 
-  const calculateDiscountPercentage = () => {
-    const { originalPrice, discountedPrice } = courseData;
-    if (originalPrice && discountedPrice) {
-      const discount =
-        ((originalPrice - discountedPrice) / originalPrice) * 100;
-      return discount.toFixed(2);
-    }
-    return 0;
-  };
 
   const addModule = () => {
-    setCourseData((prev) => ({
-      ...prev,
-      modules: [
-        ...prev.modules,
-        { name: "", estimatedTime: "", videoLink: "" },
-      ],
-    }));
+    setCourseData((prevData) => {
+      console.log("Existing Modules:", prevData.modules); // Log previous modules
+      return {
+        ...prevData,
+        modules: [
+          ...prevData.modules,
+          { name: "", estimatedTime: "", videoFile: null } // New empty module
+        ]
+      };
+    });
   };
+  
 
   const handleNestedChange = (e, field) => {
     const { name, value } = e.target;
@@ -158,8 +171,8 @@ function CourseForm() {
     setCourseData((prevData) => {
       const updatedKeyFeatures = Array.isArray(prevData.keyFeatures) ? [...prevData.keyFeatures] : []; // Ensure it's an array
   
-      if (!isNotesChecked) {
-        updatedKeyFeatures.push("quizzess"); // Add "Notes" if checked
+      if (!isQuizzesChecked) {
+        updatedKeyFeatures.push("quizzes"); // Add "Notes" if checked
       } else {
         const index = updatedKeyFeatures.indexOf("quizzes");
         if (index !== -1) updatedKeyFeatures.splice(index, 1); // Remove "Notes" if unchecked
@@ -171,85 +184,64 @@ function CourseForm() {
       };
     });
   };
-  
-  const convertBlobUrlToFile = async (blobUrl, filename) => {
-    const response = await fetch(blobUrl);
-    const blob = await response.blob();
-    return new File([blob], filename, { type: blob.type });
+  const resetForm = () => {
+    setCourseData((prev) => ({
+      ...prev, // Spread previous state to maintain reactivity
+      courseTitle: "",
+      courseDescription: "",
+      courseImage: "",
+      originalPrice: "",
+      discountedPrice: "",
+      aboutCourse: "",
+      moduledescription: "",
+      demoVideo: "",
+      studentCount: "",
+      lastUpdated: "",
+      classFor: "",
+      board: "",
+      subject: "",
+      stream: "",
+      category: "",
+      keyFeatures: [...[]], // Force state update
+      topicsCovered: [...[]], // Force state update
+      modules: [{ name: "", estimatedTime: "", videoLink: "" }],
+      instructor: "",
+      notes: [],
+      quizzes: [],
+    }));
   };
-
-  const uploadToCloudinary = async (file) => {
-    if (!file) return null;
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "carousel_image");
-
-    try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dsnsi0ioz/upload",
-        formData,
-        {
-          onUploadProgress: (progressEvent) => {
-            const fileProgress = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            );
-            setProgress(fileProgress);
-          },
-        }
-      );
-
-      return response.data.secure_url;
-    } catch (error) {
-      console.error("Cloudinary Upload Error:", error);
-      return null;
-    }
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const imageFile = await convertBlobUrlToFile(
-      courseData.image,
-      "carousel_image.jpg"
-    );
-    const imageUrl = await uploadToCloudinary(imageFile);
-    const formattedData = {
-      ...courseData,
-      class: courseData.classFor,
-      discountPercentage: calculateDiscountPercentage(),
-      keyFeatures: Array.isArray(courseData.keyFeatures)
-        ? courseData.keyFeatures
-        : Object.values(courseData.keyFeatures),
-      courseImage: imageUrl,
-    };
-    console.log(formattedData)
+  const handleVideoChange = (index, file) => {
+    setCourseData((prevData) => {
+      const updatedModules = [...prevData.modules];
+      updatedModules[index] = { ...updatedModules[index], videoLink: file };
+      return { ...prevData, modules: updatedModules };
+    });
   };
   
   
   
   
-
-
-
   return (
     <div className="min-h-screen my-2">
       <div className="max-w-4xl mx-auto p-4">
         <h1 className="text-3xl font-semibold md:tracking-wide font-header text-center mb-6">
           Create New Course
         </h1>
-        <form onSubmit={handleSubmit} className="space-y-6 flex flex-col">
+        <form  novalidate onSubmit={(e) =>
+            handleSubmit(
+              e,
+              courseData,
+              setCourseData,
+              openModal,
+              closeModal,
+              resetForm,
+              setUploadType,
+              setIndex
+            )
+          }  className="space-y-6 flex flex-col">
           {/* Text Fields */}
           <div className="flex gap-4 items-center justify-between">
             <div className="flex-1">
-              {/* <input
-                type="text"
-                name="courseImage"
-                value={courseData.courseImage}
-                onChange={handleChange}
-                placeholder="Course Image URL"
-                className="input"
-                required
-              /> */}
-
               <TextInput
                 type="text"
                 name="courseTitle"
@@ -267,13 +259,14 @@ function CourseForm() {
               />
             </div>
             <ImageUploader
-              label="Upload Image"
-              id="imageUpload"
-              required
-              onChange={(file) =>
-                setCourseData({ ...courseData, courseImage: file })
-              }
-            />
+                label="Upload Image"
+                id="courseImage"
+                required
+                onChange={(file) =>
+                  handleFileChange(file)
+                }
+              />
+
           </div>
 
           <TextAreaInput
@@ -339,7 +332,7 @@ function CourseForm() {
             />
             {/* Display Discount Percentage */}
             <div className="text-md p-[14px] font-bold border-b-[1px] border-primary">
-              Discount Percentage: {calculateDiscountPercentage()}%
+              Discount Percentage: {calculateDiscountPercentage(courseData.originalPrice, courseData.discountedPrice)}%
             </div>
           </div>
           <Select
@@ -395,47 +388,46 @@ function CourseForm() {
           />
           {/* Modules */}
           <div className="space-y-4">
-            {courseData.modules.map((module, index) => (
-              <div
-                key={index}
-                className="space-y-2 flex gap-4 items-center justify-between"
-              >
-                <div className="">
-                  <FileUploader label={"Add Video"} />
-                </div>
-                <div className="flex-1">
-                  <TextInput
-                    type="text"
-                    name="name"
-                    value={module.name}
-                    onChange={(e) => handleModuleChange(index, e)}
-                    label={`Module ${index + 1} Name`}
-                    className="input"
-                    required
-                  />
-                  <TextInput
-                    type="number"
-                    name="estimatedTime"
-                    value={module.estimatedTime}
-                    onChange={(e) => handleModuleChange(index, e)}
-                    label={`Module ${index + 1} Estimated Time`}
-                    className="input"
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="videoLink"
-                    value={module.videoLink}
-                    onChange={(e) => handleModuleChange(index, e)}
-                    placeholder={`Module ${index + 1} Video Link`}
-                    className="input"
-                    required
-                  />
-                </div>
-              </div>
-            ))}
-            <div className="flex justify-evenly items-center gap-10">
-              <Button
+  {courseData.modules.map((module, index) => (
+    <div
+      key={index}
+      className="space-y-2 flex gap-4 items-center justify-between"
+    >
+      {/* Video Upload Section */}
+      <div>
+        <VideoUploader
+          label="Add Video"
+          onChange={(file) => handleVideoChange(index, file)} // Pass module index
+        />
+      </div>
+
+      {/* Module Details */}
+      <div className="flex-1">
+        <TextInput
+          type="text"
+          name="name"
+          value={module.name}
+          onChange={(e) => handleModuleChange(index, e)}
+          label={`Module ${index + 1} Name`}
+          className="input"
+          required
+        />
+        <TextInput
+          type="number"
+          name="estimatedTime"
+          value={module.estimatedTime}
+          onChange={(e) => handleModuleChange(index, e)}
+          label={`Module ${index + 1} Estimated Time`}
+          className="input"
+          required
+        />
+      </div>
+    </div>
+  ))}
+
+  {/* Add / Remove Module Buttons */}
+  <div className="flex justify-evenly items-center gap-10">
+  <Button
                 type="button"
                 onClick={addModule}
                 text="Remove Module"
@@ -443,16 +435,15 @@ function CourseForm() {
                 variant="accent"
                 className=""
               />
-              <Button
-                type="button"
-                onClick={addModule}
-                text="Add Module"
-                size="sm"
-                variant="primary"
-                className=""
-              />
-            </div>
-          </div>
+    <Button
+      type="button"
+      onClick={addModule}
+      text="Add Module"
+      size="sm"
+      variant="primary"
+    />
+  </div>
+</div>
 
           {/* Key Features */}
           <div className="flex space-x-4">
@@ -536,6 +527,15 @@ function CourseForm() {
           </div>
         </form>
       </div>
+       <Modal isOpen={isModalOpen}  progress={progress}>
+       <h2 className="text-lg text-primary font-semibold">
+  Please Wait, 
+  {uploadType === "video" 
+    ? ` Module ${index + 1} Video ` 
+    : " Course Image "} 
+  is uploading...
+</h2>
+            </Modal>
     </div>
   );
 }
