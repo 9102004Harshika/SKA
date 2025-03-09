@@ -1,4 +1,5 @@
 import Notes from "../models/Notes.js";
+import Course from '../models/Course.js'
 import {cloudinary} from "../utils/cloudinary.js"
 cloudinary.config({
   cloud_name: "dsnsi0ioz",
@@ -63,3 +64,34 @@ export const deleteUrl=async(req,res)=>{
 }
 
 
+export const deleteVideoUrl = async (req, res) => {
+  try {
+    const { url, course } = req.body;
+    const courseData = await Course.findById(course);
+    if (!courseData) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    
+    const file = getUrl(url);
+    let fileResult;
+    
+    if (courseData.courseImage === url) {
+      fileResult = await cloudinary.uploader.destroy(file, { resource_type: "image" });
+      courseData.courseImage = null;
+    } else {
+      courseData.modules.forEach(async (module) => {
+        if (module.videoLink === url) {
+          fileResult = await cloudinary.uploader.destroy(file, { resource_type: "video" });
+          module.videoLink = null;
+        }
+      });
+    }
+    
+    await courseData.save();
+    
+    res.status(200).json({ message: "Media deleted successfully", fileResult });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error deleting media file", error });
+  }
+};

@@ -227,7 +227,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         <h1 className="text-3xl font-semibold md:tracking-wide font-header text-center mb-6">
           Create New Course
         </h1>
-        <form  novalidate onSubmit={(e) =>
+        <form  onSubmit={(e) =>
             handleSubmit(
               e,
               courseData,
