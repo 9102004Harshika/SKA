@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const Select = ({ menuTitle, submenuItems, onSelect }) => {
+const Select = ({ menuTitle, submenuItems, onSelect, value }) => {
   const [selectedItem, setSelectedItem] = useState(menuTitle);
   const [isOpen, setIsOpen] = useState(false); // Track if the submenu is open
   const dropdownRef = useRef(null); // Reference to the dropdown menu
+
+  useEffect(() => {
+    if (value) {
+      setSelectedItem(value); // Ensure the default value is reflected
+    }
+  }, [value]);
 
   const handleSelect = (item) => {
     setSelectedItem(item);
@@ -214,7 +220,5 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-
-
 
 export default Select;
