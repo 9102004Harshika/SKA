@@ -69,9 +69,9 @@ const Select = ({ menuTitle, submenuItems, onSelect, value }) => {
                   <a href="#" className="submenu-link">{item}</a>
                 </div>
               ))}
-              <div className="submenu-item clear-option" onClick={handleClear}>
+              {/* <div className="submenu-item clear-option" onClick={handleClear}>
                 <a href="#" className="submenu-link">Clear Selection</a>
-              </div>
+              </div> */}
             </div>
           )}
         </div>

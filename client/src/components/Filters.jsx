@@ -82,7 +82,7 @@ const Filters = ({ notes, selectedFilters, setSelectedFilters }) => {
     Object.values(selectedFilters[type]).some((checked) => checked);
 
   return (
-    <aside className="w-72 h-[200vh] bg-background border-r-[1px] border-primary p-6 hidden lg:flex flex-col">
+    <aside className="w-72 h-[200vh] bg-background border-r-[1px] border-slate-400 p-6 hidden lg:flex flex-col">
       {/* Board Filter */}
       <div className="mt-8">
         <div

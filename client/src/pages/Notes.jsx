@@ -79,8 +79,8 @@ const Notes = () => {
     );
 
     const boardMatch =
-      selectedBoards.length === 0 || selectedBoards.includes(note.board);
-    const formattedClassFor = formatClassFor(note.classFor);
+      selectedBoards.length === 0 || selectedBoards.includes(note.board.match(/\((.*?)\)/)?.[1] || note.board);
+    const formattedClassFor = formatClassFor(note.classFor.match(/\d+/)?.[0] || note.classFor);
     const classMatch =
       selectedClasses.length === 0 ||
       selectedClasses.includes(formattedClassFor);
@@ -160,7 +160,7 @@ const Notes = () => {
                     <div className="text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <FaUniversity className="text-gray-500" />
-                        <span>Board: {note.board}</span>
+                        <span>Board: {note.board.split("(").pop().replace(")", "")}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <FaFilePdf className="text-gray-500" />

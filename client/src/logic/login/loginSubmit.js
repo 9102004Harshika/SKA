@@ -51,7 +51,7 @@ export const handleSubmit = async (e, formData, navigate) => {
             description: "You have logged in successfully! Welcome back.",
             variant: "success",
           });
-          navigate("/home");  // Redirect to home page
+          navigate("/app");  // Redirect to home page
         }
       }
     } catch (error) {
@@ -114,7 +114,7 @@ export const GoogleLogin=(navigate) =>{
                   description: "You have logged in successfully! Welcome back.",
                   variant: "success",
                 });
-                navigate("/app/home");  // Redirect to home page
+                navigate("/app");  // Redirect to home page
               }
             } else {
               toast({

@@ -480,7 +480,7 @@ const CourseDetailPage = () => {
     const fetchCourse = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/courses/677a6c05a7beeb41b17315c9`
+          `http://localhost:5000/api/courses/${id}`
         );
         setCourse(response.data);
         setLoading(false);

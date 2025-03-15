@@ -61,7 +61,7 @@ const App = () => {
               <Route path="notes" element={<Notes />} />
               <Route path="notes/:id" element={<NotesDetail />} />
               <Route
-                path="coursedetail"
+                path="coursedetail/:id"
                 element={<CourseDetail />}
                 caseSensitive
               />
