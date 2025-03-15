@@ -38,7 +38,7 @@ const useUpdateNotes = () => {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e,isImageRemoved,isPdfRemoved) => {
     e.preventDefault();
     setLoading(true);
   
@@ -71,19 +71,16 @@ const useUpdateNotes = () => {
   
       let coverImageUrl = note.coverImageUrl || "";
       let pdfUrl = note.pdfUrl || "";
-  
-      if (note.coverImageUrl && note.coverImageUrl.startsWith("blob")) {
-        const coverImageFile = await convertBlobUrlToFile(
-          note.coverImageUrl,
-          "cover_image.jpg"
-        );
+      if (isImageRemoved && note.coverImageUrl?.startsWith("blob")) {
+        const coverImageFile = await convertBlobUrlToFile(note.coverImageUrl, "cover_image.jpg");
         coverImageUrl = await uploadToCloudinary(coverImageFile, "Shree Kalam Academy");
-      }
-  
-      if (note.pdfUrl && note.pdfUrl.startsWith("blob")) {
+    }
+
+    // Upload new PDF if removed
+    if (isPdfRemoved && note.pdfUrl?.startsWith("blob")) {
         const pdfFile = await convertBlobUrlToFile(note.pdfUrl, "note.pdf");
         pdfUrl = await uploadToCloudinary(pdfFile, "Notes_Pdf");
-      }
+    }
   
       setProgress(100);
   

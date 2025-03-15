@@ -9,7 +9,9 @@ const notesSchema = new mongoose.Schema({
   subject: { type: String },
   classFor: { type: String },
   board: { type: String },
+  stream: { type: String, default: "General" }, 
   createdOn: { type: Date, default: Date.now },
+
 });
 
 const Notes = mongoose.model("Notes", notesSchema);

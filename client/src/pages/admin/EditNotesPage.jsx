@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useUpdateNotes from "../../logic/notes/updateNotes.js";
 import TextAreaInput from "../../ui/textarea";
 import TextInput from "../../ui/textInput";
@@ -6,10 +6,13 @@ import { Button } from "../../ui/button";
 import FileUploader from "../../ui/fileUploader";
 import ImageUploader from "../../ui/imageUploader";
 import { RadioButton } from "../../ui/radioButton";
+import { boards, getClassOptions, getSubjects, streams } from "../../config/index.js";
+import Select from "../../ui/select.jsx";
 
 const EditNotesPage = () => {
   const { note, handleChange, handleSubmit, setNote ,deleteFile} = useUpdateNotes();
-
+  const [isImageRemoved,setIsImageRemoved]=useState(false)
+  const [isPdfRemoved,setIsPdfRemoved]=useState(false)
   const visibilityOptions = [
     { value: "paid", text: "Paid" },
     { value: "free", text: "Free" },
@@ -21,7 +24,7 @@ const EditNotesPage = () => {
         Edit This Notes
       </h2>
       <div className="space-y-6 mx-10">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form onSubmit={(e)=>handleSubmit(e,isImageRemoved,isPdfRemoved)} className="flex flex-col gap-6">
           <div className="flex gap-10">
             <div className="flex-1 flex flex-col justify-between">
               <TextInput
@@ -65,6 +68,7 @@ const EditNotesPage = () => {
                     variant="secondary"
                     size="xs"
                     onClick={() => {
+                      setIsImageRemoved(true)
                       setNote({ ...note, coverImageUrl: "" })
                       deleteFile(note.coverImageUrl)
                     }}
@@ -98,6 +102,7 @@ const EditNotesPage = () => {
                     text="Remove PDF"
                     variant="danger"
                     onClick={() => {
+                      setIsPdfRemoved(true)
                       setNote({ ...note, pdfUrl: "" })
                       deleteFile(note.pdfUrl)}}
                   />
@@ -112,31 +117,57 @@ const EditNotesPage = () => {
               )}
             </div>
 
-            <div className="flex-1 flex flex-col justify-between">
-              <TextInput
-                label="Board"
-                type="text"
-                required
-                value={note.board}
-                onChange={handleChange}
-                name="board"
-              />
-              <TextInput
-                label="Subject For"
-                type="text"
-                required
-                value={note.subject}
-                onChange={handleChange}
-                name="subject"
-              />
-              <TextInput
-                label="Class For"
-                type="number"
-                required
-                value={note.classFor}
-                onChange={handleChange}
-                name="classFor"
-              />
+            <div className="flex-1 flex flex-col justify-between space-y-6 ">
+
+            <Select
+  menuTitle="Board"
+  submenuItems={boards}
+  value={note.board} // Display the current selected board
+  onSelect={(selectedBoard) => {
+    setNote({
+      ...note,
+      board: selectedBoard, // Update the board selection
+      classFor: "", // Reset class selection if needed
+    });
+    
+  }}
+/>
+<Select
+  menuTitle="Class"
+  submenuItems={getClassOptions(note.board)}
+  value={note.classFor}
+  onSelect={(selectedClass) => {
+    setNote({
+      ...note,
+      classFor: selectedClass,
+      stream: selectedClass >= 11 ? "" : undefined, // Show stream dropdown without value for 11th & 12th
+      subject: "",
+    });
+  }}
+  disabled={!note.board}
+/>
+{parseInt(note.classFor) >= 11 && (
+  <Select
+    menuTitle="Stream"
+    value={note.stream}
+    submenuItems={streams}
+    onSelect={(selectedStream) => {
+      setNote({ ...note, stream: selectedStream || "",subject: selectedStream ? note.subject : undefined,}) // Clear subject if stream is undefined or empty });
+    }}
+    disabled={!note.board}
+  />
+)}
+
+<Select
+  menuTitle="Subject"
+  submenuItems={getSubjects(note.classFor, note.stream)}
+  onSelect={(selectedSubject) => {
+    setNote({ ...note, subject: selectedSubject });
+  }}
+  disabled={!note.classFor || (note.classFor > 10 && !note.stream)} // Disable if classFor > 10 but no stream selected
+  value={note.subject}
+/>
+
               <TextInput
                 label="Written By"
                 type="text"

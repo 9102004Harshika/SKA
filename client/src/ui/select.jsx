@@ -3,37 +3,42 @@ import styled from "styled-components";
 
 const Select = ({ menuTitle, submenuItems, onSelect, value }) => {
   const [selectedItem, setSelectedItem] = useState(menuTitle);
-  const [isOpen, setIsOpen] = useState(false); // Track if the submenu is open
-  const dropdownRef = useRef(null); // Reference to the dropdown menu
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     if (value) {
-      setSelectedItem(value); // Ensure the default value is reflected
+      setSelectedItem(value);
     }
   }, [value]);
 
   const handleSelect = (item) => {
     setSelectedItem(item);
     if (onSelect) {
-      onSelect(item); // Send the selected item to the parent component
+      onSelect(item);
     }
-    setIsOpen(false); // Close the submenu after selection
+    setIsOpen(false);
   };
 
   const handleToggle = () => {
-    setIsOpen(!isOpen); // Toggle the submenu on click
+    setIsOpen(!isOpen);
   };
 
-  // Close the submenu when clicking outside
+  const handleClear = () => {
+    setSelectedItem(menuTitle);
+    if (onSelect) {
+      onSelect(null);
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false); // Close the dropdown if clicked outside
+        setIsOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -41,6 +46,7 @@ const Select = ({ menuTitle, submenuItems, onSelect, value }) => {
 
   return (
     <StyledWrapper ref={dropdownRef}>
+      {selectedItem !== menuTitle && <div className="menu-title">{menuTitle}</div>}
       <div className="menu">
         <div className="item">
           <button type="button" className="link" onClick={handleToggle}>
@@ -56,20 +62,16 @@ const Select = ({ menuTitle, submenuItems, onSelect, value }) => {
               </g>
             </svg>
           </button>
-          {/* Show submenu based on isOpen */}
           {isOpen && (
             <div className="submenu">
               {submenuItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="submenu-item"
-                  onClick={() => handleSelect(item)}
-                >
-                  <a href="#" className="submenu-link">
-                    {item}
-                  </a>
+                <div key={index} className="submenu-item" onClick={() => handleSelect(item)}>
+                  <a href="#" className="submenu-link">{item}</a>
                 </div>
               ))}
+              <div className="submenu-item clear-option" onClick={handleClear}>
+                <a href="#" className="submenu-link">Clear Selection</a>
+              </div>
             </div>
           )}
         </div>
@@ -79,37 +81,32 @@ const Select = ({ menuTitle, submenuItems, onSelect, value }) => {
 };
 
 const StyledWrapper = styled.div`
+  .menu-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #000080;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
   .menu {
     font-size: 14px;
     font-weight: bold;
-    line-height: 1.6;
     color: #000080;
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    list-style: none;
     border-bottom: 1px solid #000080;
     text-align: center;
   }
 
-  .menu a {
-    text-decoration: none;
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-  }
-
   .menu .link {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     padding: 8px 0px;
     border-radius: 16px;
-    overflow: hidden;
     transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
@@ -121,7 +118,6 @@ const StyledWrapper = styled.div`
     width: 16px;
     height: 16px;
     fill: #000080;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .menu .item {
@@ -129,40 +125,17 @@ const StyledWrapper = styled.div`
   }
 
   .menu .item .submenu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
     border-radius: 0 0 16px 16px;
-    overflow: hidden;
     border-top: 1px solid #000080;
     background-color: hsl(60, 56%, 91%);
     box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.56), 0 4px 6px rgba(0, 0, 0, 0.56);
     z-index: 1;
     max-height: 200px;
     overflow-y: auto;
-  }
-
-  /* Custom scrollbar styles for the dropdown submenu */
-  .menu .item .submenu::-webkit-scrollbar {
-    width: 8px; /* Width of the scrollbar */
-  }
-
-  .menu .item .submenu::-webkit-scrollbar-track {
-    background-color: #f1f1f1; /* Track color */
-    border-radius: 10px; /* Rounded corners */
-  }
-
-  .menu .item .submenu::-webkit-scrollbar-thumb {
-    background-color: hsl(26.53 86.98% 66.86%); /* Scrollbar thumb color */
-    border-radius: 10px; /* Rounded thumb */
-  }
-
-  .menu .item .submenu::-webkit-scrollbar-thumb:hover {
-    background-color: hsl(205 100% 85.88%); /* Thumb color on hover */
   }
 
   .submenu .submenu-item {
@@ -173,50 +146,28 @@ const StyledWrapper = styled.div`
   .submenu .submenu-link {
     display: block;
     padding: 12px 24px;
-    width: 100%;
-    position: relative;
     text-align: center;
     transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  .submenu .submenu-link::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 100%;
+  .submenu .submenu-link:hover {
     background-color: hsl(26.53, 86.98%, 66.86%);
-    z-index: -1;
-    transition: width 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    color: #fff;
   }
 
-  .submenu .submenu-link:hover::before,
-  .submenu .submenu-link:focus::before,
-  .submenu .submenu-link:active::before {
-    width: 100%;
+  .submenu .clear-option {
+    border-top: 1px solid #000080;
+    background-color: #f8f8f8;
   }
 
-  .submenu .submenu-link:hover,
-  .submenu .submenu-link:focus,
-  .submenu .submenu-link:active {
-    color: #f5f5db;
+  .submenu .clear-option:hover {
+    background-color: red;
+    color: white;
   }
 
   @media (max-width: 768px) {
-    .menu .link,
-    .submenu .submenu-link {
+    .menu .link {
       padding: 12px 16px;
-    }
-
-    .submenu .submenu-link::before {
-      width: 0%;
-    }
-
-    .submenu .submenu-link:hover::before,
-    .submenu .submenu-link:focus::before,
-    .submenu .submenu-link:active::before {
-      width: 100%;
     }
   }
 `;

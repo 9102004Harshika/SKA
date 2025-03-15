@@ -6,7 +6,7 @@ cloudinary.config({
   api_key: "151826192584142",
   api_secret: "GVb2kmMNVYdTXdVkMt8NedfPpK8",
 });
-const getUrl=(link)=>{
+export const getUrl=(link)=>{
    const urlArray=link.split('/')
    const image=urlArray[urlArray.length-1]
    const imageName=image.split('.')[0]
@@ -71,27 +71,30 @@ export const deleteVideoUrl = async (req, res) => {
     if (!courseData) {
       return res.status(404).json({ message: "Course not found" });
     }
-    
+
     const file = getUrl(url);
     let fileResult;
-    
+
     if (courseData.courseImage === url) {
       fileResult = await cloudinary.uploader.destroy(file, { resource_type: "image" });
-      courseData.courseImage = null;
+
+      // Instead of setting to null, assign a placeholder image or remove the field
+      courseData.courseImage = ""; // Use a default image URL if needed
     } else {
-      courseData.modules.forEach(async (module) => {
+      courseData.modules.forEach((module) => {
         if (module.videoLink === url) {
-          fileResult = await cloudinary.uploader.destroy(file, { resource_type: "video" });
+          fileResult = cloudinary.uploader.destroy(file, { resource_type: "video" });
           module.videoLink = null;
         }
       });
     }
-    
+
     await courseData.save();
-    
+
     res.status(200).json({ message: "Media deleted successfully", fileResult });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting media file", error });
   }
 };
+

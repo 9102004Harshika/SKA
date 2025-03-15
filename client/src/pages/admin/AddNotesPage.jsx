@@ -7,6 +7,8 @@ import { Button } from "../../ui/button";
 import { RadioButton } from "../../ui/radioButton";
 import Modal from "../../components/Modal";
 import useAddNotes from "../../logic/notes/createNotes";
+import { boards, getClassOptions, getSubjects, streams } from "../../config";
+import Select from "../../ui/select";
 const AddNotesPage = () => {
   const [formData, setFormData] = useState({
     title: "",
@@ -124,34 +126,44 @@ const AddNotesPage = () => {
               />
             </div>
 
-            <div className="flex-1 flex flex-col justify-between">
-              <TextInput
-                label="Board"
-                type="text"
-                required
-                value={formData.board}
-                onChange={(e) =>
-                  setFormData({ ...formData, board: e.target.value })
-                }
-              />
-              <TextInput
-                label="Subject For"
-                type="text"
-                required
-                value={formData.subject}
-                onChange={(e) =>
-                  setFormData({ ...formData, subject: e.target.value })
-                }
-              />
-              <TextInput
-                label="Class For"
-                type="number"
-                required
-                value={formData.classFor}
-                onChange={(e) =>
-                  setFormData({ ...formData, classFor: e.target.value })
-                }
-              />
+            <div className="flex-1 flex flex-col justify-between space-y-6">
+               <Select
+            menuTitle="Board"
+            submenuItems={boards}
+            onSelect={(selectedBoard) => {
+              setFormData({
+                ...formData,
+                board: selectedBoard,
+                classFor: "",
+              });
+            }}
+          />    
+<Select
+  menuTitle="Class"
+  submenuItems={getClassOptions(formData.board)}
+  onSelect={(selectedClass) => {
+    setFormData({ ...formData, classFor: selectedClass, stream: undefined, subject: "" });
+  }}
+  disabled={!formData.board}
+/>
+{!(parseInt(formData.classFor) > 0 && parseInt(formData.classFor) <= 10) && (
+  <Select
+    menuTitle="Stream"
+    submenuItems={streams}
+    onSelect={(selectedStream) => {
+      setFormData({ ...formData, stream: selectedStream || undefined, subject: "" });
+    }}
+    disabled={!formData.board}
+  />
+)}
+<Select
+  menuTitle="Subject"
+  submenuItems={getSubjects(formData.classFor, formData.stream)}
+  onSelect={(selectedSubject) => {
+    setFormData({ ...formData, subject: selectedSubject });
+  }}
+  disabled={!formData.classFor || (formData.classFor > 10 && !formData.stream)}
+/>
 
               <TextInput
                 label="Written By"
