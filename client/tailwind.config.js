@@ -16,6 +16,7 @@ module.exports = {
         error: "hsl(var(--error))",
         primary: "hsl(var(--primary))", // Corrected to refer to primary color
         secondary: "hsl(var(--secondary))",
+        tertiary: "hsl(var(--tertiary))",
         accent: "hsl(var(--accent))",
       },
       fontFamily: {
