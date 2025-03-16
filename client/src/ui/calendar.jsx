@@ -450,9 +450,9 @@ const Calendar = ({ onDateSelect }) => {
         }
 
         .year-change:hover {
-          background-color: hsl(205 100% 85.88%);
+          background-color: hsl(268 82% 27%);
           color: #1d0042;
-          border: hsl(205 100% 85.88%);
+          border: hsl(268 82% 27%);
         }
 
         .calendar-footer {
@@ -554,7 +554,7 @@ const Calendar = ({ onDateSelect }) => {
         }
 
         .year-item {
-          background-color: hsl(205 100% 85.88%);
+          background-color: hsl(268 82% 27%);
           border: 1px solid #1d0042;
           padding: 5px;
           text-align: center;
@@ -580,7 +580,7 @@ const Calendar = ({ onDateSelect }) => {
         }
 
         .month-item {
-          background-color: hsl(205 100% 85.88%);
+          background-color: hsl(268 82% 27%);
           border: 1px solid #1d0042;
           padding: 5px;
           text-align: center;

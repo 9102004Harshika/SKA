@@ -72,10 +72,10 @@
 
 /* Prevent Google Autofill from changing text and background color */
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 30px hsl(205 100% 85.88%) inset; /* Set to transparent to prevent background color change */
-  box-shadow: 0 0 0 30px hsl(205 100% 85.88%) inset; /* Prevent background color change */
+  -webkit-box-shadow: 0 0 0 30px hsl(268 82% 27%) inset; /* Set to transparent to prevent background color change */
+  box-shadow: 0 0 0 30px hsl(0 0% 98%) inset; /* Prevent background color change */
   -webkit-text-fill-color: hsl(
-    240 100% 25%
+    0 0% 31%
   ); /* Inherit text color from the parent or default styles */
 }
 
@@ -104,7 +104,7 @@ label {
 .swiper-pagination-bullet {
   width: 30px;
   height: 3px;
-  background: hsl(205 100% 85.88%); /* Navy blue color for the lines */
+  background: hsl(268 82% 27%); /* Navy blue color for the lines */
   margin: 0 5px; /* Spacing between lines */
   opacity: 0.6; /* Slight transparency for inactive lines */
   transition: all 0.3s ease; /* Smooth transition on hover */

@@ -92,7 +92,7 @@ const StyledWrapper = styled.div`
       variant === "primary"
         ? "hsl(266, 100%, 13%)"
         : variant === "secondary"
-        ? "hsl(205, 100% ,85.88%)"
+        ? "hsl(268, 82%, 27%)"
         : variant === "course"
         ? "#1d0042"
         : "hsl(26.53 ,86.98%, 66.86%)"};
