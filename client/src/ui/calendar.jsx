@@ -25,7 +25,7 @@ const getFebDays = (year) => {
 
 const Calendar = ({ onDateSelect }) => {
   const currentDate = new Date();
-  const [currYear, setCurrYear] = useState(currentDate.getFullYear()-8);
+  const [currYear, setCurrYear] = useState(currentDate.getFullYear() - 8);
   const [currMonth, setCurrMonth] = useState(currentDate.getMonth());
   const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [showYearPicker, setShowYearPicker] = useState(false);
@@ -88,30 +88,29 @@ const Calendar = ({ onDateSelect }) => {
     setShowMonthPicker(false);
     setShowYearPicker(false);
   };
-  
+
   const handleClickOutside = (event) => {
     if (calendarRef.current && !calendarRef.current.contains(event.target)) {
       closePickers();
     }
   };
-  
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
   const prevMonth = () => {
     if (currMonth > 0) {
       setCurrMonth(currMonth - 1);
     } else if (currYear > currYear - 1) {
       setCurrYear(currYear - 1);
       setCurrMonth(11);
-      
     }
   };
-  
+
   const nextMonth = () => {
     if (currMonth < 11) {
       setCurrMonth(currMonth + 1);
@@ -122,10 +121,15 @@ const Calendar = ({ onDateSelect }) => {
   };
   const minAllowedYear = currentDate.getFullYear() - 8; // Minimum year for someone to be 8 years old
   const minAllowedMonth = currentDate.getMonth(); // Minimum month for someone to be 8 years old
-  
+
   // Disable "Next" button logic
-  const isNextDisabled = currYear === minAllowedYear && currMonth === minAllowedMonth;
-  const minDate = new Date(currentDate.getFullYear() - 8, currentDate.getMonth(), currentDate.getDate()); // Date 8 years ago
+  const isNextDisabled =
+    currYear === minAllowedYear && currMonth === minAllowedMonth;
+  const minDate = new Date(
+    currentDate.getFullYear() - 8,
+    currentDate.getMonth(),
+    currentDate.getDate()
+  ); // Date 8 years ago
   const isDateDisabled = (date) => {
     return selectedDate < minDate || selectedDate > currentDate; // Disable dates outside the range
   };
@@ -133,14 +137,18 @@ const Calendar = ({ onDateSelect }) => {
     const days = [];
     const firstDay = new Date(currYear, currMonth, 1).getDay();
     const currentDate = new Date(); // Current date
-    const minDate = new Date(currentDate.getFullYear() - 8, currentDate.getMonth(), currentDate.getDate()); // 8 years ago
-  
+    const minDate = new Date(
+      currentDate.getFullYear() - 8,
+      currentDate.getMonth(),
+      currentDate.getDate()
+    ); // 8 years ago
+
     for (let i = 0; i < daysOfMonth[currMonth] + firstDay; i++) {
       if (i >= firstDay) {
         const day = i - firstDay + 1;
         const dayDate = new Date(currYear, currMonth, day); // The date of this day in the calendar
         const isDisabled = dayDate > minDate || dayDate > currentDate; // Check if the date is outside the range
-  
+
         days.push(
           <div
             key={i}
@@ -172,7 +180,7 @@ const Calendar = ({ onDateSelect }) => {
     }
     return days;
   };
-  
+
   const handleYearClick = (year) => {
     setCurrYear(year);
     closePickers();
@@ -184,21 +192,18 @@ const Calendar = ({ onDateSelect }) => {
   };
 
   const startYear = currentDate.getFullYear() - 100;
-  const endYear=currentDate.getFullYear()-8 // 100 years back from current year
+  const endYear = currentDate.getFullYear() - 8; // 100 years back from current year
   const years = [];
-  
+
   for (let year = startYear; year <= endYear; year++) {
     years.push(year);
   }
-  console.log(currYear,currMonth)
+  console.log(currYear, currMonth);
 
   return (
     <div className="calendar" ref={calendarRef}>
       <div className="calendar-header">
-        <button
-          className="year-change"
-          onClick={prevMonth}
-        >
+        <button className="year-change" onClick={prevMonth}>
           &lt;
         </button>
         <span
@@ -261,7 +266,7 @@ const Calendar = ({ onDateSelect }) => {
             <div>Fri</div>
             <div>Sat</div>
           </div>
-          <div className="calendar-days" >{generateDays()}</div>
+          <div className="calendar-days">{generateDays()}</div>
         </div>
       )}
 
@@ -287,7 +292,7 @@ const Calendar = ({ onDateSelect }) => {
           align-items: center;
           font-size: 18px;
           font-weight: 600;
-          color: #000080;
+          color: #1d0042;
           padding: 10px;
         }
 
@@ -312,7 +317,7 @@ const Calendar = ({ onDateSelect }) => {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
           gap: 2px;
-          color: #000080;
+          color: #1d0042;
         }
 
         .calendar-days div {
@@ -413,13 +418,13 @@ const Calendar = ({ onDateSelect }) => {
           border-radius: 10px;
           cursor: pointer;
         }
-.disabled-date {
-  color: #ccc; /* Gray out the text */
-  pointer-events: none; /* Disable clicking */
-  opacity: 0.5; /* Add a faded appearance */
-  background-color: #f0f0f0; /* Optional: Light background */
-  cursor: not-allowed; /* Change cursor to indicate it's disabled */
-}
+        .disabled-date {
+          color: #ccc; /* Gray out the text */
+          pointer-events: none; /* Disable clicking */
+          opacity: 0.5; /* Add a faded appearance */
+          background-color: #f0f0f0; /* Optional: Light background */
+          cursor: not-allowed; /* Change cursor to indicate it's disabled */
+        }
 
         .month-picker:hover,
         .year-picker-toggle:hover {
@@ -439,15 +444,15 @@ const Calendar = ({ onDateSelect }) => {
           place-items: center;
           margin: 0 10px;
           cursor: pointer;
-          background-color: #000080;
+          background-color: #1d0042;
           color: white;
-          border: #000080;
+          border: #1d0042;
         }
 
         .year-change:hover {
-          background-color: hsl(205 100% 85.88%);
-          color: #000080;
-          border: hsl(205 100% 85.88%);
+          background-color: hsl(268 82% 27%);
+          color: #1d0042;
+          border: hsl(268 82% 27%);
         }
 
         .calendar-footer {
@@ -499,7 +504,7 @@ const Calendar = ({ onDateSelect }) => {
           border-radius: 10px;
           text-align: center;
           cursor: pointer;
-          color: #000080;
+          color: #1d0042;
         }
 
         @keyframes to-top {
@@ -544,24 +549,24 @@ const Calendar = ({ onDateSelect }) => {
           padding: 10px;
           cursor: pointer;
           width: auto; /* Allow the list to expand */
-           max-height: 300px; /* Limit the height */
-  overflow-y: auto; /* Enable vertical scroll */
+          max-height: 300px; /* Limit the height */
+          overflow-y: auto; /* Enable vertical scroll */
         }
 
         .year-item {
-          background-color: hsl( 205 100% 85.88%);
-          border:1px solid #000080;
+          background-color: hsl(268 82% 27%);
+          border: 1px solid #1d0042;
           padding: 5px;
           text-align: center;
           cursor: pointer;
           border-radius: 5px;
           transition: background-color 0.2s ease;
-          color: #000080;
+          color: #1d0042;
         }
 
         .year-item:hover {
           background-color: hsl(26.53, 86.98%, 66.86%);
-          border:1px solid hsl(26.53, 86.98%, 66.86%);
+          border: 1px solid hsl(26.53, 86.98%, 66.86%);
           color: white;
         }
         .month-grid {
@@ -575,19 +580,19 @@ const Calendar = ({ onDateSelect }) => {
         }
 
         .month-item {
-           background-color: hsl( 205 100% 85.88%);
-          border:1px solid #000080;
+          background-color: hsl(268 82% 27%);
+          border: 1px solid #1d0042;
           padding: 5px;
           text-align: center;
           cursor: pointer;
           border-radius: 5px;
           transition: background-color 0.2s ease;
-          color: #000080;
+          color: #1d0042;
         }
 
         .month-item:hover {
-         background-color: hsl(26.53, 86.98%, 66.86%);
-          border:1px solid hsl(26.53, 86.98%, 66.86%);
+          background-color: hsl(26.53, 86.98%, 66.86%);
+          border: 1px solid hsl(26.53, 86.98%, 66.86%);
           color: white;
         }
         .relative-container {

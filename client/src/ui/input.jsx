@@ -37,10 +37,10 @@ const Input = React.forwardRef(
             borderBottom:
               active || isValid
                 ? "2px solid hsl(205 ,100% ,85.88%)"
-                : "1px solid #000080",
+                : "1px solid #1d0042",
             padding: "0",
             fontSize: "14px",
-            color: "#000080",
+            color: "#1d0042",
             backgroundColor: "transparent",
             fontWeight: "bold",
             outline: "none",
@@ -70,7 +70,7 @@ const Input = React.forwardRef(
               border: "none",
               cursor: "pointer",
               zIndex: 2,
-              color: "#000080",
+              color: "#1d0042",
             }}
             aria-label="Toggle password visibility"
           >

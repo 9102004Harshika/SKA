@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 // Floating animation for folder
@@ -17,7 +17,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding: 10px;
-  background: linear-gradient(135deg, #b7e1ff, #000080);
+  background: linear-gradient(135deg, #b7e1ff, #1d0042);
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   height: calc(var(--folder-H) * 1.7);
@@ -104,24 +104,23 @@ const FileInput = styled.input`
   display: none;
 `;
 
-const FileUploader = ({ label, onChange,...props }) => {
- const [fileUrl, setFileUrl] = useState(null);
- 
-   const handleFileChange = (event) => {
-     const file = event.target.files[0];
-     if (file) {
-       // Check if file is an image
-       if (!file.type.startsWith("application/pdf")) {
-         alert("Only image files are allowed!");
-         return;
-       }
-       const url = URL.createObjectURL(file);
-       setFileUrl(url);
-       onChange && onChange(url); // Pass file URL to parent
-     }
-   };
- 
- 
+const FileUploader = ({ label, onChange, ...props }) => {
+  const [fileUrl, setFileUrl] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Check if file is an image
+      if (!file.type.startsWith("application/pdf")) {
+        alert("Only image files are allowed!");
+        return;
+      }
+      const url = URL.createObjectURL(file);
+      setFileUrl(url);
+      onChange && onChange(url); // Pass file URL to parent
+    }
+  };
+
   return (
     <Container>
       <Folder>
@@ -132,10 +131,17 @@ const FileUploader = ({ label, onChange,...props }) => {
         <BackCover />
       </Folder>
       <FileLabel>
-      <FileInput accept="application/pdf" type="file" onChange={handleFileChange} {...props} />
+        <FileInput
+          accept="application/pdf"
+          type="file"
+          onChange={handleFileChange}
+          {...props}
+        />
         {label}
       </FileLabel>
-      {fileUrl && <p style={{ color: "#f5f5db", fontSize: "12px" }}>File Selected!</p>}
+      {fileUrl && (
+        <p style={{ color: "#f5f5db", fontSize: "12px" }}>File Selected!</p>
+      )}
     </Container>
   );
 };

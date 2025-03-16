@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Checkbox = ({ text, checked = false, onChange }) => {
   const handleCheckboxChange = () => {
@@ -41,13 +41,15 @@ const StyledWrapper = styled.div`
     margin: 0;
     padding: 0;
     width: 30%; /* Default to full width on small screens */
-    margin-bottom:5px
+    margin-bottom: 5px;
   }
 
   /* For laptops and above (screens above 768px), display 3 checkboxes in one line */
   @media (min-width: 768px) {
     .container {
-      width: calc(23.33% - 10px); /* Take 33.33% of the container's width for each checkbox */
+      width: calc(
+        23.33% - 10px
+      ); /* Take 33.33% of the container's width for each checkbox */
     }
   }
 
@@ -70,7 +72,7 @@ const StyledWrapper = styled.div`
 
   .path {
     fill: none;
-    stroke: #000080;
+    stroke: #1d0042;
     stroke-width: 4;
     stroke-linecap: miter;
     transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
@@ -85,7 +87,7 @@ const StyledWrapper = styled.div`
 
   .label {
     font-size: 1rem;
-    color: #000080;
+    color: #1d0042;
     margin: 0;
     padding: 0;
     white-space: nowrap;

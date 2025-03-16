@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import camera from '../images/camera.png'
+import camera from "../images/camera.png";
 // Floating animation for camera
 const float = keyframes`
   0% { transform: translateY(0px); }
@@ -15,13 +15,13 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding: 10px;
-  background: linear-gradient(135deg, #b7e1ff, #000080);
+  background: linear-gradient(135deg, #b7e1ff, #1d0042);
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   height: 100px;
   width: 160px;
   position: relative;
-  margin-top:20px;
+  margin-top: 20px;
 `;
 
 const CameraIcon = styled.img`
@@ -79,10 +79,17 @@ const VideoUploader = ({ label, onChange, ...props }) => {
     <Container>
       <CameraIcon src={camera} alt="Camera Icon" />
       <FileLabel>
-        <FileInput accept="video/*" type="file" onChange={handleFileChange} {...props} />
+        <FileInput
+          accept="video/*"
+          type="file"
+          onChange={handleFileChange}
+          {...props}
+        />
         {label}
       </FileLabel>
-      {fileUrl && <p style={{ color: "#fff", fontSize: "12px" }}>Video Selected!</p>}
+      {fileUrl && (
+        <p style={{ color: "#fff", fontSize: "12px" }}>Video Selected!</p>
+      )}
     </Container>
   );
 };

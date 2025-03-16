@@ -17,36 +17,29 @@
     /* --black: 0 0% 17.25%; Black for Dark */
     /* --grey: 0 0% 50%; Gray for Medium */
 
-    --background: 0 0% 98%; /* Background color */
-    --primary: 266 100% 13%; /* Main theme color */
-    --secondary: 268 82% 27%; /* Supporting theme color */
-    --tertiary: 0 0% 31%; /* Supporting theme color */
-    --accent: 41 100% 62%; /* For highlights or call-to-action */
-    --error: 2.9 65.02% 56.27%;
-    --border: 0 0% 90%; /* Border or divider color */
-    --white: 0 0% 100%; /* White for contrast */
-    --black: 0 0% 17.25%; /* Black for Dark */
-    --grey: 0 0% 50%; /* Gray for Medium */
+    --background: 0 0% 98%; /* #fbfbfb */
+    --primary: 266 100% 13%; /* #1d0042 */
+    --secondary: 268 82% 27%; /* #400c7c */
+    --tertiary: 0 0% 31%; /* #4f4f4f */
+    --accent: 41 100% 62%; /* #ffc33e */
+    --error: 0 100% 50%; /* #ff0000 */
+    --black: 0 0% 17.25%; /* #000000 */
   }
 
   .dark {
-    --background: 60 56% 91%; /* Background color */
-    --primary: 240 100% 25%; /* Main theme color */
-    --secondary: 205 100% 86%; /* Supporting theme color */
-    --accent: 27 87% 67%; /* For highlights or call-to-action */
-
-    --text-primary: 240 100% 25%; /* Dark text color */
-    --text-secondary: 205 100% 86%; /* Lighter text color */
-    --border: 0 0% 90%; /* Border or divider color */
-    --white: 0 0% 100%; /* White for contrast */
-    --black: 0 0% 0%; /* Black for Dark */
-    --grey: 0 0% 50%; /* Gray for Medium */
+    --background: 0 0% 98%; /* #fbfbfb */
+    --primary: 266 100% 13%; /* #1d0042 */
+    --secondary: 268 82% 27%; /* #400c7c */
+    --tertiary: 0 0% 31%; /* #4f4f4f */
+    --accent: 41 100% 62%; /* #ffc33e */
+    --error: 0 100% 50%; /* #ff0000 */
+    --black: 0 0% 17.25%; /* #000000 */
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-black;
   }
 
   body {
@@ -79,10 +72,10 @@
 
 /* Prevent Google Autofill from changing text and background color */
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 30px hsl(205 100% 85.88%) inset; /* Set to transparent to prevent background color change */
-  box-shadow: 0 0 0 30px hsl(205 100% 85.88%) inset; /* Prevent background color change */
+  -webkit-box-shadow: 0 0 0 30px hsl(268 82% 27%) inset; /* Set to transparent to prevent background color change */
+  box-shadow: 0 0 0 30px hsl(0 0% 98%) inset; /* Prevent background color change */
   -webkit-text-fill-color: hsl(
-    240 100% 25%
+    0 0% 31%
   ); /* Inherit text color from the parent or default styles */
 }
 
@@ -98,7 +91,7 @@ body{
 }
 
 label {
-  color: #000080;
+  color: #1d0042;
   font-weight: bolder;
 }
 
@@ -111,7 +104,7 @@ label {
 .swiper-pagination-bullet {
   width: 30px;
   height: 3px;
-  background: hsl(205 100% 85.88%); /* Navy blue color for the lines */
+  background: hsl(268 82% 27%); /* Navy blue color for the lines */
   margin: 0 5px; /* Spacing between lines */
   opacity: 0.6; /* Slight transparency for inactive lines */
   transition: all 0.3s ease; /* Smooth transition on hover */
@@ -119,7 +112,7 @@ label {
 }
 
 .swiper-pagination-bullet-active {
-  background: #000080; /* Highlighted color for the active line */
+  background: #1d0042; /* Highlighted color for the active line */
   opacity: 0.6; /* Fully opaque for the active line */
   transform: scale(1.25); /* Slightly enlarge the active line */
 }

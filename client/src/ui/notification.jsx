@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Notification = ({ onClick, count }) => {
   return (
@@ -13,12 +13,8 @@ const Notification = ({ onClick, count }) => {
           {count > 0 && (
             <div className="absolute -right-3 -top-5 z-10">
               <div className="flex h-5 w-5 items-center justify-center">
-                <span
-                  className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B7E1FF] opacity-75"
-                ></span>
-                <span
-                  className="relative inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#B7E1FF] text-[10px] font-bold text-[#000080]"
-                >
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B7E1FF] opacity-75"></span>
+                <span className="relative inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#B7E1FF] text-[10px] font-bold text-[#1d0042]">
                   {count}
                 </span>
               </div>
@@ -29,7 +25,6 @@ const Notification = ({ onClick, count }) => {
     </StyledWrapper>
   );
 };
-
 
 const StyledWrapper = styled.div`
   /* Making bell shape with one div */
@@ -77,7 +72,7 @@ const StyledWrapper = styled.div`
   }
 
   /* Notifications number with before */
-  
+
   /* Container background hover effect */
   .notification:hover {
     background: rgba(170, 170, 170, 0.062);
