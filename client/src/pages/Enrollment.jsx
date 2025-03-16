@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Select from "../ui/select";
-import myImage from "../images/bgOrange.png";
+import myImage from "../images/bgLightPurple.png";
 import { FaCalendarAlt } from "react-icons/fa"; // Import a calendar icon
 import { gsap } from "gsap"; // Import GSAP for animation
 import Calendar from "../ui/calendar";
@@ -155,7 +155,7 @@ const Enrollment = () => {
             isCheckedPrivacy
           );
         }}
-        className="bg-background p-8 border-2 border-accent w-full max-w-lg"
+        className="bg-background p-8 border-2 border-secondary w-full max-w-lg"
         style={{
           boxShadow: "rgba(0, 0, 0, 0.56) 0px 10px 30px 10px",
         }}
@@ -192,7 +192,7 @@ const Enrollment = () => {
               </div>
             }
             size="xs"
-            variant="accent"
+            variant="secondary"
             onClick={handleSendOtp}
           />
         </div>
@@ -214,6 +214,7 @@ const Enrollment = () => {
             value={formData.verification}
             onChange={handleChange}
             required
+            className="placeholder:text-primary placeholder:opacity-[0.5]"
           />
         </div>
 
@@ -237,6 +238,7 @@ const Enrollment = () => {
               readOnly
               onClick={toggleCalendar}
               required
+               className="placeholder:text-primary placeholder:opacity-[0.5]"
             />
             <button
               type="button"
@@ -361,7 +363,7 @@ const Enrollment = () => {
               I Agree to the{" "}
               <a
                 href="/terms-and-conditions"
-                className="text-accent hover:underline underline-offset-2"
+                className="text-secondary hover:underline underline-offset-2"
               >
                 Terms and Conditions .
               </a>
@@ -378,7 +380,7 @@ const Enrollment = () => {
               I Agree to the{" "}
               <a
                 href="/privacy-policies"
-                className="text-accent hover:underline underline-offset-2"
+                className="text-secondary hover:underline underline-offset-2"
               >
                 Privacy Policies .
               </a>
@@ -388,7 +390,7 @@ const Enrollment = () => {
           onChange={setIsCheckedPrivacy}
         />
 
-        <Button text="Submit" size="lg" variant="accent" type="submit" />
+        <Button text="Submit" size="lg" variant="primary" type="submit" />
       </form>
     </div>
   );

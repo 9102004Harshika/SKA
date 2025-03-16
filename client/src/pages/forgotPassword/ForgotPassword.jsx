@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import myImage from "../../images/bgNavy.png";
+import myImage from "../../images/bgPurple.png";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { forgotPasswordForm } from "../../config/index"; // Import configuration

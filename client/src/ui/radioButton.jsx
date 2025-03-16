@@ -54,7 +54,7 @@ const StyledWrapper = styled.div`
     align-items: center;
     gap: 12px; /* Space between the circle and the text */
     font-size: 14px;
-    color: #1d0042;
+    color: hsl(266, 100%, 13%);
     font-weight: 600;
     transition: all 0.3s ease;
   }
@@ -63,7 +63,7 @@ const StyledWrapper = styled.div`
     position: relative;
     width: 20px;
     height: 20px;
-    border: 2px solid #1d0042;
+    border: 2px solid hsl(266, 100%, 13%);
     border-radius: 15%;
     transition: all 0.3s ease;
     overflow: hidden;
@@ -78,8 +78,9 @@ const StyledWrapper = styled.div`
     border-radius: 10px;
     background: linear-gradient(
       180deg,
-      rgba(244, 162, 97, 1) 41%,
-      rgba(183, 225, 255, 1) 100%
+      hsl(266, 100%, 13%),
+      hsl(268 ,82% ,27%),
+      hsl(266.31, 100%, 74.51%)
     );
     transform: translate(-50%, -50%);
     transition: all 0.3s ease;

@@ -95,7 +95,7 @@ const StyledWrapper = styled.div`
         ? "hsl(268, 82%, 27%)"
         : variant === "course"
         ? "#1d0042"
-        : "hsl(26.53 ,86.98%, 66.86%)"};
+        : "hsl(41, 100% ,62%)"};
     overflow: hidden;
     box-shadow: inset 0px 0px 0px 1px transparent;
   }
@@ -132,12 +132,12 @@ const StyledWrapper = styled.div`
     width: 0;
     background-color: ${({ variant }) =>
       variant === "primary"
-        ? "hsl(205, 100%, 85.88%)"
+        ? "hsl(41 ,100% ,62%)"
         : variant === "secondary"
-        ? "#1d0042"
+        ? "hsl(266, 100% ,13%)"
         : variant === "course"
         ? "hsl(26.53 ,86.98%, 66.86%)"
-        : "hsl(205, 100%, 85.88%)"};
+        : "hsl(266 ,100% ,13%)"};
     transform: skew(-15deg);
     transition: all 0.2s ease;
   }
@@ -149,17 +149,17 @@ const StyledWrapper = styled.div`
       variant === "primary" || variant === "course"
         ? "white"
         : variant === "secondary"
-        ? "#1d0042"
-        : "#1d0042"};
+        ? "white"
+        : "hsl(266 ,100% ,13%)"};
   }
 
   .button:hover .button_text {
     color: ${({ variant }) =>
       variant === "primary"
-        ? "#1d0042"
+        ? "hsl(266 ,100% ,13%)"
         : variant === "secondary" || variant === "course"
         ? "white"
-        : "#1d0042"};
+        : "white"};
   }
 
   .button:hover .button_sl {

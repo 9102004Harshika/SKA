@@ -59,7 +59,7 @@
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: hsl(240 100% 25%);
+  background: hsl(var(--primary));
   border-radius: 6px;
 }
 /* Handle on hover */

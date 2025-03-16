@@ -292,7 +292,7 @@ const Calendar = ({ onDateSelect }) => {
           align-items: center;
           font-size: 18px;
           font-weight: 600;
-          color: #1d0042;
+          color: hsl(266 ,100% ,13%);
           padding: 10px;
         }
 
@@ -317,7 +317,7 @@ const Calendar = ({ onDateSelect }) => {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
           gap: 2px;
-          color: #1d0042;
+          color: hsl(266 ,100% ,13%);
         }
 
         .calendar-days div {
@@ -345,7 +345,7 @@ const Calendar = ({ onDateSelect }) => {
         .calendar-days div span:nth-child(3) {
           width: 2px;
           height: 0;
-          background-color: hsl(26.53, 86.98%, 66.86%);
+          background-color: hsl(41 ,100%, 62%);
         }
 
         .calendar-days div:hover span:nth-child(1),
@@ -367,7 +367,7 @@ const Calendar = ({ onDateSelect }) => {
         .calendar-days div span:nth-child(4) {
           width: 0;
           height: 2px;
-          background-color: hsl(26.53, 86.98%, 66.86%);
+          background-color: hsl(41, 100%, 62%);
         }
 
         .calendar-days div:hover span:nth-child(2),
@@ -399,7 +399,7 @@ const Calendar = ({ onDateSelect }) => {
 
         .calendar-days div.curr-date,
         .calendar-days div.curr-date:hover {
-          background-color: hsl(26.53, 86.98%, 66.86%);
+          background-color: hsl(41, 100% ,62%);
           color: white;
           border-radius: 50%;
         }
@@ -428,7 +428,7 @@ const Calendar = ({ onDateSelect }) => {
 
         .month-picker:hover,
         .year-picker-toggle:hover {
-          background-color: hsl(60 56% 91%);
+          background-color:white;
         }
 
         .year-picker {
@@ -444,14 +444,14 @@ const Calendar = ({ onDateSelect }) => {
           place-items: center;
           margin: 0 10px;
           cursor: pointer;
-          background-color: #1d0042;
+          background-color: hsl(266 ,100% ,13%);
           color: white;
-          border: #1d0042;
+          border: hsl(266 ,100% ,13%);
         }
 
         .year-change:hover {
           background-color: hsl(268 82% 27%);
-          color: #1d0042;
+          color: hsl(266 ,100% ,13%);
           border: hsl(268 82% 27%);
         }
 
@@ -504,7 +504,7 @@ const Calendar = ({ onDateSelect }) => {
           border-radius: 10px;
           text-align: center;
           cursor: pointer;
-          color: #1d0042;
+          color: hsl(266 ,100% ,13%);
         }
 
         @keyframes to-top {
@@ -554,19 +554,19 @@ const Calendar = ({ onDateSelect }) => {
         }
 
         .year-item {
-          background-color: hsl(268 82% 27%);
-          border: 1px solid #1d0042;
+          background-color: hsl(266 ,100% ,13%);
+          border: 1px solid hsl(266 ,100% ,13%);
           padding: 5px;
           text-align: center;
           cursor: pointer;
           border-radius: 5px;
           transition: background-color 0.2s ease;
-          color: #1d0042;
+          color: white;
         }
 
         .year-item:hover {
-          background-color: hsl(26.53, 86.98%, 66.86%);
-          border: 1px solid hsl(26.53, 86.98%, 66.86%);
+          background-color: hsl(268 ,82% ,27%);
+          border: 1px solid hsl(268, 82% ,27%);
           color: white;
         }
         .month-grid {
@@ -580,19 +580,19 @@ const Calendar = ({ onDateSelect }) => {
         }
 
         .month-item {
-          background-color: hsl(268 82% 27%);
-          border: 1px solid #1d0042;
+          background-color:hsl(266 ,100% ,13%);
+          border: 1px solid hsl(266 ,100% ,13%);
           padding: 5px;
           text-align: center;
           cursor: pointer;
           border-radius: 5px;
           transition: background-color 0.2s ease;
-          color: #1d0042;
+          color: white;
         }
 
         .month-item:hover {
-          background-color: hsl(26.53, 86.98%, 66.86%);
-          border: 1px solid hsl(26.53, 86.98%, 66.86%);
+          background-color:hsl(268 ,82% ,27%);
+          border: 1px solid hsl(268 ,82% ,27%);
           color: white;
         }
         .relative-container {

@@ -257,14 +257,14 @@ const Navbar = () => {
 
         {/* Second Row (Static for Desktop) */}
         <div
-          className="hidden   sm:flex justify-center bg-accent py-2"
+          className="hidden   sm:flex justify-center bg-secondary py-2"
           ref={navLinksRef}
         >
           {navigationLinksDesktop.map((item, index) => (
             <a
               key={index}
               href={item.link}
-              className="text-background text-lg flex items-center px-4 py-2 hover:bg-primary rounded-full space-x-2"
+              className="text-background text-lg flex items-center px-4 py-2 hover:bg-accent hover:text-primary rounded-full space-x-2"
             >
               {item.icon}
               <span>{item.label}</span>

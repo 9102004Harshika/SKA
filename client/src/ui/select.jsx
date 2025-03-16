@@ -92,7 +92,7 @@ const StyledWrapper = styled.div`
   .menu-title {
     font-size: 12px;
     font-weight: bold;
-    color: #1d0042;
+    color: hsl(266 ,100% ,13%);
     margin-bottom: 4px;
     text-transform: uppercase;
   }
@@ -100,11 +100,11 @@ const StyledWrapper = styled.div`
   .menu {
     font-size: 14px;
     font-weight: bold;
-    color: #1d0042;
+    color: hsl(266 ,100% ,13%);
     width: 100%;
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid #1d0042;
+    border-bottom: 1px solid hsl(266 ,100% ,13%);
     text-align: center;
   }
 
@@ -125,7 +125,7 @@ const StyledWrapper = styled.div`
   .menu .link svg {
     width: 16px;
     height: 16px;
-    fill: #1d0042;
+    fill: hsl(266 ,100% ,13%);
   }
 
   .menu .item {
@@ -138,8 +138,8 @@ const StyledWrapper = styled.div`
     left: 0;
     width: 100%;
     border-radius: 0 0 16px 16px;
-    border-top: 1px solid #1d0042;
-    background-color: hsl(60, 56%, 91%);
+    border-top: 1px solid hsl(266 ,100% ,13%);
+    background-color: white;
     box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.56), 0 4px 6px rgba(0, 0, 0, 0.56);
     z-index: 1;
     max-height: 200px;
@@ -159,12 +159,12 @@ const StyledWrapper = styled.div`
   }
 
   .submenu .submenu-link:hover {
-    background-color: hsl(26.53, 86.98%, 66.86%);
+    background-color: hsl(266 ,100% ,13%);
     color: #fff;
   }
 
   .submenu .clear-option {
-    border-top: 1px solid #1d0042;
+    border-top: 1px solid hsl(266 ,100% ,13%);
     background-color: #f8f8f8;
   }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import LeftPanel from "./LeftPanel";
-import myImage from "../../images/bgNavy.png";
+import myImage from "../../images/bgPurple.png";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { FaGoogle, FaApple } from "react-icons/fa";
@@ -144,7 +144,7 @@ function LoginPage() {
                 </div>
               }
               size="sm"
-              variant="secondary"
+              variant="primary"
               onClick={() => login()}
             />
             {/* <Button

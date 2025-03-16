@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/input";
 import { registerForm } from "../../config/index";
-import myImage from "../../images/bgNavy.png";
+import myImage from "../../images/bgPurple.png";
 import { Button } from "../../ui/button";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -55,7 +55,7 @@ function RegisterPage() {
               <div className="mb-5" key={index}>
                 <label className="block text-sm font-medium mb-1">{field.label}</label>
                 <Input
-                  className="placeholder:texft-primary placeholder:opacity-[0.8]"
+                  className="placeholder:text-primary placeholder:opacity-[0.8]"
                   type={field.type}
                   name={field.name}
                   placeholder={field.placeholder}
@@ -84,7 +84,7 @@ function RegisterPage() {
                 </div>
               }
               size="sm"
-              variant="secondary"
+              variant="primary"
               onClick={() => login()}
             />
             {/* Facebook Login */}
@@ -98,7 +98,7 @@ function RegisterPage() {
                     
                   }
                   size="sm"
-              variant="secondary"
+              variant="primary"
             />
           </div>
         </div>

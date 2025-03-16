@@ -36,11 +36,11 @@ const Input = React.forwardRef(
             border: "none",
             borderBottom:
               active || isValid
-                ? "2px solid hsl(205 ,100% ,85.88%)"
-                : "1px solid #1d0042",
+                ? "2px solid hsl(266.31, 100%, 74.51%)"
+                : "1px solid hsl(266 ,100% ,13%)",
             padding: "0",
             fontSize: "14px",
-            color: "#1d0042",
+            color: "hsl(266 ,100% ,13%)",
             backgroundColor: "transparent",
             fontWeight: "bold",
             outline: "none",
@@ -86,7 +86,7 @@ const Input = React.forwardRef(
             bottom: "-1px",
             left: "-8px",
             width: active || isValid ? "calc(100% + 16px)" : "0",
-            backgroundColor: "hsl(205 ,100% ,85.88%)",
+            backgroundColor: "hsl(266.31, 100%, 74.51%)",
             transform: isValid ? "none" : "skew(-15deg)",
             transition: "all 0.2s ease",
           }}
