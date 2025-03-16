@@ -23,21 +23,17 @@
     --tertiary: 0 0% 31%; /* #4f4f4f */
     --accent: 41 100% 62%; /* #ffc33e */
     --error: 0 100% 50%; /* #ff0000 */
-    --black: 0 0% 17.25%; /* Black for Dark */
+    --black: 0 0% 17.25%; /* #000000 */
   }
 
   .dark {
-    --background: 60 56% 91%; /* Background color */
-    --primary: 240 100% 25%; /* Main theme color */
-    --secondary: 205 100% 86%; /* Supporting theme color */
-    --accent: 27 87% 67%; /* For highlights or call-to-action */
-
-    --text-primary: 240 100% 25%; /* Dark text color */
-    --text-secondary: 205 100% 86%; /* Lighter text color */
-    --border: 0 0% 90%; /* Border or divider color */
-    --white: 0 0% 100%; /* White for contrast */
-    --black: 0 0% 0%; /* Black for Dark */
-    --grey: 0 0% 50%; /* Gray for Medium */
+    --background: 0 0% 98%; /* #fbfbfb */
+    --primary: 266 100% 13%; /* #1d0042 */
+    --secondary: 268 82% 27%; /* #400c7c */
+    --tertiary: 0 0% 31%; /* #4f4f4f */
+    --accent: 41 100% 62%; /* #ffc33e */
+    --error: 0 100% 50%; /* #ff0000 */
+    --black: 0 0% 17.25%; /* #000000 */
   }
 }
 
