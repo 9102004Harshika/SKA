@@ -5,13 +5,24 @@
 @tailwind utilities;
 @layer base {
   :root {
-    --background: 60 56% 91%; /* Background color */
-    --primary: 240 100% 25%; /* Main theme color */
-    --secondary: 205 100% 85.88%; /* Supporting theme color */
-    --accent: 26.53 86.98% 66.86%; /* For highlights or call-to-action */
+    /* --background: 60 56% 91%; Background color */
+    /* --primary: 240 100% 25%; Main theme color */
+    /* --secondary: 205 100% 85.88%; Supporting theme color */
+    /* --accent: 26.53 86.98% 66.86%; For highlights or call-to-action */
+    /* --error: 2.9 65.02% 56.27%; */
+    /* --text-primary: 240 100% 25%; Dark text color */
+    /* --text-secondary: 205 100% 86%; Lighter text color */
+    /* --border: 0 0% 90%; Border or divider color */
+    /* --white: 0 0% 100%; White for contrast */
+    /* --black: 0 0% 17.25%; Black for Dark */
+    /* --grey: 0 0% 50%; Gray for Medium */
+
+    --background: 0 0% 98%; /* Background color */
+    --primary: 266 100% 13%; /* Main theme color */
+    --secondary: 268 82% 27%; /* Supporting theme color */
+    --tertiary: 0 0% 31%; /* Supporting theme color */
+    --accent: 41 100% 62%; /* For highlights or call-to-action */
     --error: 2.9 65.02% 56.27%;
-    --text-primary: 240 100% 25%; /* Dark text color */
-    --text-secondary: 205 100% 86%; /* Lighter text color */
     --border: 0 0% 90%; /* Border or divider color */
     --white: 0 0% 100%; /* White for contrast */
     --black: 0 0% 17.25%; /* Black for Dark */
