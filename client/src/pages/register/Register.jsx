@@ -100,6 +100,8 @@ function RegisterPage() {
                   size="sm"
               variant="primary"
             />
+                
+                
           </div>
         </div>
 

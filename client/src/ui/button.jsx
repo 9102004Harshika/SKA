@@ -16,6 +16,7 @@ const buttonVariants = cva(
         primary: "primary",
         secondary: "secondary",
         accent: "accent",
+        error:"error"
       },
     },
   }
@@ -93,8 +94,8 @@ const StyledWrapper = styled.div`
         ? "hsl(266, 100%, 13%)"
         : variant === "secondary"
         ? "hsl(268, 82%, 27%)"
-        : variant === "course"
-        ? "#1d0042"
+        : variant === "error"
+        ? "hsl( 0, 100%, 50%)"
         : "hsl(41, 100% ,62%)"};
     overflow: hidden;
     box-shadow: inset 0px 0px 0px 1px transparent;
@@ -132,12 +133,12 @@ const StyledWrapper = styled.div`
     width: 0;
     background-color: ${({ variant }) =>
       variant === "primary"
-        ? "hsl(41 ,100% ,62%)"
+        ? "hsl(268, 82%, 27%)"
         : variant === "secondary"
         ? "hsl(266, 100% ,13%)"
-        : variant === "course"
-        ? "hsl(26.53 ,86.98%, 66.86%)"
-        : "hsl(266 ,100% ,13%)"};
+        : variant === "erro"
+        ? "hsl( 0 ,0% ,31%)"
+        : "hsl( 0 ,0% ,31%)"};
     transform: skew(-15deg);
     transition: all 0.2s ease;
   }
@@ -146,7 +147,7 @@ const StyledWrapper = styled.div`
     position: relative;
     font-size: 18px;
     color: ${({ variant }) =>
-      variant === "primary" || variant === "course"
+      variant === "primary" || variant === "error"
         ? "white"
         : variant === "secondary"
         ? "white"
@@ -156,8 +157,8 @@ const StyledWrapper = styled.div`
   .button:hover .button_text {
     color: ${({ variant }) =>
       variant === "primary"
-        ? "hsl(266 ,100% ,13%)"
-        : variant === "secondary" || variant === "course"
+        ? "white"
+        : variant === "secondary" || variant === "error"
         ? "white"
         : "white"};
   }

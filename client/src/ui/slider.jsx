@@ -129,12 +129,12 @@ const Slider = ({
           <h2 className="text-4xl font-header font-bold text-primary">
             {title}
           </h2>
-          <p className="font-body text-gray-500 mt-4">
+          <p className="font-body text-tertiary mt-4">
             {description}
           </p>
         </div>
         <div className="mt-4 md:mt-0 md:ml-auto w-full md:w-auto text-center">
-          <button className="text-sm inline-flex items-center gap-2 font-body text-background rounded-sm bg-primary px-4 py-2 mr-4 hover:bg-secondary hover:text-primary group">
+          <button className="text-sm inline-flex items-center gap-2 font-body text-background rounded-sm bg-primary px-4 py-2 mr-4 hover:bg-secondary hover:text-background group">
             View All
             <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
           </button>
@@ -167,26 +167,26 @@ const Slider = ({
               <div className="bg-white rounded-lg shadow-md overflow-hidden p-4 transform hover:scale-105 transition-transform duration-300 h-[33rem] flex flex-col justify-between">
                 <div>
                   <img
-                    src={course.thumbnail}
+                    src={course.courseImage}
                     alt={course.title}
                     className="w-full h-48 object-cover mb-4"
                   />
                   <h3 className="text-lg font-bold text-primary mb-2 line-clamp-2 min-h-[3rem]">
                     {course.title}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-1">{course.instructor}</p>
-                  <ul className="text-sm text-gray-600 mb-2 min-h-[4.5rem]">
+                  <p className="text-sm text-primary mb-1">{course.instructor}</p>
+                  <ul className="text-sm text-tertiary mb-2 min-h-[4.5rem]">
                     {course.details.map((detail, idx) => (
                       <li key={idx}>&bull; {detail}</li>
                     ))}
                   </ul>
-                  <p className="text-xs text-gray-500 mb-4">{course.validity}</p>
+                  <p className="text-xs text-tertiary mb-4">{course.validity}</p>
                 </div>
                 <div>
                   <p className="text-sm text-accent font-bold mb-2">{course.discount}</p>
                   <div className="flex items-center space-x-2">
                     <span className="text-lg font-bold text-primary">₹{course.price}</span>
-                    <span className="text-sm text-gray-500 line-through">
+                    <span className="text-sm text-tertiary line-through">
                       ₹{course.originalPrice}
                     </span>
                   </div>
@@ -201,7 +201,7 @@ const Slider = ({
       <div className="absolute mt-[50%] md:mt-[10%] inset-y-0 left-0 flex items-center">
         <button
           onClick={handlePrev}
-          className="bg-secondary text-primary text-xl md:text-2xl p-2 rounded-lg shadow-lg hover:bg-accent hover:text-primary"
+          className="bg-primary text-white text-xl md:text-2xl p-2 rounded-lg shadow-lg hover:bg-accent hover:text-primary"
         >
           <IoMdArrowDropleft />
         </button>
@@ -209,7 +209,7 @@ const Slider = ({
       <div className="absolute mt-[50%] md:mt-[10%] inset-y-0 right-0 flex items-center">
         <button
           onClick={handleNext}
-          className="bg-secondary text-primary text-xl md:text-2xl p-2 rounded-lg shadow-lg hover:bg-accent hover:text-primary"
+          className="bg-primary text-white text-xl md:text-2xl p-2 rounded-lg shadow-lg hover:bg-accent hover:text-primary"
         >
           <RiArrowRightSFill />
         </button>

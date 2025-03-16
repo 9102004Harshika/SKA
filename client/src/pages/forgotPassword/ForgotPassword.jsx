@@ -193,6 +193,7 @@ function ForgotPassword() {
           value={formData[field.name] || ""} // Ensure OTP field starts empty
           onChange={handleChange}
           required={field.required}
+          className="placeholder:text-primary placeholder:opacity-[0.5]"
         />
       </div>
     ));

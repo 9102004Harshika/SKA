@@ -37,6 +37,7 @@ import UpdateCourse from "./pages/admin/UpdateCoursePage";
 import DeleteCourse from "./pages/admin/DeleteCoursePage";
 import UpdateCoursePage from "./pages/admin/UpdateCoursePage";
 import EditCoursesPage from "./pages/admin/EditCoursesPage";
+import AnimatedBook from "./components/BookLoader";
 const App = () => {
   return (
     <Router>
@@ -100,7 +101,7 @@ const App = () => {
             <Route
               path="/testing"
               element={
-               <Video/>
+               <AnimatedBook/>
               }
             />
           </Routes>
