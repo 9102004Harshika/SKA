@@ -11,7 +11,7 @@ const Input = styled.input`
   font-size: 100%;
   padding: 0.8em;
   outline: none;
-  border-bottom: 1px solid #000080;
+  border-bottom: 1px solid #1d0042;
   background-color: transparent;
   width: 100%;
   transition: border-color 0.3s ease;
@@ -20,7 +20,7 @@ const Input = styled.input`
     border-color: hsl(26.53, 86.98%, 66.86%);
   }
   &:valid {
-    border-color: #000080;
+    border-color: #1d0042;
   }
   &:hover {
     border-color: hsl(26.53, 86.98%, 66.86%);
@@ -35,7 +35,7 @@ const Label = styled.label`
   margin-left: 0.5em;
   pointer-events: none;
   transition: all 0.3s ease;
-  color: #000080;
+  color: #1d0042;
 
   ${Input}:focus ~ & {
     transform: translateY(-75%) scale(0.9);
@@ -54,7 +54,7 @@ const Label = styled.label`
     margin-bottom: 2px;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: #000080;
+    color: #1d0042;
     font-weight: 700;
   }
   ${Input}:hover ~ & {

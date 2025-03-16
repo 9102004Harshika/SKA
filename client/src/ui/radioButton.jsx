@@ -54,7 +54,7 @@ const StyledWrapper = styled.div`
     align-items: center;
     gap: 12px; /* Space between the circle and the text */
     font-size: 14px;
-    color: #000080;
+    color: #1d0042;
     font-weight: 600;
     transition: all 0.3s ease;
   }
@@ -63,7 +63,7 @@ const StyledWrapper = styled.div`
     position: relative;
     width: 20px;
     height: 20px;
-    border: 2px solid #000080;
+    border: 2px solid #1d0042;
     border-radius: 15%;
     transition: all 0.3s ease;
     overflow: hidden;
@@ -107,7 +107,7 @@ const StyledWrapper = styled.div`
 
   .radio-b__text {
     font-size: 15px;
-    color: #000080;
+    color: #1d0042;
     font-weight: 600;
     white-space: nowrap;
   }
@@ -115,7 +115,7 @@ const StyledWrapper = styled.div`
   /* For laptops and above (screens above 768px), display 3 radio buttons in one line */
   @media (min-width: 768px) {
     .radio-b {
-      width: auto /* Each radio button takes up 1/3 of the space */
+      width: auto; /* Each radio button takes up 1/3 of the space */
     }
   }
 

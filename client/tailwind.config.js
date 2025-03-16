@@ -9,12 +9,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
         black: "hsl(var(--black))",
-        white: "hsl(var(--white))",
         background: "hsl(var(--background))",
         error: "hsl(var(--error))",
-        primary: "hsl(var(--primary))", // Corrected to refer to primary color
+        primary: "hsl(var(--primary))",
         secondary: "hsl(var(--secondary))",
         tertiary: "hsl(var(--tertiary))",
         accent: "hsl(var(--accent))",

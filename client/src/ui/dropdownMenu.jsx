@@ -1,31 +1,25 @@
-import { notificationItems } from '../config'; // Assuming you have notificationItems in your config
-import React from 'react';
-import styled from 'styled-components';
-import { navigationLinksMoreItems } from '../config';
-import { useNavigate } from 'react-router-dom';
+import { notificationItems } from "../config"; // Assuming you have notificationItems in your config
+import React from "react";
+import styled from "styled-components";
+import { navigationLinksMoreItems } from "../config";
+import { useNavigate } from "react-router-dom";
 const DropDown = () => {
   return (
     <StyledWrapper>
-      
-      <div className='input'>
-        {
-            navigationLinksMoreItems.map((item,index)=>(
-               <button className={item.label === 'Logout' ? 'logout' : 'value'}>
-                <a className='svg'>{item.icon}</a>
-                <a href={item.link}>{item.label}</a>
-                
-               </button>
-            ))
-        }
+      <div className="input">
+        {navigationLinksMoreItems.map((item, index) => (
+          <button className={item.label === "Logout" ? "logout" : "value"}>
+            <a className="svg">{item.icon}</a>
+            <a href={item.link}>{item.label}</a>
+          </button>
+        ))}
       </div>
     </StyledWrapper>
   );
-}
-
-
+};
 
 const NotificationDropDown = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   // Define a limit for visible notifications
   const visibleLimit = 3;
   const visibleNotifications = notificationItems.slice(0, visibleLimit);
@@ -58,7 +52,9 @@ const NotificationDropDown = () => {
         {/* "View More" Button */}
         {hasMore && (
           <div className="view-more-container">
-            <button className="view-more" onClick={()=>navigate('/#')}>View All</button>
+            <button className="view-more" onClick={() => navigate("/#")}>
+              View All
+            </button>
           </div>
         )}
       </div>
@@ -70,8 +66,8 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 200px;
-    background-color:hsl(205 ,100%, 85.88%);
-    justify-items:center;
+    background-color: hsl(205, 100%, 85.88%);
+    justify-items: center;
     border-radius: 10px;
     transition: 1s;
     padding: 10px;
@@ -83,7 +79,7 @@ const StyledWrapper = styled.div`
     background-color: transparent;
     border: none;
     padding: 10px;
-    color: #000080;
+    color: #1d0042;
     display: flex;
     position: relative;
     gap: 5px;
@@ -97,18 +93,17 @@ const StyledWrapper = styled.div`
   .value:focus {
     display: flex;
     box-sizing: border-box;
-    border: 2px solid #hsl(205 ,100% ,85.88%);
-    background-color:#000080;
-    color: hsl(60, 56% ,91%);
+    border: 2px solid #hsl(205, 100%, 85.88%);
+    background-color: #1d0042;
+    color: hsl(60, 56%, 91%);
   }
 
   .value:focus,
   .value:hover {
-    background-color: hsl(205 ,100% ,85.88%);
-    color:#000080;
+    background-color: hsl(205, 100%, 85.88%);
+    color: #1d0042;
     outline: none;
     margin-left: 17px;
-    
   }
 
   .value::before {
@@ -118,7 +113,7 @@ const StyledWrapper = styled.div`
     left: -15px;
     width: 5px;
     height: 80%;
-    background-color: hsl(26.53 ,86.98% ,66.86%);
+    background-color: hsl(26.53, 86.98%, 66.86%);
     border-radius: 5px;
     opacity: 0;
     transition: 1s;
@@ -131,15 +126,15 @@ const StyledWrapper = styled.div`
 
   .value .svg {
     width: 20px;
-    margin-top:3px;
+    margin-top: 3px;
   }
 
-   .logout {
+  .logout {
     font-size: 15px;
     background-color: transparent;
     border: none;
     padding: 10px;
-    color: #000080;
+    color: #1d0042;
     display: flex;
     position: relative;
     gap: 5px;
@@ -153,15 +148,15 @@ const StyledWrapper = styled.div`
   .logout:focus {
     display: flex;
     box-sizing: border-box;
-    border: 2px solid #hsl(205 ,100% ,85.88%);
-    background-color:red;
-    color: hsl(60, 56% ,91%);
+    border: 2px solid #hsl(205, 100%, 85.88%);
+    background-color: red;
+    color: hsl(60, 56%, 91%);
   }
 
   .logout:focus,
   .logout:hover {
-    background-color: hsl(205 ,100% ,85.88%);
-    color:#000080;
+    background-color: hsl(205, 100%, 85.88%);
+    color: #1d0042;
     outline: none;
     margin-left: 17px;
   }
@@ -173,7 +168,7 @@ const StyledWrapper = styled.div`
     left: -15px;
     width: 5px;
     height: 80%;
-    background-color: hsl(26.53 ,86.98% ,66.86%);
+    background-color: hsl(26.53, 86.98%, 66.86%);
     border-radius: 5px;
     opacity: 0;
     transition: 1s;
@@ -186,13 +181,11 @@ const StyledWrapper = styled.div`
 
   .logout .svg {
     width: 20px;
-    margin-top:3px;
-    margin-left:2px;
+    margin-top: 3px;
+    margin-left: 2px;
   }
 
-    
-
-  .input:hover > :not(.value:hover, .logout:hover)  {
+  .input:hover > :not(.value:hover, .logout:hover) {
     transition: 100ms;
     filter: blur(1px);
     transform: scale(0.95, 0.95);
@@ -229,7 +222,7 @@ const StyledWrapper = styled.div`
     font-size: 14px;
     padding: 5px 12px;
     border-radius: 5px;
-    background-color: #000080;
+    background-color: #1d0042;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -238,7 +231,7 @@ const StyledWrapper = styled.div`
 
   .mark-as-read:hover {
     background-color: #b7e1ff;
-    color: #000080;
+    color: #1d0042;
   }
 
   .notifications {
@@ -250,13 +243,13 @@ const StyledWrapper = styled.div`
     align-items: flex-start;
     padding: 10px 0;
     border-bottom: 1px solid #f0f0f0;
-    color: #000080;
+    color: #1d0042;
     transition: background-color 0.3s ease, color 0.3s ease;
-    transition :1s;
+    transition: 1s;
   }
 
   .notification-item:hover {
-    background-color: #000080;
+    background-color: #1d0042;
     color: #f5f2dc;
     border-radius: 10px;
     padding: 10px;
@@ -296,21 +289,22 @@ const StyledWrapper = styled.div`
   .view-more-container {
     display: flex;
     margin-top: 10px;
-    justify-content:center
+    justify-content: center;
   }
 
   .view-more {
     font-size: 14px;
     padding: 5px 12px;
     border-radius: 5px;
-    color: #000080;
+    color: #1d0042;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
 
   .view-more:hover {
-    background-color: #000080;
+    background-color: #1d0042;
     color: #f5f2dc;
-  }`;
-export  {DropDown,NotificationDropDown};
+  }
+`;
+export { DropDown, NotificationDropDown };

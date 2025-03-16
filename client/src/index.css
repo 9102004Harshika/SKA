@@ -17,16 +17,13 @@
     /* --black: 0 0% 17.25%; Black for Dark */
     /* --grey: 0 0% 50%; Gray for Medium */
 
-    --background: 0 0% 98%; /* Background color */
-    --primary: 266 100% 13%; /* Main theme color */
-    --secondary: 268 82% 27%; /* Supporting theme color */
-    --tertiary: 0 0% 31%; /* Supporting theme color */
-    --accent: 41 100% 62%; /* For highlights or call-to-action */
-    --error: 2.9 65.02% 56.27%;
-    --border: 0 0% 90%; /* Border or divider color */
-    --white: 0 0% 100%; /* White for contrast */
+    --background: 0 0% 98%; /* #fbfbfb */
+    --primary: 266 100% 13%; /* #1d0042 */
+    --secondary: 268 82% 27%; /* #400c7c */
+    --tertiary: 0 0% 31%; /* #4f4f4f */
+    --accent: 41 100% 62%; /* #ffc33e */
+    --error: 0 100% 50%; /* #ff0000 */
     --black: 0 0% 17.25%; /* Black for Dark */
-    --grey: 0 0% 50%; /* Gray for Medium */
   }
 
   .dark {
@@ -46,7 +43,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-black;
   }
 
   body {
@@ -98,7 +95,7 @@ body{
 }
 
 label {
-  color: #000080;
+  color: #1d0042;
   font-weight: bolder;
 }
 
@@ -119,7 +116,7 @@ label {
 }
 
 .swiper-pagination-bullet-active {
-  background: #000080; /* Highlighted color for the active line */
+  background: #1d0042; /* Highlighted color for the active line */
   opacity: 0.6; /* Fully opaque for the active line */
   transform: scale(1.25); /* Slightly enlarge the active line */
 }

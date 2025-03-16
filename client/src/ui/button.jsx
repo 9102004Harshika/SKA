@@ -50,7 +50,7 @@ const StyledWrapper = styled.div`
     right: 0;
     left: 0;
     height: calc(50% - 5px);
-    border: 1px solid #000080;
+    border: 1px solid #1d0042;
     transition: all 0.15s ease;
   }
 
@@ -90,11 +90,11 @@ const StyledWrapper = styled.div`
     color: #fff;
     background-color: ${({ variant }) =>
       variant === "primary"
-        ? "hsl(240, 100%, 25%)"
+        ? "hsl(266, 100%, 13%)"
         : variant === "secondary"
         ? "hsl(205, 100% ,85.88%)"
         : variant === "course"
-        ? "#000080"
+        ? "#1d0042"
         : "hsl(26.53 ,86.98%, 66.86%)"};
     overflow: hidden;
     box-shadow: inset 0px 0px 0px 1px transparent;
@@ -134,7 +134,7 @@ const StyledWrapper = styled.div`
       variant === "primary"
         ? "hsl(205, 100%, 85.88%)"
         : variant === "secondary"
-        ? "#000080"
+        ? "#1d0042"
         : variant === "course"
         ? "hsl(26.53 ,86.98%, 66.86%)"
         : "hsl(205, 100%, 85.88%)"};
@@ -149,17 +149,17 @@ const StyledWrapper = styled.div`
       variant === "primary" || variant === "course"
         ? "white"
         : variant === "secondary"
-        ? "#000080"
-        : "#000080"};
+        ? "#1d0042"
+        : "#1d0042"};
   }
 
   .button:hover .button_text {
     color: ${({ variant }) =>
       variant === "primary"
-        ? "#000080"
+        ? "#1d0042"
         : variant === "secondary" || variant === "course"
         ? "white"
-        : "#000080"};
+        : "#1d0042"};
   }
 
   .button:hover .button_sl {
