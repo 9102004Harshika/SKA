@@ -238,7 +238,7 @@ const Enrollment = () => {
               readOnly
               onClick={toggleCalendar}
               required
-               className="placeholder:text-primary placeholder:opacity-[0.5]"
+              className="placeholder:text-primary placeholder:opacity-[0.5]"
             />
             <button
               type="button"
@@ -365,7 +365,7 @@ const Enrollment = () => {
                 href="/terms-and-conditions"
                 className="text-secondary hover:underline underline-offset-2"
               >
-                Terms and Conditions .
+                Terms and Conditions
               </a>
             </span>
           }
@@ -382,7 +382,7 @@ const Enrollment = () => {
                 href="/privacy-policies"
                 className="text-secondary hover:underline underline-offset-2"
               >
-                Privacy Policies .
+                Privacy Policies
               </a>
             </div>
           }

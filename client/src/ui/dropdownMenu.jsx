@@ -66,7 +66,7 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 200px;
-    background-color: hsl(205, 100%, 85.88%);
+    background-color: hsl(0, 0%, 98%);
     justify-items: center;
     border-radius: 10px;
     transition: 1s;
@@ -79,7 +79,7 @@ const StyledWrapper = styled.div`
     background-color: transparent;
     border: none;
     padding: 10px;
-    color: #1d0042;
+    color: hsl(266, 100%, 13%);
     display: flex;
     position: relative;
     gap: 5px;
@@ -93,15 +93,15 @@ const StyledWrapper = styled.div`
   .value:focus {
     display: flex;
     box-sizing: border-box;
-    border: 2px solid #hsl(205, 100%, 85.88%);
-    background-color: #1d0042;
-    color: hsl(60, 56%, 91%);
+    border: 2px solid hsl(268, 82%, 27%);
+    background-color: hsl(266, 100%, 13%);
+    color: hsl(0, 0%, 98%);
   }
 
   .value:focus,
   .value:hover {
-    background-color: hsl(205, 100%, 85.88%);
-    color: #1d0042;
+    background-color: hsl(268, 82%, 27%);
+    color: hsl(266, 100%, 13%);
     outline: none;
     margin-left: 17px;
   }
@@ -113,7 +113,7 @@ const StyledWrapper = styled.div`
     left: -15px;
     width: 5px;
     height: 80%;
-    background-color: hsl(26.53, 86.98%, 66.86%);
+    background-color: hsl(41, 100%, 62%);
     border-radius: 5px;
     opacity: 0;
     transition: 1s;
@@ -134,7 +134,7 @@ const StyledWrapper = styled.div`
     background-color: transparent;
     border: none;
     padding: 10px;
-    color: #1d0042;
+    color: hsl(266, 100%, 13%);
     display: flex;
     position: relative;
     gap: 5px;
@@ -148,15 +148,15 @@ const StyledWrapper = styled.div`
   .logout:focus {
     display: flex;
     box-sizing: border-box;
-    border: 2px solid #hsl(205, 100%, 85.88%);
-    background-color: red;
+    border: 2px solid hsl(0, 100%, 50%);
+    background-color: hsl(0, 100%, 50%);
     color: hsl(60, 56%, 91%);
   }
 
   .logout:focus,
   .logout:hover {
-    background-color: hsl(205, 100%, 85.88%);
-    color: #1d0042;
+    background-color: hsl(268, 82%, 27%);
+    color: hsl(266, 100%, 13%);
     outline: none;
     margin-left: 17px;
   }
@@ -168,7 +168,7 @@ const StyledWrapper = styled.div`
     left: -15px;
     width: 5px;
     height: 80%;
-    background-color: hsl(26.53, 86.98%, 66.86%);
+    background-color: hsl(0, 100%, 50%);
     border-radius: 5px;
     opacity: 0;
     transition: 1s;
@@ -193,11 +193,11 @@ const StyledWrapper = styled.div`
 
   /* Styles for the dropdown */
   .dropdown-container {
-    background-color: #f5f2dc;
+    background-color: hsl(0, 0%, 98%);
     width: 300px;
     padding: 16px;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+
     max-height: 400px;
     overflow-y: auto;
     transition: 1s;
@@ -209,29 +209,29 @@ const StyledWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 2px solid #f0f0f0;
+    border-bottom: 2px solid hsl(0, 0%, 98%);
   }
 
   .header p {
     font-weight: bold;
     font-size: 18px;
-    color: #333;
+    color: hsl(0, 0%, 31%);
   }
 
   .mark-as-read {
     font-size: 14px;
     padding: 5px 12px;
     border-radius: 5px;
-    background-color: #1d0042;
-    color: #fff;
+    background-color: hsl(266, 100%, 13%);
+    color: hsl(0, 0%, 98%);
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
 
   .mark-as-read:hover {
-    background-color: #b7e1ff;
-    color: #1d0042;
+    background-color: hsl(268, 82%, 27%);
+    color: hsl(0, 0%, 98%);
   }
 
   .notifications {
@@ -242,15 +242,15 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: flex-start;
     padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
-    color: #1d0042;
+    border-bottom: 1px solidhsl(0, 0%, 98%);
+    color: hsl(266, 100%, 13%);
     transition: background-color 0.3s ease, color 0.3s ease;
     transition: 1s;
   }
 
   .notification-item:hover {
-    background-color: #1d0042;
-    color: #f5f2dc;
+    background-color: hsl(266, 100%, 13%);
+    color: hsl(0, 0%, 98%);
     border-radius: 10px;
     padding: 10px;
   }
@@ -276,14 +276,14 @@ const StyledWrapper = styled.div`
 
   .notification-description {
     font-size: 12px;
-    color: #666;
+    color: hsl(0, 0%, 31);
     margin-top: 5px;
     line-height: 1.4;
     transition: color 0.3s ease;
   }
 
   .notification-item:hover .notification-description {
-    color: #f5f2dc;
+    color: hsl(0, 0%, 98%);
   }
 
   .view-more-container {
@@ -296,15 +296,15 @@ const StyledWrapper = styled.div`
     font-size: 14px;
     padding: 5px 12px;
     border-radius: 5px;
-    color: #1d0042;
+    color: hsl(266, 100%, 13%);
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
 
   .view-more:hover {
-    background-color: #1d0042;
-    color: #f5f2dc;
+    background-color: hsl(266, 100%, 13%);
+    color: hsl(0, 0%, 98%);
   }
 `;
 export { DropDown, NotificationDropDown };

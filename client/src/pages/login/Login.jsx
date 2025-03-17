@@ -16,7 +16,7 @@ function LoginPage() {
   const leftPanelRef = useRef(null);
   const loginFormRef = useRef(null);
   const navigate = useNavigate();
-  const login=GoogleLogin(navigate)
+  const login = GoogleLogin(navigate);
   useEffect(() => {
     const tl = gsap.timeline();
     tl.fromTo(
@@ -32,7 +32,6 @@ function LoginPage() {
     );
   }, []);
 
-
   const handleDragEnd = (event, info) => {
     if (info.offset.y > 100) {
       setIsPanelOpen(true);
@@ -44,7 +43,6 @@ function LoginPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
   };
   return (
     <div
@@ -97,7 +95,11 @@ function LoginPage() {
           <h2 className="text-3xl capitalize md:tracking-wide font-header font-semibold text-center mb-6">
             Return to learning
           </h2>
-          <form className="w-full max-w-md" onSubmit={(e) => handleSubmit(e, formData, navigate)} noValidate>
+          <form
+            className="w-full max-w-md"
+            onSubmit={(e) => handleSubmit(e, formData, navigate)}
+            noValidate
+          >
             {loginForm.map((field, index) => (
               <div className="mb-5" key={index}>
                 <label className="block text-sm font-medium mb-1">
@@ -131,7 +133,9 @@ function LoginPage() {
 
           <div className="flex items-center w-full mb-2">
             <hr className="flex-grow border-t border-muted border-primary" />
-            <span className="mx-2 text-sm text-muted-foreground">Or login with</span>
+            <span className="mx-2 text-sm text-muted-foreground">
+              Or login with
+            </span>
             <hr className="flex-grow border-t border-muted border-primary" />
           </div>
 
@@ -144,7 +148,7 @@ function LoginPage() {
                 </div>
               }
               size="sm"
-              variant="primary"
+              variant="secondary"
               onClick={() => login()}
             />
             {/* <Button
@@ -168,6 +172,15 @@ function LoginPage() {
               variant="secondary"
             /> */}
           </div>
+          <p>
+            Are you a new user ?{" "}
+            <a
+              href="/register"
+              className="text-secondary font-bold hover:underline underline-offset-2"
+            >
+              Create a account
+            </a>
+          </p>
         </div>
       </div>
     </div>

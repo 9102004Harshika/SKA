@@ -16,7 +16,7 @@ const buttonVariants = cva(
         primary: "primary",
         secondary: "secondary",
         accent: "accent",
-        error:"error"
+        error: "error",
       },
     },
   }
@@ -136,7 +136,7 @@ const StyledWrapper = styled.div`
         ? "hsl(268, 82%, 27%)"
         : variant === "secondary"
         ? "hsl(266, 100% ,13%)"
-        : variant === "erro"
+        : variant === "error"
         ? "hsl( 0 ,0% ,31%)"
         : "hsl( 0 ,0% ,31%)"};
     transform: skew(-15deg);

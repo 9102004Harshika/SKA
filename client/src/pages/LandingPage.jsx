@@ -10,7 +10,7 @@ const Landing = () => {
   return (
     <section className="bg-gradient-to-b font-body from-background to-secondary text-center">
       {/* Alert Section */}
-      <div className="bg-tertiary text-primary text-sm py-2">
+      <div className="bg-accent text-secondary text-sm py-2">
         <p>
           🔥 Limited Time Offer: New courses with best price available now!
           Hurry up !!! 🔥
@@ -25,9 +25,9 @@ const Landing = () => {
             <img
               src={logo}
               alt="Company Logo"
-              className="h-10 w-auto inline-block"
+              className="h-10 w-auto inline-block bg-secondary rounded-full"
             />
-            <span className="text-accent font-highlight text-xl ml-3 tracking-wide">
+            <span className="text-background font-highlight text-xl ml-3 tracking-wide">
               Shree Kalam Academy
             </span>
           </a>
@@ -36,12 +36,12 @@ const Landing = () => {
         {/* Desktop Buttons */}
         <div className="hidden md:flex gap-4">
           <Link to="/login">
-            <button className="bg-transparent border-2 border-accent font-bold text-accent px-6 py-2 transition-all duration-300 ease-in-out transform hover:bg-background hover:text-primary shadow-md">
+            <button className="bg-transparent border-2 border-accent font-bold text-accent px-6 py-2 transition-all hover:border-background duration-300 ease-in-out transform hover:bg-background hover:text-primary shadow-md">
               Login
             </button>
           </Link>
           <Link to="/register">
-            <button className="bg-accent border-2 border-secondary font-bold text-primary px-6 py-2 transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-background hover:text-primary shadow-md">
+            <button className="bg-accent border-2 border-accent font-bold text-primary px-6 py-2 transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-background hover:border-background hover:text-primary shadow-md">
               Register
             </button>
           </Link>
@@ -90,6 +90,10 @@ const Landing = () => {
           alt=""
         />
       </div>
+      {/* <img src={Image} /> */}
+      <a href="https://storyset.com/education">
+        Education illustrations by Storyset
+      </a>
       <Footer />
     </section>
   );

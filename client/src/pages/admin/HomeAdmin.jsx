@@ -34,7 +34,7 @@ const HomeAdmin = () => {
         <img
           src={logo}
           alt="Company Logo"
-          className="h-20 w-auto inline-block"
+          className="h-20 w-auto inline-block bg-secondary rounded-full"
         />
         <span className="text-primary font-header font-extrabold text-4xl hidden sm:inline ml-5">
           Shri Kalam Academy

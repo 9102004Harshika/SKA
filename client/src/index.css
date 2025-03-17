@@ -55,7 +55,7 @@
 }
 /* Track */
 ::-webkit-scrollbar-track {
-  background: hsl(60, 56%, 91%);
+  background: hsl(0, 0%, 98%);
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
@@ -64,7 +64,7 @@
 }
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(240, 100%, 25%, 0.85);
+  background: hsl(var(--primary));
 }
 ::-webkit-backdrop-filter {
   blur: 3px saturate(106%);
@@ -73,10 +73,8 @@
 /* Prevent Google Autofill from changing text and background color */
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px hsl(268 82% 27%) inset; /* Set to transparent to prevent background color change */
-  box-shadow: 0 0 0 30px hsl(0 0% 98%) inset; /* Prevent background color change */
-  -webkit-text-fill-color: hsl(
-    0 0% 31%
-  ); /* Inherit text color from the parent or default styles */
+  box-shadow: 0 0 0 30px hsl(266.31, 100%, 74.51%) inset; /* Prevent background color change */
+  -webkit-text-fill-color: hsl(268 82% 27%); /* Inherit text color from the parent or default styles */
 }
 
 /* password eye button disabling*/

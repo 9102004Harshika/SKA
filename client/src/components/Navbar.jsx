@@ -155,11 +155,11 @@ const Navbar = () => {
 
           {/* Logo */}
           <div className="sm:text-left">
-            <a href="home" className="flex items-center">
+            <a href="/app" className="flex items-center">
               <img
                 src={logo}
                 alt="Company Logo"
-                className="h-10 w-auto inline-block"
+                className="h-10 w-auto inline-block bg-secondary rounded-full"
               />
               <span className="text-background font-highlight text-2xl hidden sm:inline ml-5 md:tracking-wide">
                 Shree Kalam Academy

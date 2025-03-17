@@ -7,12 +7,12 @@ const FooterAdmin = () => {
         <p>&copy; 2024 Shree Kalam Academy. All rights reserved.</p>
         <div>
           <span>
-            Made with <span className="text-red-700">♥</span> by{" "}
+            Made with <span className="text-error">♥</span> by{" "}
             <a
               href="https://abhikatechsolution.netlify.app/"
               target="_blank"
               rel="noreferrer"
-              className="text-secondary"
+              className="text-accent hover:underline underline-offset-2"
             >
               Abhika Tech Solutions
             </a>
