@@ -10,9 +10,10 @@ import {
   FaPhoneAlt,
   FaArrowRight,
   FaInfoCircle,
-  FaBook,
   FaStickyNote,
 } from "react-icons/fa";
+import { FaQuestion, FaBook } from "react-icons/fa6";
+
 import styled from "styled-components";
 import { Button } from "../ui/button";
 import { PiStudent } from "react-icons/pi";
@@ -84,7 +85,7 @@ const StyledWrapper = styled.div`
   }
 
   .card {
-    background: hsl(60, 56%, 91%);
+    background: hsl(0, 0%, 98%);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 5px 10px rgba(0, 0, 0, 0.6);
     padding: 1rem;
     max-width: 350px;
@@ -109,7 +110,7 @@ const StyledWrapper = styled.div`
   }
 
   .tabs {
-    background: #f5f5dc;
+    background: hsl(0, 0%, 98%);
     padding-left: 7%;
     padding-top: 2%;
     font-size: large;
@@ -169,7 +170,7 @@ const StyledWrapper = styled.div`
   }
 
   .tabs {
-    background: #f5f2dc;
+    background: hsl(0, 0%, 98%);
     z-index: 10;
   }
 
@@ -181,7 +182,7 @@ const StyledWrapper = styled.div`
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     background: #1d0042;
-    color: #f5f2dc;
+    color: hsl(0, 0%, 98%);
     padding-bottom: 2px;
   }
 
@@ -190,8 +191,8 @@ const StyledWrapper = styled.div`
     width: 100%;
   }
   .active-stickytab-hr {
-    border: 1px solid #f5f2dc;
-    background-color: #f5f2dc;
+    border: 1px solid hsl(0, 0%, 98%);
+    background-color: hsl(0, 0%, 98%);
     width: 100%;
   }
 
@@ -220,7 +221,7 @@ const StyledWrapper = styled.div`
     .hero-section {
       height: 500px;
       background-image: none;
-      background: linear-gradient(to right, #333 0%, #1d0042 45%, #2c2ca0 95%);
+      background: linear-gradient(to right, #333 0%, #1d0042 45%, #400c7c 95%);
       flex-grow: 1;
     }
 
@@ -560,7 +561,8 @@ const CourseDetailPage = () => {
           <div className="hero-section flex-grow">
             <div className="content">
               <p className="breadcrumb font-body mb-5 ">
-                Home &gt; Education &gt; (Hons) Business and Management
+                <a href="/app">Home</a> &gt; <a href="/app/courses">Courses</a>{" "}
+                &gt; {course.courseTitle}
               </p>
               <h1 className="font-header ">{course.courseTitle}</h1>
               <p className="description font-body">
@@ -571,7 +573,7 @@ const CourseDetailPage = () => {
                 <p className="md:text-5xl text-xl  font-bold text-accent">
                   ₹{course.discountedPrice}
                 </p>
-                <p className="md:text-3xl text-xl text-gray-500 line-through">
+                <p className="md:text-3xl text-xl text-gray-200 line-through">
                   ₹{course.originalPrice}
                 </p>
                 <p className="md:text-2xl  text-lg ">
@@ -600,7 +602,7 @@ const CourseDetailPage = () => {
               </div>
 
               <div className="ratings font-body flex flex-wrap sm:flex-nowrap items-center gap-2 text-sm sm:text-base">
-                <p className="text-[#f4a261] inline-flex items-center gap-1 sm:gap-2 text-lg sm:text-xl">
+                <p className="text-accent inline-flex items-center gap-1 sm:gap-2 text-lg sm:text-xl">
                   4.8 <GoStarFill />
                 </p>
                 <p className="whitespace-nowrap">(1,249 ratings)</p>
@@ -653,12 +655,8 @@ const CourseDetailPage = () => {
           {/* About US Section */}
           <div id="About" className="about pt-[50px] pl-20 ml-5">
             <h2 className="font-header text-primary text-4xl ">About Course</h2>
-            <p className="font-body text-gray-500 w-[62%] p-10 indent-[40px] leading-8">
-              This (Hons) Business and Management BSc course from University of
-              Essex Online will help you adapt to the ever-changing world of
-              business. We'll examine a range of real-world business examples
-              and use them to develop the broad skillset that a good manager
-              should be able to draw from.
+            <p className="font-body text-tertiary w-[62%] p-10 indent-[40px] leading-8">
+              {course.aboutCourse}
             </p>
           </div>
           {/* Topics covered section */}
@@ -666,10 +664,10 @@ const CourseDetailPage = () => {
             <h2 className="font-header text-primary text-4xl  ">
               Topics Covered
             </h2>
-            <ul className="font-body text-gray-500 grid grid-cols-2 md:gap-y-4  w-[62%] text-xl p-10">
+            <ul className="font-body text-tertiary grid grid-cols-2 md:gap-y-4  w-[62%] text-xl p-10">
               {course.topicsCovered.map((topic, index) => (
                 <li key={index} className="flex items-center gap-2">
-                  <IoMdCheckmark className="text-accent" /> {/* Tick icon */}
+                  <IoMdCheckmark className="text-accent" />
                   <span>{topic}</span>
                 </li>
               ))}
@@ -680,15 +678,15 @@ const CourseDetailPage = () => {
             <h2 className="font-header text-primary text-4xl  ">
               There are {course.modules.length} modules in this course
             </h2>
-            <p className="font-body text-gray-500  w-[62%] pt-3 pl-10 leading-8 indent-[40px]">
+            <p className="font-body text-tertiary  w-[62%] pt-3 pl-10 leading-8 indent-[40px]">
               {course.courseDescription}
             </p>
             <p className="pl-[70px] pt-5 gap-2 inline-flex items-center text-center">
-              <span className="inline-flex items-center text-center font-body text-gray-500 gap-2">
+              <span className="inline-flex items-center text-center font-body text-tertiary gap-2">
                 <PiVideoCameraFill className="text-lg" />
                 {course.modules.length} Lectures
               </span>
-              <span className="inline-flex items-center text-center font-body text-gray-500 gap-2">
+              <span className="inline-flex items-center text-center font-body text-tertiary gap-2">
                 <GoClock />
                 {totalEstimatedTime} hours
               </span>
@@ -702,7 +700,7 @@ const CourseDetailPage = () => {
                   >
                     {/* Module Details */}
                     <div className="space-y-3 p-2 md:w-full w-screen ">
-                      <p className="text-xl  font-semibold font-header text-background">
+                      <p className="text-xl font-semibold font-header text-accent">
                         {module.name}
                       </p>
                       <div className="flex gap-5">
@@ -719,7 +717,7 @@ const CourseDetailPage = () => {
                             href={module.videoLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center bg-secondary text-primary px-4 py-2 rounded-sm w-fit  hover:bg-accent hover:text-background transition-colors mt-2"
+                            className="inline-flex items-center bg-accent text-primary px-4 py-2  w-fit  hover:bg-accent hover:text-background transition-colors mt-2"
                           >
                             <LuTvMinimalPlay className="mr-2" />
                             Watch Video
@@ -743,23 +741,23 @@ const CourseDetailPage = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">No module details available.</p>
+              <p className="text-tertiary">No module details available.</p>
             )}
           </div>
           {/* demo video section */}
           <div className="demo pl-20 ml-5  mr-[520px] mt-20">
-            <div className="w-full md:flex block justify-between pr-10 bg-[#f7f9fa] pl-10 pb-20 pt-20 ">
+            <div className="w-full md:flex block justify-between pr-10 bg-background pl-10 pb-20 pt-20 ">
               <div>
                 {" "}
                 <h2 className="font-header text-primary text-4xl  ">
                   Glimpse of the course
                 </h2>
-                <p className="w-[300px] pt-10 text-gray-500">
+                <p className="w-[300px] font-body pt-10 text-tertiary">
                   This is the demo video presented by our esteemed instructor,
                   offering a glimpse into the course content and teaching
                   approach.
                 </p>
-                <div className="md:inline-flex hidden items-center pt-5 space-x-2 hover:space-x-4 hover:cursor-pointer">
+                <div className="md:inline-flex hidden items-center mt-3 p-3 rounded-full space-x-2 hover:space-x-4 hover:cursor-pointer ">
                   <span>See the demo </span>
                   <span>
                     <FaArrowRight />
@@ -783,42 +781,42 @@ const CourseDetailPage = () => {
               <h2 className="font-header text-primary text-4xl">
                 Perks of enrolling in the course
               </h2>
-              <p className="font-body text-gray-500 w-[62%] p-10 indent-[40px] leading-8">
+              <p className="font-body text-tertiary w-[62%] p-10 indent-[40px] leading-8">
                 Enrolling in this course comes with a range of perks designed to
                 enhance your learning experience. From interactive quizzes to
-                comprehensive study materials, you’ll have everything you need
+                comprehensive study materials, you'll have everything you need
                 to succeed.
               </p>
               <div className="md:flex block md:gap-10  pl-10">
                 {/* Notes Card (Book Design) */}
-                <div className="notesCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-[#f4a261] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
-                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-white rounded-lg border-[4px] border-gray-300 shadow-inner transform rotate-[-2deg]"></div>
-                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px] bg-background rounded-lg shadow-inner border-[2px] border-gray-300"></div>
-                  <h3 className="relative font-header md:text-2xl text-xl text-primary z-10">
-                    📚 Notes
+                <div className="notesCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-accent rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
+                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-background rounded-lg border-[4px] border-tertiary shadow-inner transform rotate-[-2deg]"></div>
+                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px] bg-background rounded-lg shadow-inner border-[2px] border-tertiary"></div>
+                  <h3 className="relative flex gap-2 items-center font-header md:text-2xl text-xl text-primary z-10">
+                    <FaBook className="text-tertiary" /> Notes
                   </h3>
-                  <p className="relative font-body md:text-md text-gray-700 z-10 ">
+                  <p className="relative font-body md:text-md text-tertiary z-10 ">
                     Access detailed and structured notes to help you master the
                     course content at your own pace.
                   </p>
                   <div className="absolute top-2 right-2 text-xs bg-background px-2 py-1 rounded-md shadow-md font-bold z-10">
-                    <span className="uppercase text-gray-500">Bookmark</span>
+                    <span className="uppercase text-tertiary">Bookmark</span>
                   </div>
                 </div>
 
                 {/* Quiz Card (Question Mark Style) */}
-                <div className="quizCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-[#f4a261] rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
-                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-white rounded-lg border-[4px] border-gray-300 shadow-inner transform rotate-[-2deg]"></div>
-                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px]  bg-background rounded-lg shadow-inner border-[2px] border-gray-300"></div>
-                  <h3 className="relative font-header md:text-2xl text-xl text-primary z-10">
-                    ❓ Quiz
+                <div className="quizCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-accent rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
+                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-background rounded-lg border-[4px] border-tertiary shadow-inner transform rotate-[-2deg]"></div>
+                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px]  bg-background rounded-lg shadow-inner border-[2px] border-tertiary"></div>
+                  <h3 className="relative font-header md:text-2xl flex gap-1 items-center text-xl text-primary z-10">
+                    <FaQuestion className="text-error" /> Quiz
                   </h3>
-                  <p className="relative font-body  md:text-md text-gray-700 z-10">
+                  <p className="relative font-body  md:text-md text-tertiary z-10">
                     Test your knowledge with engaging quizzes designed to
                     reinforce your learning.
                   </p>
                   <div className="absolute top-2 right-2 text-xs bg-background px-2 py-1 rounded-md shadow-md font-bold z-10">
-                    <span className="uppercase text-gray-500">Bookmark</span>
+                    <span className="uppercase text-tertiary">Bookmark</span>
                   </div>
                 </div>
               </div>
@@ -859,12 +857,12 @@ const CourseDetailPage = () => {
                 </p>
 
                 {/* Role */}
-                <p className="text-xl text-gray-500 font-semibold">
+                <p className="text-xl text-tertiary font-semibold">
                   {course.instructor.role}
                 </p>
 
                 {/* Bio */}
-                <p className="font-body text-gray-500 leading-7  md:w-[72%] w-[35%]">
+                <p className="font-body text-tertiary leading-7  md:w-[72%] w-[35%]">
                   {course.instructor.bio}
                 </p>
               </div>
@@ -888,13 +886,13 @@ const CourseDetailPage = () => {
               <h3 className="text-xl font-semibold mb-4 text-primary">
                 Have Any Questions?
               </h3>
-              <p className="text-gray-700 mb-6">
+              <p className="text-tertiary mb-6">
                 We're here to help! Feel free to reach out to us for any queries
                 or support.
               </p>
               <a
                 href="tel:+1234567890"
-                className="inline-flex items-center bg-accent text-white px-6 py-3 rounded-md font-semibold hover:bg-primary transition-colors shadow-md"
+                className="inline-flex  font-body items-center bg-accent text-primary px-6 py-3 rounded-md font-semibold hover:underline underline-offset-4 transition-colors shadow-md"
               >
                 <FaPhoneAlt className="mr-2" />
                 Call Us: +91 93426 75932
@@ -913,7 +911,7 @@ const CourseDetailPage = () => {
         >
           {!isFixed && (
             <img
-              src="https://wallpapercave.com/wp/wp2417737.jpg"
+              src={course.courseImage}
               alt="Course"
               className="course-image"
             />
@@ -936,7 +934,7 @@ const CourseDetailPage = () => {
                 value: (
                   <>
                     <span className="text-primary mr-2">{`₹${course.discountedPrice}`}</span>{" "}
-                    <span className="line-through text-gray-500 mr-2">
+                    <span className="line-through text-tertiary mr-2">
                       {`₹${course.originalPrice}`}{" "}
                     </span>
                     <span className="text-sm text-accent">

@@ -10,7 +10,7 @@ const Footer = () => {
           Kandivali (W), Mumbai, India 90764-87846 <br />
           <a
             href="mailto:example@gmail.com"
-            className="mt-3 inline-block bg-accent text-primary py-2 px-4 rounded-full"
+            className="mt-3 inline-block bg-accent font-semibold text-primary py-2 px-4 rounded-full hover:underline underline-offset-2"
           >
             Email Us
           </a>
