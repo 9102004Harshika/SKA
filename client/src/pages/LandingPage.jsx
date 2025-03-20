@@ -3,7 +3,7 @@ import logo from "../images/logo.png";
 import { Link } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import Footer from "../components/Footer";
-
+import Image from "../images/image.svg"
 const Landing = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -90,10 +90,9 @@ const Landing = () => {
           alt=""
         />
       </div>
-      {/* <img src={Image} /> */}
-      <a href="https://storyset.com/education">
-        Education illustrations by Storyset
-      </a>
+
+      <img src={Image} width={350} height={350} />
+    
       <Footer />
     </section>
   );
