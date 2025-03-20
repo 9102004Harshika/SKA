@@ -52,8 +52,8 @@ function MenuItems({ setOpen, activeMenuItem, setActiveMenuItem }) {
           className={`flex cursor-pointer items-center gap-3 rounded-lg px-4 py-3 text-lg font-medium transition-all 
             ${
               activeMenuItem === menuItem.id
-                ? "bg-accent text-background shadow-lg"
-                : "text-background hover:bg-muted hover:text-accent"
+                ? "bg-accent text-primary shadow-lg"
+                : "text-background hover:bg-tertiary hover:text-accent"
             }`}
         >
           {menuItem.icon}

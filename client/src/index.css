@@ -17,7 +17,7 @@
     /* --black: 0 0% 17.25%; Black for Dark */
     /* --grey: 0 0% 50%; Gray for Medium */
 
-    --background: 0 0% 98%; /* #fbfbfb */
+    --background:0 0% 98%; /* #fbfbfb */
     --primary: 266 100% 13%; /* #1d0042 */
     --secondary: 268 82% 27%; /* #400c7c */
     --tertiary: 0 0% 31%; /* #4f4f4f */
@@ -68,6 +68,10 @@
 }
 ::-webkit-backdrop-filter {
   blur: 3px saturate(106%);
+}
+
+a{
+  outline: none;
 }
 
 /* Prevent Google Autofill from changing text and background color */

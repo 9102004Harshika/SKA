@@ -82,14 +82,14 @@ const Filters = ({ notes, selectedFilters, setSelectedFilters }) => {
     Object.values(selectedFilters[type]).some((checked) => checked);
 
   return (
-    <aside className="w-72 h-[200vh] bg-background border-r-[1px] border-slate-400 p-6 hidden lg:flex flex-col">
+    <aside className="w-72 h-[200vh] bg-background border-r-[1px] border-tertiary p-6 hidden lg:flex flex-col">
       {/* Board Filter */}
       <div className="mt-8">
         <div
           className="flex items-center justify-between cursor-pointer"
           onClick={() => toggleFilterVisibility("board")}
         >
-          <h2 className="font-header text-accent text-xl font-bold capitalize">
+          <h2 className="font-header text-secondary text-xl font-bold capitalize">
             Board
           </h2>
           {filterVisibility.board ? (
@@ -123,7 +123,7 @@ const Filters = ({ notes, selectedFilters, setSelectedFilters }) => {
           className="flex items-center justify-between cursor-pointer"
           onClick={() => toggleFilterVisibility("classFor")}
         >
-          <h2 className="font-header text-accent text-xl font-bold capitalize">
+          <h2 className="font-header text-secondary text-xl font-bold capitalize">
             Class
           </h2>
           {filterVisibility.classFor ? (
@@ -133,7 +133,7 @@ const Filters = ({ notes, selectedFilters, setSelectedFilters }) => {
           )}
         </div>
         {filterVisibility.classFor && !isFilterApplied("board") && (
-          <p className="text-gray-500 italic mt-2">Please select board</p>
+          <p className="text-tertiary italic mt-2">Please select board</p>
         )}
         <div
           ref={refs.classFor}
@@ -165,7 +165,7 @@ const Filters = ({ notes, selectedFilters, setSelectedFilters }) => {
           className="flex items-center justify-between cursor-pointer"
           onClick={() => toggleFilterVisibility("subject")}
         >
-          <h2 className="font-header text-accent text-xl font-bold capitalize">
+          <h2 className="font-header text-secondary text-xl font-bold capitalize">
             Subject
           </h2>
           {filterVisibility.subject ? (

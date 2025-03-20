@@ -28,7 +28,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding: 10px;
-  background: linear-gradient(135deg, #b7e1ff, #1d0042);
+  background: linear-gradient(135deg, hsl(266, 100%, 13%), hsl(268, 82%, 27%));
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   width: 160px;
@@ -43,7 +43,7 @@ const ImageIcon = styled.div`
   height: 64px;
   position: absolute;
   top: -25px;
-  background: #f5f5db;
+  background: hsl(0, 0%, 98%);
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -57,8 +57,8 @@ const ImageIcon = styled.div`
     width: 40px;
     height: 40px;
     transform: rotate(45deg) translate(30%, 40%);
-    background: hsl(26.53, 86.98%, 66.86%);
-    box-shadow: 32px -34px 0 5px #ff6f56;
+    background: hsl(41, 100%, 62%);
+    box-shadow: 32px -34px 0 5px hsla(31, 100%, 62%, 73%);
     animation: ${slide} 2s infinite ease-in-out alternate;
   }
 
@@ -70,7 +70,7 @@ const ImageIcon = styled.div`
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: #ff6f56;
+    background: hsla(47, 100%, 62%, 92%);
     transform-origin: 35px 145px;
     animation: ${rotate} 2s infinite ease-in-out;
   }
@@ -82,7 +82,7 @@ const FileInput = styled.input`
 
 const FileLabel = styled.label`
   font-size: 0.9em;
-  color: #f5f5db;
+  color: hsl(0, 0%, 98%);
   text-align: center;
   background: rgba(255, 255, 255, 0.2);
   border: none;

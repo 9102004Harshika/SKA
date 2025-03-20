@@ -16,6 +16,7 @@ const buttonVariants = cva(
         primary: "primary",
         secondary: "secondary",
         accent: "accent",
+        white: "white",
         error: "error",
       },
     },
@@ -34,7 +35,7 @@ const StyledWrapper = styled.div`
     cursor: pointer;
     position: relative;
     padding: ${({ size }) => (size === "sm" ? "5px" : "8px")};
-    margin-bottom: ${({ size }) => (size === "sm" ? "2px" : "15px")};
+    margin-bottom: ${({ size }) => (size === "sm" ? "0px" : "15px")};
     text-transform: capitalize;
     font-weight: bold;
     font-size: 14px;
@@ -96,6 +97,8 @@ const StyledWrapper = styled.div`
         ? "hsl(268, 82%, 27%)"
         : variant === "error"
         ? "hsl( 0, 100%, 50%)"
+        : variant === "white"
+        ? "hsl( 0, 0%, 98%)"
         : "hsl(41, 100% ,62%)"};
     overflow: hidden;
     box-shadow: inset 0px 0px 0px 1px transparent;

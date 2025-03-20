@@ -20,13 +20,13 @@ const TextArea = styled.textarea`
   transition: border-color 0.3s ease;
   resize: vertical;
   &:focus {
-    border-color: hsl(26.53, 86.98%, 66.86%);
+    border-color: hsl(41, 100%, 62%);
   }
   &:valid {
     border-color: #1d0042;
   }
   &:hover {
-    border-color: hsl(26.53, 86.98%, 66.86%);
+    border-color: hsl(41, 100%, 62%);
   }
 `;
 
@@ -47,7 +47,7 @@ const Label = styled.label`
     margin-left: -0.8em;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: hsl(26.53, 86.98%, 66.86%);
+    color: hsl(41, 100%, 62%);
     font-weight: 700;
   }
   ${TextArea}:valid ~ & {
@@ -65,7 +65,7 @@ const Label = styled.label`
     margin-left: -0.8em;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: hsl(26.53, 86.98%, 66.86%);
+    color: hsl(41, 100%, 62%);
     font-weight: 700;
   }
 `;

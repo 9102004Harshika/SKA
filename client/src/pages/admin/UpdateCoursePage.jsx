@@ -15,7 +15,9 @@ const UpdateCoursePage = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/courses/get");
+        const response = await axios.get(
+          "http://localhost:5000/api/courses/get"
+        );
         setCourses(response.data);
       } catch (err) {
         setError("Failed to fetch notes.");
@@ -37,7 +39,7 @@ const UpdateCoursePage = () => {
   return (
     <div className="md:ml-8">
       <h2 className="text-3xl font-header font-semibold md:tracking-wide text-center mb-6">
-        Update Notes
+        Update Course
       </h2>
 
       {/* Search Bar */}
@@ -52,7 +54,7 @@ const UpdateCoursePage = () => {
       {loading ? (
         <p className="text-gray-600">Loading!!! Please Wait...</p>
       ) : error ? (
-        <p className="text-red-500">{error}</p>
+        <p className="text-error">{error}</p>
       ) : filteredNotes.length === 0 ? (
         <p className="text-gray-600">No notes found.</p>
       ) : (
@@ -60,22 +62,18 @@ const UpdateCoursePage = () => {
           <table className="min-w-full border-collapse border border-primary">
             <thead>
               <tr className="border-primary">
-                <th className="border bg-secondary border-primary p-3">
-                  Title
-                </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3">Title</th>
+                <th className="border bg-accent border-primary p-3 text-center">
                   Class
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Board
                 </th>
-                <th className="border bg-secondary border-primary p-3">
-                  Subject
-                </th>
+                <th className="border bg-accent border-primary p-3">Subject</th>
                 {/* <th className="border bg-secondary border-primary p-3 text-center">
                   Time
                 </th> */}
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Update
                 </th>
               </tr>
@@ -83,14 +81,18 @@ const UpdateCoursePage = () => {
             <tbody>
               {filteredNotes.map((course) => (
                 <tr key={course._id} className="hover:border-accent">
-                  <td className="border border-primary p-3">{course.courseTitle}</td>
+                  <td className="border border-primary p-3">
+                    {course.courseTitle}
+                  </td>
                   <td className="border border-primary p-3 text-center">
                     {course.class}
                   </td>
                   <td className="border border-primary p-3 text-center">
                     {course.board}
                   </td>
-                  <td className="border border-primary p-3">{course.subject}</td>
+                  <td className="border border-primary p-3">
+                    {course.subject}
+                  </td>
                   {/* <td className="border border-primary p-3 text-center">
                     {new Date(note.createdOn).toLocaleString()}
                   </td> */}

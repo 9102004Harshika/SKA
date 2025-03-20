@@ -15,7 +15,9 @@ const DeleteCourse = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/courses/get");
+        const response = await axios.get(
+          "http://localhost:5000/api/courses/get"
+        );
         setCourses(response.data);
       } catch (err) {
         setError("Failed to fetch notes.");
@@ -46,7 +48,7 @@ const DeleteCourse = () => {
   return (
     <div className="md:ml-8">
       <h2 className="text-3xl font-header font-semibold md:tracking-wide text-center mb-6">
-        Delete Notes
+        Delete Course
       </h2>
 
       {/* Search Bar */}
@@ -61,30 +63,30 @@ const DeleteCourse = () => {
       {loading ? (
         <p className="text-gray-600">Loading...</p>
       ) : error ? (
-        <p className="text-red-500">{error}</p>
+        <p className="text-error">{error}</p>
       ) : filteredNotes.length === 0 ? (
-        <p className="text-gray-600">No courses found.</p>
+        <p className="text-tertiary">No courses found.</p>
       ) : (
         <div className="overflow-x-auto rounded-sm overflow-hidden">
           <table className="min-w-full border-collapse border border-primary rounded-sm">
             <thead>
               <tr className="border-primary">
-                <th className="border bg-secondary border-primary p-3 text-left">
+                <th className="border bg-accent border-primary p-3 text-left">
                   Title
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Class
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Board
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-left">
+                <th className="border bg-accent border-primary p-3 text-left">
                   Subject
                 </th>
-                {/* <th className="border bg-secondary border-primary p-3 text-center">
+                {/* <th className="border bg-accent border-primary p-3 text-center">
                   Time
                 </th> */}
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Delete
                 </th>
               </tr>
@@ -92,7 +94,9 @@ const DeleteCourse = () => {
             <tbody>
               {filteredNotes.map((course) => (
                 <tr key={course._id} className="hover:border-accent">
-                  <td className="border border-primary p-3">{course.courseTitle}</td>
+                  <td className="border border-primary p-3">
+                    {course.courseTitle}
+                  </td>
                   <td className="border border-primary p-3 text-center">
                     {course.class}
                   </td>

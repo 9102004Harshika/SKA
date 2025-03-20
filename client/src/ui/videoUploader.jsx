@@ -15,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding: 10px;
-  background: linear-gradient(135deg, #b7e1ff, #1d0042);
+  background: linear-gradient(135deg, hsl(266, 100%, 13%), hsl(268, 82%, 27%));
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   height: 100px;
@@ -39,7 +39,7 @@ const CameraIcon = styled.img`
 
 const FileLabel = styled.label`
   font-size: 0.9em;
-  color: #fff;
+  color: hsl(0, 0%, 98%);
   text-align: center;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
