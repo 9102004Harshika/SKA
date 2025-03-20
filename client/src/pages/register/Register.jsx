@@ -8,13 +8,16 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import RightPanel from "./RightPanel";
 import { useNavigate } from "react-router-dom";
-import {  GoogleRegister, handleSubmit } from "../../logic/register/registerSubmit";
+import {
+  GoogleRegister,
+  handleSubmit,
+} from "../../logic/register/registerSubmit";
 function RegisterPage() {
   const [formData, setFormData] = useState({});
   const rightPanelRef = useRef(null);
   const registerFormRef = useRef(null);
   const navigate = useNavigate();
-  const login=GoogleRegister(navigate)
+  const login = GoogleRegister(navigate);
   useEffect(() => {
     const tl = gsap.timeline();
 
@@ -50,10 +53,16 @@ function RegisterPage() {
           <h2 className="text-3xl font-semibold capitalize md:tracking-wide font-header text-center mb-6">
             Elevate Your Learning
           </h2>
-          <form className="w-full max-w-md" onSubmit={(e) => handleSubmit(e, formData, navigate)} noValidate>
+          <form
+            className="w-full max-w-md"
+            onSubmit={(e) => handleSubmit(e, formData, navigate)}
+            noValidate
+          >
             {registerForm.map((field, index) => (
               <div className="mb-5" key={index}>
-                <label className="block text-sm font-medium mb-1">{field.label}</label>
+                <label className="block text-sm font-medium mb-1">
+                  {field.label}
+                </label>
                 <Input
                   className="placeholder:text-primary placeholder:opacity-[0.8]"
                   type={field.type}
@@ -64,12 +73,19 @@ function RegisterPage() {
                 />
               </div>
             ))}
-            <Button text="Enroll Now" size="lg" variant="primary" type="submit" />
+            <Button
+              text="Enroll Now"
+              size="lg"
+              variant="primary"
+              type="submit"
+            />
           </form>
 
           <div className="flex items-center w-full mb-2">
             <hr className="flex-grow border-t border-muted border-primary" />
-            <span className="mx-1 text-sm text-muted-foreground">Or sign up with</span>
+            <span className="mx-1 text-sm text-muted-foreground">
+              Or sign up with
+            </span>
             <hr className="flex-grow border-t border-muted border-primary" />
           </div>
 
@@ -84,25 +100,31 @@ function RegisterPage() {
                 </div>
               }
               size="sm"
-              variant="primary"
+              variant="secondary"
               onClick={() => login()}
             />
             {/* Facebook Login */}
-           
-                <Button
-                  text={
-                    <div className="flex items-center justify-center">
-                      <FaFacebook className="w-5 h-5 mr-2" />
-                      <span className="hidden lg:inline">Facebook</span>
-                    </div>
-                    
-                  }
-                  size="sm"
-              variant="primary"
+
+            <Button
+              text={
+                <div className="flex items-center justify-center">
+                  <FaFacebook className="w-5 h-5 mr-2" />
+                  <span className="hidden lg:inline">Facebook</span>
+                </div>
+              }
+              size="sm"
+              variant="secondary"
             />
-                
-                
           </div>
+          <p>
+            Already have a account ?{" "}
+            <a
+              href="/login"
+              className="text-secondary font-bold hover:underline underline-offset-2"
+            >
+              Login
+            </a>
+          </p>
         </div>
 
         <motion.div

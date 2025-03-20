@@ -13,8 +13,8 @@ const Notification = ({ onClick, count }) => {
           {count > 0 && (
             <div className="absolute -right-3 -top-5 z-10">
               <div className="flex h-5 w-5 items-center justify-center">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B7E1FF] opacity-75"></span>
-                <span className="relative inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#B7E1FF] text-[10px] font-bold text-[#1d0042]">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-primary">
                   {count}
                 </span>
               </div>

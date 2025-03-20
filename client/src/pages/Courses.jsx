@@ -10,15 +10,17 @@ const Courses = () => {
   const [selectedBoard, setSelectedBoard] = useState("");
 
   // Extract unique boards from courses
-  const uniqueBoards = [...new Set(
-    boards.map((board) => board.split("(")[1]?.replace(")", "").trim())
-  )].filter(Boolean); // Remove undefined values if any
+  const uniqueBoards = [
+    ...new Set(
+      boards.map((board) => board.split("(")[1]?.replace(")", "").trim())
+    ),
+  ].filter(Boolean); // Remove undefined values if any
 
   // Filter courses based on selected board
   const filteredCourses = courses.filter((course) => {
     const courseBoard = course.board.split("(")[1]?.replace(")", "").trim();
     const boardMatches = selectedBoard ? courseBoard === selectedBoard : true;
-    return boardMatches ;
+    return boardMatches;
   });
   useEffect(() => {
     const fetchCourses = async () => {
@@ -42,19 +44,17 @@ const Courses = () => {
   return (
     <div className="p-10 pt-20">
       <div>
-        
-         <select
-         onChange={(e) => setSelectedBoard(e.target.value)}
-         value={selectedBoard}
-       >
-         <option value="">All Boards</option>
-         {uniqueBoards.map((board) => (
-           <option key={board} value={board}>
-             {board}
-           </option>
-         ))}
-       </select>
-        
+        <select
+          onChange={(e) => setSelectedBoard(e.target.value)}
+          value={selectedBoard}
+        >
+          <option value="">All Boards</option>
+          {uniqueBoards.map((board) => (
+            <option key={board} value={board}>
+              {board}
+            </option>
+          ))}
+        </select>
       </div>
       {courses.length === 0 ? (
         <h2 className="text-xl font-semibold text-gray-700 text-center">
@@ -65,55 +65,55 @@ const Courses = () => {
           {filteredCourses.map((course) => (
             <div
               key={course._id}
-              className="flex flex-col bg-white rounded-xl shadow-lg overflow-hidden border hover:shadow-xl transition-all duration-300"
+              className="flex flex-col bg-background shadow-lg overflow-hidden border hover:shadow-xl transition-all duration-300"
             >
               {/* Image Container */}
-              <div className="h-48 w-full bg-gray-100 flex items-center justify-center overflow-hidden">
-  <img
-    src={course.courseImage}
-    alt={course.courseTitle}
-    className="w-full max-h-[90%] object-contain"
-  />
-</div>
+              <div className="h-48 w-full bg-background flex items-center justify-center overflow-hidden">
+                <img
+                  src={course.courseImage}
+                  alt={course.courseTitle}
+                  className="w-full max-h-[90%] object-contain"
+                />
+              </div>
 
               {/* Content */}
               <div className="flex flex-col flex-grow p-4">
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-secondary">
                   {course.courseTitle}
                 </h2>
-               
-                  <div className=" mt-">
-                    <div className="flex gap-6">
-                      <p>
-                        Board :{" "}
-                        <span>
-                          {course.board.includes("(")
-                            ? course.board.match(/\(([^)]+)\)/)[1]
-                            : course.board}
-                        </span>
-                      </p>
-                      <p>
-                        Class : <span>{course.class}</span>
-                      </p>
-                    </div>
-                    <div className="flex gap-4">
-                      {course.class === "11" && (
-                        <p>
-                          Stream : <span>{course.stream}</span>
-                        </p>
-                      )}
-                      <p>
-                        Subject : <span>{course.subject}</span>
-                      </p>
-                    </div>
+
+                <div className=" mt-">
+                  <div className="flex gap-6 text-tertiary">
+                    <p>
+                      Board :{" "}
+                      <span>
+                        {course.board.includes("(")
+                          ? course.board.match(/\(([^)]+)\)/)[1]
+                          : course.board}
+                      </span>
+                    </p>
+                    <p>
+                      Class : <span>{course.class}</span>
+                    </p>
                   </div>
+                  <div className="flex gap-4 text-tertiary">
+                    {course.class === "11" && (
+                      <p>
+                        Stream : <span>{course.stream}</span>
+                      </p>
+                    )}
+                    <p>
+                      Subject : <span>{course.subject}</span>
+                    </p>
+                  </div>
+                </div>
 
                 {/* Spacer to push button down */}
                 <div className="flex-grow"></div>
 
                 {/* Button */}
                 <button
-                  className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                  className="mt-4 w-full bg-primary text-background py-2 hover:bg-secondary transition"
                   onClick={() => handleCourseClick(course._id)}
                 >
                   View Course
