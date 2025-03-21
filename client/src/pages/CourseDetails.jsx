@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   FaChalkboardTeacher,
@@ -42,7 +42,6 @@ const StyledWrapper = styled.div`
         /* Semi-transparent blue towards the right */ transparent 100%
           /* Fading out to transparent white */
       ),
-      url("https://wallpapercave.com/wp/wp2417737.jpg");
     background-size: cover; /* Ensures image covers the full section */
     background-repeat: no-repeat;
     background-position: center; /* Centers the image */
@@ -135,7 +134,7 @@ const StyledWrapper = styled.div`
   .active-tab-hr {
     border: 0;
     height: 4px; /* Set height for the hr line */
-    background-color: #1d0042; /* Set your preferred border color */
+    background-color: hsl(266, 100%, 13%); /* Set your preferred border color */
     width: 80%; /* Adjust the width of the hr line */
     margin-top: 20px; /* Space between the tab and hr line */
   }
@@ -181,13 +180,13 @@ const StyledWrapper = styled.div`
     right: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
-    background: #1d0042;
+    background: hsl(266, 100%, 13%);
     color: hsl(0, 0%, 98%);
     padding-bottom: 2px;
   }
 
   .active-tab-hr {
-    border: 1px solid #1d0042;
+    border: 1px solid hsl(266, 100%, 13%);
     width: 100%;
   }
   .active-stickytab-hr {
@@ -221,7 +220,6 @@ const StyledWrapper = styled.div`
     .hero-section {
       height: 500px;
       background-image: none;
-      background: linear-gradient(to right, #333 0%, #1d0042 45%, #400c7c 95%);
       flex-grow: 1;
     }
 
@@ -440,8 +438,8 @@ const CourseDetailPage = () => {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("About Us");
   const [expandedModules, setExpandedModules] = useState({});
+  const navigate = useNavigate();
   const [scrollDirection, setScrollDirection] = useState("up");
-
   const toggleModule = (index) => {
     setExpandedModules((prev) => ({
       ...prev,
@@ -473,6 +471,7 @@ const CourseDetailPage = () => {
         const response = await axios.get(
           `http://localhost:5000/api/courses/${id}`
         );
+
         setCourse(response.data);
         setLoading(false);
       } catch (err) {
@@ -546,6 +545,7 @@ const CourseDetailPage = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   if (loading) return <p className="text-center text-xl">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
   const totalEstimatedTime = course.modules.reduce((sum, module) => {
@@ -558,7 +558,17 @@ const CourseDetailPage = () => {
     <StyledWrapper className="space-y-0">
       <div className="course-page flex">
         <div className="course-content flex-1">
-          <div className="hero-section flex-grow">
+          <div
+            className="hero-section flex-grow"
+            style={{
+              backgroundImage: course?.courseImage
+                ? `linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(29,0,66,1) 35%, rgba(64,12,124,0.5214679621848739) 100%),
+             url("${course.courseImage}")`
+                : "none",
+              backgroundSize: "150%", // Zoomed-out effect
+              backgroundPosition: "center", // Center the image
+            }}
+          >
             <div className="content">
               <p className="breadcrumb font-body mb-5 ">
                 <a href="/app">Home</a> &gt; <a href="/app/courses">Courses</a>{" "}
@@ -714,7 +724,15 @@ const CourseDetailPage = () => {
                       {expandedModules[index] && (
                         <div className="flex gap-[20px] flex-wrap">
                           <a
-                            href={module.videoLink}
+                            onClick={() => {
+                              navigate(`/app/videoPlayer `, {
+                                state: {
+                                  src: module.videoLink,
+                                  title: module.name,
+                                  moduleNumber: index + 1,
+                                },
+                              });
+                            }}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center bg-accent text-primary px-4 py-2  w-fit  hover:bg-accent hover:text-background transition-colors mt-2"
@@ -789,9 +807,12 @@ const CourseDetailPage = () => {
               </p>
               <div className="md:flex block md:gap-10  pl-10">
                 {/* Notes Card (Book Design) */}
-                <div className="notesCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-accent rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
-                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-background rounded-lg border-[4px] border-tertiary shadow-inner transform rotate-[-2deg]"></div>
-                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px] bg-background rounded-lg shadow-inner border-[2px] border-tertiary"></div>
+                <div
+                  className="notesCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-tertiary  shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300"
+                  onClick={() => navigate(`/app/notes/${course.notes._id}`)}
+                >
+                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-background  border-[4px] border-accent shadow-inner transform rotate-[-3deg]"></div>
+                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px] bg-background shadow-inner border-[2px] border-accent"></div>
                   <h3 className="relative flex gap-2 items-center font-header md:text-2xl text-xl text-primary z-10">
                     <FaBook className="text-tertiary" /> Notes
                   </h3>
@@ -799,24 +820,24 @@ const CourseDetailPage = () => {
                     Access detailed and structured notes to help you master the
                     course content at your own pace.
                   </p>
-                  <div className="absolute top-2 right-2 text-xs bg-background px-2 py-1 rounded-md shadow-md font-bold z-10">
-                    <span className="uppercase text-tertiary">Bookmark</span>
+                  <div className="absolute top-2 right-2 text-xs bg-tertiary px-2 py-1 rounded-md shadow-md font-bold z-10">
+                    <span className="uppercase text-accent">Open Pdf</span>
                   </div>
                 </div>
 
                 {/* Quiz Card (Question Mark Style) */}
-                <div className="quizCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-accent rounded-lg shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
-                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-background rounded-lg border-[4px] border-tertiary shadow-inner transform rotate-[-2deg]"></div>
-                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px]  bg-background rounded-lg shadow-inner border-[2px] border-tertiary"></div>
+                <div className="quizCard relative md:w-[300px] md:h-[200px] w-[250px] h-[180px] bg-accent  shadow-lg p-5 flex flex-col justify-center items-start transform hover:scale-105 transition duration-300">
+                  <div className="absolute top-0 left-0 md:w-[290px] md:h-[190px] w-[240px] h-[170px] bg-background  border-[4px] border-tertiary shadow-inner transform rotate-[-3deg]"></div>
+                  <div className="absolute top-[5px] left-[5px] md:w-[280px] md:h-[180px] w-[230px] h-[160px]  bg-background shadow-inner border-[2px] border-tertiary"></div>
                   <h3 className="relative font-header md:text-2xl flex gap-1 items-center text-xl text-primary z-10">
-                    <FaQuestion className="text-error" /> Quiz
+                    <FaQuestion className="text-accent" /> Quiz
                   </h3>
                   <p className="relative font-body  md:text-md text-tertiary z-10">
                     Test your knowledge with engaging quizzes designed to
                     reinforce your learning.
                   </p>
-                  <div className="absolute top-2 right-2 text-xs bg-background px-2 py-1 rounded-md shadow-md font-bold z-10">
-                    <span className="uppercase text-tertiary">Bookmark</span>
+                  <div className="absolute top-2 right-2 text-xs bg-accent px-2 py-1 rounded-md shadow-md  font-bold z-10">
+                    <span className="uppercase text-primary">Start Quiz</span>
                   </div>
                 </div>
               </div>

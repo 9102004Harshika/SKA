@@ -60,22 +60,18 @@ const UpdateNotesPage = () => {
           <table className="min-w-full border-collapse border border-primary">
             <thead>
               <tr className="border-primary">
-                <th className="border bg-secondary border-primary p-3">
-                  Title
-                </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3">Title</th>
+                <th className="border bg-accent border-primary p-3 text-center">
                   Class
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Board
                 </th>
-                <th className="border bg-secondary border-primary p-3">
-                  Subject
-                </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3">Subject</th>
+                <th className="border bg-accent border-primary p-3 text-center">
                   Time
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Update
                 </th>
               </tr>

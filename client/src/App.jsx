@@ -52,11 +52,11 @@ const App = () => {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enrollment" element={<Enrollment />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
-
-            <Route path="/app/pdfViewer" element={<PdfViewer />} />
             {/* Users pages after auth  */}
             <Route path="/app" element={<MainLayout />}>
               <Route index element={<Home />} />
+              <Route path="pdfViewer" element={<PdfViewer />} />
+              <Route path="videoPlayer" element={<Video />} />
               <Route path="courses" element={<Courses />} />
               <Route path="quiz" element={<Quiz />} />
               <Route path="notes" element={<Notes />} />
@@ -98,12 +98,7 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
 
             {/* Route used for dedicated page of component testing */}
-            <Route
-              path="/testing"
-              element={
-               <AnimatedBook/>
-              }
-            />
+            <Route path="/testing" element={<AnimatedBook />} />
           </Routes>
         </main>
         {/* <Footer /> */}

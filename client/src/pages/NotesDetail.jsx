@@ -5,6 +5,7 @@ import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { IoBook } from "react-icons/io5";
 import { FaBook, FaChalkboardTeacher, FaSchool } from "react-icons/fa";
 import gsap from "gsap";
+import { Button } from "../ui/button";
 
 const NotesDetail = () => {
   const { id } = useParams();
@@ -124,25 +125,25 @@ const NotesDetail = () => {
 
           {/* Inline Details Row */}
           <div className="mt-2 flex flex-wrap gap-2 md:gap-4 text-sm md:text-md">
-            <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
+            <div className="flex items-center gap-2 bg-accent py-2 px-4 rounded-3xl">
               <FaBook className="text-primary" />
               <span>
                 Subject: <strong>{note.subject}</strong>
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
+            <div className="flex items-center gap-2 bg-accent py-2 px-4 rounded-3xl">
               <FaChalkboardTeacher className="text-primary" />
               <span>
                 Class: <strong>{note.classFor}</strong>
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-secondary py-2 px-4 rounded-3xl">
+            <div className="flex items-center gap-2 bg-accent py-2 px-4 rounded-3xl">
               <FaSchool className="text-primary" />
               <span>
                 Board: <strong>{note.board}</strong>
               </span>
             </div>
-            <p className="text-justify text-gray-600">{note.description}</p>
+            <p className="text-justify text-tertiary">{note.description}</p>
           </div>
 
           {/* Last Updated */}
@@ -156,12 +157,16 @@ const NotesDetail = () => {
           {/* Open PDF Button */}
 
           <div className="mt-6">
-            <button
+            <Button
               onClick={() => navigate(`/app/pdfViewer`, { state: pdf })}
-              className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2 shadow-md hover:bg-opacity-90 transition md:w-auto w-full justify-center"
-            >
-              <IoBook /> Open Book
-            </button>
+              className="w-fit"
+              text={
+                <div className="flex gap-2 items-center justify-center">
+                  <IoBook /> Open Book
+                </div>
+              }
+              variant="secondary"
+            />
           </div>
         </div>
       </div>

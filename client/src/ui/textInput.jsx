@@ -11,19 +11,19 @@ const Input = styled.input`
   font-size: 100%;
   padding: 0.8em;
   outline: none;
-  border-bottom: 1px solid #1d0042;
+  border-bottom: 1px solid hsl(266, 100%, 13%);
   background-color: transparent;
   width: 100%;
   transition: border-color 0.3s ease;
   margin-bottom: 10px;
   &:focus {
-    border-color: hsl(26.53, 86.98%, 66.86%);
+    border-color: hsl(41, 100%, 62%);
   }
   &:valid {
-    border-color: #1d0042;
+    border-color: hsl(266, 100%, 13%);
   }
   &:hover {
-    border-color: hsl(26.53, 86.98%, 66.86%);
+    border-color: hsl(41, 100%, 62%);
   }
 `;
 
@@ -35,7 +35,7 @@ const Label = styled.label`
   margin-left: 0.5em;
   pointer-events: none;
   transition: all 0.3s ease;
-  color: #1d0042;
+  color: hsl(266, 100%, 13%);
 
   ${Input}:focus ~ & {
     transform: translateY(-75%) scale(0.9);
@@ -44,7 +44,7 @@ const Label = styled.label`
     margin-bottom: 2px;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: hsl(26.53, 86.98%, 66.86%);
+    color: hsl(41, 100%, 62%);
     font-weight: 700;
   }
   ${Input}:valid ~ & {
@@ -54,7 +54,7 @@ const Label = styled.label`
     margin-bottom: 2px;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: #1d0042;
+    color: hsl(266, 100%, 13%);
     font-weight: 700;
   }
   ${Input}:hover ~ & {
@@ -64,7 +64,7 @@ const Label = styled.label`
     margin-bottom: 2px;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: hsl(26.53, 86.98%, 66.86%);
+    color: hsl(41, 100%, 62%);
     font-weight: 700;
   }
 `;

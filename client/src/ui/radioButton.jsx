@@ -79,7 +79,7 @@ const StyledWrapper = styled.div`
     background: linear-gradient(
       180deg,
       hsl(266, 100%, 13%),
-      hsl(268 ,82% ,27%),
+      hsl(268, 82%, 27%),
       hsl(266.31, 100%, 74.51%)
     );
     transform: translate(-50%, -50%);
@@ -108,7 +108,7 @@ const StyledWrapper = styled.div`
 
   .radio-b__text {
     font-size: 15px;
-    color: #1d0042;
+    color: hsl(266, 100%, 13%);
     font-weight: 600;
     white-space: nowrap;
   }

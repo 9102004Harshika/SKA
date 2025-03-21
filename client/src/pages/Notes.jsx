@@ -79,8 +79,11 @@ const Notes = () => {
     );
 
     const boardMatch =
-      selectedBoards.length === 0 || selectedBoards.includes(note.board.match(/\((.*?)\)/)?.[1] || note.board);
-    const formattedClassFor = formatClassFor(note.classFor.match(/\d+/)?.[0] || note.classFor);
+      selectedBoards.length === 0 ||
+      selectedBoards.includes(note.board.match(/\((.*?)\)/)?.[1] || note.board);
+    const formattedClassFor = formatClassFor(
+      note.classFor.match(/\d+/)?.[0] || note.classFor
+    );
     const classMatch =
       selectedClasses.length === 0 ||
       selectedClasses.includes(formattedClassFor);
@@ -114,7 +117,7 @@ const Notes = () => {
 
   return (
     <div className="flex min-h-screen">
-      <div ref={filtersRef}>
+      <div>
         <Filters
           notes={notes}
           selectedFilters={selectedFilters}
@@ -123,9 +126,9 @@ const Notes = () => {
       </div>
       <div className="flex-1 px-6">
         <div className="flex justify-between items-center mt-10">
-          <div className="text-lg font-semibold">
+          <div className="text-lg font-semibold border-b-[1px]">
             Books Available:{" "}
-            <span className="text-accent">{sortedNotes.length}</span>
+            <span className="text-secondary">{sortedNotes.length}</span>
           </div>
           <div className="min-w-32">
             <Select
@@ -145,7 +148,7 @@ const Notes = () => {
               <div
                 onClick={() => navigate(`/app/notes/${note._id}`)}
                 key={index}
-                className="bg-secondary rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 flex flex-col justify-between"
+                className="bg-accent rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 flex flex-col justify-between"
               >
                 <div>
                   <img
@@ -154,16 +157,18 @@ const Notes = () => {
                     className="w-full h-60 object-cover object-top"
                   />
                   <div className="px-4 pt-4">
-                    <h2 className="text-lg font-semibold text-primary mb-1">
+                    <h2 className="text-lg font-semibold text-secondary mb-1">
                       {note.title} ({note.subject})
                     </h2>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-tertiary">
                       <div className="flex items-center gap-1">
-                        <FaUniversity className="text-gray-500" />
-                        <span>Board: {note.board.split("(").pop().replace(")", "")}</span>
+                        <FaUniversity className="text-tertiary" />
+                        <span>
+                          Board: {note.board.split("(").pop().replace(")", "")}
+                        </span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <FaFilePdf className="text-gray-500" />
+                        <FaFilePdf className="text-tertiary" />
                         <span>Class: {note.classFor}</span>
                       </div>
                     </div>

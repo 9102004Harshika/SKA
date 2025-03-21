@@ -59,32 +59,32 @@ const DeleteNotesPage = () => {
       />
 
       {loading ? (
-        <p className="text-gray-600">Loading...</p>
+        <p className="text-tertiary">Loading...</p>
       ) : error ? (
-        <p className="text-red-500">{error}</p>
+        <p className="text-error">{error}</p>
       ) : filteredNotes.length === 0 ? (
-        <p className="text-gray-600">No notes found.</p>
+        <p className="text-tertiary">No notes found.</p>
       ) : (
         <div className="overflow-x-auto rounded-sm overflow-hidden">
           <table className="min-w-full border-collapse border border-primary rounded-sm">
             <thead>
               <tr className="border-primary">
-                <th className="border bg-secondary border-primary p-3 text-left">
+                <th className="border bg-accent border-primary p-3 text-left">
                   Title
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Class
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Board
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-left">
+                <th className="border bg-accent border-primary p-3 text-left">
                   Subject
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Time
                 </th>
-                <th className="border bg-secondary border-primary p-3 text-center">
+                <th className="border bg-accent border-primary p-3 text-center">
                   Delete
                 </th>
               </tr>
@@ -108,7 +108,7 @@ const DeleteNotesPage = () => {
                   <td className="border border-primary p-3 text-center">
                     <button
                       onClick={() => handleDeleteClick(note)}
-                      className="px-4 py-2 bg-accent text-background rounded-md hover:bg-red-600"
+                      className="px-4 py-2 bg-error text-background rounded-md hover:bg-tertiary"
                     >
                       <RiDeleteBin6Line />
                     </button>

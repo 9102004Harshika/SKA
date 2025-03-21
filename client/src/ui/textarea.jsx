@@ -12,7 +12,7 @@ const TextArea = styled.textarea`
   padding: 0.8em;
 
   outline: none;
-  border-bottom: 1px solid #1d0042;
+  border-bottom: 1px solid hsl(266, 100%, 13%);
   background-color: transparent;
   width: 100%;
   min-height: 40px;
@@ -20,13 +20,13 @@ const TextArea = styled.textarea`
   transition: border-color 0.3s ease;
   resize: vertical;
   &:focus {
-    border-color: hsl(26.53, 86.98%, 66.86%);
+    border-color: hsl(41, 100%, 62%);
   }
   &:valid {
-    border-color: #1d0042;
+    border-color: hsl(266, 100%, 13%);
   }
   &:hover {
-    border-color: hsl(26.53, 86.98%, 66.86%);
+    border-color: hsl(41, 100%, 62%);
   }
 `;
 
@@ -39,7 +39,7 @@ const Label = styled.label`
   margin-left: 0.5em;
   pointer-events: none;
   transition: all 0.3s ease;
-  color: #1d0042;
+  color: hsl(266, 100%, 13%);
 
   ${TextArea}:focus ~ & {
     transform: translateY(-260%) scale(0.9);
@@ -47,7 +47,7 @@ const Label = styled.label`
     margin-left: -0.8em;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: hsl(26.53, 86.98%, 66.86%);
+    color: hsl(41, 100%, 62%);
     font-weight: 700;
   }
   ${TextArea}:valid ~ & {
@@ -56,7 +56,7 @@ const Label = styled.label`
     margin-left: -0.8em;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: #1d0042;
+    color: hsl(266, 100%, 13%);
     font-weight: 700;
   }
   ${TextArea}:hover ~ & {
@@ -65,7 +65,7 @@ const Label = styled.label`
     margin-left: -0.8em;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
-    color: hsl(26.53, 86.98%, 66.86%);
+    color: hsl(41, 100%, 62%);
     font-weight: 700;
   }
 `;

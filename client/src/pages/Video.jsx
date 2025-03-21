@@ -1,14 +1,19 @@
 import React from "react";
+import { useLocation, useParams } from "react-router-dom";
 import VideoPlayer from "../components/VideoPlayer";
 
 const Video = () => {
+  const location = useLocation();
+  const video = location.state;
   return (
     <div>
-      <h1 className="text-center text-2xl my-16 font-bold">Sample Video</h1>
-      <VideoPlayer videoSrc="https://res.cloudinary.com/dsnsi0ioz/video/upload/v1742040619/Ska/course_video/qcqm6fuj6g9nx6sozotp.mp4" />
+      <h1 className="text-center text-2xl my-16 font-bold">{video.title}</h1>
+      <h1 className="text-center text-2xl my-16 font-bold">
+        {video.moduleNumber}
+      </h1>
+      <VideoPlayer videoSrc={video.src} />
     </div>
   );
 };
 
 export default Video;
-

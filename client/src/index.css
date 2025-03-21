@@ -17,7 +17,7 @@
     /* --black: 0 0% 17.25%; Black for Dark */
     /* --grey: 0 0% 50%; Gray for Medium */
 
-    --background: 0 0% 98%; /* #fbfbfb */
+    --background:0 0% 98%; /* #fbfbfb */
     --primary: 266 100% 13%; /* #1d0042 */
     --secondary: 268 82% 27%; /* #400c7c */
     --tertiary: 0 0% 31%; /* #4f4f4f */
@@ -28,8 +28,8 @@
 
   .dark {
     --background: 0 0% 98%; /* #fbfbfb */
-    --primary: 266 100% 13%; /* #1d0042 */
-    --secondary: 268 82% 27%; /* #400c7c */
+    --primary: 266 100% 13%; /* hsl(266, 100% ,13%) */
+    --secondary: 268 82% 27%; /* hsl(268 ,82% ,27%) */
     --tertiary: 0 0% 31%; /* #4f4f4f */
     --accent: 41 100% 62%; /* #ffc33e */
     --error: 0 100% 50%; /* #ff0000 */
@@ -70,6 +70,10 @@
   blur: 3px saturate(106%);
 }
 
+a{
+  outline: none;
+}
+
 /* Prevent Google Autofill from changing text and background color */
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px hsl(268 82% 27%) inset; /* Set to transparent to prevent background color change */
@@ -89,7 +93,7 @@ body{
 }
 
 label {
-  color: #1d0042;
+  color: hsl(266, 100% ,13%);
   font-weight: bolder;
 }
 
@@ -110,7 +114,7 @@ label {
 }
 
 .swiper-pagination-bullet-active {
-  background: #1d0042; /* Highlighted color for the active line */
+  background: hsl(266, 100% ,13%); /* Highlighted color for the active line */
   opacity: 0.6; /* Fully opaque for the active line */
   transform: scale(1.25); /* Slightly enlarge the active line */
 }
