@@ -177,7 +177,7 @@ const Notes = () => {
                 <div className="mt-3 self-end p-4">
                   <button
                     onClick={() => setShowPdf(true)}
-                    className="bg-primary text-white px-3 py-2 rounded flex items-center gap-2"
+                    className="bg-primary text-backgroundc px-3 py-2 rounded flex items-center gap-2"
                   >
                     <IoBook /> View Details
                   </button>
