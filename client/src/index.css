@@ -28,8 +28,8 @@
 
   .dark {
     --background: 0 0% 98%; /* #fbfbfb */
-    --primary: 266 100% 13%; /* #1d0042 */
-    --secondary: 268 82% 27%; /* #400c7c */
+    --primary: 266 100% 13%; /* hsl(266, 100% ,13%) */
+    --secondary: 268 82% 27%; /* hsl(268 ,82% ,27%) */
     --tertiary: 0 0% 31%; /* #4f4f4f */
     --accent: 41 100% 62%; /* #ffc33e */
     --error: 0 100% 50%; /* #ff0000 */
@@ -93,7 +93,7 @@ body{
 }
 
 label {
-  color: #1d0042;
+  color: hsl(266, 100% ,13%);
   font-weight: bolder;
 }
 
@@ -114,7 +114,7 @@ label {
 }
 
 .swiper-pagination-bullet-active {
-  background: #1d0042; /* Highlighted color for the active line */
+  background: hsl(266, 100% ,13%); /* Highlighted color for the active line */
   opacity: 0.6; /* Fully opaque for the active line */
   transform: scale(1.25); /* Slightly enlarge the active line */
 }

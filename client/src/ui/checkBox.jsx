@@ -72,7 +72,7 @@ const StyledWrapper = styled.div`
 
   .path {
     fill: none;
-    stroke: #1d0042;
+    stroke: hsl(266, 100%, 13%);
     stroke-width: 4;
     stroke-linecap: miter;
     transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
@@ -87,7 +87,7 @@ const StyledWrapper = styled.div`
 
   .label {
     font-size: 1rem;
-    color: #1d0042;
+    color: hsl(266, 100%, 13%);
     margin: 0;
     padding: 0;
     white-space: nowrap;

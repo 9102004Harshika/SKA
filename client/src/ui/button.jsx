@@ -52,7 +52,7 @@ const StyledWrapper = styled.div`
     right: 0;
     left: 0;
     height: calc(50% - 5px);
-    border: 1px solid #1d0042;
+    border: 1px solid hsl(266, 100%, 13%);
     transition: all 0.15s ease;
   }
 
