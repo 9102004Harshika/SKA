@@ -11,7 +11,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-creative";
-// import { sliderImages } from "../config/index";
 import useCarousel from "../logic/features/createCarousel";
 
 const Carousel = () => {
@@ -58,7 +57,7 @@ const Carousel = () => {
           <SwiperSlide key={index}>
             <div className="relative w-full h-[0] pb-[56.25%] md:pb-[46.25%] md:h-[320px] lg:h-[480px] bg-cover bg-center">
               {/* Ensure the aspect ratio is maintained and images are responsive */}
-              <div className="absolute inset-0 flex items-center justify-center text-white text-2xl font-bold rounded-lg bg-opacity-50">
+              <div className="absolute inset-0 flex items-center justify-center text-background text-2xl font-bold rounded-lg bg-opacity-50">
                 <img
                   src={image.image}
                   alt={image.description}
