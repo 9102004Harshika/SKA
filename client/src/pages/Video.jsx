@@ -7,9 +7,9 @@ const Video = () => {
   const video = location.state;
   return (
     <div>
-      <h1 className="text-center text-2xl my-16 font-bold">{video.title}</h1>
-      <h1 className="text-center text-2xl my-16 font-bold">
-        {video.moduleNumber}
+      <h1 className="text-center font-header tracking-wide text-2xl my-16 font-bold">
+        {" "}
+        Chapter {video.moduleNumber} : {video.title}
       </h1>
       <VideoPlayer videoSrc={video.src} />
     </div>

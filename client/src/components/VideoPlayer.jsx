@@ -140,19 +140,19 @@ const VideoPlayer = ({ videoSrc }) => {
   return (
     <div
       ref={playerContainerRef}
-      className={`relative flex flex-col items-center bg-gray-900 rounded-lg shadow-lg w-[60%] mx-auto mt-10 ${
+      className={`relative flex flex-col items-center bg-tertiary rounded-lg shadow-lg w-[60%] mx-auto mt-10 ${
         isFullScreen ? "fixed inset-0 w-full h-full z-10 bg-black" : ""
       }`}
       onClick={handleCenterClick}
     >
-      <div className="absolute top-4 left-4 text-white font-bold text-lg">
+      <div className="absolute top-4 left-4 text-background font-highlight font-bold text-lg">
         Shree Kalam Academy
       </div>
       {/* Playback Speed Button (Top Right) */}
       <div className="absolute top-4 right-4">
         <button
           onClick={handlePlaybackSpeedChange}
-          className="p-2 rounded-full hover:bg-gray-600 transition text-background text-3xl z-100"
+          className="p-2 rounded-full hover:bg-tertiary transition text-background text-3xl z-100"
         >
           {speedIcons[playbackSpeed]}
         </button>
@@ -237,9 +237,9 @@ const VideoPlayer = ({ videoSrc }) => {
           <span>{formatTime(played)}</span>
           <span>{formatTime(duration)}</span>
         </div>
-        <div className="relative w-full h-[3px] bg-gray-700 rounded-full">
+        <div className="relative w-full h-[3px] bg-tertiary  rounded-full">
           <div
-            className="absolute top-0 left-0 h-full bg-gray-500 rounded-full"
+            className="absolute top-0 left-0 h-full bg-tertiary rounded-full"
             style={{ width: `${(played / duration) * 100}%` }}
           ></div>
           <input
@@ -270,11 +270,7 @@ const VideoPlayer = ({ videoSrc }) => {
             appearance: none;
             width: 16px;
             height: 16px;
-            background-color: hsl(
-              26.53,
-              86.98%,
-              66.86%
-            ); /* Accent color for the thumb */
+            background-color: hsl(41, 100%, 62%);
             border-radius: 50%;
             cursor: pointer;
             z-index: 10;
@@ -284,11 +280,7 @@ const VideoPlayer = ({ videoSrc }) => {
           input[type="range"]::-moz-range-thumb {
             width: 16px;
             height: 16px;
-            background-color: hsl(
-              26.53,
-              86.98%,
-              66.86%
-            ); /* Accent color for the thumb */
+            background-color: hsl(41, 100%, 62%);
             border-radius: 50%;
             cursor: pointer;
             z-index: 10;
