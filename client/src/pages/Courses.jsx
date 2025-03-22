@@ -8,6 +8,7 @@ import {
   streams,
   category,
 } from "../config/index";
+import CourseCard from "../components/CourseCard";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -34,10 +35,6 @@ const Courses = () => {
 
     fetchCourses();
   }, []);
-
-  const handleCourseClick = (id) => {
-    navigate(`/app/coursedetail/${id}`);
-  };
 
   // Filter courses based on selected criteria
   const filteredCourses = courses
@@ -171,54 +168,7 @@ const Courses = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredCourses.map((course) => (
-            <div
-              key={course._id}
-              className="flex flex-col bg-background shadow-lg overflow-hidden border hover:shadow-2xl transition-all duration-300 hover:rounded-lg p-1 hover:scale-105 hover:brightness-95 cursor-pointer"
-            >
-              {/* Image Container */}
-              <div
-                className="h-48 w-full bg-background flex items-center justify-start overflow-hidden"
-                onClick={() => handleCourseClick(course._id)}
-              >
-                <img
-                  src={course.courseImage}
-                  alt={course.courseTitle}
-                  className="w-full max-h-[90%] object-contain"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="flex flex-col flex-grow p-4">
-                <h2 className="text-lg font-semibold font-header text-secondary">
-                  {course.courseTitle}
-                </h2>
-
-                <div className="mt-2 text-tertiary">
-                  <p>
-                    Board:{" "}
-                    <span>
-                      {course.board.includes("(")
-                        ? course.board.match(/\(([^)]+)\)/)[1]
-                        : course.board}
-                    </span>
-                  </p>
-                  <p>
-                    Class: <span>{course.class}</span>
-                  </p>
-                  {course.class === "11" || course.class === "12" ? (
-                    <p>
-                      Stream: <span>{course.stream}</span>
-                    </p>
-                  ) : null}
-                  <p>
-                    Subject: <span>{course.subject}</span>
-                  </p>
-                  <p>
-                    Category: <span>{course.category}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <CourseCard course={course} />
           ))}
         </div>
       )}

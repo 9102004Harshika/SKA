@@ -157,8 +157,8 @@ export const forgotPasswordForm = [
 
 export const navigationLinksDesktop = [
   { label: "Courses", link: "/app/courses", icon: <FaBook /> },
-  { label: "Quiz", link: "/app/quiz", icon: <FaQuestionCircle /> },
   { label: "Notes", link: "/app/notes", icon: <FaFileAlt /> },
+  { label: "Quiz", link: "/app/quiz", icon: <FaQuestionCircle /> },
   { label: "Tuitions", link: "/app/tuitions", icon: <FaChalkboardTeacher /> },
   {
     label: "Career Guidance",
@@ -170,13 +170,13 @@ export const navigationLinksMoreItems = [
   { label: "My Profile", link: "/app/profile", icon: <FaUser /> },
   { label: "Question Paper", link: "/app/question-paper", icon: <FaFileAlt /> },
   { label: "Scholarship", link: "/app/scholarship", icon: <IoSchool /> },
-  { label: "Logout", link: "/app/logout", icon: <FaSignOutAlt /> },
+  { label: "Logout", link: "/", icon: <FaSignOutAlt /> },
 ];
 
 export const navigationLinksMobile = [
   { label: "Courses", link: "/app/courses", icon: <FaBook /> },
-  { label: "Quiz", link: "/app/quiz", icon: <FaQuestionCircle /> },
   { label: "Notes", link: "/app/notes", icon: <FaFileAlt /> },
+  { label: "Quiz", link: "/app/quiz", icon: <FaQuestionCircle /> },
   { label: "Tuitions", link: "/app/tuitions", icon: <FaChalkboardTeacher /> },
   {
     label: "Career Guidance",

@@ -9,6 +9,7 @@ import Select from "../ui/select";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { FaStickyNote } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import NoteCard from "../components/NotesCard";
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
@@ -145,44 +146,11 @@ const Notes = () => {
         >
           {sortedNotes.length > 0 ? (
             sortedNotes.map((note, index) => (
-              <div
-                onClick={() => navigate(`/app/notes/${note._id}`)}
+              <NoteCard
                 key={index}
-                className="bg-accent rounded-md shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105 flex flex-col justify-between"
-              >
-                <div>
-                  <img
-                    src={note.coverImageUrl}
-                    alt={note.title}
-                    className="w-full h-60 object-cover object-top"
-                  />
-                  <div className="px-4 pt-4">
-                    <h2 className="text-lg font-semibold text-secondary mb-1">
-                      {note.title} ({note.subject})
-                    </h2>
-                    <div className="text-sm text-tertiary">
-                      <div className="flex items-center gap-1">
-                        <FaUniversity className="text-tertiary" />
-                        <span>
-                          Board: {note.board.split("(").pop().replace(")", "")}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <FaFilePdf className="text-tertiary" />
-                        <span>Class: {note.classFor}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-3 self-end p-4">
-                  <button
-                    onClick={() => setShowPdf(true)}
-                    className="bg-primary text-backgroundc px-3 py-2 rounded flex items-center gap-2"
-                  >
-                    <IoBook /> View Details
-                  </button>
-                </div>
-              </div>
+                note={note}
+                onViewDetails={() => setShowPdf(true)}
+              />
             ))
           ) : (
             <div className="flex flex-col items-center justify-center col-span-full text-primary mt-10">
