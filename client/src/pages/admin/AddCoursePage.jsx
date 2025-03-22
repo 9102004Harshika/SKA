@@ -16,7 +16,9 @@ import ImageUploader from "../../ui/imageUploader";
 import { Checkbox } from "../../ui/checkBox";
 import { getSubjects } from "../../config";
 import Modal from "../../components/Modal";
-import useAddCourse, { calculateDiscountPercentage } from "../../logic/course/addCourse";
+import useAddCourse, {
+  calculateDiscountPercentage,
+} from "../../logic/course/addCourse";
 import VideoUploader from "../../ui/videoUploader";
 
 function CourseForm() {
@@ -45,14 +47,14 @@ function CourseForm() {
   };
   const [courseData, setCourseData] = useState(initialState);
   const { handleSubmit, loading, progress } = useAddCourse();
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [instructors, setInstructors] = useState([]);
   const [notes, setNotes] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [isNotesChecked, setIsNotesChecked] = useState(false);
   const [isQuizzesChecked, setIsQuizzesChecked] = useState(false);
-  const[uploadType,setUploadType]=useState()
-  const[index,setIndex]=useState()
+  const [uploadType, setUploadType] = useState();
+  const [index, setIndex] = useState();
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   useEffect(() => {
@@ -98,8 +100,8 @@ const [isModalOpen, setIsModalOpen] = useState(false);
       ...prev,
       courseImage: file,
     }));
-  }
-  
+  };
+
   console.log(notes);
   const handleArrayChange = (e, field) => {
     const values = e.target.value.split(",").map((item) => item.trim());
@@ -117,8 +119,6 @@ const [isModalOpen, setIsModalOpen] = useState(false);
       return { ...prevData, modules: updatedModules };
     });
   };
-  
-
 
   const addModule = () => {
     setCourseData((prevData) => {
@@ -127,12 +127,11 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         ...prevData,
         modules: [
           ...prevData.modules,
-          { name: "", estimatedTime: "", videoFile: null } // New empty module
-        ]
+          { name: "", estimatedTime: "", videoFile: null }, // New empty module
+        ],
       };
     });
   };
-  
 
   const handleNestedChange = (e, field) => {
     const { name, value } = e.target;
@@ -147,37 +146,41 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleNotesChange = () => {
     setIsNotesChecked(!isNotesChecked); // First, toggle the checkbox state
-  
+
     setCourseData((prevData) => {
-      const updatedKeyFeatures = Array.isArray(prevData.keyFeatures) ? [...prevData.keyFeatures] : []; // Ensure it's an array
-  
+      const updatedKeyFeatures = Array.isArray(prevData.keyFeatures)
+        ? [...prevData.keyFeatures]
+        : []; // Ensure it's an array
+
       if (!isNotesChecked) {
         updatedKeyFeatures.push("notes"); // Add "Notes" if checked
       } else {
         const index = updatedKeyFeatures.indexOf("notes");
         if (index !== -1) updatedKeyFeatures.splice(index, 1); // Remove "Notes" if unchecked
       }
-  
+
       return {
         ...prevData,
         keyFeatures: updatedKeyFeatures,
       };
     });
   };
-  
+
   const handleQuizzesChange = () => {
     setIsQuizzesChecked(!isQuizzesChecked); // First, toggle the checkbox state
-  
+
     setCourseData((prevData) => {
-      const updatedKeyFeatures = Array.isArray(prevData.keyFeatures) ? [...prevData.keyFeatures] : []; // Ensure it's an array
-  
+      const updatedKeyFeatures = Array.isArray(prevData.keyFeatures)
+        ? [...prevData.keyFeatures]
+        : []; // Ensure it's an array
+
       if (!isQuizzesChecked) {
         updatedKeyFeatures.push("quizzes"); // Add "Notes" if checked
       } else {
         const index = updatedKeyFeatures.indexOf("quizzes");
         if (index !== -1) updatedKeyFeatures.splice(index, 1); // Remove "Notes" if unchecked
       }
-  
+
       return {
         ...prevData,
         keyFeatures: updatedKeyFeatures,
@@ -217,17 +220,15 @@ const [isModalOpen, setIsModalOpen] = useState(false);
       return { ...prevData, modules: updatedModules };
     });
   };
-  
-  
-  
-  
+
   return (
     <div className="min-h-screen my-2">
       <div className="max-w-4xl mx-auto p-4">
         <h1 className="text-3xl font-semibold md:tracking-wide font-header text-center mb-6">
           Create New Course
         </h1>
-        <form  onSubmit={(e) =>
+        <form
+          onSubmit={(e) =>
             handleSubmit(
               e,
               courseData,
@@ -238,7 +239,9 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               setUploadType,
               setIndex
             )
-          }  className="space-y-6 flex flex-col">
+          }
+          className="space-y-6 flex flex-col"
+        >
           {/* Text Fields */}
           <div className="flex gap-4 items-center justify-between">
             <div className="flex-1">
@@ -259,14 +262,11 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               />
             </div>
             <ImageUploader
-                label="Upload Image"
-                id="courseImage"
-                required
-                onChange={(file) =>
-                  handleFileChange(file)
-                }
-              />
-
+              label="Upload Image"
+              id="courseImage"
+              required
+              onChange={(file) => handleFileChange(file)}
+            />
           </div>
 
           <TextAreaInput
@@ -332,7 +332,12 @@ const [isModalOpen, setIsModalOpen] = useState(false);
             />
             {/* Display Discount Percentage */}
             <div className="text-md p-[14px] font-bold border-b-[1px] border-primary">
-              Discount Percentage: {calculateDiscountPercentage(courseData.originalPrice, courseData.discountedPrice)}%
+              Discount Percentage:{" "}
+              {calculateDiscountPercentage(
+                courseData.originalPrice,
+                courseData.discountedPrice
+              )}
+              %
             </div>
           </div>
           <Select
@@ -347,38 +352,51 @@ const [isModalOpen, setIsModalOpen] = useState(false);
             }}
           />
 
-<Select
-  menuTitle="Class"
-  submenuItems={getClassOptions(courseData.board)}
-  onSelect={(selectedClass) => {
-    setCourseData({ ...courseData, classFor: selectedClass, stream: undefined, subject: "" });
-  }}
-  disabled={!courseData.board}
-/>
+          <Select
+            menuTitle="Class"
+            submenuItems={getClassOptions(courseData.board)}
+            onSelect={(selectedClass) => {
+              setCourseData({
+                ...courseData,
+                classFor: selectedClass,
+                stream: undefined,
+                subject: "",
+              });
+            }}
+            disabled={!courseData.board}
+          />
 
-{/* Hide Stream dropdown if class is between 1 and 10 */}
-{!(parseInt(courseData.classFor) > 0 && parseInt(courseData.classFor) <= 10) && (
-  <Select
-    menuTitle="Stream"
-    submenuItems={streams}
-    onSelect={(selectedStream) => {
-      setCourseData({ ...courseData, stream: selectedStream || undefined, subject: "" });
-    }}
-    disabled={!courseData.board}
-  />
-)}
+          {/* Hide Stream dropdown if class is between 1 and 10 */}
+          {!(
+            parseInt(courseData.classFor) > 0 &&
+            parseInt(courseData.classFor) <= 10
+          ) && (
+            <Select
+              menuTitle="Stream"
+              submenuItems={streams}
+              onSelect={(selectedStream) => {
+                setCourseData({
+                  ...courseData,
+                  stream: selectedStream || undefined,
+                  subject: "",
+                });
+              }}
+              disabled={!courseData.board}
+            />
+          )}
 
-<Select
-  menuTitle="Subject"
-  submenuItems={getSubjects(courseData.classFor, courseData.stream)}
-  onSelect={(selectedSubject) => {
-    setCourseData({ ...courseData, subject: selectedSubject });
-  }}
-  disabled={!courseData.classFor || (courseData.classFor > 10 && !courseData.stream)}
-/>
+          <Select
+            menuTitle="Subject"
+            submenuItems={getSubjects(courseData.classFor, courseData.stream)}
+            onSelect={(selectedSubject) => {
+              setCourseData({ ...courseData, subject: selectedSubject });
+            }}
+            disabled={
+              !courseData.classFor ||
+              (courseData.classFor > 10 && !courseData.stream)
+            }
+          />
 
-
-         
           <Select
             menuTitle="Category"
             submenuItems={category}
@@ -388,46 +406,46 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           />
           {/* Modules */}
           <div className="space-y-4">
-  {courseData.modules.map((module, index) => (
-    <div
-      key={index}
-      className="space-y-2 flex gap-4 items-center justify-between"
-    >
-      {/* Video Upload Section */}
-      <div>
-        <VideoUploader
-          label="Add Video"
-          onChange={(file) => handleVideoChange(index, file)} // Pass module index
-        />
-      </div>
+            {courseData.modules.map((module, index) => (
+              <div
+                key={index}
+                className="space-y-2 flex gap-4 items-center justify-between"
+              >
+                {/* Video Upload Section */}
+                <div>
+                  <VideoUploader
+                    label="Add Video"
+                    onChange={(file) => handleVideoChange(index, file)} // Pass module index
+                  />
+                </div>
 
-      {/* Module Details */}
-      <div className="flex-1">
-        <TextInput
-          type="text"
-          name="name"
-          value={module.name}
-          onChange={(e) => handleModuleChange(index, e)}
-          label={`Module ${index + 1} Name`}
-          className="input"
-          required
-        />
-        <TextInput
-          type="number"
-          name="estimatedTime"
-          value={module.estimatedTime}
-          onChange={(e) => handleModuleChange(index, e)}
-          label={`Module ${index + 1} Estimated Time`}
-          className="input"
-          required
-        />
-      </div>
-    </div>
-  ))}
+                {/* Module Details */}
+                <div className="flex-1">
+                  <TextInput
+                    type="text"
+                    name="name"
+                    value={module.name}
+                    onChange={(e) => handleModuleChange(index, e)}
+                    label={`Module ${index + 1} Name`}
+                    className="input"
+                    required
+                  />
+                  <TextInput
+                    type="number"
+                    name="estimatedTime"
+                    value={module.estimatedTime}
+                    onChange={(e) => handleModuleChange(index, e)}
+                    label={`Module ${index + 1} Estimated Time`}
+                    className="input"
+                    required
+                  />
+                </div>
+              </div>
+            ))}
 
-  {/* Add / Remove Module Buttons */}
-  <div className="flex justify-evenly items-center gap-10">
-  <Button
+            {/* Add / Remove Module Buttons */}
+            <div className="flex justify-evenly items-center gap-10">
+              <Button
                 type="button"
                 onClick={addModule}
                 text="Remove Module"
@@ -435,28 +453,28 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                 variant="accent"
                 className=""
               />
-    <Button
-      type="button"
-      onClick={addModule}
-      text="Add Module"
-      size="sm"
-      variant="primary"
-    />
-  </div>
-</div>
+              <Button
+                type="button"
+                onClick={addModule}
+                text="Add Module"
+                size="sm"
+                variant="primary"
+              />
+            </div>
+          </div>
 
           {/* Key Features */}
           <div className="flex space-x-4">
-          <Checkbox
-            text="Include Notes"
-            checked={isNotesChecked}
-            onChange={handleNotesChange}
-          />
             <Checkbox
-            text="Include Quizzes"
-            checked={isQuizzesChecked}
-            onChange={handleQuizzesChange}
-          />
+              text="Include Notes"
+              checked={isNotesChecked}
+              onChange={handleNotesChange}
+            />
+            <Checkbox
+              text="Include Quizzes"
+              checked={isQuizzesChecked}
+              onChange={handleQuizzesChange}
+            />
           </div>
 
           {/* Select Fields */}
@@ -490,24 +508,21 @@ const [isModalOpen, setIsModalOpen] = useState(false);
             </select>
           )}
 
-        {
-          isQuizzesChecked &&(
+          {isQuizzesChecked && (
             <select
-            name="quizzes"
-            value={courseData.quizzes}
-            onChange={(e) => handleArrayChange(e, "quizzes")}
-            className="select"
-          >
-             <option value="">Select a Quiz</option>
-            {quizzes.map((quiz) => (
-              <option key={quiz.id} value={quiz._id}>
-                {quiz.name}
-              </option>
-            ))}
-          </select>
-
-          )
-        }
+              name="quizzes"
+              value={courseData.quizzes}
+              onChange={(e) => handleArrayChange(e, "quizzes")}
+              className="select"
+            >
+              <option value="">Select a Quiz</option>
+              {quizzes.map((quiz) => (
+                <option key={quiz.id} value={quiz._id}>
+                  {quiz.name}
+                </option>
+              ))}
+            </select>
+          )}
           {/* Submit Button */}
           <div className="flex gap-4">
             <Button
@@ -527,15 +542,15 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           </div>
         </form>
       </div>
-       <Modal isOpen={isModalOpen}  progress={progress}>
-       <h2 className="text-lg text-primary font-semibold">
-  Please Wait, 
-  {uploadType === "video" 
-    ? ` Module ${index + 1} Video ` 
-    : " Course Image "} 
-  is uploading...
-</h2>
-            </Modal>
+      <Modal isOpen={isModalOpen} progress={progress}>
+        <h2 className="text-lg text-primary font-semibold">
+          Please Wait,
+          {uploadType === "video"
+            ? ` Module ${index + 1} Video `
+            : " Course Image "}
+          is uploading...
+        </h2>
+      </Modal>
     </div>
   );
 }
