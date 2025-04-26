@@ -52,6 +52,7 @@ const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       loginMode,
+      role: "user", // default role
     });
 
     await newUser.save();
@@ -62,6 +63,7 @@ const registerUser = async (req, res) => {
         id: newUser._id,
         fullName: newUser.fullName,
         email: newUser.email,
+        role: newUser.role,
         createdAt: newUser.createdAt,
       },
     });
@@ -134,6 +136,8 @@ const loginUser = async (req, res) => {
           fullName: user.fullName,
           email: user.email,
           isEnrolled: user.isEnrolled,
+          role: user.role,
+          instructor: user.instructor,
           enrollmentDetails: user.enrollmentDetails || {},
         },
       });
@@ -223,4 +227,56 @@ const enrollUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, enrollUser };
+/**
+ * Register a new admin
+ */
+const registerAdmin = async (req, res) => {
+  try {
+    const { fullName, email, password } = req.body;
+
+    if (!fullName || !email || !password) {
+      return res.status(400).json({
+        message:
+          "Full name, email, and password are required to register an admin.",
+      });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "This email is already registered. Please use another email.",
+      });
+    }
+
+    const hashedPassword = await argon2.hash(password);
+
+    const newAdmin = new User({
+      fullName,
+      email,
+      password: hashedPassword,
+      loginMode: "email",
+      role: "admin",
+    });
+
+    await newAdmin.save();
+
+    res.status(201).json({
+      message: "Admin registered successfully!",
+      user: {
+        id: newAdmin._id,
+        fullName: newAdmin.fullName,
+        email: newAdmin.email,
+        role: newAdmin.role,
+        createdAt: newAdmin.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error("Error registering admin:", error);
+    res.status(500).json({
+      message:
+        "An error occurred during admin registration. Please try again later.",
+    });
+  }
+};
+
+export { registerUser, loginUser, enrollUser, registerAdmin };

@@ -12,6 +12,7 @@ import { loginForm } from "../../config/index";
 import { GoogleLogin, handleSubmit } from "../../logic/login/loginSubmit";
 function LoginPage() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({});
   const leftPanelRef = useRef(null);
   const loginFormRef = useRef(null);
@@ -44,6 +45,13 @@ function LoginPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleLoginSubmit = async (e) => {
+    setLoading(true); // Set loading to true before submit
+    await handleSubmit(e, formData, navigate);
+    setLoading(false); // Set loading to false after the submit
+  };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-background text-foreground relative"
@@ -128,7 +136,13 @@ function LoginPage() {
               </p>
             </div>
 
-            <Button text="Sign In" size="lg" variant="primary" type="submit" />
+            <Button
+              text={loading ? "Signing In..." : "Sign In"}
+              size="lg"
+              variant="primary"
+              type="submit"
+              disabled={loading}
+            />
           </form>
 
           <div className="flex items-center w-full mb-2">
@@ -150,6 +164,8 @@ function LoginPage() {
               size="sm"
               variant="secondary"
               onClick={() => login()}
+              disabled={loading}
+              a
             />
             {/* <Button
               text={

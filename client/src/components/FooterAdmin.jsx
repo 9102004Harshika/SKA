@@ -3,7 +3,7 @@ import React from "react";
 const FooterAdmin = () => {
   return (
     <footer>
-      <div className="w-screen flex flex-wrap justify-between items-center text-background text-sm mt-6 border-t border-accent p-8 bg-primary">
+      <div className="w-screen flex flex-wrap justify-between items-center text-background text-sm border-t border-accent p-8 bg-primary">
         <p>&copy; 2024 Shree Kalam Academy. All rights reserved.</p>
         <div>
           <span>

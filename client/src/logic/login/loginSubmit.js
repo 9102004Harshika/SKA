@@ -41,10 +41,13 @@ export const handleSubmit = async (e, formData, navigate) => {
     });
 
     if (response.status === 200) {
-      const { user, token } = response.data;
-      sessionStorage.setItem("token", token);
+      const { user, token, instructor } = response.data;
 
-      if (!user.isEnrolled) {
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("role", user.role);
+      sessionStorage.setItem("role", user.instructor);
+
+      if (!user.isEnrolled && user.role === "user") {
         toast({
           title: "Enrollment Required",
           description:
@@ -58,7 +61,25 @@ export const handleSubmit = async (e, formData, navigate) => {
           description: "You have logged in successfully! Welcome back.",
           variant: "success",
         });
-        navigate("/app");
+
+        if (user.role === "admin") {
+          try {
+            const instructorRes = await axios.get(
+              `http://localhost:5000/api/instructor/get/${user._id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+          } catch (err) {
+            console.error("Failed to fetch instructor profile:", err);
+          }
+
+          navigate("/admin");
+        } else {
+          navigate("/app");
+        }
       }
     }
   } catch (error) {

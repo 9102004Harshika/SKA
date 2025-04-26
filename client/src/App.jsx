@@ -38,6 +38,10 @@ import DeleteCourse from "./pages/admin/DeleteCoursePage";
 import EditCoursesPage from "./pages/admin/EditCoursesPage";
 import AnimatedBook from "./components/BookLoader";
 import ProtectedRoute from "./components/ProtectedRoute"; // ✅ Import it
+import InstructorPage from "./pages/admin/InstructorPage";
+import InstructorDetails from "./pages/admin/InstructorDetails";
+import InstructorAdminLayout from "./layouts/InstructorAdminLayout";
+import AddInstructorPage from "./pages/admin/AddInstructorPage";
 
 const App = () => {
   return (
@@ -46,7 +50,15 @@ const App = () => {
         <main className="flex-grow">
           <Toaster />
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute inverseRedirect={true}>
+                  <Landing />
+                </ProtectedRoute>
+              }
+            />
+
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enrollment" element={<Enrollment />} />
@@ -95,6 +107,20 @@ const App = () => {
               <Route index element={<CourseAdminDashboard />} />
               <Route path="create" element={<AddCoursePage />} />
               <Route path="update" element={<UpdateCoursePage />} />
+              <Route path="edit/:id" element={<EditCoursesPage />} />
+              <Route path="delete" element={<DeleteCourse />} />
+            </Route>
+            <Route
+              path="/admin/instructor"
+              element={
+                <ProtectedRoute>
+                  <InstructorAdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<InstructorPage />} />
+              <Route path=":id" element={<InstructorDetails />} />
+              <Route path="add" element={<AddInstructorPage />} />
               <Route path="edit/:id" element={<EditCoursesPage />} />
               <Route path="delete" element={<DeleteCourse />} />
             </Route>

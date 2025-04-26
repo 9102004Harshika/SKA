@@ -8,32 +8,35 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Ensure email is unique
+    unique: true,
   },
   password: {
     type: String,
     validate: {
       validator: function (value) {
-        // Allow null or undefined as a valid value for password
         if (value === null || value === undefined) {
           return true;
         }
-        // Otherwise, ensure it's a string and non-empty
         return typeof value === "string" && value.length > 0;
       },
       message: "Password cannot be empty if provided.",
     },
-    default: null, // Set default to null
+    default: null,
   },
   loginMode: {
     type: String,
     required: true,
     default: "email",
-    enum: ["email", "google","facebook"], // Ensure loginMode is only 'email' or 'google'
+    enum: ["email", "google", "facebook"],
+  },
+  role: {
+    type: String,
+    enum: ["user", "admin", "superadmin"], // add more roles if needed
+    default: "user",
   },
   isEnrolled: {
     type: Boolean,
-    default: false, // Set to true after form submission
+    default: false,
   },
   enrollmentDetails: {
     mobile: { type: String },
@@ -42,21 +45,39 @@ const userSchema = new mongoose.Schema({
     city: { type: String },
     board: { type: String },
     class: { type: String },
-    stream:{type:String,default:null},
-    gender:{type:String},
+    stream: { type: String, default: null },
+    gender: { type: String },
   },
-  
+  instructor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Instructor",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-// Pre-save hook to enforce password requirements based on loginMode
+// Pre-save hook for role-based enrollmentDetails validation and password validation
 userSchema.pre("save", function (next) {
-  if (this.loginMode === "email" && (!this.password || this.password.trim() === "")) {
-    return next(new Error("Password is mandatory for completing registration. Please provide a valid password."));
+  // Enforce password for email login
+  if (
+    this.loginMode === "email" &&
+    (!this.password || this.password.trim() === "")
+  ) {
+    return next(
+      new Error(
+        "Password is mandatory for completing registration. Please provide a valid password."
+      )
+    );
   }
+
+  // If role is not 'user', clear enrollmentDetails and isEnrolled
+  if (this.role !== "user") {
+    this.enrollmentDetails = undefined;
+    this.isEnrolled = false;
+  }
+
   next();
 });
 
