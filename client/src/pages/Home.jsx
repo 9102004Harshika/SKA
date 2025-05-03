@@ -3,7 +3,6 @@ import axios from "axios";
 import Carousel from "../components/Carousel";
 import Slider from "../ui/slider";
 import CourseCard from "../components/CourseCard";
-import NoteCard from "../components/NotesCard";
 import Notes from "../ui/illustrations/notes.svg";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
