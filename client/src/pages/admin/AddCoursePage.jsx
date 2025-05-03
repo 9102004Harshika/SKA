@@ -56,7 +56,7 @@ function CourseForm() {
     const fetchData = async () => {
       try {
         const instructorsRes = axios.get(
-          "http://localhost:5000/api/instructors/get"
+          "http://localhost:5000/api/instructor/get"
         );
         const notesRes = axios.get(
           `http://localhost:5000/api/notes/getPaid?subject=${courseData.subject}&classFor=${courseData.classFor}`
