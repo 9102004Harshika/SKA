@@ -18,7 +18,7 @@ app.use(express.json()); // Make sure JSON parsing is enabled for incoming reque
 dotenv.config();
 
 const DB_URL = process.env.DB_URL;
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 // MongoDB Connection
 mongoose

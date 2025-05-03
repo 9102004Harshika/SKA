@@ -37,7 +37,7 @@ import UpdateCoursePage from "./pages/admin/UpdateCoursePage";
 import DeleteCourse from "./pages/admin/DeleteCoursePage";
 import EditCoursesPage from "./pages/admin/EditCoursesPage";
 import AnimatedBook from "./components/BookLoader";
-import ProtectedRoute from "./components/ProtectedRoute"; // ✅ Import it
+import ProtectedRoute from "./components/ProtectedRoute";
 import InstructorPage from "./pages/admin/InstructorPage";
 import InstructorDetails from "./pages/admin/InstructorDetails";
 import InstructorAdminLayout from "./layouts/InstructorAdminLayout";

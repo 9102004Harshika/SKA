@@ -17,7 +17,7 @@
     /* --black: 0 0% 17.25%; Black for Dark */
     /* --grey: 0 0% 50%; Gray for Medium */
 
-    --background:0 0% 98%; /* #fbfbfb */
+    --background: 0 0% 98%; /* #fbfbfb */
     --primary: 266 100% 13%; /* #1d0042 */
     --secondary: 268 82% 27%; /* #400c7c */
     --tertiary: 0 0% 31%; /* #4f4f4f */
@@ -27,8 +27,8 @@
   }
 
   .dark {
-    --background: 0 0% 98%; /* #fbfbfb */
-    --primary: 266 100% 13%; /* hsl(266, 100% ,13%) */
+    --background: 266 100% 13%; /* #fbfbfb */
+    --primary: 0 0% 98%; /* hsl(266, 100% ,13%) */
     --secondary: 268 82% 27%; /* hsl(268 ,82% ,27%) */
     --tertiary: 0 0% 31%; /* #4f4f4f */
     --accent: 41 100% 62%; /* #ffc33e */
