@@ -2,7 +2,14 @@ import { toast } from "../../components/use-toast";
 import { loginForm } from "../../config/index";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
-export const handleSubmit = async (e, formData, navigate) => {
+import { useState } from "react";
+
+export const handleSubmit = async (
+  e,
+  formData,
+  navigate,
+  setWelcomeMessage
+) => {
   e.preventDefault();
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -41,13 +48,44 @@ export const handleSubmit = async (e, formData, navigate) => {
     });
 
     if (response.status === 200) {
-      const { user, token, instructor } = response.data;
+      const { user, token } = response.data;
 
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("role", user.role);
-      sessionStorage.setItem("role", user.instructor);
+      setWelcomeMessage(`Welcome back, ${user.name}!!!`);
+      setTimeout(() => setWelcomeMessage(""), 3000); // Hide after 3 seconds
 
-      if (!user.isEnrolled && user.role === "user") {
+      if (user.role === "admin" && user.instructor) {
+        sessionStorage.setItem("instructorId", user.instructor);
+
+        try {
+          // Fetch instructor data using instructor ID
+          const instructorRes = await axios.get(
+            `http://localhost:5000/api/instructor/get/${user.instructor}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          // Save instructor photo URL if it exists
+          const instructorData = instructorRes.data;
+          if (instructorData?.photo) {
+            sessionStorage.setItem("instructorPhoto", instructorData.photo);
+          }
+        } catch (err) {
+          console.error("Failed to fetch instructor profile:", err);
+        }
+
+        toast({
+          title: "Login Successful",
+          description: "Welcome, Admin!",
+          variant: "success",
+        });
+
+        navigate("/admin");
+      } else if (!user.isEnrolled && user.role === "user") {
         toast({
           title: "Enrollment Required",
           description:
@@ -62,24 +100,15 @@ export const handleSubmit = async (e, formData, navigate) => {
           variant: "success",
         });
 
-        if (user.role === "admin") {
-          try {
-            const instructorRes = await axios.get(
-              `http://localhost:5000/api/instructor/get/${user._id}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-          } catch (err) {
-            console.error("Failed to fetch instructor profile:", err);
-          }
-
-          navigate("/admin");
-        } else {
-          navigate("/app");
-        }
+        navigate("/app");
+      }
+      if (!user || !token) {
+        toast({
+          title: "Invalid Response",
+          description: "Please try again.",
+          variant: "destructive",
+        });
+        return;
       }
     }
   } catch (error) {

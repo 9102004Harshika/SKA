@@ -42,6 +42,7 @@ import InstructorPage from "./pages/admin/InstructorPage";
 import InstructorDetails from "./pages/admin/InstructorDetails";
 import InstructorAdminLayout from "./layouts/InstructorAdminLayout";
 import AddInstructorPage from "./pages/admin/AddInstructorPage";
+import RedirectToRole from "./components/RedirectToRole";
 
 const App = () => {
   return (
@@ -50,14 +51,7 @@ const App = () => {
         <main className="flex-grow">
           <Toaster />
           <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute inverseRedirect={true}>
-                  <Landing />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/" element={<RedirectToRole />} />
 
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

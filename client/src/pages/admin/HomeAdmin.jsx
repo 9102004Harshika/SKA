@@ -10,7 +10,7 @@ import { handleLogout } from "../../logic/logout/logout";
 import { FaSignOutAlt } from "react-icons/fa";
 
 // Placeholder avatar (or fetch from sessionStorage/API if available)
-const profilePhoto = sessionStorage.getItem("profilePhoto");
+const profilePhoto = sessionStorage.getItem("instructorPhoto");
 
 const HomeAdmin = () => {
   const navigate = useNavigate();

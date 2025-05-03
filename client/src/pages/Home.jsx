@@ -7,6 +7,7 @@ import NoteCard from "../components/NotesCard";
 import Notes from "../ui/illustrations/notes.svg";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+
 const Home = () => {
   const [courses, setCourses] = useState([]);
   const [oneShotCourses, setOneShotCourses] = useState([]);
@@ -14,6 +15,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {

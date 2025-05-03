@@ -6,13 +6,18 @@ import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../logic/logout/logout";
 
 const DropDown = () => {
+  const navigate = useNavigate();
   return (
     <StyledWrapper>
       <div className="input">
         {navigationLinksMoreItems.map((item, index) => {
           if (item.label === "Logout") {
             return (
-              <button key={index} className="logout" onClick={handleLogout}>
+              <button
+                key={index}
+                className="logout"
+                onClick={() => handleLogout(navigate)}
+              >
                 <span className="svg">{item.icon}</span>
                 <span>{item.label}</span>
               </button>
