@@ -63,23 +63,6 @@ const Home = () => {
 
   return (
     <div>
-      <Helmet>
-        <title>EcoStore – Sustainable Products</title>
-        <meta
-          name="description"
-          content="Shop eco-friendly and sustainable products that make a difference."
-        />
-        <meta property="og:title" content="EcoStore" />
-        <meta
-          property="og:description"
-          content="Sustainable shopping made easy."
-        />
-        <meta
-          property="og:image"
-          content="https://yourdomain.com/og-image.jpg"
-        />
-        <link rel="canonical" href="https://yourdomain.com/" />
-      </Helmet>
       <div className="mb-24">
         <Carousel />
       </div>
