@@ -11,11 +11,11 @@
 
 | Color            | Hex                                                              |
 | ---------------- | ---------------------------------------------------------------- |
-| Background Color | ![#fbfbfb](https://via.placeholder.com/10/0a192f?text=+) #fbfbfb |
-| Primary Color    | ![#1d0042](https://via.placeholder.com/10/f8f8f8?text=+) #1d0042 |
-| Secondary Color  | ![#400c7c](https://via.placeholder.com/10/00b48a?text=+) #400c7c |
-| Tertiary Color   | ![#4f4f4f](https://via.placeholder.com/10/00b48a?text=+) #4f4f4f |
-| Accent Color     | ![#ffc33e](https://via.placeholder.com/10/00b48a?text=+) #ffc33e |
+| Background Color | ![#fbfbfb](https://via.placeholder.com/10/fbfbfb?text=+) #fbfbfb |
+| Primary Color    | ![#1d0042](https://via.placeholder.com/10/1d0042?text=+) #1d0042 |
+| Secondary Color  | ![#400c7c](https://via.placeholder.com/10/400c7c?text=+) #400c7c |
+| Tertiary Color   | ![#4f4f4f](https://via.placeholder.com/10/4f4f4f?text=+) #4f4f4f |
+| Accent Color     | ![#ffc33e](https://via.placeholder.com/10/ffc33e?text=+) #ffc33e |
 
 ## Links
 
