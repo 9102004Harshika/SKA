@@ -946,7 +946,7 @@ const CourseDetailPage = () => {
           </h3>
           <ul className={`pt-2 ${isFixed ? "text-sm space-y-8 pt-6" : ""}`}>
             {[
-              { label: "Class", value: `${course.class}th` },
+              { label: "Class", value: `${course.class}` },
               { label: "Board", value: `${course.board}` },
               { label: "Stream", value: `${course.stream}` },
               { label: "Subject", value: `${course.subject}` },
