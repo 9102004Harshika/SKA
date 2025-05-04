@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaEdit } from "react-icons/fa"; // Import edit icon
-import CircularProgress from "../../ui/progressBar";
+import { FaEdit } from "react-icons/fa";
 
 const UpdateCoursePage = () => {
   const [courses, setCourses] = useState([]);

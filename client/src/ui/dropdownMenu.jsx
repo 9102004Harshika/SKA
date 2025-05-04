@@ -1,18 +1,36 @@
-import { notificationItems } from "../config"; // Assuming you have notificationItems in your config
+import { notificationItems } from "../config";
 import React from "react";
 import styled from "styled-components";
 import { navigationLinksMoreItems } from "../config";
 import { useNavigate } from "react-router-dom";
+import { handleLogout } from "../logic/logout/logout";
+
 const DropDown = () => {
+  const navigate = useNavigate();
   return (
     <StyledWrapper>
       <div className="input">
-        {navigationLinksMoreItems.map((item, index) => (
-          <button className={item.label === "Logout" ? "logout" : "value"}>
-            <a className="svg">{item.icon}</a>
-            <a href={item.link}>{item.label}</a>
-          </button>
-        ))}
+        {navigationLinksMoreItems.map((item, index) => {
+          if (item.label === "Logout") {
+            return (
+              <button
+                key={index}
+                className="logout"
+                onClick={() => handleLogout(navigate)}
+              >
+                <span className="svg">{item.icon}</span>
+                <span>{item.label}</span>
+              </button>
+            );
+          }
+
+          return (
+            <button key={index} className="value">
+              <span className="svg">{item.icon}</span>
+              <a href={item.link}>{item.label}</a>
+            </button>
+          );
+        })}
       </div>
     </StyledWrapper>
   );

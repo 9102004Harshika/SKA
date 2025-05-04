@@ -9,6 +9,7 @@ import notesRoutes from "./routes/notesRoutes.js";
 import quizRoutes from "./routes/quizRoutes.js";
 import carouselRoutes from "./routes/carouselRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 const app = express();
 app.use(cors());
@@ -17,7 +18,7 @@ app.use(express.json()); // Make sure JSON parsing is enabled for incoming reque
 dotenv.config();
 
 const DB_URL = process.env.DB_URL;
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 // MongoDB Connection
 mongoose
@@ -41,10 +42,11 @@ app.get("/", (req, res) => {
 app.use("/api", userRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/notes", notesRoutes);
-app.use("/api/instructors", instructorRoutes);
+app.use("/api/instructor", instructorRoutes);
 app.use("/api/quizzes", quizRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/carousel", carouselRoutes);
+app.use("/api/notification", notificationRoutes);
 
 // Start the server
 app.listen(PORT, () => {

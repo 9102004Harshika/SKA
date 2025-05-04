@@ -55,8 +55,13 @@ const useAddNotes = () => {
           formData.coverImageUrl,
           "cover_image.jpg"
         );
-        setUploadType(coverImageFile.type.replace("$", "").split("/")[0].trim())
-        coverImageUrl = await uploadToCloudinary(coverImageFile, "Shree Kalam Academy");
+        setUploadType(
+          coverImageFile.type.replace("$", "").split("/")[0].trim()
+        );
+        coverImageUrl = await uploadToCloudinary(
+          coverImageFile,
+          "Shree Kalam Academy"
+        );
       }
 
       if (formData.pdfUrl) {

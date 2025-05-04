@@ -1,4 +1,5 @@
 import Notes from "../models/Notes.js";
+import { createNotification } from "./notificationController.js";
 
 // Create a new note
 export const createNote = async (req, res) => {
@@ -6,6 +7,21 @@ export const createNote = async (req, res) => {
     const newNote = new Notes(req.body);
     await newNote.save();
     res.status(201).json({ message: "Note created successfully", newNote });
+    await createNotification(
+      {
+        body: {
+          title: "New Notes Added",
+          type: "promotion",
+          description: `New Notes: ${newNote.title} is available now.`,
+          userId: null,
+        },
+      },
+      {
+        status: () => ({
+          json: () => {},
+        }),
+      }
+    );
   } catch (error) {
     res.status(400).json({ message: "Error creating note", error });
   }
