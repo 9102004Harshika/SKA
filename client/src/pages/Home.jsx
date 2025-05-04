@@ -3,10 +3,11 @@ import axios from "axios";
 import Carousel from "../components/Carousel";
 import Slider from "../ui/slider";
 import CourseCard from "../components/CourseCard";
-import NoteCard from "../components/NotesCard";
 import Notes from "../ui/illustrations/notes.svg";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+
 const Home = () => {
   const [courses, setCourses] = useState([]);
   const [oneShotCourses, setOneShotCourses] = useState([]);
@@ -14,6 +15,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -61,6 +63,23 @@ const Home = () => {
 
   return (
     <div>
+      {/* <Helmet>
+        <title>EcoStore – Sustainable Products</title>
+        <meta
+          name="description"
+          content="Shop eco-friendly and sustainable products that make a difference."
+        />
+        <meta property="og:title" content="EcoStore" />
+        <meta
+          property="og:description"
+          content="Sustainable shopping made easy."
+        />
+        <meta
+          property="og:image"
+          content="https://yourdomain.com/og-image.jpg"
+        />
+        <link rel="canonical" href="https://yourdomain.com/" />
+      </Helmet> */}
       <div className="mb-24">
         <Carousel />
       </div>

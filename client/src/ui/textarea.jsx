@@ -9,8 +9,8 @@ const TextAreaGroup = styled.div`
 
 const TextArea = styled.textarea`
   font-size: 100%;
-  padding: 0.8em;
-
+  padding: 0.8em 0.1em;
+  font-weight: 500;
   outline: none;
   border-bottom: 1px solid hsl(266, 100%, 13%);
   background-color: transparent;

@@ -10,9 +10,12 @@ import { TiVendorMicrosoft } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import { loginForm } from "../../config/index";
 import { GoogleLogin, handleSubmit } from "../../logic/login/loginSubmit";
+import WelcomeScreen from "../../components/WelcomeScreen";
 function LoginPage() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({});
+  const [welcomeMessage, setWelcomeMessage] = useState("");
   const leftPanelRef = useRef(null);
   const loginFormRef = useRef(null);
   const navigate = useNavigate();
@@ -44,6 +47,7 @@ function LoginPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-background text-foreground relative"
@@ -51,6 +55,12 @@ function LoginPage() {
         backgroundImage: `url(${myImage})`,
       }}
     >
+      {welcomeMessage && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <WelcomeScreen message={welcomeMessage} />
+        </div>
+      )}
+
       {/* Left Panel for Mobile with Drag Gesture */}
       <motion.div
         drag="y"
@@ -95,9 +105,12 @@ function LoginPage() {
           <h2 className="text-3xl capitalize md:tracking-wide font-header font-semibold text-center mb-6">
             Return to learning
           </h2>
+
           <form
             className="w-full max-w-md"
-            onSubmit={(e) => handleSubmit(e, formData, navigate)}
+            onSubmit={(e) =>
+              handleSubmit(e, formData, navigate, setWelcomeMessage)
+            }
             noValidate
           >
             {loginForm.map((field, index) => (
@@ -128,7 +141,28 @@ function LoginPage() {
               </p>
             </div>
 
-            <Button text="Sign In" size="lg" variant="primary" type="submit" />
+            <Button
+              text={
+                loading ? (
+                  <span className="flex items-center">
+                    <svg
+                      className="animate-spin h-5 w-5 mr-2"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle className="opacity-25" cx="12" cy="12" r="10" />
+                      <path className="opacity-75" d="M4 12a8 8 0 018-8" />
+                    </svg>
+                    Signing In...
+                  </span>
+                ) : (
+                  "Sign In"
+                )
+              }
+              size="lg"
+              variant="primary"
+              type="submit"
+              disabled={loading}
+            />
           </form>
 
           <div className="flex items-center w-full mb-2">
@@ -150,6 +184,7 @@ function LoginPage() {
               size="sm"
               variant="secondary"
               onClick={() => login()}
+              disabled={loading}
             />
             {/* <Button
               text={

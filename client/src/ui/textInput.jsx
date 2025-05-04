@@ -9,8 +9,9 @@ const InputGroup = styled.div`
 
 const Input = styled.input`
   font-size: 100%;
-  padding: 0.8em;
+  padding: 0.8em 0.1em;
   outline: none;
+  font-weight: 500;
   border-bottom: 1px solid hsl(266, 100%, 13%);
   background-color: transparent;
   width: 100%;
@@ -40,7 +41,7 @@ const Label = styled.label`
   ${Input}:focus ~ & {
     transform: translateY(-75%) scale(0.9);
     margin: 0;
-    margin-left: -0.8em;
+    margin-left: -1em;
     margin-bottom: 2px;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
@@ -50,7 +51,7 @@ const Label = styled.label`
   ${Input}:valid ~ & {
     transform: translateY(-75%) scale(0.9);
     margin: 0;
-    margin-left: -0.8em;
+    margin-left: -1em;
     margin-bottom: 2px;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;
@@ -60,7 +61,7 @@ const Label = styled.label`
   ${Input}:hover ~ & {
     transform: translateY(-75%) scale(0.9);
     margin: 0;
-    margin-left: -0.8em;
+    margin-left: -1em;
     margin-bottom: 2px;
     padding: 0em 0.5em 0em 0.5em;
     background-color: transparent;

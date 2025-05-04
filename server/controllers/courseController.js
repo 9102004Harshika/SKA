@@ -1,4 +1,5 @@
 import Course from "../models/Course.js";
+import { createNotification } from "./notificationController.js";
 
 // Create a new course
 export const createCourse = async (req, res) => {
@@ -7,6 +8,21 @@ export const createCourse = async (req, res) => {
     const course = new Course(courseData);
     await course.save();
     res.status(201).json({ message: "Course created successfully", course });
+    await createNotification(
+      {
+        body: {
+          title: "New Course Available",
+          type: "promotion",
+          description: `New Course: ${newNote.title} is available now.`,
+          userId: null,
+        },
+      },
+      {
+        status: () => ({
+          json: () => {},
+        }),
+      }
+    );
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -23,19 +39,22 @@ export const getCourses = async (req, res) => {
   }
 };
 
-export const getAll=async(req,res)=>{
-  try{
-    const courses=await Course.find({});
-    res.status(200).json(courses)
+export const getAll = async (req, res) => {
+  try {
+    const courses = await Course.find({});
+    res.status(200).json(courses);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching courses", error: error.message });
   }
-  catch(error){
-    res.status(500).json({message:"Error fetching courses",error:error.message})
-  }
-}
+};
 // Get a specific course by ID
 export const getCourseById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate("instructor notes quizzes");
+    const course = await Course.findById(req.params.id).populate(
+      "instructor notes quizzes"
+    );
     if (!course) return res.status(404).json({ error: "Course not found" });
     res.json(course);
   } catch (error) {
@@ -48,7 +67,7 @@ export const updateCourse = async (req, res) => {
   try {
     const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators:true
+      runValidators: true,
     });
     if (!course) return res.status(404).json({ error: "Course not found" });
     res.json({ message: "Course updated successfully", course });

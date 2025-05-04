@@ -3,15 +3,8 @@ import axios from "axios";
 import TextInput from "../../ui/textInput";
 import TextAreaInput from "../../ui/textarea";
 import { Button } from "../../ui/button";
-import FileUploader from "../../ui/fileUploader";
 import Select from "../../ui/select";
-import {
-  boards,
-  category,
-  getClassOptions,
-  streams,
-  subjects,
-} from "../../config";
+import { boards, category, getClassOptions, streams } from "../../config";
 import ImageUploader from "../../ui/imageUploader";
 import { Checkbox } from "../../ui/checkBox";
 import { getSubjects } from "../../config";
@@ -63,7 +56,7 @@ function CourseForm() {
     const fetchData = async () => {
       try {
         const instructorsRes = axios.get(
-          "http://localhost:5000/api/instructors/get"
+          "http://localhost:5000/api/instructor/get"
         );
         const notesRes = axios.get(
           `http://localhost:5000/api/notes/getPaid?subject=${courseData.subject}&classFor=${courseData.classFor}`

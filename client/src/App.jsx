@@ -33,27 +33,40 @@ import NotesDetail from "./pages/NotesDetail";
 import FeatureAdminLayout from "./layouts/FeatureAdminLayout";
 import AddCarouselPage from "./pages/admin/AddCarouselPage";
 import Quiz from "./pages/Quiz";
-import UpdateCourse from "./pages/admin/UpdateCoursePage";
-import DeleteCourse from "./pages/admin/DeleteCoursePage";
 import UpdateCoursePage from "./pages/admin/UpdateCoursePage";
+import DeleteCourse from "./pages/admin/DeleteCoursePage";
 import EditCoursesPage from "./pages/admin/EditCoursesPage";
 import AnimatedBook from "./components/BookLoader";
+import ProtectedRoute from "./components/ProtectedRoute";
+import InstructorPage from "./pages/admin/InstructorPage";
+import InstructorDetails from "./pages/admin/InstructorDetails";
+import InstructorAdminLayout from "./layouts/InstructorAdminLayout";
+import AddInstructorPage from "./pages/admin/AddInstructorPage";
+import RedirectToRole from "./components/RedirectToRole";
+
 const App = () => {
   return (
     <Router>
       <div className="flex flex-col min-h-screen font-body">
-        {/* <Navbar /> */}
         <main className="flex-grow">
-          {/* This ensures toasts are shown across all pages */}
           <Toaster />
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<RedirectToRole />} />
+
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enrollment" element={<Enrollment />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
-            {/* Users pages after auth  */}
-            <Route path="/app" element={<MainLayout />}>
+
+            {/* Protected App Routes */}
+            <Route
+              path="/app"
+              element={
+                <ProtectedRoute>
+                  <MainLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<Home />} />
               <Route path="pdfViewer" element={<PdfViewer />} />
               <Route path="videoPlayer" element={<Video />} />
@@ -68,24 +81,61 @@ const App = () => {
               />
             </Route>
 
-            {/* Admin Pages */}
-            <Route path="/admin" element={<HomeAdmin />} />
-            {/* Course Management Section */}
-            <Route path="/admin/course" element={<CourseAdminLayout />}>
+            {/* Admin Section Protected */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <HomeAdmin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/course"
+              element={
+                <ProtectedRoute>
+                  <CourseAdminLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<CourseAdminDashboard />} />
               <Route path="create" element={<AddCoursePage />} />
               <Route path="update" element={<UpdateCoursePage />} />
               <Route path="edit/:id" element={<EditCoursesPage />} />
               <Route path="delete" element={<DeleteCourse />} />
-              {/* <Route path="delete" element={<DeleteCourse />} /> */}
             </Route>
-            <Route path="/admin/feature" element={<FeatureAdminLayout />}>
+            <Route
+              path="/admin/instructor"
+              element={
+                <ProtectedRoute>
+                  <InstructorAdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<InstructorPage />} />
+              <Route path=":id" element={<InstructorDetails />} />
+              <Route path="add" element={<AddInstructorPage />} />
+              <Route path="edit/:id" element={<EditCoursesPage />} />
+              <Route path="delete" element={<DeleteCourse />} />
+            </Route>
+            <Route
+              path="/admin/feature"
+              element={
+                <ProtectedRoute>
+                  <FeatureAdminLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<AddCarouselPage />} />
-              {/* <Route path="create" element={<AddCoursePage />} /> */}
             </Route>
-
-            {/* notes section of admin */}
-            <Route path="/admin/notes" element={<NotesAdminLayout />}>
+            <Route
+              path="/admin/notes"
+              element={
+                <ProtectedRoute>
+                  <NotesAdminLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<NotesDashboard />} />
               <Route path="create" element={<AddNotesPage />} />
               <Route path="update" element={<UpdateNotesPage />} />
@@ -95,13 +145,10 @@ const App = () => {
 
             <Route path="/unauth" element={<Unauth />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />
-            <Route path="*" element={<NotFound />} />
-
-            {/* Route used for dedicated page of component testing */}
             <Route path="/testing" element={<AnimatedBook />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
-        {/* <Footer /> */}
       </div>
     </Router>
   );
