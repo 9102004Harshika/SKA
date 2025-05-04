@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { MdNoEncryptionGmailerrorred } from "react-icons/md";
 import { gsap } from "gsap";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 
 const Unauth = () => {
   const iconRef = useRef(null);
+  const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(5); // start at 5
 
   useEffect(() => {
     gsap.to(iconRef.current, {
@@ -22,7 +24,19 @@ const Unauth = () => {
       repeat: -1,
       ease: "power1.inOut",
     });
-  }, []);
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev === 1) {
+          navigate("/");
+          clearInterval(interval);
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-primary px-4">
@@ -50,11 +64,17 @@ const Unauth = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-error text-accent font-medium px-5 py-2 rounded-lg shadow-md hover:bg-red-600 transition duration-300"
+            className="bg-secondary text-accent font-medium px-5 py-2 rounded-lg shadow-md hover:bg-tertiary transition duration-300"
           >
             Go to Home
           </motion.button>
         </Link>
+
+        <p className="text-sm text-tertiary mt-4">
+          *Redirecting to Home in{" "}
+          <span className="font-semibold">{countdown}</span> second
+          {countdown !== 1 && "s"}...
+        </p>
       </motion.div>
     </div>
   );
