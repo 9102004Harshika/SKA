@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../images/logo.png";
 import { Link } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
@@ -15,7 +15,6 @@ import { motion, useAnimation } from "framer-motion";
 const Landing = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const controls = useAnimation();
-
   const fadeVariants = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
     hidden: { opacity: 0, y: 50, transition: { duration: 0.5 } },

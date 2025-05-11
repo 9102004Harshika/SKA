@@ -1,13 +1,15 @@
 // src/components/ProtectedRoute.jsx
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { useTokenAvailable } from "../hooks/useTokenAvaliable";
+import { useTokenValidate } from "../hooks/useTokenValidate";
 
 const ProtectedRoute = ({ children }) => {
-  const token = sessionStorage.getItem("token");
+  const isAvailable=useTokenAvailable();
+  const isValid=useTokenValidate();
   const role = sessionStorage.getItem("role");
   const location = useLocation();
-
-  if (!token) {
+  if (!isAvailable || !isValid) {
     return <Navigate to="/login" replace />;
   }
   // Restrict /admin routes if user is not admin

@@ -1,3 +1,4 @@
+
 import { toast } from "../../components/use-toast";
 import { loginForm } from "../../config/index";
 import axios from "axios";
@@ -49,11 +50,9 @@ export const handleSubmit = async (
 
     if (response.status === 200) {
       const { user, token } = response.data;
-
+    
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("role", user.role);
-      setWelcomeMessage(`Welcome back, ${user.name}!!!`);
-      setTimeout(() => setWelcomeMessage(""), 3000); // Hide after 3 seconds
 
       if (user.role === "admin" && user.instructor) {
         sessionStorage.setItem("instructorId", user.instructor);
@@ -99,8 +98,8 @@ export const handleSubmit = async (
           description: "You have logged in successfully! Welcome back.",
           variant: "success",
         });
-
-        navigate("/app");
+      
+        navigate("/welcome", { state: {fullName:user.fullName}});
       }
       if (!user || !token) {
         toast({
@@ -166,7 +165,7 @@ export const GoogleLogin = (navigate) => {
         if (res.status === 200) {
           const { user, token } = res.data;
           sessionStorage.setItem("token", token);
-
+          sessionStorage.setItem("role",user.role)
           if (!user.isEnrolled) {
             toast({
               title: "Enrollment Required",
@@ -181,7 +180,7 @@ export const GoogleLogin = (navigate) => {
               description: "You have logged in successfully! Welcome back.",
               variant: "success",
             });
-            navigate("/app");
+            navigate("/welcome",{state:user.fullName});
           }
         } else {
           toast({
@@ -215,3 +214,4 @@ export const GoogleLogin = (navigate) => {
     },
   });
 };
+

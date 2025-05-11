@@ -158,7 +158,7 @@ const NotesDetail = () => {
 
           <div className="mt-6">
             <Button
-              onClick={() => navigate(`/app/pdfViewer`, { state: pdf })}
+              onClick={() => navigate(`/pdfViewer`, { state: pdf })}
               className="w-fit"
               text={
                 <div className="flex gap-2 items-center justify-center">

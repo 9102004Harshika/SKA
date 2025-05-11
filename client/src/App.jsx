@@ -43,6 +43,7 @@ import InstructorDetails from "./pages/admin/InstructorDetails";
 import InstructorAdminLayout from "./layouts/InstructorAdminLayout";
 import AddInstructorPage from "./pages/admin/AddInstructorPage";
 import RedirectToRole from "./components/RedirectToRole";
+import WelcomeScreen from "./pages/WelcomeScreen";
 
 const App = () => {
   return (
@@ -68,7 +69,7 @@ const App = () => {
               }
             >
               <Route index element={<Home />} />
-              <Route path="pdfViewer" element={<PdfViewer />} />
+            
               <Route path="videoPlayer" element={<Video />} />
               <Route path="courses" element={<Courses />} />
               <Route path="quiz" element={<Quiz />} />
@@ -112,6 +113,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             >
+
               <Route index element={<InstructorPage />} />
               <Route path=":id" element={<InstructorDetails />} />
               <Route path="add" element={<AddInstructorPage />} />
@@ -142,10 +144,11 @@ const App = () => {
               <Route path="edit/:id" element={<EditNotesPage />} />
               <Route path="delete" element={<DeleteNotesPage />} />
             </Route>
-
+            <Route path="/pdfViewer" element={<PdfViewer />} />
+            <Route path="/welcome" element={<WelcomeScreen/>}/>
             <Route path="/unauth" element={<Unauth />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />
-            <Route path="/testing" element={<AnimatedBook />} />
+            <Route path="/testing" element={<Landing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
