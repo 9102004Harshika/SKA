@@ -1,4 +1,5 @@
 import { AiOutlinePicture } from "react-icons/ai";
+import {BsChatQuote} from 'react-icons/bs'
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../images/logo.png";
@@ -10,6 +11,12 @@ const adminSidebarMenuItems = [
     path: "/admin/feature",
     icon: <AiOutlinePicture size={24} />,
   },
+  {
+    id:'quote',
+    label:"Create Quote",
+    path:'/admin/feature/quote',
+    icon:<BsChatQuote size={24}/>
+  }
   ,
 ];
 

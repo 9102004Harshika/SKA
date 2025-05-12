@@ -99,7 +99,7 @@ export const handleSubmit = async (
           variant: "success",
         });
       
-        navigate("/welcome", { state: {fullName:user.fullName}});
+        navigate("/welcome", { state:user.fullName});
       }
       if (!user || !token) {
         toast({

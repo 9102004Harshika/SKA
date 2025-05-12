@@ -11,6 +11,7 @@ import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
 import AddCoursePage from "./pages/admin/AddCoursePage";
+import AddQuotesPage from './pages/admin/AddQuotesPage'
 import Video from "./pages/Video";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import NotesAdminLayout from "./layouts/NotesAdminLayout";
@@ -129,6 +130,7 @@ const App = () => {
               }
             >
               <Route index element={<AddCarouselPage />} />
+              <Route path="quote" element={<AddQuotesPage/>}/>
             </Route>
             <Route
               path="/admin/notes"
