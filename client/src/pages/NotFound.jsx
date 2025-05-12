@@ -1,54 +1,80 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaBookOpen } from "react-icons/fa";
-import logo from "../images/logo.png";
+import { FaSearch } from "react-icons/fa";
+import { gsap } from "gsap";
 
 const NotFound = () => {
+  const iconRef = useRef(null);
+  const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    gsap.to(iconRef.current, {
+      keyframes: [
+        { x: -3, y: 0 },
+        { x: 3, y: 1 },
+        { x: -3, y: -1 },
+        { x: 3, y: 1 },
+        { x: -2, y: 0 },
+        { x: 2, y: 0 },
+        { x: 0, y: 0 },
+      ],
+      duration: 0.6,
+      repeat: -1,
+      ease: "power1.inOut",
+    });
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev === 1) {
+          navigate("/");
+          clearInterval(interval);
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [navigate]);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-gray-800">
-      <motion.img
-        src={logo}
-        alt="Logo"
-        className="w-24 h-24 mb-6"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.5 }}
-      />
+    <div className="flex items-center justify-center min-h-screen bg-primary px-4">
       <motion.div
-        className="text-center"
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6 }}
+        className="bg-accent text-primary p-10 rounded-2xl shadow-2xl w-full max-w-md text-center border border-primary"
       >
-        <h1 className="text-6xl font-bold text-red-600">404</h1>
-        <p className="text-xl mt-2">Oops! Page Not Found</p>
+        <div className="flex justify-center mb-4">
+          <div ref={iconRef} className="text-error text-7xl">
+            <FaSearch />
+          </div>
+        </div>
+
+        <h1 className="text-3xl font-extrabold mb-2 tracking-wide text-secondary">
+          404 - Page Not Found
+        </h1>
+        <p className="text-primary mb-6 leading-relaxed">
+          Oops! The page you are looking for doesn’t exist or has been moved.
+        </p>
+
+        <Link to="/">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-secondary text-accent font-medium px-5 py-2 rounded-lg shadow-md hover:bg-tertiary transition duration-300"
+          >
+            Go to Home
+          </motion.button>
+        </Link>
+
+        <p className="text-sm text-tertiary mt-4">
+          *Redirecting to Home in{" "}
+          <span className="font-semibold">{countdown}</span> second
+          {countdown !== 1 && "s"}...
+        </p>
       </motion.div>
-
-      <motion.div
-        className="mt-6"
-        initial={{ rotate: -10 }}
-        animate={{ rotate: 10 }}
-        transition={{ repeat: Infinity, duration: 1.5, repeatType: "reverse" }}
-      >
-        <FaBookOpen className="text-6xl text-primary" />
-      </motion.div>
-
-      <motion.p
-        className="mt-4 text-gray-600"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-      >
-        Looks like you've lost your way. Let's get you back!
-      </motion.p>
-
-      <Link
-        to="/"
-        className="mt-6 px-6 py-3 bg-primary text-white rounded-full text-lg hover:bg-accent transition"
-      >
-        Go to Homepage
-      </Link>
     </div>
   );
 };
