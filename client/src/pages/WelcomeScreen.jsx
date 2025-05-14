@@ -7,10 +7,9 @@ const WelcomeScreen = () => {
   const [randomQuote, setRandomQuote] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const userName = location.state;
+  const { fullName, role } = location.state || {};
 
   useEffect(() => {
-    // Fetch quotes on mount
     const fetchQuotes = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/quotes/getQuote");
@@ -27,13 +26,16 @@ const WelcomeScreen = () => {
 
     fetchQuotes();
 
-    // Redirect after 10 seconds
     const timer = setTimeout(() => {
-      navigate("/app");
+      if (role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/app");
+      }
     }, 10000);
 
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, role]);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-[#1D0042] text-white px-4 text-center">
@@ -43,16 +45,16 @@ const WelcomeScreen = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        Hi {userName},
+        Hi {fullName},
       </motion.h1>
 
       <motion.h1
-        className="text-4xl font-bold mb-4"
+        className={`text-3xl font-semibold mb-4`}
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
-        Welcome to
+        {role === "admin" ? "Admin access granted to" : "Welcome to"}
         <motion.span
           className="text-yellow-400 ml-2"
           initial={{ scale: 0.8, opacity: 0 }}

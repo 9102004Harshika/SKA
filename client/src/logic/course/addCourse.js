@@ -39,7 +39,7 @@ const useAddCourse = () => {
         );
         return response.data.secure_url;
     };
-
+    
     const handleSubmit = async (e, courseData, setCourseData, openModal, closeModal, resetForm,setUploadType,setIndex) => {
         e.preventDefault();
         openModal();

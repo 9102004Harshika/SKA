@@ -82,8 +82,7 @@ export const handleSubmit = async (
           description: "Welcome, Admin!",
           variant: "success",
         });
-
-        navigate("/admin");
+       navigate("/welcome", { state: { fullName: user.fullName, role: user.role }, });
       } else if (!user.isEnrolled && user.role === "user") {
         toast({
           title: "Enrollment Required",
@@ -99,7 +98,7 @@ export const handleSubmit = async (
           variant: "success",
         });
       
-        navigate("/welcome", { state:user.fullName});
+       navigate("/welcome", { state: { fullName: user.fullName, role: user.role }, });
       }
       if (!user || !token) {
         toast({
@@ -180,7 +179,7 @@ export const GoogleLogin = (navigate) => {
               description: "You have logged in successfully! Welcome back.",
               variant: "success",
             });
-            navigate("/welcome",{state:user.fullName});
+            navigate("/welcome",{ state: { fullName: user.fullName, role: user.role }, });
           }
         } else {
           toast({

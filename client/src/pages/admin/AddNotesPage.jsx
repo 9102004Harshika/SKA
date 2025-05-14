@@ -199,11 +199,14 @@ const AddNotesPage = () => {
       </div>
       <Modal isOpen={isModalOpen} progress={progress}>
         <h2 className="text-lg text-primary font-semibold">
-        Please Wait, 
-  {uploadType === "image" 
-    ? ' Cover Image '
-    : " Notes Pdf "} 
-  is uploading...
+       {uploadType === "Compress" ? (
+      "Please wait, Pdf is being compressed..."
+    ) : (
+      <>
+        Please wait,
+        {uploadType === "image" ? " Cover Image " : " Notes PDF "} is uploading...
+      </>
+    )}
         </h2>
       </Modal>
     </div>
