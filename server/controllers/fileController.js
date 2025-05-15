@@ -1,13 +1,6 @@
 import Notes from "../models/Notes.js";
 import Course from '../models/Course.js'
 import {cloudinary} from "../utils/cloudinary.js"
-import fs from "fs-extra";
-import { v4 as uuidv4 } from "uuid";
-import { exec } from "child_process";
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 cloudinary.config({
   cloud_name: "dsnsi0ioz",
   api_key: "151826192584142",
@@ -105,30 +98,3 @@ export const deleteVideoUrl = async (req, res) => {
   }
 };
 
-export const compressPdf = async (req, res) => {
-  try {
-    const inputPath = req.file.path;
-    const outputFileName = `${uuidv4()}_compressed.pdf`;
-    const outputPath = path.join(__dirname, "../temp_uploads", outputFileName);
-
-    const command = `gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook \
--dNOPAUSE -dQUIET -dBATCH -sOutputFile="${outputPath}" "${inputPath}"`;
-
-    exec(command, async (error) => {
-      if (error) {
-        console.error("Ghostscript Error:", error);
-        return res.status(500).json({ success: false, message: "Compression failed" });
-      }
-
-      const compressedFile = await fs.readFile(outputPath);
-      res.contentType("application/pdf");
-      res.send(compressedFile);
-
-      await fs.remove(inputPath);
-      await fs.remove(outputPath);
-    });
-  } catch (err) {
-    console.error("Compression error:", err);
-    res.status(500).json({ success: false, message: "Server error during compression" });
-  }
-};
