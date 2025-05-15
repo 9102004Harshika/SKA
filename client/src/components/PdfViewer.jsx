@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { InView } from "react-intersection-observer";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
 import {
   FaPlus,
@@ -12,6 +13,7 @@ import axios from "axios";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
+import { FetchPdf } from "../logic/pdf/fetchPdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -30,6 +32,8 @@ export default function PDFViewer() {
   const [isFullPage, setIsFullPage] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const { blobUrl: fileBlobUrl, loading: pdfLoading, error: pdfError } = FetchPdf(pdf?.src);
+
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -130,6 +134,9 @@ export default function PDFViewer() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [loadedPages, numPages]);
+
+
+
   return (
     <div className="flex flex-col items-center bg-black min-h-screen w-full p-6">
       {!isFullscreen && (
@@ -205,46 +212,90 @@ export default function PDFViewer() {
           </div>
         </div>
       )}
-      {pdf.src && (
+      {fileBlobUrl&& (
         <div className="flex flex-col items-center mt-[70px] w-full">
-          <Document file={pdf.src} onLoadSuccess={onDocumentLoadSuccess}>
-            {isTwoPageMode
-              ? Array.from(
-                  { length: Math.ceil(loadedPages / 2) },
-                  (_, index) => {
-                    const page1 = index * 2 + 1;
-                    const page2 = page1 + 1;
-                    return (
-                      <div key={index} className="flex gap-4">
-                        <Page
-                          pageNumber={page1}
-                          className="mb-4"
-                          width={pageWidth}
-                          rotate={rotation}
-                          renderMode="canvas"
-                        />
-                        {page2 <= numPages && (
-                          <Page
-                            pageNumber={page2}
-                            className="mb-4"
-                            width={pageWidth}
-                            rotate={rotation}
-                          />
-                        )}
-                      </div>
-                    );
-                  }
-                )
-              : Array.from({ length: loadedPages }, (_, index) => (
-                  <Page
-                    key={index}
-                    pageNumber={index + 1}
-                    className="mb-4"
-                    width={pageWidth}
-                    rotate={rotation}
-                  />
-                ))}
-          </Document>
+          <Document file={fileBlobUrl} onLoadSuccess={onDocumentLoadSuccess}>
+  {isTwoPageMode
+    ? Array.from({ length: Math.ceil(loadedPages / 2) }, (_, index) => {
+        const page1 = index * 2 + 1;
+        const page2 = page1 + 1;
+        const isLast = index === Math.ceil(loadedPages / 2) - 1;
+
+        const content = (
+          <div key={index} className="flex gap-4">
+            <Page
+              pageNumber={page1}
+              className="mb-4"
+              width={pageWidth}
+              rotate={rotation}
+              renderMode="canvas"
+            />
+            {page2 <= numPages && (
+              <Page
+                pageNumber={page2}
+                className="mb-4"
+                width={pageWidth}
+                rotate={rotation}
+              />
+            )}
+          </div>
+        );
+
+        return isLast ? (
+          <InView
+            key={index}
+            onChange={(inView) => {
+              if (inView && loadedPages < numPages) {
+                setLoadedPages((prev) => {
+                  const newPages = Math.min(prev + 2, numPages);
+                  localStorage.setItem("loadedPages", newPages);
+                  return newPages;
+                });
+              }
+            }}
+            triggerOnce={false}
+          >
+            {() => content}
+          </InView>
+        ) : (
+          content
+        );
+      })
+    : Array.from({ length: loadedPages }, (_, index) => {
+        const isLast = index === loadedPages - 1;
+
+        const content = (
+          <Page
+            key={index}
+            pageNumber={index + 1}
+            className="mb-4"
+            width={pageWidth}
+            rotate={rotation}
+          />
+        );
+
+        return isLast ? (
+          <InView
+            key={index}
+            onChange={(inView) => {
+              if (inView && loadedPages < numPages) {
+                setLoadedPages((prev) => {
+                  const newPages = Math.min(prev + 1, numPages);
+                  localStorage.setItem("loadedPages", newPages);
+                  return newPages;
+                });
+              }
+            }}
+            triggerOnce={false}
+          >
+            {() => content}
+          </InView>
+        ) : (
+          content
+        );
+      })}
+</Document>
+
         </div>
       )}
     </div>

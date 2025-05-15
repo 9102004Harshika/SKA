@@ -8,11 +8,11 @@ const App =lazy(()=>import('./App'))
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
-  <React.StrictMode>
+  // <React.StrictMode> ABHI HATA RAHI HU DEVELOPMENT KE LIYE BADME DAALNA HAI JAB DEPLOY KAREGE
     <GoogleOAuthProvider clientId="186528455819-lv45ts5lvieg87p536o2ka61qd5uaprc.apps.googleusercontent.com">
     <Suspense fallback={<AnimatedBook />}>
     <App />
     </Suspense >
     </GoogleOAuthProvider>
-  </React.StrictMode>
+  
 );

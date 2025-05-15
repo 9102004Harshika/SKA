@@ -6,13 +6,14 @@ import { IoBook } from "react-icons/io5";
 import { FaBook, FaChalkboardTeacher, FaSchool } from "react-icons/fa";
 import gsap from "gsap";
 import { Button } from "../ui/button";
-
+import { RequestStream } from "../logic/pdf/requestStream";
+const streamTokenCache = {};
 const NotesDetail = () => {
   const { id } = useParams();
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showPdf, setShowPdf] = useState(false);
+  const { token: streamToken, loading: tokenLoading, error: tokenError } = RequestStream(note?.pdfUrl);
   const navigate = useNavigate();
   // Refs for GSAP animations
   const containerRef = useRef(null);
@@ -33,7 +34,6 @@ const NotesDetail = () => {
     };
     fetchNote();
   }, [id]);
-
   useEffect(() => {
     if (note) {
       gsap.fromTo(
@@ -63,6 +63,8 @@ const NotesDetail = () => {
     }
   }, [note]);
 
+
+
   if (loading) return <p className="text-center text-primary">Loading...</p>;
 
   if (error)
@@ -72,7 +74,7 @@ const NotesDetail = () => {
         <p className="text-lg font-semibold">{error}</p>
       </div>
     );
-  const pdf = { src: note.pdfUrl, pdfName: note.title };
+  const pdf = { src: streamToken, pdfName: note.title };
   return (
     <div>
       <nav className="text-sm text-primary my-4 mx-4">
@@ -158,7 +160,7 @@ const NotesDetail = () => {
 
           <div className="mt-6">
             <Button
-              onClick={() => navigate(`/pdfViewer`, { state: pdf })}
+              onClick={()=>{navigate('/pdfViewer',{state:pdf})}}
               className="w-fit"
               text={
                 <div className="flex gap-2 items-center justify-center">

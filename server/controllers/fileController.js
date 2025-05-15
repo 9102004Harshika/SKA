@@ -1,6 +1,17 @@
 import Notes from "../models/Notes.js";
 import Course from '../models/Course.js'
 import {cloudinary} from "../utils/cloudinary.js"
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import os from 'os';
+import PdfStream from "../models/PdfStream.js";
+import https from "https";
+import http from "http";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 cloudinary.config({
   cloud_name: "dsnsi0ioz",
   api_key: "151826192584142",
@@ -97,4 +108,68 @@ export const deleteVideoUrl = async (req, res) => {
     res.status(500).json({ message: "Error deleting media file", error });
   }
 };
+export const requestStream = async (req, res) => {
+  try {
+    const { pdfUrl } = req.body;
 
+    if (!pdfUrl) {
+      return res.status(400).json({ error: "PDF URL is required" });
+    }
+
+    // Delete existing DB records for this pdfUrl
+    await PdfStream.deleteMany({ pdfUrl });
+
+    // Generate token for this PDF
+    const token = uuidv4();
+
+    // Save record with just token + pdfUrl (no local filePath)
+    await PdfStream.create({ pdfUrl, token });
+
+    res.status(200).json({
+      success: true,
+      message: "PDF URL registered for streaming",
+      token,
+    });
+  } catch (err) {
+    console.error("Error in requestStream:", err);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+
+export const streamPdf = async (req, res) => {
+  try {
+    const token = req.query.token;
+    if (!token) {
+      return res.status(400).json({ message: "Token required" });
+    }
+
+    const record = await PdfStream.findOne({ token });
+    if (!record) {
+      return res.status(404).json({ message: "Invalid or expired token" });
+    }
+
+    const pdfUrl = record.pdfUrl;
+    if (!pdfUrl) {
+      return res.status(500).json({ message: "PDF URL missing" });
+    }
+
+    const client = pdfUrl.startsWith("https") ? https : http;
+
+    // For now, simple full streaming (no Range support)
+    client.get(pdfUrl, (response) => {
+      if (response.statusCode !== 200) {
+        return res.status(response.statusCode).json({ message: "Failed to fetch PDF" });
+      }
+
+      res.setHeader("Content-Type", "application/pdf");
+      response.pipe(res);
+    }).on("error", (err) => {
+      console.error("Error streaming PDF:", err);
+      res.status(500).json({ message: "Error streaming PDF" });
+    });
+  } catch (err) {
+    console.error("Streaming error:", err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
