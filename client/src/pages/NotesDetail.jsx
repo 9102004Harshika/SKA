@@ -7,7 +7,7 @@ import { FaBook, FaChalkboardTeacher, FaSchool } from "react-icons/fa";
 import gsap from "gsap";
 import { Button } from "../ui/button";
 import { RequestStream } from "../logic/pdf/requestStream";
-const streamTokenCache = {};
+
 const NotesDetail = () => {
   const { id } = useParams();
   const [note, setNote] = useState(null);

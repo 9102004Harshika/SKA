@@ -212,6 +212,20 @@ export default function PDFViewer() {
           </div>
         </div>
       )}
+      {pdfLoading && (
+  <div className="flex flex-col items-center justify-center h-[80vh]">
+    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-accent mb-4"></div>
+    <p className="text-accent  text-lg font-header">Loading your PDF, please wait...</p>
+  </div>
+)}
+
+{pdfError && (
+  <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
+    <p className="text-accent text-xl font-semibold font-header mb-2">Failed to load the PDF.</p>
+    <p className="text-white text-md font-body">Please check your internet connection or try again later.</p>
+  </div>
+)}
+
       {fileBlobUrl&& (
         <div className="flex flex-col items-center mt-[70px] w-full">
           <Document file={fileBlobUrl} onLoadSuccess={onDocumentLoadSuccess}>
