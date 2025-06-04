@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import screenfull from "screenfull";
@@ -9,13 +10,8 @@ import {
   FaVolumeMute,
   FaVolumeUp,
 } from "react-icons/fa";
-import { PiCaretDoubleRightBold, PiCaretDoubleLeftBold } from "react-icons/pi";
-import {
-  TbMultiplier05X,
-  TbMultiplier1X,
-  TbMultiplier15X,
-  TbMultiplier2X,
-} from "react-icons/tb";
+import { TbMultiplier05X, TbMultiplier1X, TbMultiplier15X, TbMultiplier2X } from "react-icons/tb";
+import { IoSettingsSharp } from "react-icons/io5";
 const VideoPlayer = ({ videoSrc }) => {
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -26,23 +22,36 @@ const VideoPlayer = ({ videoSrc }) => {
   const [muted, setMuted] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const togglePlayPause = () => {
-    setPlaying(!playing);
-    setControlsVisible(true); // Show controls immediately after clicking play/pause
-  };
-  const toggleMute = () => setMuted(!muted);
-  const skipForward = () =>
-    playerRef.current.seekTo(
-      playerRef.current.getCurrentTime() + 10,
-      "seconds"
-    );
-  const skipBackward = () =>
-    playerRef.current.seekTo(
-      playerRef.current.getCurrentTime() - 10,
-      "seconds"
-    );
+  const [buffering, setBuffering] = useState(false);
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+const [settingsView, setSettingsView] = useState("main"); // "main" or "speed"
+const [flashIcon, setFlashIcon] = useState(null); // 'play' | 'pause' | null
+const [quality, setQuality] = useState("Auto (720p)");
 
-  const handleProgress = (state) => setPlayed(state.playedSeconds);
+  const togglePlayPause = () => {
+    setPlaying((prev) => !prev);
+    setControlsVisible(true);
+  };
+
+  const toggleMute = () => setMuted((prev) => !prev);
+
+  const skipForward = () => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10, "seconds");
+    }
+  };
+
+  const skipBackward = () => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10, "seconds");
+    }
+  };
+
+  const handleProgress = (state) => {
+    setPlayed(state.playedSeconds);
+    setBuffering(state.seeking);
+  };
+
   const handleDuration = (duration) => setDuration(duration);
 
   const toggleFullScreen = () => {
@@ -50,13 +59,21 @@ const VideoPlayer = ({ videoSrc }) => {
       screenfull.toggle(playerContainerRef.current);
     }
   };
-
-  const speedIcons = {
-    0.5: <TbMultiplier05X className="text-background text-3xl" />,
-    1: <TbMultiplier1X className="text-background text-3xl" />,
-    1.5: <TbMultiplier15X className="text-background text-3xl" />,
-    2: <TbMultiplier2X className="text-background text-3xl" />,
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const menu = document.getElementById("settings-menu");
+      if (menu && !menu.contains(event.target)) {
+        setShowSettingsMenu(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
 
   useEffect(() => {
     if (screenfull.isEnabled) {
@@ -70,12 +87,25 @@ const VideoPlayer = ({ videoSrc }) => {
     }
   }, []);
 
-  // Auto-hide controls after 5 seconds of play/pause
+  // Auto-hide controls after 3 seconds of inactivity (mouse move resets timer)
   useEffect(() => {
-    if (playing) {
-      const timer = setTimeout(() => setControlsVisible(false), 5000);
-      return () => clearTimeout(timer);
+    if (!playing) {
+      setControlsVisible(true);
+      return;
     }
+    let timer;
+    const handleMouseMove = () => {
+      setControlsVisible(true);
+      clearTimeout(timer);
+      timer = setTimeout(() => setControlsVisible(false), 3000);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    timer = setTimeout(() => setControlsVisible(false), 3000);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, [playing]);
 
   const handleKeyboardEvents = (event) => {
@@ -83,160 +113,132 @@ const VideoPlayer = ({ videoSrc }) => {
       case "m":
         setMuted((prevMuted) => !prevMuted);
         break;
-      case " ":
-        event.preventDefault();
-        setPlaying((prevPlaying) => !prevPlaying);
-        setControlsVisible(true);
-        break;
+        case " ":
+          event.preventDefault();
+          setPlaying((prevPlaying) => {
+            const newState = !prevPlaying;
+            setFlashIcon(newState ? "play" : "pause");
+            return newState;
+          });
+          setControlsVisible(true);
+          break;
       case "f":
-        // Full-Screen
         toggleFullScreen();
         break;
       case "ArrowLeft":
-        // Left Arrow: Skip Backward
         skipBackward();
         break;
       case "ArrowRight":
-        // Right Arrow: Skip Forward
         skipForward();
         break;
       default:
         break;
     }
   };
-
   useEffect(() => {
-    // Add event listener for keydown
+    if (flashIcon) {
+      const timer = setTimeout(() => setFlashIcon(null), 600); // show for 600ms
+      return () => clearTimeout(timer);
+    }
+  }, [flashIcon]);
+  
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyboardEvents);
     return () => {
-      // Clean up event listener on component unmount
       window.removeEventListener("keydown", handleKeyboardEvents);
     };
   }, []);
 
   const formatTime = (time) => {
+    if (!time || isNaN(time)) return "0:00";
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  // Handle click on the center of the video to make controls visible again
-  const handleCenterClick = () => {
-    setControlsVisible(true);
-    // Reset the timeout to hide controls again after 5 seconds
-    if (playing) {
-      const timer = setTimeout(() => setControlsVisible(false), 1000);
-      return () => clearTimeout(timer);
-    }
-  };
-
   const handlePlaybackSpeedChange = () => {
-    const speeds = [0.5, 1, 1.5, 2]; // Available speeds
+    const speeds = [0.5, 1, 1.5, 2];
     const currentIndex = speeds.indexOf(playbackSpeed);
-    const nextSpeed = speeds[(currentIndex + 1) % speeds.length]; // Cycle through speeds
+    const nextSpeed = speeds[(currentIndex + 1) % speeds.length];
     setPlaybackSpeed(nextSpeed);
+    setControlsVisible(true);
   };
 
   return (
     <div
       ref={playerContainerRef}
-      className={`relative flex flex-col items-center bg-tertiary rounded-lg shadow-lg w-[60%] mx-auto mt-10 ${
-        isFullScreen ? "fixed inset-0 w-full h-full z-10 bg-black" : ""
+      className={`relative flex flex-col bg-black rounded-lg shadow-lg w-[45%] mx-auto mt-10 ${
+        isFullScreen ? "fixed inset-0 w-full h-full z-50" : ""
       }`}
-      onClick={handleCenterClick}
+      onClick={() => setControlsVisible(true)} // clicking anywhere shows controls
     >
-      <div className="absolute top-4 left-4 text-background font-highlight font-bold text-lg">
+      {/* Title Overlay */}
+      <div className="absolute top-2 left-4 z-20 text-white font-semibold text-lg select-none">
         Shree Kalam Academy
       </div>
-      {/* Playback Speed Button (Top Right) */}
-      <div className="absolute top-4 right-4">
-        <button
-          onClick={handlePlaybackSpeedChange}
-          className="p-2 rounded-full hover:bg-tertiary transition text-background text-3xl z-100"
-        >
-          {speedIcons[playbackSpeed]}
-        </button>
+      {flashIcon && (
+  <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+    <div className="bg-yellow-400 bg-opacity-30 rounded-full p-6 animate-ping-fast flex items-center justify-center">
+      {flashIcon === "play" ? (
+        <FaPlay className="text-white text-xl" />
+      ) : (
+        <FaPause className="text-white text-xl" />
+      )}
+    </div>
+  </div>
+)}
+<style jsx>{`
+  @keyframes ping-fast {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+  .animate-ping-fast {
+    animation: ping-fast 0.6s ease-out;
+  }
+`}</style>
+
+
+
+      {/* ReactPlayer */}
+      <div className="relative w-full pt-[56.25%] max-h-[500px]">
+        <ReactPlayer
+          ref={playerRef}
+          url={videoSrc}
+          playing={playing}
+          muted={muted}
+          controls={false}
+          playbackRate={playbackSpeed}
+          onProgress={handleProgress}
+          onDuration={handleDuration}
+          width="100%"
+          height="100%"
+          style={{ position: "absolute", top: 0, left: 0 }}
+          onBuffer={() => setBuffering(true)}
+          onBufferEnd={() => setBuffering(false)}
+        />
+        {/* Buffering Spinner */}
+        {buffering && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-30">
+            <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
       </div>
-      ;{/* Video Player */}
-      <ReactPlayer
-        ref={playerRef}
-        url={videoSrc}
-        playing={playing}
-        muted={muted}
-        controls={false}
-        playbackRate={playbackSpeed}
-        onProgress={handleProgress}
-        onDuration={handleDuration}
-        width="560"
-        height="315" // Ensures video maintains aspect ratio
-        style={{ maxHeight: isFullScreen ? "100%" : "500px" }} // Full height in fullscreen mode
-      />
+
       {/* Controls */}
       <div
-        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-4 transition-opacity duration-500 ${
+         className={`absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent px-4 pb-2 pt-1 transition-opacity duration-300 gap-2 flex flex-col ${
           controlsVisible ? "opacity-100" : "opacity-0"
         }`}
       >
-        {/* Skip Backward Button */}
-        <button
-          onClick={skipBackward}
-          className="p-3 rounded-full hover:-translate-x-1 transition"
-        >
-          <PiCaretDoubleLeftBold className="text-background text-xl" />
-        </button>
+        
 
-        {/* Play/Pause Button */}
-        <button
-          onClick={togglePlayPause}
-          className="bg-accent p-4 rounded-full hover:bg-secondary transition"
-        >
-          {playing ? (
-            <FaPause className="text-background text-2xl" />
-          ) : (
-            <FaPlay className="text-background text-2xl" />
-          )}
-        </button>
-
-        {/* Skip Forward Button */}
-        <button
-          onClick={skipForward}
-          className="p-3 rounded-full hover:translate-x-1 transition"
-        >
-          <PiCaretDoubleRightBold className="text-background text-xl" />
-        </button>
-      </div>
-      {/* Mute and Full-Screen Controls */}
-      <div className="absolute bottom-3 flex items-center justify-between w-full px-6">
-        {/* Mute Button (Left) */}
-        <button
-          onClick={toggleMute}
-          className="p-3 rounded-full hover:bg-gray-600 transition"
-        >
-          {muted ? (
-            <FaVolumeMute className="text-background text-xl" />
-          ) : (
-            <FaVolumeUp className="text-background text-xl" />
-          )}
-        </button>
-
-        {/* Full-Screen Button (Right) */}
-        <button
-          onClick={toggleFullScreen}
-          className="p-3 rounded-full hover:bg-gray-600 transition"
-        >
-          {isFullScreen ? (
-            <FaCompress className="text-background text-xl" />
-          ) : (
-            <FaExpand className="text-background text-xl" />
-          )}
-        </button>
-      </div>
-      {/* Progress Bar */}
-      <div className="w-full absolute bottom-[70px] px-6">
-        <div className="flex justify-between text-background text-sm">
-          <span>{formatTime(played)}</span>
-          <span>{formatTime(duration)}</span>
-        </div>
+        {/* Progress Bar */}
         <div className="relative w-full h-[3px] bg-tertiary  rounded-full">
           <div
             className="absolute top-0 left-0 h-full bg-tertiary rounded-full"
@@ -286,7 +288,147 @@ const VideoPlayer = ({ videoSrc }) => {
             z-index: 10;
           }
         `}</style>
+        <div className="flex items-center justify-between gap-2 mt-1">
+           {/* Left Controls */}
+      <div className="flex items-center gap-4">
+      <button onClick={togglePlayPause} className="text-white hover:text-gray-300">
+        {playing ? <FaPause className="text-2xl" /> : <FaPlay className="text-xl" />}
+      </button>
+      <button onClick={toggleMute} className="text-white hover:text-gray-300">
+        {muted ? <FaVolumeMute className="text-2xl" /> : <FaVolumeUp className="text-2xl" />}
+      </button>
+     
+      <span className="text-white text-sm select-none">
+        {formatTime(played)} / {formatTime(duration)}
+      </span>
+    </div>
+
+        {/* Right Controls */}
+        <div className="flex items-center gap-4">
+      <div className="relative" >
+  <button
+    onClick={() => {
+      setShowSettingsMenu((prev) => !prev);
+      setSettingsView("main");
+    }}
+    className="text-white hover:text-gray-300"
+    title="Settings"
+  >
+    <span className="flex items-center justify-center">
+  <IoSettingsSharp className="text-2xl mt-1.5" />
+</span>
+
+  </button>
+
+  {showSettingsMenu && (
+    <div  id="settings-menu" className="absolute bottom-full mb-2 right-0 bg-black border border-gray-700 rounded-md shadow-lg w-44 z-50 transition-all duration-200">
+      {settingsView === "main" ? (
+        <>
+          <button
+            onClick={() => setSettingsView("subtitles")}
+            className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700"
+          >
+            Subtitles
+          </button>
+          <button
+            onClick={() => setSettingsView("speed")}
+            className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700"
+          >
+            Playback Speed
+          </button>
+          <button
+            onClick={() => setSettingsView("quality")}
+            className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700"
+          >
+            Quality
+          </button>
+        </>
+      ) : settingsView === "speed" ? (
+        <div>
+          <div className="flex items-center justify-between px-4 py-2 border-b border-gray-700">
+            <span className="text-white font-semibold text-sm">Speed</span>
+            <button
+              onClick={() => setSettingsView("main")}
+              className="text-sm text-gray-400 hover:text-white"
+            >
+              Back
+            </button>
+          </div>
+          {[0.5, 1, 1.5, 2].map((speed) => (
+            <button
+              key={speed}
+              onClick={() => {
+                setPlaybackSpeed(speed);
+                setShowSettingsMenu(false);
+                setControlsVisible(true);
+              }}
+              className={`block w-full text-left px-4 py-2 text-white hover:bg-gray-700 ${
+                playbackSpeed === speed ? "bg-gray-800 font-bold" : ""
+              }`}
+            >
+              {speed}x
+            </button>
+          ))}
+        </div>
+      ) : settingsView === "subtitles" ? (
+        <div>
+          <div className="flex items-center justify-between px-4 py-2 border-b border-gray-700">
+            <span className="text-white font-semibold text-sm">Subtitles</span>
+            <button
+              onClick={() => setSettingsView("main")}
+              className="text-sm text-gray-400 hover:text-white"
+            >
+              Back
+            </button>
+          </div>
+          <button className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700">
+            Off
+          </button>
+          <button className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700">
+            English (auto)
+          </button>
+        </div>
+      ) : settingsView === "quality" ? (
+        <div>
+        <div className="flex items-center justify-between px-4 py-2 border-b border-gray-700">
+          <span className="text-white font-semibold text-sm">Quality</span>
+          <button
+            onClick={() => setSettingsView("main")}
+            className="text-sm text-gray-400 hover:text-white"
+          >
+            Back
+          </button>
+        </div>
+        {["Auto (720p)", "480p", "360p"].map((q) => (
+          <button
+            key={q}
+            onClick={() => {
+              setQuality(q);
+              setShowSettingsMenu(false);
+              setControlsVisible(true);
+              setSettingsView("main");
+            }}
+            className={`block w-full text-left px-4 py-2 text-white hover:bg-gray-700 ${
+              quality === q ? "bg-gray-800 font-bold" : ""
+            }`}
+          >
+            {q}
+          </button>
+        ))}
       </div>
+      ) : null}
+    </div>
+  )}
+</div>
+
+      <button onClick={toggleFullScreen} className="text-white hover:text-gray-300" title="Toggle Fullscreen">
+        {isFullScreen ? <FaCompress className="text-2xl" /> : <FaExpand className="text-xl" />}
+      </button>
+    </div>
+    </div>
+
+      </div>
+    
     </div>
   );
 };
