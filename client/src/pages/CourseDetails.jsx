@@ -843,7 +843,7 @@ const CourseDetailPage = () => {
               </div>
             </div>
           </div>
-          {/* instructor sectytion */}
+          {/* instructor section */}
           <div
             id="Instructor"
             className="instructor pt-[95px] px-10 md:px-20 lg:px-32"
@@ -992,5 +992,9 @@ const CourseDetailPage = () => {
     </StyledWrapper>
   );
 };
+
+
+
+
 
 export default CourseDetailPage;
