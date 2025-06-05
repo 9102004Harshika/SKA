@@ -52,7 +52,7 @@ const StyledWrapper = styled.div`
     top: 100%;
     width: 20px;
   }
-  .bell::after {
+  .bell::after {z
     top: calc(100% + 4px);
     width: 7px;
   }
