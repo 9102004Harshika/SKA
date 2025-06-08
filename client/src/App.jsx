@@ -25,7 +25,7 @@ import Notes from "./pages/Notes";
 import CircularProgress from "./ui/progressBar";
 import Modal from "./components/Modal";
 import DeleteNotesPage from "./pages/admin/DeleteNotesPage";
-import NotesDashboard from "./pages/admin/NotesDashboard";
+
 import EditNotesPage from "./pages/admin/EditNotesPage";
 import PdfViewer from "./components/PdfViewer";
 import NotesDetail from "./pages/NotesDetail";
@@ -44,6 +44,11 @@ import AddInstructorPage from "./pages/admin/AddInstructorPage";
 import RedirectToRole from "./components/RedirectToRole";
 import WelcomeScreen from "./pages/WelcomeScreen";
 import AdminLayout from "./layouts/AdminLayout";
+import CourseDashboard from "./pages/admin/course/CourseDashboard";
+import SalesDashboard from "./pages/admin/sales/SalesDashboard";
+import QuizDashboard from "./pages/admin/quiz/QuizDashboard";
+import Teachers from "./pages/admin/teachers/Teachers";
+import { Settings } from "lucide-react";
 
 const App = () => {
   return (
@@ -85,32 +90,33 @@ const App = () => {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<CourseAdminDashboard />} />
-              {/* <Route path="create" element={<AddCoursePage />} />
-                <Route path="update" element={<UpdateCoursePage />} />
-                <Route path="edit/:id" element={<EditCoursesPage />} />
-                <Route path="delete" element={<DeleteCourse />} /> */}
+              <Route index element={<SalesDashboard />} />
+              <Route path="course" element={<CourseDashboard />} />
+              <Route path="quiz" element={<QuizDashboard />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="teachers" element={<Teachers />} />
+              {/* <Route path="notes" element={<NotesDashboard />} /> */}
 
-              <Route path="instructor" element={<InstructorAdminLayout />}>
+              {/* <Route path="instructor" element={<InstructorAdminLayout />}>
                 <Route index element={<InstructorPage />} />
                 <Route path=":id" element={<InstructorDetails />} />
                 <Route path="add" element={<AddInstructorPage />} />
                 <Route path="edit/:id" element={<EditCoursesPage />} />
                 <Route path="delete" element={<DeleteCourse />} />
-              </Route>
+              </Route> */}
 
-              <Route path="feature" element={<FeatureAdminLayout />}>
+              {/* <Route path="feature" element={<FeatureAdminLayout />}>
                 <Route index element={<AddCarouselPage />} />
                 <Route path="quote" element={<AddQuotesPage />} />
-              </Route>
+              </Route> */}
 
-              <Route path="notes" element={<NotesAdminLayout />}>
+              {/* <Route path="notes" element={<NotesAdminLayout />}>
                 <Route index element={<NotesDashboard />} />
                 <Route path="create" element={<AddNotesPage />} />
                 <Route path="update" element={<UpdateNotesPage />} />
                 <Route path="edit/:id" element={<EditNotesPage />} />
                 <Route path="delete" element={<DeleteNotesPage />} />
-              </Route>
+              </Route> */}
             </Route>
 
             <Route path="/pdfViewer" element={<PdfViewer />} />
