@@ -11,11 +11,9 @@ import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
 import AddCoursePage from "./pages/admin/AddCoursePage";
-import AddQuotesPage from './pages/admin/AddQuotesPage'
+import AddQuotesPage from "./pages/admin/AddQuotesPage";
 import Video from "./pages/Video";
-import HomeAdmin from "./pages/admin/HomeAdmin";
 import NotesAdminLayout from "./layouts/NotesAdminLayout";
-import CourseAdminLayout from "./layouts/CourseAdminLayout";
 import CourseAdminDashboard from "./pages/admin/CourseDashboard";
 import MainLayout from "./layouts/MainLayout";
 import TermsConditions from "./components/Terms&Conditions";
@@ -45,6 +43,7 @@ import InstructorAdminLayout from "./layouts/InstructorAdminLayout";
 import AddInstructorPage from "./pages/admin/AddInstructorPage";
 import RedirectToRole from "./components/RedirectToRole";
 import WelcomeScreen from "./pages/WelcomeScreen";
+import AdminLayout from "./layouts/AdminLayout";
 
 const App = () => {
   return (
@@ -54,7 +53,6 @@ const App = () => {
           <Toaster />
           <Routes>
             <Route path="/" element={<RedirectToRole />} />
-
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enrollment" element={<Enrollment />} />
@@ -70,87 +68,56 @@ const App = () => {
               }
             >
               <Route index element={<Home />} />
-            
               <Route path="videoPlayer" element={<Video />} />
               <Route path="courses" element={<Courses />} />
               <Route path="quiz" element={<Quiz />} />
               <Route path="notes" element={<Notes />} />
               <Route path="notes/:id" element={<NotesDetail />} />
-              <Route
-                path="coursedetail/:id"
-                element={<CourseDetail />}
-                caseSensitive
-              />
+              <Route path="coursedetail/:id" element={<CourseDetail />} />
             </Route>
 
-            {/* Admin Section Protected */}
+            {/*Admin Routes here */}
             <Route
               path="/admin"
               element={
                 <ProtectedRoute>
-                  <HomeAdmin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/course"
-              element={
-                <ProtectedRoute>
-                  <CourseAdminLayout />
+                  <AdminLayout />
                 </ProtectedRoute>
               }
             >
               <Route index element={<CourseAdminDashboard />} />
-              <Route path="create" element={<AddCoursePage />} />
-              <Route path="update" element={<UpdateCoursePage />} />
-              <Route path="edit/:id" element={<EditCoursesPage />} />
-              <Route path="delete" element={<DeleteCourse />} />
-            </Route>
-            <Route
-              path="/admin/instructor"
-              element={
-                <ProtectedRoute>
-                  <InstructorAdminLayout />
-                </ProtectedRoute>
-              }
-            >
+              {/* <Route path="create" element={<AddCoursePage />} />
+                <Route path="update" element={<UpdateCoursePage />} />
+                <Route path="edit/:id" element={<EditCoursesPage />} />
+                <Route path="delete" element={<DeleteCourse />} /> */}
 
-              <Route index element={<InstructorPage />} />
-              <Route path=":id" element={<InstructorDetails />} />
-              <Route path="add" element={<AddInstructorPage />} />
-              <Route path="edit/:id" element={<EditCoursesPage />} />
-              <Route path="delete" element={<DeleteCourse />} />
+              <Route path="instructor" element={<InstructorAdminLayout />}>
+                <Route index element={<InstructorPage />} />
+                <Route path=":id" element={<InstructorDetails />} />
+                <Route path="add" element={<AddInstructorPage />} />
+                <Route path="edit/:id" element={<EditCoursesPage />} />
+                <Route path="delete" element={<DeleteCourse />} />
+              </Route>
+
+              <Route path="feature" element={<FeatureAdminLayout />}>
+                <Route index element={<AddCarouselPage />} />
+                <Route path="quote" element={<AddQuotesPage />} />
+              </Route>
+
+              <Route path="notes" element={<NotesAdminLayout />}>
+                <Route index element={<NotesDashboard />} />
+                <Route path="create" element={<AddNotesPage />} />
+                <Route path="update" element={<UpdateNotesPage />} />
+                <Route path="edit/:id" element={<EditNotesPage />} />
+                <Route path="delete" element={<DeleteNotesPage />} />
+              </Route>
             </Route>
-            <Route
-              path="/admin/feature"
-              element={
-                <ProtectedRoute>
-                  <FeatureAdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<AddCarouselPage />} />
-              <Route path="quote" element={<AddQuotesPage/>}/>
-            </Route>
-            <Route
-              path="/admin/notes"
-              element={
-                <ProtectedRoute>
-                  <NotesAdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<NotesDashboard />} />
-              <Route path="create" element={<AddNotesPage />} />
-              <Route path="update" element={<UpdateNotesPage />} />
-              <Route path="edit/:id" element={<EditNotesPage />} />
-              <Route path="delete" element={<DeleteNotesPage />} />
-            </Route>
+
             <Route path="/pdfViewer" element={<PdfViewer />} />
-            <Route path="/welcome" element={<WelcomeScreen/>}/>
+            <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />
-            <Route path="/testing" element={<Landing />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
