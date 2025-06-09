@@ -1,55 +1,3 @@
-// import { useState, useEffect } from "react";
-
-// export function FetchPdf(token) {
-//   const [blobUrl, setBlobUrl] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     if (!token) {
-//       setBlobUrl(null);
-//       setLoading(true);
-//       setError(null);
-//       return;
-//     }
-
-//     let isMounted = true;
-//     setLoading(true);
-//     setError(null);
-
-//     const fetchPdf = async () => {
-//       try {
-//         // Instead of fetching and creating a blob, just set the URL string directly
-//         // React-pdf will handle range requests internally on this URL
-        
-//         const url = `http://localhost:5000/api/files/getStream/${token}`;
-    
-//         if (isMounted) {
-//           setBlobUrl(url);  // set URL string instead of blob URL
-//           setLoading(false);
-//         }
-//       } catch (err) {
-//         if (isMounted) {
-//           setError(err);
-//           setLoading(false);
-//         }
-//       }
-//     };
-    
-//     fetchPdf();
-
-//     return () => {
-//       isMounted = false;
-//       if (blobUrl) {
-//         URL.revokeObjectURL(blobUrl);
-//       }
-//     };
-//   }, [token]);
-
-//   return { blobUrl, loading, error };
-// }
-
-
 import { useState, useEffect } from "react";
 
 export function FetchPdf(token) {
@@ -59,27 +7,44 @@ export function FetchPdf(token) {
 
   useEffect(() => {
     let isMounted = true;
+    let objectUrl = null;
 
     if (!token) {
-      if (isMounted) {
-        setBlobUrl(null);
-        setError(null);
-        setLoading(true);
-      }
+      setBlobUrl(null);
+      setLoading(false);
+      setError("Token not provided");
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    const fetchBlob = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-    const url = `http://localhost:5000/api/files/getStream/${token}`;
-    if (isMounted) {
-      setBlobUrl(url);
-      setLoading(false);
-    }
+        const response = await fetch(`http://localhost:5000/api/files/getStream/${token}`);
+        if (!response.ok) throw new Error("Failed to fetch PDF");
+
+        const blob = await response.blob();
+        objectUrl = URL.createObjectURL(blob);
+
+        if (isMounted) {
+          setBlobUrl(objectUrl);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error("Error fetching PDF blob:", err);
+        if (isMounted) {
+          setError(err.message || "Unknown error");
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchBlob();
 
     return () => {
       isMounted = false;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [token]);
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { InView } from "react-intersection-observer";
-import { useParams, useSearchParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   FaPlus,
   FaMinus,
@@ -9,8 +9,8 @@ import {
   FaColumns,
   FaExpandArrowsAlt,
 } from "react-icons/fa";
-import axios from "axios";
 import { Document, Page, pdfjs } from "react-pdf";
+import axios from "axios";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import { FetchPdf } from "../logic/pdf/fetchPdf";
@@ -22,7 +22,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 export default function PDFViewer() {
   const location = useLocation();
-  const pdf = location.state; // Get the passed object
+  const pdf = location.state;
   const [numPages, setNumPages] = useState(null);
   const [isTwoPageMode, setIsTwoPageMode] = useState(false);
   const [loadedPages, setLoadedPages] = useState(() => {
@@ -32,8 +32,9 @@ export default function PDFViewer() {
   const [isFullPage, setIsFullPage] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
   const { blobUrl: fileBlobUrl, loading: pdfLoading, error: pdfError } = FetchPdf(pdf?.src);
- console.log(pdfLoading)
+
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -43,6 +44,7 @@ export default function PDFViewer() {
       setIsFullscreen(false);
     }
   }
+
   const toggleFitToPage = () => {
     if (!isFullPage) {
       setPageWidth(window.innerWidth);
@@ -59,16 +61,16 @@ export default function PDFViewer() {
 
   const zoomIn = () => {
     setIsFullPage(false);
-    setPageWidth((prevWidth) => Math.min(prevWidth + 50, 1200));
+    setPageWidth((prev) => Math.min(prev + 50, 1200));
   };
 
   const zoomOut = () => {
     setIsFullPage(false);
-    setPageWidth((prevWidth) => Math.max(prevWidth - 50, 300));
+    setPageWidth((prev) => Math.max(prev - 50, 300));
   };
 
   const rotatePDF = () => {
-    setRotation((prevRotation) => (prevRotation + 90) % 360);
+    setRotation((prev) => (prev + 90) % 360);
   };
 
   function onDocumentLoadSuccess({ numPages }) {
@@ -77,65 +79,18 @@ export default function PDFViewer() {
     setIsFullPage(false);
   }
 
-  let lastScrollY = 0;
-  let isScrolling = false;
-
-  function handleScroll() {
-    const scrollPosition = window.scrollY;
-
-    if (
-      scrollPosition + window.innerHeight >= document.body.offsetHeight - 50 &&
-      loadedPages < numPages
-    ) {
-      setLoadedPages((prev) => {
-        const newPages = Math.min(prev + 1, numPages);
-        localStorage.setItem("loadedPages", newPages);
-        return newPages;
-      });
-    } else if (
-      scrollPosition < lastScrollY &&
-      loadedPages > 1 &&
-      !isScrolling
-    ) {
-      isScrolling = true;
-      setLoadedPages((prev) => {
-        const newPages = Math.max(prev - 1, 1);
-        localStorage.setItem("loadedPages", newPages);
-        return newPages;
-      });
-      setTimeout(() => {
-        isScrolling = false;
-      }, 200);
-    }
-    lastScrollY = scrollPosition;
-  }
   useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        setIsFullscreen(false);
-      }
-    }
-
     document.addEventListener("fullscreenchange", () => {
       setIsFullscreen(!!document.fullscreenElement);
     });
-
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setIsFullscreen(false);
+    };
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("fullscreenchange", () => {
-        setIsFullscreen(!!document.fullscreenElement);
-      });
     };
   }, []);
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [loadedPages, numPages]);
-
-
 
   return (
     <div className="flex flex-col items-center bg-black min-h-screen w-full p-6">
@@ -143,174 +98,107 @@ export default function PDFViewer() {
         <div className="w-full h-[65px] bg-[#333333] border-b border-gray-600 flex justify-between items-center px-4 fixed top-0 left-0 z-10">
           <div>
             {pdf.pdfName && (
-              <h2 className="text-accent text-lg font-semibold">
-                {pdf.pdfName}
-              </h2>
+              <h2 className="text-accent text-lg font-semibold">{pdf.pdfName}</h2>
             )}
           </div>
           <div className="flex items-center gap-2">
             <div className="border-r-2 flex border-gray-600">
-              <button
-                className="w-8 h-8 flex items-center justify-center text-background"
-                onClick={zoomOut}
-              >
+              <button className="w-8 h-8 flex items-center justify-center text-background" onClick={zoomOut}>
                 <FaMinus size={15} />
               </button>
-              <button
-                className="w-8 h-8 flex items-center justify-center text-white"
-                onClick={zoomIn}
-              >
+              <button className="w-8 h-8 flex items-center justify-center text-white" onClick={zoomIn}>
                 <FaPlus size={15} />
               </button>
-              <button
-                className={`w-8 h-8 flex items-center justify-center text-white rounded-full ${
-                  isFullPage ? "bg-accent" : ""
-                }`}
-                onClick={toggleFitToPage}
-              >
+              <button className={`w-8 h-8 flex items-center justify-center text-white rounded-full ${isFullPage ? "bg-accent" : ""}`} onClick={toggleFitToPage}>
                 <FaExpand size={15} />
               </button>
             </div>
             {numPages && (
               <div className="text-white text-sm font-semibold border-r-2 border-r-gray-600 pr-4 h-[33px] flex items-center">
                 <p>
-                  Page{" "}
-                  <span className="bg-[#333333] border-2 border-gray-500 p-2 mx-2">
-                    {loadedPages}
-                  </span>{" "}
-                  of <span>{numPages}</span>
+                  Page <span className="bg-[#333333] border-2 border-gray-500 p-2 mx-2">{loadedPages}</span> of <span>{numPages}</span>
                 </p>
               </div>
             )}
-            <button
-              className="w-8 h-8 flex items-center justify-center text-white"
-              onClick={rotatePDF}
-            >
+            <button className="w-8 h-8 flex items-center justify-center text-white" onClick={rotatePDF}>
               <FaRedo size={15} />
             </button>
-            <button
-              className={`w-8 h-8 flex items-center justify-center text-white rounded-full ${
-                isTwoPageMode ? "bg-accent" : ""
-              }`}
-              onClick={toggleTwoPageMode}
-            >
+            <button className={`w-8 h-8 flex items-center justify-center text-white rounded-full ${isTwoPageMode ? "bg-accent" : ""}`} onClick={toggleTwoPageMode}>
               <FaColumns size={15} />
             </button>
-            <button
-              className="w-8 h-8 flex items-center justify-center text-white"
-              onClick={toggleFullScreen}
-            >
+            <button className="w-8 h-8 flex items-center justify-center text-white" onClick={toggleFullScreen}>
               <FaExpandArrowsAlt size={15} />
             </button>
           </div>
-
           <div>
-            {" "}
             <h2 className="text-background font-highlight text-2xl font-semibold">
               Shree Kalam Academy
             </h2>
           </div>
         </div>
       )}
-      
 
-      {fileBlobUrl&& (
+      {fileBlobUrl && (
         <div className="flex flex-col items-center mt-[70px] w-full">
-          <Document file={fileBlobUrl} onLoadSuccess={onDocumentLoadSuccess}
-         loading={
-          <div className="flex flex-col items-center justify-center h-[80vh]">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-accent mb-4"></div>
-            <p className="text-accent text-lg font-header">Loading your PDF, please wait...</p>
-          </div>
-        }
-        error={
-          <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
-          <p className="text-accent text-xl font-semibold font-header mb-2">Failed to load the PDF.</p>
-          <p className="text-white text-md font-body">Please check your internet connection or try again later.</p>
-        </div>
-        }
-        >
-  {isTwoPageMode
-    ? Array.from({ length: Math.ceil(loadedPages / 2) }, (_, index) => {
-        const page1 = index * 2 + 1;
-        const page2 = page1 + 1;
-        const isLast = index === Math.ceil(loadedPages / 2) - 1;
-
-        const content = (
-          <div key={index} className="flex gap-4">
-            <Page
-              pageNumber={page1}
-              className="mb-4"
-              width={pageWidth}
-              rotate={rotation}
-              renderMode="canvas"
-            />
-            {page2 <= numPages && (
-              <Page
-                pageNumber={page2}
-                className="mb-4"
-                width={pageWidth}
-                rotate={rotation}
-              />
-            )}
-          </div>
-        );
-
-        return isLast ? (
-          <InView
-            key={index}
-            onChange={(inView) => {
-              if (inView && loadedPages < numPages) {
-                setLoadedPages((prev) => {
-                  const newPages = Math.min(prev + 2, numPages);
-                  localStorage.setItem("loadedPages", newPages);
-                  return newPages;
-                });
-              }
-            }}
-            triggerOnce={false}
+          <Document
+            file={fileBlobUrl}
+            onLoadSuccess={onDocumentLoadSuccess}
+            loading={
+              <div className="flex flex-col items-center justify-center h-[80vh]">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-accent mb-4"></div>
+                <p className="text-accent text-lg font-header">Loading your PDF, please wait...</p>
+              </div>
+            }
+            error={
+              <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
+                <p className="text-accent text-xl font-semibold font-header mb-2">Failed to load the PDF.</p>
+                <p className="text-white text-md font-body">Please check your internet connection or try again later.</p>
+              </div>
+            }
           >
-            {() => content}
-          </InView>
-        ) : (
-          content
-        );
-      })
-    : Array.from({ length: loadedPages }, (_, index) => {
-        const isLast = index === loadedPages - 1;
+            {Array.from({ length: loadedPages }, (_, index) => {
+              const pageNumber = index + 1;
+              const isLast = pageNumber === loadedPages;
 
-        const content = (
-          <Page
-            key={index}
-            pageNumber={index + 1}
-            className="mb-4"
-            width={pageWidth}
-            rotate={rotation}
-          />
-        );
-
-        return isLast ? (
-          <InView
-            key={index}
-            onChange={(inView) => {
-              if (inView && loadedPages < numPages) {
-                setLoadedPages((prev) => {
-                  const newPages = Math.min(prev + 1, numPages);
-                  localStorage.setItem("loadedPages", newPages);
-                  return newPages;
-                });
-              }
-            }}
-            triggerOnce={false}
-          >
-            {() => content}
-          </InView>
-        ) : (
-          content
-        );
-      })}
-</Document>
-
+              return isLast ? (
+                <InView
+                  key={pageNumber}
+                  onChange={(inView) => {
+                    if (inView && loadedPages < numPages) {
+                      setLoadedPages((prev) => {
+                        const newPages = Math.min(prev + 1, numPages);
+                        localStorage.setItem("loadedPages", newPages);
+                        return newPages;
+                      });
+                    }
+                  }}
+                  triggerOnce={false}
+                  threshold={0.2}
+                >
+                  {({ ref }) => (
+                    <div ref={ref}>
+                      <Page
+                        pageNumber={pageNumber}
+                        width={pageWidth}
+                        rotate={rotation}
+                        renderMode="canvas"
+                        className="mb-4"
+                      />
+                    </div>
+                  )}
+                </InView>
+              ) : (
+                <Page
+                  key={pageNumber}
+                  pageNumber={pageNumber}
+                  width={pageWidth}
+                  rotate={rotation}
+                  renderMode="canvas"
+                  className="mb-4"
+                />
+              );
+            })}
+          </Document>
         </div>
       )}
     </div>

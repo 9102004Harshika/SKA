@@ -545,7 +545,19 @@ const CourseDetailPage = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  function truncateCourseTitle(title) {
+    if (!title) return "";
 
+    const words = title.trim().split(" ").slice(0, 6);
+  
+    if (words.length === 6) {
+      const lastWord = words[5];
+      words[5] = lastWord.length > 8 ? lastWord.slice(0, 7) + "…" : lastWord;
+    }
+  
+    return words.join(" ");
+  }
+  
   if (loading) return <p className="text-center text-xl">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
   const totalEstimatedTime = course.modules.reduce((sum, module) => {
@@ -937,13 +949,14 @@ const CourseDetailPage = () => {
               className="course-image"
             />
           )}
-          <h3
-            className={`font-bold font-body text-primary mt-[-10px] ml-[-60px] ${
-              isFixed ? "text-lg mt-0 pl-[55px] " : ""
-            }`}
-          >
-            Project Management Professional
-          </h3>
+         <h3
+  className={`font-bold font-body text-primary mt-[-10px]  ${
+    isFixed ? "text-lg mt-0 pl-[55px]" : ""
+  }`}
+>
+  {truncateCourseTitle(course.courseTitle)}
+</h3>
+
           <ul className={`pt-2 ${isFixed ? "text-sm space-y-8 pt-6" : ""}`}>
             {[
               { label: "Class", value: `${course.class}` },
@@ -992,9 +1005,4 @@ const CourseDetailPage = () => {
     </StyledWrapper>
   );
 };
-
-
-
-
-
 export default CourseDetailPage;

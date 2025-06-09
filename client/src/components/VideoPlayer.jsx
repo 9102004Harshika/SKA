@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import screenfull from "screenfull";
@@ -10,7 +9,6 @@ import {
   FaVolumeMute,
   FaVolumeUp,
 } from "react-icons/fa";
-import { TbMultiplier05X, TbMultiplier1X, TbMultiplier15X, TbMultiplier2X } from "react-icons/tb";
 import { IoSettingsSharp } from "react-icons/io5";
 const VideoPlayer = ({ videoSrc }) => {
   const playerRef = useRef(null);
