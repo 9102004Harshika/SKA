@@ -14,9 +14,8 @@ import {
   IoSettingsOutline,
   IoSettingsSharp,
 } from "react-icons/io5";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import gsap from "gsap";
-import clsx from "clsx";
+import logo from "../images/logo.png";
+import { Outlet } from "react-router-dom";
 
 const navItems = [
   {
@@ -58,100 +57,170 @@ const navItems = [
 ];
 
 const AdminLayout = () => {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const [currentPath, setCurrentPath] = useState("/admin");
   const sidebarRef = useRef(null);
   const [collapsed, setCollapsed] = useState(false);
 
+  const navigate = (path) => {
+    setCurrentPath(path);
+  };
+
   useEffect(() => {
-    gsap.fromTo(
-      sidebarRef.current,
-      { x: -80, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
-    );
+    // Simulate GSAP animation with CSS transitions
+    if (sidebarRef.current) {
+      sidebarRef.current.style.transform = "translateX(0)";
+      sidebarRef.current.style.opacity = "1";
+    }
   }, []);
 
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-background">
+    <div className="min-h-screen w-full flex flex-col md:flex-row bg-gray-50">
       {/* Sidebar */}
       <aside
         ref={sidebarRef}
-        className={clsx(
-          "hidden md:flex flex-col bg-primary text-white shadow-xl transition-all duration-300",
+        className={`hidden md:flex flex-col bg-gradient-to-b from-primary via-primary to-secondary text-background shadow-2xl transition-all duration-300 ease-in-out transform ${
           collapsed ? "w-20" : "w-64"
-        )}
+        }`}
+        style={{
+          transform: "translateX(-80px)",
+          opacity: "0",
+          transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
       >
         {/* Header & Toggle */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-          {!collapsed && (
-            <h2 className="text-lg font-semibold tracking-wide">Admin Panel</h2>
-          )}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/20 bg-white/5 backdrop-blur-sm">
+          <div
+            className={`flex items-center gap-3 transition-all duration-300 ${
+              collapsed ? "opacity-0 w-0" : "opacity-100"
+            }`}
+          >
+            {!collapsed && (
+              <div className="flex flex-col">
+                <h1 className="text-lg font-bold bg-accent bg-clip-text font-header tracking-wide text-transparent">
+                  Admin Name Here
+                </h1>
+              </div>
+            )}
+          </div>
           <button
             onClick={toggleSidebar}
-            className="text-white hover:text-accent transition"
+            className="text-white hover:text-amber-300 transition-all duration-200 hover:scale-110 p-1 rounded-full hover:bg-white/10"
           >
             {collapsed ? (
-              <MdChevronRight size={24} />
+              <MdChevronRight size={20} />
             ) : (
-              <MdChevronLeft size={24} />
+              <MdChevronLeft size={20} />
             )}
           </button>
         </div>
 
         {/* Nav Items */}
-        {navItems.map(({ label, lined, filled, path }) => {
-          const active =
-            label === "Sales"
-              ? pathname === "/admin" || pathname === "/admin/"
-              : pathname.startsWith(path);
+        <div className="flex-1 px-4 py-6 space-y-2">
+          {navItems.map(({ label, lined, filled, path }) => {
+            const active =
+              label === "Sales"
+                ? currentPath === "/admin" || currentPath === "/admin/"
+                : currentPath.startsWith(path);
 
-          return (
-            <button
-              key={label}
-              onClick={() => navigate(path)}
-              title={collapsed ? label : ""}
-              className={clsx(
-                "flex items-center gap-3 p-3 rounded-lg group transition-all duration-200 relative",
-                active
-                  ? "bg-secondary text-white border-l-4 border-accent"
-                  : "hover:bg-secondary/70 hover:text-white"
-              )}
-            >
-              <span className="text-2xl">{active ? filled : lined}</span>
-              {!collapsed && (
-                <span className="text-base font-medium truncate">{label}</span>
-              )}
-            </button>
-          );
-        })}
+            return (
+              <button
+                key={label}
+                onClick={() => navigate(path)}
+                title={collapsed ? label : ""}
+                className={`group w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden ${
+                  active
+                    ? `bg-accent/20 text-white ${
+                        !collapsed ? "border-l-4 border-amber-400" : ""
+                      } shadow-lg`
+                    : "hover:bg-white/10 hover:text-accent text-background"
+                }`}
+              >
+                {/* Background gradient on hover */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
+                    active ? "hidden" : ""
+                  }`}
+                />
+
+                {/* Icon */}
+                <span
+                  className={`text-xl z-10 transition-all duration-200 ${
+                    active
+                      ? "text-amber-300 scale-110"
+                      : "group-hover:text-white group-hover:scale-105"
+                  }`}
+                >
+                  {active ? filled : lined}
+                </span>
+
+                {/* Label */}
+                <span
+                  className={`text-sm font-medium z-10 transition-all duration-300 ${
+                    collapsed
+                      ? "opacity-0 translate-x-4 w-0"
+                      : "opacity-100 translate-x-0"
+                  } ${active ? "text-white" : "group-hover:text-white"}`}
+                >
+                  {label}
+                </span>
+
+                {/* Active indicator */}
+                {active && !collapsed && (
+                  <div className="absolute right-4 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Footer */}
+        {!collapsed && (
+          <div className="px-6 py-4 border-t border-white/20 bg-white/5">
+            <div className="text-md text-accent font-highlight text-center flex items-center gap-2 ">
+              <img
+                src={logo}
+                alt="Company Logo"
+                className="h-7 w-auto inline-block bg-secondary rounded-full border border-accent"
+              />
+              Shree Kalam Academy
+            </div>
+          </div>
+        )}
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-4 pb-20 md:pb-4 overflow-y-auto">
+      <main className="flex-1 p-6 pb-24 md:pb-6 overflow-y-auto bg-gray-50">
         <Outlet />
       </main>
 
       {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-primary text-white flex justify-around items-center py-2 border-t border-white/10 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary to-secondary text-white flex justify-around items-center py-2 px-1 border-t border-white/20 z-50 backdrop-blur-lg">
         {navItems.map(({ label, lined, filled, path }) => {
           const active =
             label === "Sales"
-              ? pathname === "/admin" || pathname === "/admin/"
-              : pathname.startsWith(path);
+              ? currentPath === "/admin" || currentPath === "/admin/"
+              : currentPath.startsWith(path);
 
           return (
             <button
               key={label}
               onClick={() => navigate(path)}
-              className={clsx(
-                "flex flex-col items-center text-xs",
-                active ? "text-accent" : ""
-              )}
+              className={`flex flex-col w-12 items-center text-[0.60rem] transition-all duration-200 py-2 px-2 rounded-lg ${
+                active
+                  ? "text-amber-300 bg-white/10 scale-105"
+                  : "text-indigo-200 hover:text-white hover:bg-white/5"
+              }`}
             >
-              <span className="text-xl">{active ? filled : lined}</span>
-              <span>{label}</span>
+              <span
+                className={`text-lg mb-1 transition-transform duration-200 ${
+                  active ? "scale-110" : ""
+                }`}
+              >
+                {active ? filled : lined}
+              </span>
+              <span className="font-medium">{label}</span>
             </button>
           );
         })}
