@@ -10,7 +10,6 @@ import {
   FaExpandArrowsAlt,
 } from "react-icons/fa";
 import { Document, Page, pdfjs } from "react-pdf";
-import axios from "axios";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import { FetchPdf } from "../logic/pdf/fetchPdf";
@@ -33,7 +32,8 @@ export default function PDFViewer() {
   const [rotation, setRotation] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const { blobUrl: fileBlobUrl, loading: pdfLoading, error: pdfError } = FetchPdf(pdf?.src);
+  const { pdfUrl: fileBlobUrl, loading: pdfLoading, error: pdfError } = FetchPdf(pdf?.src);
+
 
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
@@ -138,69 +138,88 @@ export default function PDFViewer() {
         </div>
       )}
 
-      {fileBlobUrl && (
-        <div className="flex flex-col items-center mt-[70px] w-full">
-          <Document
-            file={fileBlobUrl}
-            onLoadSuccess={onDocumentLoadSuccess}
-            loading={
-              <div className="flex flex-col items-center justify-center h-[80vh]">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-accent mb-4"></div>
-                <p className="text-accent text-lg font-header">Loading your PDF, please wait...</p>
-              </div>
-            }
-            error={
-              <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
-                <p className="text-accent text-xl font-semibold font-header mb-2">Failed to load the PDF.</p>
-                <p className="text-white text-md font-body">Please check your internet connection or try again later.</p>
-              </div>
-            }
-          >
-            {Array.from({ length: loadedPages }, (_, index) => {
-              const pageNumber = index + 1;
-              const isLast = pageNumber === loadedPages;
+{fileBlobUrl ? (
+  <Document
+    file={fileBlobUrl}
+    onLoadSuccess={({ numPages }) => {
+      setNumPages(numPages);
+      const saved = parseInt(localStorage.getItem("loadedPages") || "1", 10);
+      setLoadedPages(Math.min(saved || 1, numPages));
+    }}
+    loading={
+      <div className="flex flex-col items-center justify-center h-[80vh]">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-accent mb-4"></div>
+        <p className="text-accent text-lg font-header">
+          Loading your PDF, please wait...
+        </p>
+      </div>
+    }
+    error={
+      <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
+        <p className="text-accent text-xl font-semibold font-header mb-2">
+          Failed to load the PDF.
+        </p>
+        <p className="text-white text-md font-body">
+          Please check your internet connection or try again later.
+        </p>
+      </div>
+    }
+  >
+    {numPages > 0 ? (
+      Array.from({ length: loadedPages }, (_, index) => {
+        const pageNumber = index + 1;
+        const isLast = pageNumber === loadedPages;
 
-              return isLast ? (
-                <InView
-                  key={pageNumber}
-                  onChange={(inView) => {
-                    if (inView && loadedPages < numPages) {
-                      setLoadedPages((prev) => {
-                        const newPages = Math.min(prev + 1, numPages);
-                        localStorage.setItem("loadedPages", newPages);
-                        return newPages;
-                      });
-                    }
-                  }}
-                  triggerOnce={false}
-                  threshold={0.2}
-                >
-                  {({ ref }) => (
-                    <div ref={ref}>
-                      <Page
-                        pageNumber={pageNumber}
-                        width={pageWidth}
-                        rotate={rotation}
-                        renderMode="canvas"
-                        className="mb-4"
-                      />
-                    </div>
-                  )}
-                </InView>
-              ) : (
+        return isLast ? (
+          <InView
+            key={pageNumber}
+            onChange={(inView) => {
+              if (inView && loadedPages < numPages) {
+                setLoadedPages((prev) => {
+                  const next = Math.min(prev + 1, numPages);
+                  localStorage.setItem("loadedPages", next.toString());
+                  return next;
+                });
+              }
+            }}
+            triggerOnce={false}
+            threshold={0.2}
+          >
+            {({ ref }) => (
+              <div ref={ref}>
                 <Page
-                  key={pageNumber}
                   pageNumber={pageNumber}
                   width={pageWidth}
                   rotate={rotation}
                   renderMode="canvas"
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
                   className="mb-4"
                 />
-              );
-            })}
-          </Document>
-        </div>
-      )}
+              </div>
+            )}
+          </InView>
+        ) : (
+          <Page
+            key={pageNumber}
+            pageNumber={pageNumber}
+            width={pageWidth}
+            rotate={rotation}
+            renderMode="canvas"
+            renderTextLayer={false}
+            renderAnnotationLayer={false}
+            className="mb-4"
+          />
+        );
+      })
+    ) : (
+      <div className="text-white py-10 text-center">Loading pages...</div>
+    )}
+  </Document>
+) : (
+  <div className="text-center text-white py-10">Waiting for PDF URL...</div>
+)}
+
     </div>
   );
 }

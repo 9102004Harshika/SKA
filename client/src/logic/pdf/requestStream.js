@@ -31,7 +31,7 @@ export function RequestStream(pdfUrl) {
 
     axios
       .post(`${process.env.REACT_APP_API_BASE_URL}api/files/requestStream`, {
-        pdfUrl,
+        pdfUrl,stream:false
       })
       .then((res) => {
         if (!isMounted) return;

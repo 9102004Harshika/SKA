@@ -2,14 +2,11 @@ import Notes from "../models/Notes.js";
 import Course from '../models/Course.js'
 import {cloudinary} from "../utils/cloudinary.js"
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import os from 'os';
 import PdfStream from "../models/PdfStream.js";
-import https from "https";
-import http from "http";
+import { cachePdf, CACHE_DIR } from "../utils/cachePdf.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 cloudinary.config({
@@ -148,86 +145,77 @@ export const deleteVideoUrl = async (req, res) => {
 //   }
 // };
 
-const CACHE_DIR = path.resolve("pdf-cache");
-
-// Ensure cache dir exists
-if (!fs.existsSync(CACHE_DIR)) {
-  fs.mkdirSync(CACHE_DIR, { recursive: true });
-  console.log(`📁 Created cache directory: ${CACHE_DIR}`);
-}
 
 export const requestStream = async (req, res) => {
   try {
-    const { pdfUrl, stream = false, token } = req.body;
+    const { pdfUrl, stream = false } = req.body;
 
-    // Step 1: Create token
-    if (pdfUrl && !stream) {
-      await PdfStream.deleteMany({ pdfUrl });
+    if (!pdfUrl) {
+      return res.status(400).json({ error: "PDF URL is required." });
+    }
+
+    // STEP 1: Create token if it doesn't exist
+    if (!stream) {
+      console.log("🔍 Checking existing cache for:", pdfUrl);
+
+      const existingEntry = await PdfStream.findOne({ pdfUrl }).sort({ createdAt: -1 });
+
+      // If already cached, return existing token
+      if (existingEntry && existingEntry.token && existingEntry.localPath && fs.existsSync(existingEntry.localPath)) {
+        console.log("✅ Token and cached PDF already exist. Skipping creation.");
+        return res.status(200).json({
+          success: true,
+          message: "Token already exists and PDF is cached.",
+          token: existingEntry.token,
+        });
+      }
+
+      console.log("🆕 Creating new token and caching PDF...");
+      await PdfStream.deleteMany({ pdfUrl }); // Optional cleanup
 
       const newToken = uuidv4();
-      await PdfStream.create({
+      const entry = await PdfStream.create({
         pdfUrl,
         token: newToken,
         usageCount: 0,
-        localPath: null, // optional: can be updated later
+        localPath: null,
       });
+
+      // Trigger caching in background
+      cachePdf(pdfUrl, newToken, entry._id);
 
       return res.status(200).json({
         success: true,
-        message: "Token created",
+        message: "Token created. PDF caching in progress.",
         token: newToken,
       });
     }
 
-    // Step 2: Token validation
-    if (!token) {
-      return res.status(400).json({ error: "Token required" });
-    }
+    // STEP 2: Serve cached file
+    const entry = await PdfStream.findOne({ pdfUrl }).sort({ createdAt: -1 });
 
-    const entry = await PdfStream.findOne({ token });
     if (!entry) {
-      return res.status(403).json({ error: "Invalid or expired token" });
+      return res.status(404).json({ error: "No token found for this PDF URL." });
     }
 
-    await PdfStream.findByIdAndUpdate(entry._id, { $inc: { usageCount: 1 } });
-
-    // Step 3: Cache logic
+    const { token } = entry;
     const localPath = path.join(CACHE_DIR, `${token}.pdf`);
 
-    // Already cached?
     if (fs.existsSync(localPath)) {
       console.log("📂 Serving cached PDF:", localPath);
+      await PdfStream.findByIdAndUpdate(entry._id, { $inc: { usageCount: 1 } });
       return res.sendFile(localPath);
     }
 
-    // Step 4: Download and cache
-    console.log("🌐 Downloading PDF:", entry.pdfUrl);
-    const response = await axios.get(entry.pdfUrl, { responseType: "stream" });
-
-    const writer = fs.createWriteStream(localPath);
-    response.data.pipe(writer);
-
-    writer.on("finish", async () => {
-      console.log("✅ Cached PDF saved at:", localPath);
-
-      // Step 5: Update database with local cache path
-      await PdfStream.findByIdAndUpdate(entry._id, {
-        localPath, // relative or absolute as per your use
-      });
-
-      console.log("🗂️  Updated DB with localPath:", localPath);
-      return res.sendFile(localPath);
-    });
-
-    writer.on("error", (err) => {
-      console.error("❌ Error saving PDF:", err);
-      return res.status(500).json({ error: "Failed to cache PDF" });
+    return res.status(202).json({
+      message: "PDF is still being cached. Please try again shortly.",
     });
   } catch (err) {
-    console.error("Error in requestStream:", err);
+    console.error("❌ Error in requestStream:", err.message || err);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 export const streamPdf = async (req, res) => {
   try {
@@ -236,15 +224,12 @@ export const streamPdf = async (req, res) => {
       return res.status(400).json({ message: "Token required" });
     }
 
-    // Find record for token
     const record = await PdfStream.findOne({ token });
     if (!record) {
       return res.status(404).json({ message: "Invalid or expired token" });
     }
 
-    // Assume cached files named as: pdf-cache/<token>.pdf
     const cachedFilePath = path.resolve("pdf-cache", `${token}.pdf`);
-
     if (!fs.existsSync(cachedFilePath)) {
       return res.status(404).json({ message: "Cached PDF file not found" });
     }
@@ -254,7 +239,7 @@ export const streamPdf = async (req, res) => {
     const range = req.headers.range;
 
     if (!range) {
-      // No Range header - send entire file
+      // No range header, send entire file
       res.writeHead(200, {
         "Content-Length": fileSize,
         "Content-Type": "application/pdf",
@@ -262,25 +247,26 @@ export const streamPdf = async (req, res) => {
       });
       fs.createReadStream(cachedFilePath).pipe(res);
     } else {
-      // Parse Range header
       const bytesPrefix = "bytes=";
       if (!range.startsWith(bytesPrefix)) {
         return res.status(416).json({ message: "Invalid Range format" });
       }
 
-      const [startStr, endStr] = range.substring(bytesPrefix.length).split("-");
+      const [startStr, endStr] = range.replace(bytesPrefix, "").split("-");
       const start = parseInt(startStr, 10);
       const end = endStr ? parseInt(endStr, 10) : fileSize - 1;
 
-      // Validate range
       if (
         isNaN(start) ||
         isNaN(end) ||
-        start < 0 ||
-        end < start ||
-        end >= fileSize
+        start >= fileSize ||
+        end >= fileSize ||
+        end < start
       ) {
-        return res.status(416).json({ message: "Range Not Satisfiable" });
+        return res.status(416).json({
+          message: "Requested Range Not Satisfiable",
+          details: `Valid range: 0-${fileSize - 1}`,
+        });
       }
 
       const chunkSize = end - start + 1;
@@ -292,8 +278,8 @@ export const streamPdf = async (req, res) => {
         "Content-Type": "application/pdf",
       });
 
-      const fileStream = fs.createReadStream(cachedFilePath, { start, end });
-      fileStream.pipe(res);
+      const stream = fs.createReadStream(cachedFilePath, { start, end });
+      stream.pipe(res);
     }
   } catch (err) {
     console.error("Streaming error:", err);

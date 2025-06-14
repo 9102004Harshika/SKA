@@ -1,54 +1,24 @@
 import { useState, useEffect } from "react";
 
 export function FetchPdf(token) {
-  const [blobUrl, setBlobUrl] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
-    let objectUrl = null;
-
     if (!token) {
-      setBlobUrl(null);
-      setLoading(false);
+      setPdfUrl(null);
       setError("Token not provided");
+      setLoading(false);
       return;
     }
 
-    const fetchBlob = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}api/files/getStream/${token}`
-        );
-        if (!response.ok) throw new Error("Failed to fetch PDF");
-
-        const blob = await response.blob();
-        objectUrl = URL.createObjectURL(blob);
-
-        if (isMounted) {
-          setBlobUrl(objectUrl);
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error("Error fetching PDF blob:", err);
-        if (isMounted) {
-          setError(err.message || "Unknown error");
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchBlob();
-
-    return () => {
-      isMounted = false;
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
-    };
+    const streamUrl = `${process.env.REACT_APP_API_BASE_URL}api/files/getStream/${token}`;
+    setPdfUrl(streamUrl);
+    setLoading(false);
+    setError(null);
   }, [token]);
 
-  return { blobUrl, loading, error };
+  return { pdfUrl, loading, error };
 }
+
