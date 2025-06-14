@@ -50,6 +50,7 @@ import QuizDashboard from "./pages/admin/quiz/QuizDashboard";
 import Teachers from "./pages/admin/teachers/Teachers";
 import { Settings } from "lucide-react";
 import NotesDashboard from "./pages/admin/notes/NotesDashboard";
+import QuizApp from "./pages/QuizApp";
 
 const App = () => {
   return (
@@ -124,6 +125,7 @@ const App = () => {
             <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />
+            <Route path="/quiz" element={<QuizApp />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

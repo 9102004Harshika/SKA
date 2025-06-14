@@ -3,11 +3,39 @@ import Quiz from "../models/Quiz.js";
 // Create a new quiz
 export const createQuiz = async (req, res) => {
   try {
-    const newQuiz = new Quiz(req.body);
+    const { name, description, image, link, questions } = req.body;
+
+    if (!questions || !Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ message: "Questions are required." });
+    }
+
+    const questionIds = [];
+    let totalMarks = 0;
+
+    for (const q of questions) {
+      const newQuestion = new Question(q);
+      const savedQuestion = await newQuestion.save();
+      questionIds.push(savedQuestion._id);
+      totalMarks += savedQuestion.marks || 0;
+    }
+
+    const newQuiz = new Quiz({
+      name,
+      description,
+      image,
+      questions: questionIds,
+      totalMarks,
+    });
+
     await newQuiz.save();
-    res.status(201).json({ message: "Quiz created successfully", newQuiz });
+
+    res.status(201).json({
+      message: "Quiz and questions created successfully",
+      quiz: newQuiz,
+    });
   } catch (error) {
-    res.status(400).json({ message: "Error creating quiz", error });
+    console.error("Error creating quiz:", error);
+    res.status(500).json({ message: "Error creating quiz", error });
   }
 };
 
