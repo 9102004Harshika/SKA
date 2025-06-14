@@ -15,7 +15,7 @@ import {
   IoSettingsSharp,
 } from "react-icons/io5";
 import logo from "../images/logo.png";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const navItems = [
   {
@@ -57,16 +57,12 @@ const navItems = [
 ];
 
 const AdminLayout = () => {
-  const [currentPath, setCurrentPath] = useState("/admin");
+  const navigate = useNavigate();
+  const location = useLocation();
   const sidebarRef = useRef(null);
   const [collapsed, setCollapsed] = useState(false);
 
-  const navigate = (path) => {
-    setCurrentPath(path);
-  };
-
   useEffect(() => {
-    // Simulate GSAP animation with CSS transitions
     if (sidebarRef.current) {
       sidebarRef.current.style.transform = "translateX(0)";
       sidebarRef.current.style.opacity = "1";
@@ -76,11 +72,11 @@ const AdminLayout = () => {
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-gray-50">
-      {/* Sidebar */}
+    <div className="w-full bg-gray-50">
+      {/* Fixed Sidebar */}
       <aside
         ref={sidebarRef}
-        className={`hidden md:flex flex-col bg-gradient-to-b from-primary via-primary to-secondary text-background shadow-2xl transition-all duration-300 ease-in-out transform ${
+        className={`hidden md:flex fixed top-0 left-0 h-screen flex-col bg-gradient-to-b from-primary via-primary to-secondary text-background shadow-2xl transition-all duration-300 ease-in-out z-50 ${
           collapsed ? "w-20" : "w-64"
         }`}
         style={{
@@ -90,7 +86,7 @@ const AdminLayout = () => {
         }}
       >
         {/* Header & Toggle */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/20 bg-white/5 backdrop-blur-sm">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-background/20 bg-background/5 backdrop-blur-sm">
           <div
             className={`flex items-center gap-3 transition-all duration-300 ${
               collapsed ? "opacity-0 w-0" : "opacity-100"
@@ -106,7 +102,7 @@ const AdminLayout = () => {
           </div>
           <button
             onClick={toggleSidebar}
-            className="text-white hover:text-amber-300 transition-all duration-200 hover:scale-110 p-1 rounded-full hover:bg-white/10"
+            className="text-background hover:text-amber-300 transition-all duration-200 hover:scale-110 p-1 rounded-full hover:bg-background/10"
           >
             {collapsed ? (
               <MdChevronRight size={20} />
@@ -121,8 +117,9 @@ const AdminLayout = () => {
           {navItems.map(({ label, lined, filled, path }) => {
             const active =
               label === "Sales"
-                ? currentPath === "/admin" || currentPath === "/admin/"
-                : currentPath.startsWith(path);
+                ? location.pathname === "/admin" ||
+                  location.pathname === "/admin/"
+                : location.pathname.startsWith(path);
 
             return (
               <button
@@ -131,42 +128,37 @@ const AdminLayout = () => {
                 title={collapsed ? label : ""}
                 className={`group w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden ${
                   active
-                    ? `bg-accent/20 text-white ${
+                    ? `bg-accent/20 text-background ${
                         !collapsed ? "border-l-4 border-amber-400" : ""
                       } shadow-lg`
-                    : "hover:bg-white/10 hover:text-accent text-background"
+                    : "hover:bg-background/10 hover:text-accent text-background"
                 }`}
               >
-                {/* Background gradient on hover */}
                 <div
-                  className={`absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
+                  className={`absolute inset-0 bg-gradient-to-r from-background/5 to-background/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                     active ? "hidden" : ""
                   }`}
                 />
-
-                {/* Icon */}
                 <span
                   className={`text-xl z-10 transition-all duration-200 ${
                     active
                       ? "text-amber-300 scale-110"
-                      : "group-hover:text-white group-hover:scale-105"
+                      : "group-hover:text-background group-hover:scale-105"
                   }`}
                 >
                   {active ? filled : lined}
                 </span>
-
-                {/* Label */}
                 <span
                   className={`text-sm font-medium z-10 transition-all duration-300 ${
                     collapsed
                       ? "opacity-0 translate-x-4 w-0"
                       : "opacity-100 translate-x-0"
-                  } ${active ? "text-white" : "group-hover:text-white"}`}
+                  } ${
+                    active ? "text-background" : "group-hover:text-background"
+                  }`}
                 >
                   {label}
                 </span>
-
-                {/* Active indicator */}
                 {active && !collapsed && (
                   <div className="absolute right-4 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
                 )}
@@ -177,7 +169,7 @@ const AdminLayout = () => {
 
         {/* Footer */}
         {!collapsed && (
-          <div className="px-6 py-4 border-t border-white/20 bg-white/5">
+          <div className="px-6 py-4 border-t border-background/20 bg-background/5">
             <div className="text-md text-accent font-highlight text-center flex items-center gap-2 ">
               <img
                 src={logo}
@@ -191,26 +183,31 @@ const AdminLayout = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 pb-24 md:pb-6 overflow-y-auto bg-gray-50">
+      <main
+        className={`min-h-screen overflow-y-auto pt-6 pb-24 md:pb-6 transition-all duration-300 ${
+          collapsed ? "md:pl-20" : "md:pl-64"
+        }`}
+      >
         <Outlet />
       </main>
 
       {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary to-secondary text-white flex justify-around items-center py-2 px-1 border-t border-white/20 z-50 backdrop-blur-lg">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-primary to-secondary text-background flex justify-around items-center py-2 px-1 border-t border-background/20 z-50 backdrop-blur-lg">
         {navItems.map(({ label, lined, filled, path }) => {
           const active =
             label === "Sales"
-              ? currentPath === "/admin" || currentPath === "/admin/"
-              : currentPath.startsWith(path);
+              ? location.pathname === "/admin" ||
+                location.pathname === "/admin/"
+              : location.pathname.startsWith(path);
 
           return (
             <button
               key={label}
               onClick={() => navigate(path)}
-              className={`flex flex-col w-12 items-center text-[0.60rem] transition-all duration-200 py-2 px-2 rounded-lg ${
+              className={`flex flex-col w-12 items-center text-[0.60rem] outline-none transition-all duration-200 py-2 px-2 rounded-lg ${
                 active
-                  ? "text-amber-300 bg-white/10 scale-105"
-                  : "text-indigo-200 hover:text-white hover:bg-white/5"
+                  ? "text-amber-300 bg-background/10 scale-105"
+                  : "text-indigo-200 hover:text-background hover:bg-background/5"
               }`}
             >
               <span

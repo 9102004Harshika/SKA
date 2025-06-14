@@ -10,7 +10,7 @@ import quizRoutes from "./routes/quizRoutes.js";
 import carouselRoutes from "./routes/carouselRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
-import quotesRoutes from './routes/quotesRoute.js'
+import quotesRoutes from "./routes/quotesRoute.js";
 const app = express();
 app.use(cors());
 app.use(express.json()); // Make sure JSON parsing is enabled for incoming requests
@@ -47,8 +47,8 @@ app.use("/api/quizzes", quizRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/carousel", carouselRoutes);
 app.use("/api/notification", notificationRoutes);
-app.use("/api/quotes",quotesRoutes)
+app.use("/api/quotes", quotesRoutes);
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on ${PORT}`);
 });

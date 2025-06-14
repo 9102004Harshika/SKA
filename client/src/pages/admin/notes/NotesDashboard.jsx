@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import Modal from "../../components/Modal";
+// import Modal from "../../components/Modal";
 
 ChartJS.register(
   CategoryScale,
@@ -49,39 +49,9 @@ const NotesDashboard = () => {
     fetchNotes();
   }, []);
 
-  const chartData = {
-    labels: ["Paid Notes", "Free Notes"],
-    datasets: [
-      {
-        label: "Number of Notes",
-        data: [notesData.paid, notesData.free],
-        backgroundColor: ["#FF6384", "#36A2EB"],
-        borderColor: ["#FF6384", "#36A2EB"],
-        borderWidth: 1,
-      },
-    ],
-  };
-
   return (
     <div className="p-6 bg-secondary shadow-md rounded-lg ml-8">
       <h2 className="text-2xl font-semibold text-primary">Notes Dashboard</h2>
-      {loading ? (
-        <Modal>Fetching Notes</Modal>
-      ) : error ? (
-        <p className="text-red-500">{error}</p>
-      ) : (
-        <>
-          <p className="text-lg font-medium text-primary">
-            Paid Notes: <span className="font-bold">{notesData.paid}</span>
-          </p>
-          <p className="text-lg font-medium text-primary">
-            Free Notes: <span className="font-bold">{notesData.free}</span>
-          </p>
-          <div className="mt-6">
-            <Bar data={chartData} />
-          </div>
-        </>
-      )}
     </div>
   );
 };
