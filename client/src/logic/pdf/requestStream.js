@@ -30,7 +30,9 @@ export function RequestStream(pdfUrl) {
     setError(null);
 
     axios
-      .post("http://localhost:5000/api/files/requestStream", { pdfUrl })
+      .post(`${process.env.REACT_APP_API_BASE_URL}api/files/requestStream`, {
+        pdfUrl,
+      })
       .then((res) => {
         if (!isMounted) return;
         streamTokenCache[pdfUrl] = res.data.token;

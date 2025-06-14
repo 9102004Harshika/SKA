@@ -14,7 +14,7 @@ const UpdateCoursePage = () => {
     const fetchNotes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/courses/get"
+          `${process.env.REACT_APP_API_BASE_URL}api/courses/get`
         );
         setCourses(response.data);
       } catch (err) {

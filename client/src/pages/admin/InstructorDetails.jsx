@@ -13,7 +13,7 @@ const InstructorDetails = () => {
     const fetchInstructorDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/instructor/get/${id}`
+          `${process.env.REACT_APP_API_BASE_URL}api/instructor/get/${id}`
         );
         setInstructor(response.data);
         setLoading(false);
@@ -29,7 +29,7 @@ const InstructorDetails = () => {
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this instructor?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/instructor/delete/${id}`);
+        await axios.delete(`${process.env.REACT_APP_API_BASE_URL}api/instructor/delete/${id}`);
         navigate("/admin/instructors");
       } catch (error) {
         setError("Error deleting instructor");

@@ -23,7 +23,7 @@ const NotesDetail = () => {
     const fetchNote = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/notes/${id}`
+          `${process.env.REACT_APP_API_BASE_URL}api/notes/${id}`
         );
         setNote(response.data);
       } catch (err) {

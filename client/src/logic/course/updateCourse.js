@@ -34,7 +34,7 @@ const useUpdateCourse=()=>{
         const fetchNoteDetails = async () => {
           try {
             const response = await axios.get(
-              `http://localhost:5000/api/courses/${id}`
+              `${process.env.REACT_APP_API_BASE_URL}api/courses/${id}`
             );
             setCourse(response.data);
           } catch (error) {
@@ -46,7 +46,7 @@ const useUpdateCourse=()=>{
       }, [id]);
      const deleteFile=async(Url)=>{
         try{
-         await axios.post("http://localhost:5000/api/files/deleteVideoUrl", {
+         await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/files/deleteVideoUrl`, {
             url: Url,
             course:course._id
           });
@@ -126,7 +126,7 @@ const useUpdateCourse=()=>{
           };
   
           // Step 4: Send data to backend
-          await axios.put(`http://localhost:5000/api/courses/update/${id}`, formattedData);
+          await axios.put(`${process.env.REACT_APP_API_BASE_URL}api/courses/update/${id}`, formattedData);
   
           toast({
               title: "Course Edited Successfully",

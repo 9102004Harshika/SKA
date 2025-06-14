@@ -12,7 +12,7 @@ const WelcomeScreen = () => {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/quotes/getQuote");
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}api/quotes/getQuote`);
         const quotes = response.data;
 
         if (quotes.length > 0) {

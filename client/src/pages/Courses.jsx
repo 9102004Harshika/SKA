@@ -25,7 +25,7 @@ const Courses = () => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/courses/getAll"
+          `${process.env.REACT_APP_API_BASE_URL}api/courses/getAll`
         );
         setCourses(response.data);
       } catch (err) {

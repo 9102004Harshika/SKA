@@ -31,7 +31,7 @@ const Notes = () => {
     const fetchNotes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/notes/getFree"
+          `${process.env.REACT_APP_API_BASE_URL}api/notes/getFree`
         );
         setNotes(response.data);
       } catch (err) {

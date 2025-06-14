@@ -20,8 +20,8 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const [courseRes, notesRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/courses/getAll"),
-          axios.get("http://localhost:5000/api/notes/getFree"),
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}api/courses/getAll`),
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}api/notes/getFree`),
         ]);
 
         const courseData = courseRes.data;

@@ -23,7 +23,7 @@ const useUpdateNotes = () => {
     const fetchNoteDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/notes/${id}`
+          `${process.env.REACT_APP_API_BASE_URL}api/notes/${id}`
         );
         setNote(response.data);
       } catch (error) {
@@ -86,7 +86,7 @@ const useUpdateNotes = () => {
   
       const updatedNote = { ...note, coverImageUrl, pdfUrl };
   
-      await axios.put(`http://localhost:5000/api/notes/update/${id}`, updatedNote);
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}api/notes/update/${id}`, updatedNote);
   
       alert("Note updated successfully!");
       navigate("/admin/notes/update");
@@ -101,7 +101,7 @@ const useUpdateNotes = () => {
 
   const deleteFile=async(Url)=>{
     try{
-      await axios.post("http://localhost:5000/api/files/deleteUrl", {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/files/deleteUrl`, {
         url: Url,
         note:note._id
       });

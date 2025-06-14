@@ -11,7 +11,7 @@ const InstructorPage = () => {
     const fetchInstructors = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/instructor/get/"
+          `${process.env.REACT_APP_API_BASE_URL}api/instructor/get/`
         );
         setInstructors(response.data);
       } catch (error) {

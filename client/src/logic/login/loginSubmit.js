@@ -1,4 +1,3 @@
-
 import { toast } from "../../components/use-toast";
 import { loginForm } from "../../config/index";
 import axios from "axios";
@@ -43,14 +42,17 @@ export const handleSubmit = async (
   if (!isValid) return;
 
   try {
-    const response = await axios.post("http://localhost:5000/api/login", {
-      ...formData,
-      loginMode: "email",
-    });
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}api/login`,
+      {
+        ...formData,
+        loginMode: "email",
+      }
+    );
 
     if (response.status === 200) {
       const { user, token } = response.data;
-    
+
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("role", user.role);
 
@@ -60,7 +62,7 @@ export const handleSubmit = async (
         try {
           // Fetch instructor data using instructor ID
           const instructorRes = await axios.get(
-            `http://localhost:5000/api/instructor/get/${user.instructor}`,
+            `${process.env.REACT_APP_API_BASE_URL}api/instructor/get/${user.instructor}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -82,7 +84,9 @@ export const handleSubmit = async (
           description: "Welcome, Admin!",
           variant: "success",
         });
-       navigate("/welcome", { state: { fullName: user.fullName, role: user.role }, });
+        navigate("/welcome", {
+          state: { fullName: user.fullName, role: user.role },
+        });
       } else if (!user.isEnrolled && user.role === "user") {
         toast({
           title: "Enrollment Required",
@@ -97,8 +101,10 @@ export const handleSubmit = async (
           description: "You have logged in successfully! Welcome back.",
           variant: "success",
         });
-      
-       navigate("/welcome", { state: { fullName: user.fullName, role: user.role }, });
+
+        navigate("/welcome", {
+          state: { fullName: user.fullName, role: user.role },
+        });
       }
       if (!user || !token) {
         toast({
@@ -156,15 +162,18 @@ export const GoogleLogin = (navigate) => {
       };
 
       try {
-        const res = await axios.post("http://localhost:5000/api/login", {
-          ...userData,
-          loginMode: "google",
-        });
+        const res = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}api/login`,
+          {
+            ...userData,
+            loginMode: "google",
+          }
+        );
 
         if (res.status === 200) {
           const { user, token } = res.data;
           sessionStorage.setItem("token", token);
-          sessionStorage.setItem("role",user.role)
+          sessionStorage.setItem("role", user.role);
           if (!user.isEnrolled) {
             toast({
               title: "Enrollment Required",
@@ -179,7 +188,9 @@ export const GoogleLogin = (navigate) => {
               description: "You have logged in successfully! Welcome back.",
               variant: "success",
             });
-            navigate("/welcome",{ state: { fullName: user.fullName, role: user.role }, });
+            navigate("/welcome", {
+              state: { fullName: user.fullName, role: user.role },
+            });
           }
         } else {
           toast({
@@ -213,4 +224,3 @@ export const GoogleLogin = (navigate) => {
     },
   });
 };
-

@@ -32,7 +32,7 @@ const AddInstructorPage = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/createAdmin",
+        `${process.env.REACT_APP_API_BASE_URL}api/createAdmin`,
         adminData
       );
       setUserId(res.data._id || res.data.user?._id); // Adjust based on your actual response
@@ -46,10 +46,13 @@ const AddInstructorPage = () => {
   const submitInstructor = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/instructor/add", {
-        ...instructorData,
-        userId,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}api/instructor/add`,
+        {
+          ...instructorData,
+          userId,
+        }
+      );
       alert("Instructor created successfully!");
       console.log(res.data);
     } catch (err) {
