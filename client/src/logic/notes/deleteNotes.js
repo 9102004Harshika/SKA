@@ -6,18 +6,25 @@ export const deleteFile = async (note, setNotes) => {
 
   try {
     // Step 1: Delete the image and PDF from Cloudinary
-    await axios.post("http://localhost:5000/api/files/deleteFile", {
-      Url: note.coverImageUrl,
-     
-    });
+    await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}api/files/deleteFile`,
+      {
+        Url: note.coverImageUrl,
+      }
+    );
     console.log("Deleted Image from Cloudinary!");
-    await axios.post("http://localhost:5000/api/files/deleteFile",{
-      Url: note.pdfUrl,
-    })
-    console.log("Deleted Pdf from cloudinary")
+    await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}api/files/deleteFile`,
+      {
+        Url: note.pdfUrl,
+      }
+    );
+    console.log("Deleted Pdf from cloudinary");
 
     // // Step 2: Delete the note from the database
-    await axios.delete(`http://localhost:5000/api/notes/delete/${note._id}`);
+    await axios.delete(
+      `${process.env.REACT_APP_API_BASE_URL}api/notes/delete/${note._id}`
+    );
     console.log("Deleted from MongoDB!");
 
     // Step 3: Update state to remove deleted note

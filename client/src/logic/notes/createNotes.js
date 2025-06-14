@@ -76,7 +76,7 @@ const useAddNotes = () => {
       const updatedFormData = { ...formData, coverImageUrl, pdfUrl };
       console.log(updatedFormData)
       console.log("Data sent to backend:", updatedFormData);
-      await axios.post("http://localhost:5000/api/notes/add", updatedFormData);
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/notes/add`, updatedFormData);
 
       toast({
         title: "Notes Created Successfully",

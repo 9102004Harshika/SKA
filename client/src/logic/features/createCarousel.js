@@ -10,7 +10,9 @@ const useCarousel = () => {
   useEffect(() => {
     const fetchCarouselItems = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/carousel");
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}api/carousel`
+        );
         setCarouselItems(data);
       } catch (error) {
         console.error("Error fetching carousel items:", error);
@@ -83,10 +85,13 @@ const useCarousel = () => {
         return false;
       }
 
-      const { data } = await axios.post("http://localhost:5000/api/carousel", {
-        image: imageUrl,
-        description: formData.description,
-      });
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}api/carousel`,
+        {
+          image: imageUrl,
+          description: formData.description,
+        }
+      );
 
       setCarouselItems([...carouselItems, data.item]);
 
@@ -110,22 +115,25 @@ const useCarousel = () => {
     }
   };
 
-  const deleteCarouselItem = async (id,image) => {
+  const deleteCarouselItem = async (id, image) => {
     if (!window.confirm("Are you sure you want to delete this carousel item?"))
       return;
 
     try {
-      await axios.post("http://localhost:5000/api/files/deleteFile",{
-         Url: image,
-      })
-      console.log("Deleted Pdf from cloudinary")
-      await axios.delete(`http://localhost:5000/api/carousel/${id}`);
+      await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}api/files/deleteFile`,
+        {
+          Url: image,
+        }
+      );
+      console.log("Deleted Pdf from cloudinary");
+      await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}api/carousel/${id}`
+      );
       console.log("Deleted from MongoDB!");
 
       // Update state
-      setCarouselItems(
-        carouselItems.filter((carousel) => carousel._id !== id)
-      );
+      setCarouselItems(carouselItems.filter((carousel) => carousel._id !== id));
 
       toast({
         title: "Deleted",

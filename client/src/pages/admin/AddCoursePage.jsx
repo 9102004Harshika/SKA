@@ -56,12 +56,14 @@ function CourseForm() {
     const fetchData = async () => {
       try {
         const instructorsRes = axios.get(
-          "http://localhost:5000/api/instructor/get"
+          `${process.env.REACT_APP_API_BASE_URL}api/instructor/get`
         );
         const notesRes = axios.get(
-          `http://localhost:5000/api/notes/getPaid?subject=${courseData.subject}&classFor=${courseData.classFor}`
+          `${process.env.REACT_APP_API_BASE_URL}api/notes/getPaid?subject=${courseData.subject}&classFor=${courseData.classFor}`
         );
-        const quizzesRes = axios.get("http://localhost:5000/api/quizzes/get");
+        const quizzesRes = axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}api/quizzes/get`
+        );
 
         const [instructors, notes, quizzes] = await Promise.all([
           instructorsRes,

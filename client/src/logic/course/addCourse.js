@@ -83,7 +83,7 @@ const useAddCourse = () => {
             };
 
             // Step 4: Send data to backend
-            await axios.post("http://localhost:5000/api/courses/add", formattedData);
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}api/courses/add`, formattedData);
 
             toast({
                 title: "Course Created Successfully",

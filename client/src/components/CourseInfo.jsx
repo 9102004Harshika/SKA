@@ -44,7 +44,7 @@ function QuizAndNotesDetails() {
     // Example of making an API call with axios
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/notes/add",
+        `${process.env.REACT_APP_API_BASE_URL}api/notes/add`,
         noteData
       );
       console.log("Note Data Inserted Successfully:", response.data);
@@ -68,7 +68,7 @@ function QuizAndNotesDetails() {
     // Example of making an API call with axios
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/instructors/add",
+        `${process.env.REACT_APP_API_BASE_URL}api/instructors/add`,
         instructorData
       );
       console.log("Instructor Data Inserted Successfully:", response.data);
@@ -93,7 +93,7 @@ function QuizAndNotesDetails() {
     // Example of making an API call with axios
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/quizzes/add",
+         `${process.env.REACT_APP_API_BASE_URL}api/quizzes/add`,
         quizData
       );
       console.log("Quiz Data Inserted Successfully:", response.data);

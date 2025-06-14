@@ -6,26 +6,33 @@ export const deleteFile = async (course, setCourses) => {
 
   try {
     // Step 1: Delete the image and PDF from Cloudinary
-    await axios.post("http://localhost:5000/api/files/deleteFile", {
-      Url: course.courseImage,
-
-    });
+    await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}api/files/deleteFile`,
+      {
+        Url: course.courseImage,
+      }
+    );
     await Promise.all(
-        course.modules.map(async (module) => {
-          if (module.videoLink) {
-            try {
-              await axios.post("http://localhost:5000/api/files/deleteFile", {
+      course.modules.map(async (module) => {
+        if (module.videoLink) {
+          try {
+            await axios.post(
+              `${process.env.REACT_APP_API_BASE_URL}api/files/deleteFile`,
+              {
                 Url: module.videoLink,
-              });
-              console.log(`Deleted Video: ${module.videoLink}`);
-            } catch (error) {
-              console.error(`Error deleting video: ${module.videoLink}`, error);
-            }
+              }
+            );
+            console.log(`Deleted Video: ${module.videoLink}`);
+          } catch (error) {
+            console.error(`Error deleting video: ${module.videoLink}`, error);
           }
-        })
-      );
+        }
+      })
+    );
     // // Step 2: Delete the note from the database
-    await axios.delete(`http://localhost:5000/api/courses/${course._id}`);
+    await axios.delete(
+      `${process.env.REACT_APP_API_BASE_URL}api/courses/${course._id}`
+    );
     console.log("Deleted from MongoDB!");
 
     // Step 3: Update state to remove deleted note

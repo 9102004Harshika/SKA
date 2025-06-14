@@ -341,7 +341,7 @@ const SalesDashboard = () => {
       <div className="mb-6">
         <div className="flex items-center gap-4 mb-2">
           <div>
-            <h1 className="text-3xl font-bold text-primary font-header tracking-wide mb-2">
+            <h1 className="text-3xl font-bold text-primary font-header tracking-wider mb-2">
               Sales Dashboard
             </h1>
           </div>
@@ -353,14 +353,14 @@ const SalesDashboard = () => {
         {cardData.map((card, idx) => (
           <div
             key={idx}
-            className="bg-background p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group hover:-translate-y-2"
+            className="bg-background px-6 py-4 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group hover:-translate-y-2"
           >
             <div className="flex items-center justify-between mb-6">
-              <div className="p-4 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
-                <card.icon className="w-8 h-8 text-primary" />
+              <div className="p-2 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
+                <card.icon className="w-6 h-6 text-primary" />
               </div>
               <div
-                className={`flex items-center text-sm font-bold px-3 py-2 rounded-full transition-all duration-300 ${
+                className={`flex items-center text-sm font-bold px-2 py-1 rounded-full transition-all duration-300 ${
                   card.trend === "up"
                     ? "text-green-500 bg-green-500/20 group-hover:bg-green-300/30"
                     : "text-error bg-error/10 group-hover:bg-error/20"
@@ -374,10 +374,10 @@ const SalesDashboard = () => {
                 {card.change}
               </div>
             </div>
-            <h3 className="text-sm text-gray-500 font-semibold mb-2 uppercase tracking-wider">
+            <h3 className="text-xs text-gray-500 font-semibold mb-2 uppercase tracking-wider">
               {card.title}
             </h3>
-            <p className="text-3xl text-gray-800 group-hover:text-primary transition-colors duration-300 font-bold font-header text-primary">
+            <p className="text-2xl text-gray-800 group-hover:text-primary transition-colors duration-300 font-bold font-header text-primary">
               {card.value}
             </p>
           </div>
