@@ -49,6 +49,7 @@ import SalesDashboard from "./pages/admin/sales/SalesDashboard";
 import QuizDashboard from "./pages/admin/quiz/QuizDashboard";
 import Teachers from "./pages/admin/teachers/Teachers";
 import { Settings } from "lucide-react";
+import NotesDashboard from "./pages/admin/notes/NotesDashboard";
 
 const App = () => {
   return (
@@ -95,7 +96,7 @@ const App = () => {
               <Route path="quiz" element={<QuizDashboard />} />
               <Route path="settings" element={<Settings />} />
               <Route path="teachers" element={<Teachers />} />
-              {/* <Route path="notes" element={<NotesDashboard />} /> */}
+              <Route path="notes" element={<NotesDashboard />} />
 
               {/* <Route path="instructor" element={<InstructorAdminLayout />}>
                 <Route index element={<InstructorPage />} />
