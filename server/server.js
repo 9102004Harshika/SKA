@@ -11,6 +11,9 @@ import carouselRoutes from "./routes/carouselRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import quotesRoutes from "./routes/quotesRoute.js";
+import cron from "node-cron";
+import { cleanupCachedPdfs } from "./utils/cleanupCachedPdfs.js";
+
 const app = express();
 app.use(cors());
 app.use(express.json()); // Make sure JSON parsing is enabled for incoming requests
@@ -33,6 +36,10 @@ mongoose
     console.error("MongoDB connection error:", err.message);
   });
 
+  cron.schedule("* * * * *", async () => {
+    console.log("⏰ Running scheduled PDF cache cleanup...");
+    await cleanupCachedPdfs();
+  });
 // Define a sample route
 app.get("/", (req, res) => {
   res.send("Shree Kalam Academy: Endless Possibilities!!!");
