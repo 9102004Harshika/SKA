@@ -116,7 +116,7 @@ const Footer = () => {
           <span>
             Made with <span className="text-error">♥</span> by{" "}
             <a
-              href="https://abhikatechsolution.netlify.app/"
+              href="https://abhikatechsolutions.netlify.app/"
               target="_blank"
               rel="noreferrer"
               className="text-accent hover:underline underline-offset-2"
