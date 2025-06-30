@@ -25,7 +25,6 @@ import Notes from "./pages/Notes";
 import CircularProgress from "./ui/progressBar";
 import Modal from "./components/Modal";
 import DeleteNotesPage from "./pages/admin/DeleteNotesPage";
-
 import EditNotesPage from "./pages/admin/EditNotesPage";
 import PdfViewer from "./components/PdfViewer";
 import NotesDetail from "./pages/NotesDetail";
@@ -47,6 +46,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import CourseDashboard from "./pages/admin/course/CourseDashboard";
 import SalesDashboard from "./pages/admin/sales/SalesDashboard";
 import QuizDashboard from "./pages/admin/quiz/QuizDashboard";
+import AddQuiz from "./pages/admin/quiz/AddQuiz";
 import Teachers from "./pages/admin/teachers/Teachers";
 import { Settings } from "lucide-react";
 import NotesDashboard from "./pages/admin/notes/NotesDashboard";
@@ -81,6 +81,7 @@ const App = () => {
               <Route path="notes" element={<Notes />} />
               <Route path="notes/:id" element={<NotesDetail />} />
               <Route path="coursedetail/:id" element={<CourseDetail />} />
+              <Route path="quizapp" element={<QuizApp />} />
             </Route>
 
             {/*Admin Routes here */}
@@ -95,6 +96,7 @@ const App = () => {
               <Route index element={<SalesDashboard />} />
               <Route path="course" element={<CourseDashboard />} />
               <Route path="quiz" element={<QuizDashboard />} />
+              <Route path="quiz/add" element={<AddQuiz />} />
               <Route path="settings" element={<Settings />} />
               <Route path="teachers" element={<Teachers />} />
               <Route path="notes" element={<NotesDashboard />} />
@@ -125,7 +127,6 @@ const App = () => {
             <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />
-            <Route path="/quiz" element={<QuizApp />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

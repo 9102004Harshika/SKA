@@ -1,25 +1,3 @@
-// import TextInput from "../../ui/textInput";
-
-// function CourseAdminDashboard() {
-//   return (
-//     <div className="flex-1 p-6 mx-10 " id="coursedashboard">
-//       <input
-//         type="text"
-//         placeholder="Search courses..."
-//         className="w-full p-3 border border-gray-300 rounded-md mb-4"
-//       />
-//       <div className="flex gap-2 mb-4">
-//         <button className="px-4 py-2 bg-secondary rounded-md">All</button>
-//         <button className="px-4 py-2 bg-secondary rounded-md">Popular</button>
-//         <button className="px-4 py-2 bg-secondary rounded-md">New</button>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default CourseAdminDashboard;
-
-
 import React, { useState, useEffect } from "react";
 
 // Mock course data (replace with real fetch later)
@@ -36,11 +14,11 @@ function CourseAdminDashboard() {
   const [filter, setFilter] = useState("All");
   const [activeTab, setActiveTab] = useState("Dashboard");
 
-  const filteredCourses = courses.filter(course => {
-    const matchesFilter =
-      filter === "All" || course.category === filter;
-    const matchesSearch =
-      course.title.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredCourses = courses.filter((course) => {
+    const matchesFilter = filter === "All" || course.category === filter;
+    const matchesSearch = course.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -51,7 +29,7 @@ function CourseAdminDashboard() {
     <div className="flex-1 p-6 mx-10" id="coursedashboard">
       {/* Top Tabs */}
       <div className="flex gap-4 mb-6">
-        {tabList.map(tab => (
+        {tabList.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -77,7 +55,7 @@ function CourseAdminDashboard() {
 
       {/* Filter Buttons */}
       <div className="flex gap-2 mb-4">
-        {filterButtons.map(btn => (
+        {filterButtons.map((btn) => (
           <button
             key={btn}
             onClick={() => setFilter(btn)}
@@ -92,7 +70,7 @@ function CourseAdminDashboard() {
 
       {/* Course List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredCourses.map(course => (
+        {filteredCourses.map((course) => (
           <div
             key={course.id}
             className="p-4 border border-gray-300 rounded-lg shadow-sm"

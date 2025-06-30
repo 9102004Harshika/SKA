@@ -7,7 +7,7 @@ const questionSchema = new mongoose.Schema({
   correctAnswer: { type: String, required: true },
   explanation: { type: String },
   marks: { type: Number, default: 1 },
-  diagram: { type: String }, // Optional diagram (URL or base64)
+  diagram: { type: String },
 });
 
 const Question = mongoose.model("Question", questionSchema);

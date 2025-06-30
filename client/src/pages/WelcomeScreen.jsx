@@ -12,7 +12,9 @@ const WelcomeScreen = () => {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}api/quotes/getQuote`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}api/quotes/getQuote`
+        );
         const quotes = response.data;
 
         if (quotes.length > 0) {
@@ -32,7 +34,7 @@ const WelcomeScreen = () => {
       } else {
         navigate("/app");
       }
-    }, 10000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, [navigate, role]);

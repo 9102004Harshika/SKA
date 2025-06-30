@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   Clock,
   Trophy,
@@ -9,79 +9,271 @@ import {
   Target,
   CheckCircle,
   XCircle,
-  Volume2,
+  HelpCircle,
+  BarChart2,
 } from "lucide-react";
 
-// Custom color classes based on your design system
-const colors = {
-  background: "bg-[#fbfbfb]",
-  primary: "bg-[#1d0042] text-white",
-  secondary: "bg-[#400c7c] text-white",
-  tertiary: "bg-[#4f4f4f] text-white",
-  accent: "bg-[#ffc33e] text-[#1d0042]",
-  error: "bg-[#ff0000] text-white",
-  success: "bg-green-500 text-white",
-  primaryText: "text-[#1d0042]",
-  secondaryText: "text-[#400c7c]",
-  tertiaryText: "text-[#4f4f4f]",
-  accentText: "text-[#ffc33e]",
+// --- Audio Functions ---
+
+const createAudioContext = () => {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  return new AudioContext();
 };
 
+const playTone = (type) => {
+  try {
+    const audioContext = createAudioContext();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.type = "sine";
+    gainNode.gain.value = 0.2;
+
+    // Set frequency and duration based on sound type
+    switch (type) {
+      case "correct":
+        oscillator.frequency.value = 880; // A5
+        break;
+      case "wrong":
+        oscillator.frequency.value = 220; // A3
+        break;
+      case "alert":
+        oscillator.frequency.value = 660; // E5
+        break;
+      case "timeup":
+        oscillator.frequency.value = 440; // A4
+        break;
+      default:
+        oscillator.frequency.value = 440; // Default to A4
+    }
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    // Start the oscillator
+    oscillator.start();
+
+    // Stop the oscillator after a short duration
+    oscillator.stop(audioContext.currentTime + 0.3);
+
+    // Resume audio context if it was suspended
+    if (audioContext.state === "suspended") {
+      audioContext
+        .resume()
+        .catch((e) => console.error("AudioContext resume failed:", e));
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error playing sound:", error);
+    return false;
+  }
+};
+
+const shuffleArray = (array) => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
+// --- UI Components ---
+
+const WelcomeScreen = ({ onStartQuiz }) => (
+  <div className="text-center p-8 text-white">
+    <Trophy className="mx-auto h-20 w-20 text-yellow-400 mb-6 animate-bounce" />
+    <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+      Advanced Knowledge Quiz
+    </h1>
+    <p className="text-lg text-white/80 mb-8">
+      Test your knowledge and challenge yourself!
+    </p>
+
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 max-w-3xl mx-auto">
+      <InfoCard icon={<Target size={28} />} title="Questions" value="10" />
+      <InfoCard icon={<Award size={28} />} title="Total Marks" value="10" />
+      <InfoCard icon={<Clock size={28} />} title="Per Question" value="30s" />
+    </div>
+
+    <div className="bg-white/10 rounded-lg p-6 max-w-2xl mx-auto mb-10 text-left">
+      <h2 className="text-xl font-bold mb-4 flex items-center">
+        <HelpCircle className="mr-3 text-yellow-400" />
+        Quiz Instructions
+      </h2>
+      <ul className="list-disc list-inside text-white/80 space-y-2">
+        <li>Each question has a 30-second time limit.</li>
+        <li>You get 5 seconds to read the question before options appear.</li>
+        <li>An alert sound will play in the last 5 seconds.</li>
+        <li>The questions will appear in a random order.</li>
+      </ul>
+    </div>
+
+    <button
+      onClick={onStartQuiz}
+      className="flex items-center justify-center w-full sm:w-auto mx-auto px-10 py-4 bg-yellow-400 text-gray-900 font-bold text-xl rounded-lg shadow-lg hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105"
+    >
+      <Play className="mr-3" />
+      Start Quiz
+    </button>
+  </div>
+);
+
+const InfoCard = ({ icon, title, value }) => (
+  <div className="bg-white/10 p-4 rounded-lg shadow-md flex flex-col items-center justify-center transition-all duration-300 transform hover:scale-105 hover:bg-white/25">
+    <div className="mb-2 text-yellow-400">{icon}</div>
+    <p className="text-sm font-semibold text-white/80">{title}</p>
+    <p className="text-3xl font-bold">{value}</p>
+  </div>
+);
+
+const ResultScreen = ({ score, totalQuestions, onResetQuiz }) => (
+  <div className="text-center p-8 text-white">
+    <Award className="mx-auto h-20 w-20 text-yellow-400 mb-6" />
+    <h1 className="text-4xl md:text-5xl font-bold mb-2">Quiz Completed!</h1>
+    <p className="text-lg text-white/80 mb-8">Here's how you performed.</p>
+
+    <div className="bg-white/10 rounded-lg p-8 max-w-sm mx-auto mb-10">
+      <p className="text-white/80 text-lg mb-2">Your Score</p>
+      <div className="flex items-center justify-center text-6xl font-bold">
+        <BarChart2 size={48} className="mr-4 text-yellow-400" />
+        {score} / {totalQuestions}
+      </div>
+    </div>
+
+    <button
+      onClick={onResetQuiz}
+      className="flex items-center justify-center w-full sm:w-auto mx-auto px-10 py-4 bg-accent text-primary font-bold text-xl rounded-lg shadow-lg hover:bg-tertiary hover:text-accent transition-all transform hover:scale-105"
+    >
+      <RotateCcw className="mr-3" />
+      Play Again
+    </button>
+  </div>
+);
+
+const QuizHeader = ({ current, total, timeLeft }) => (
+  <div className="p-4 mb-4">
+    <div className="flex justify-between items-center text-white/80 font-semibold mb-2">
+      <p>
+        Question {current + 1} / {total}
+      </p>
+      <div className="flex items-center">
+        <Clock
+          size={18}
+          className={`mr-2 ${timeLeft <= 5 ? "text-red-400" : ""}`}
+        />
+        <span>{timeLeft}s</span>
+      </div>
+    </div>
+    <div className="w-full bg-white/20 rounded-full h-2.5">
+      <div
+        className={`h-2.5 rounded-full transition-all duration-500 ${
+          timeLeft <= 5 ? "bg-red-500 animate-pulse" : "bg-green-400"
+        }`}
+        style={{ width: `${(timeLeft / 30) * 100}%` }}
+      ></div>
+    </div>
+  </div>
+);
+
+const QuizScreen = ({
+  questionData,
+  onAnswerSelect,
+  onNextQuestion,
+  timeLeft,
+  phase,
+  currentQuestionIndex,
+  totalQuestions,
+  showResult,
+  getOptionStyle,
+  getOptionIcon,
+}) => {
+  if (!questionData)
+    return (
+      <div className="text-center p-8 text-white">Loading question...</div>
+    );
+
+  return (
+    <div className="p-4 md:p-6 max-w-3xl mx-auto">
+      <QuizHeader
+        current={currentQuestionIndex}
+        total={totalQuestions}
+        timeLeft={timeLeft}
+      />
+
+      <div className="bg-white/10 p-6 rounded-lg my-6 min-h-[120px] flex items-center justify-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-white text-center leading-tight">
+          {questionData.question}
+        </h2>
+      </div>
+
+      {phase === "question" && !showResult && (
+        <div className="text-center py-10">
+          <div className="animate-pulse flex flex-col items-center text-white">
+            <Timer className="w-12 h-12 text-yellow-400 mb-4" />
+            <p className="text-lg font-semibold">Get Ready!</p>
+            <p className="text-md text-white/80">
+              Options will appear in {timeLeft} seconds...
+            </p>
+          </div>
+        </div>
+      )}
+
+      {phase === "options" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {questionData.options.map((option, index) => (
+            <button
+              key={index}
+              onClick={() => onAnswerSelect(index)}
+              disabled={showResult}
+              className={`p-4 rounded-lg border-2 text-left font-semibold text-lg transition-all duration-300 ${getOptionStyle(
+                index
+              )} ${
+                showResult
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer transform hover:scale-105"
+              }`}
+            >
+              <div className="flex items-center">
+                <span className="font-bold text-lg mr-4 flex items-center justify-center w-8 h-8 rounded-md bg-black/20">
+                  {String.fromCharCode(65 + index)}
+                </span>
+                <span className="flex-1">{option}</span>
+                <div className="ml-4 w-6 h-6">{getOptionIcon(index)}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {showResult && (
+        <div className="text-center mt-8 text-white/80">
+          <p>Next question in a moment...</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- Main App Component ---
+
 const QuizApp = () => {
-  const [quizStarted, setQuizStarted] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [showOptions, setShowOptions] = useState(false);
+  const [gameState, setGameState] = useState("welcome");
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [phase, setPhase] = useState("question");
   const [timeLeft, setTimeLeft] = useState(5);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-  const [quizCompleted, setQuizCompleted] = useState(false);
-  const [questionPhase, setQuestionPhase] = useState("question");
-  const [randomizedQuestions, setRandomizedQuestions] = useState([]);
-  const [currentQuestionData, setCurrentQuestionData] = useState(null);
 
-  // Sound refs
-  const tickSoundRef = useRef(null);
   const correctSoundRef = useRef(null);
   const wrongSoundRef = useRef(null);
   const timeUpSoundRef = useRef(null);
-
-  // Create audio elements
-  useEffect(() => {
-    // Create simple beep sounds using Web Audio API
-    const createBeepSound = (frequency, duration) => {
-      return () => {
-        const audioContext = new (window.AudioContext ||
-          window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-
-        oscillator.frequency.value = frequency;
-        oscillator.type = "sine";
-
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(
-          0.01,
-          audioContext.currentTime + duration
-        );
-
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + duration);
-      };
-    };
-
-    tickSoundRef.current = createBeepSound(800, 0.1);
-    correctSoundRef.current = createBeepSound(600, 0.3);
-    wrongSoundRef.current = createBeepSound(300, 0.5);
-    timeUpSoundRef.current = createBeepSound(200, 0.8);
-  }, []);
+  const alertSoundRef = useRef(null);
 
   const originalQuizData = {
-    name: "Advanced Knowledge Quiz",
-    totalMarks: 10,
     questions: [
       {
         question: "What is the capital of France?",
@@ -93,11 +285,7 @@ const QuizApp = () => {
         options: ["Venus", "Mars", "Jupiter", "Saturn"],
         correct: 1,
       },
-      {
-        question: "What is 2 + 2?",
-        options: ["3", "4", "5", "6"],
-        correct: 1,
-      },
+      { question: "What is 2 + 2?", options: ["3", "4", "5", "6"], correct: 1 },
       {
         question: "Who painted the Mona Lisa?",
         options: ["Van Gogh", "Picasso", "Leonardo da Vinci", "Michelangelo"],
@@ -123,580 +311,224 @@ const QuizApp = () => {
         options: [
           "Charles Dickens",
           "William Shakespeare",
+          "J.K. Rowling",
           "Jane Austen",
-          "Mark Twain",
         ],
         correct: 1,
       },
       {
         question: "What is the chemical symbol for gold?",
-        options: ["Go", "Gd", "Au", "Ag"],
-        correct: 2,
+        options: ["Ag", "Au", "G", "Go"],
+        correct: 1,
       },
       {
-        question: "Which continent is the largest?",
-        options: ["Africa", "Asia", "North America", "Europe"],
-        correct: 1,
+        question: "How many continents are there?",
+        options: ["5", "6", "7", "8"],
+        correct: 2,
       },
     ],
   };
 
-  // Shuffle array function
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  useEffect(() => {
+    // Initialize audio context on first user interaction
+    const initAudio = () => {
+      try {
+        const audioContext = createAudioContext();
+        // Just creating the context is enough to warm it up
+        if (audioContext.state === "suspended") {
+          document.addEventListener(
+            "click",
+            () => {
+              audioContext
+                .resume()
+                .catch((e) => console.error("AudioContext resume failed:", e));
+            },
+            { once: true }
+          );
+        }
+      } catch (e) {
+        console.error("Audio initialization failed:", e);
+      }
+    };
+
+    // Initialize audio on first user interaction
+    const initOnInteraction = () => {
+      document.removeEventListener("click", initOnInteraction);
+      document.removeEventListener("keydown", initOnInteraction);
+      initAudio();
+    };
+
+    document.addEventListener("click", initOnInteraction, { once: true });
+    document.addEventListener("keydown", initOnInteraction, { once: true });
+  }, []);
+
+  useEffect(() => {
+    if (gameState !== "playing" || showResult) return;
+
+    if (timeLeft === 0) {
+      if (phase === "question") {
+        setPhase("options");
+        setTimeLeft(30);
+      } else {
+        handleTimeout();
+      }
+      return;
     }
-    return shuffled;
-  };
 
-  // Randomize questions and options
-  const randomizeQuizData = () => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        const newTime = prev - 1;
+        if (phase === "options" && newTime <= 5 && newTime > 0) {
+          playAudio("alert");
+        }
+        return newTime;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [gameState, timeLeft, phase, showResult]);
+
+  useEffect(() => {
+    if (showResult) {
+      const timer = setTimeout(() => {
+        nextQuestion();
+      }, 2000); // Auto-advance after 2 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [showResult]);
+
+  const randomizeQuiz = useCallback(() => {
     const shuffledQuestions = shuffleArray(originalQuizData.questions).map(
-      (question) => {
-        const correctAnswer = question.options[question.correct];
-        const shuffledOptions = shuffleArray(question.options);
-        const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
-
-        return {
-          ...question,
-          options: shuffledOptions,
-          correct: newCorrectIndex,
-        };
+      (q) => {
+        const originalQuestion = originalQuizData.questions.find(
+          (oq) => oq.question === q.question
+        );
+        const correctOptionValue =
+          originalQuestion.options[originalQuestion.correct];
+        const shuffledOptions = shuffleArray(q.options);
+        const newCorrectIndex = shuffledOptions.findIndex(
+          (opt) => opt === correctOptionValue
+        );
+        return { ...q, options: shuffledOptions, correct: newCorrectIndex };
       }
     );
-
-    setRandomizedQuestions(shuffledQuestions);
-    setCurrentQuestionData(shuffledQuestions[0]);
-  };
-
-  useEffect(() => {
-    let timer;
-    if (quizStarted && !quizCompleted && !showResult) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            handleTimeout();
-            return 0;
-          }
-          // Play tick sound for last 5 seconds
-          if (prev <= 6 && tickSoundRef.current) {
-            tickSoundRef.current();
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [quizStarted, currentQuestion, questionPhase, showResult, quizCompleted]);
-
-  useEffect(() => {
-    if (quizStarted && !showResult && !quizCompleted) {
-      if (questionPhase === "question" && timeLeft === 0) {
-        setQuestionPhase("options");
-        setTimeLeft(25);
-        setShowOptions(true);
-      }
-    }
-  }, [timeLeft, questionPhase, quizStarted, showResult, quizCompleted]);
-
-  // Auto-progress to next question after showing result
-  useEffect(() => {
-    let timer;
-    if (showResult && !quizCompleted) {
-      timer = setTimeout(() => {
-        nextQuestion();
-      }, 2500);
-    }
-    return () => clearTimeout(timer);
-  }, [showResult, quizCompleted]);
-
-  // Update current question data when question changes
-  useEffect(() => {
-    if (
-      randomizedQuestions.length > 0 &&
-      currentQuestion < randomizedQuestions.length
-    ) {
-      setCurrentQuestionData(randomizedQuestions[currentQuestion]);
-    }
-  }, [currentQuestion, randomizedQuestions]);
+    setQuestions(shuffledQuestions);
+  }, [originalQuizData.questions]);
 
   const startQuiz = () => {
-    randomizeQuizData();
-    setQuizStarted(true);
-    setCurrentQuestion(0);
+    randomizeQuiz();
+    setCurrentQuestionIndex(0);
     setScore(0);
+    setGameState("playing");
+    setPhase("question");
     setTimeLeft(5);
-    setShowOptions(false);
-    setSelectedAnswer(null);
     setShowResult(false);
-    setQuizCompleted(false);
-    setQuestionPhase("question");
+    setSelectedAnswer(null);
+  };
+
+  const playAudio = (type) => {
+    // Try to play the sound and fallback to no sound if it fails
+    const played = playTone(type);
+    if (!played) {
+      console.warn(`Could not play ${type} sound`);
+    }
   };
 
   const handleTimeout = () => {
-    if (questionPhase === "question") {
-      setQuestionPhase("options");
-      setTimeLeft(25);
-      setShowOptions(true);
-    } else {
-      setShowResult(true);
-      setTimeLeft(0);
-      if (timeUpSoundRef.current) {
-        timeUpSoundRef.current();
-      }
-    }
+    playAudio("timeup");
+    setShowResult(true);
   };
 
   const handleAnswerSelect = (answerIndex) => {
-    if (selectedAnswer !== null || showResult) return;
+    if (showResult) return;
 
     setSelectedAnswer(answerIndex);
     setShowResult(true);
 
-    if (answerIndex === currentQuestionData.correct) {
+    if (answerIndex === questions[currentQuestionIndex].correct) {
       setScore((prev) => prev + 1);
-      if (correctSoundRef.current) {
-        correctSoundRef.current();
-      }
+      playAudio("correct");
     } else {
-      if (wrongSoundRef.current) {
-        wrongSoundRef.current();
-      }
+      playAudio("wrong");
     }
   };
 
   const nextQuestion = () => {
-    if (currentQuestion + 1 < randomizedQuestions.length) {
-      setCurrentQuestion((prev) => prev + 1);
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+      setPhase("question");
+      setTimeLeft(5);
       setSelectedAnswer(null);
       setShowResult(false);
-      setShowOptions(false);
-      setTimeLeft(5);
-      setQuestionPhase("question");
     } else {
-      setQuizCompleted(true);
+      setGameState("finished");
     }
   };
 
-  const resetQuiz = () => {
-    setQuizStarted(false);
-    setCurrentQuestion(0);
-    setShowOptions(false);
-    setTimeLeft(5);
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setScore(0);
-    setQuizCompleted(false);
-    setQuestionPhase("question");
-    setRandomizedQuestions([]);
-    setCurrentQuestionData(null);
-  };
+  const resetQuiz = () => setGameState("welcome");
 
   const getOptionStyle = (optionIndex) => {
-    if (!showResult)
-      return `bg-white hover:bg-[#400c7c] hover:text-white border-3 border-[#400c7c] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1`;
-
-    if (optionIndex === currentQuestionData.correct) {
-      return `${colors.success} border-3 border-green-600 shadow-lg transform scale-105`;
+    if (!showResult) {
+      return "bg-white/10 border-transparent text-white hover:bg-white/20";
     }
 
-    if (
-      optionIndex === selectedAnswer &&
-      selectedAnswer !== currentQuestionData.correct
-    ) {
-      return `${colors.error} border-3 border-red-600 shadow-lg transform scale-105`;
-    }
+    const currentQuestion = questions[currentQuestionIndex];
+    const isCorrect = optionIndex === currentQuestion.correct;
+    const isSelected = optionIndex === selectedAnswer;
 
-    return "bg-gray-100 border-3 border-gray-300 text-gray-500 opacity-60";
+    if (isCorrect) {
+      return "bg-green-500 border-green-400 text-white font-bold scale-105";
+    }
+    if (isSelected && !isCorrect) {
+      return "bg-red-500 border-red-400 text-white font-bold scale-105";
+    }
+    return "bg-white/10 border-transparent text-white/50 opacity-70";
   };
 
   const getOptionIcon = (optionIndex) => {
     if (!showResult) return null;
-
-    if (optionIndex === currentQuestionData.correct) {
-      return <CheckCircle className="w-6 h-6 text-white" />;
-    }
-
-    if (
-      optionIndex === selectedAnswer &&
-      selectedAnswer !== currentQuestionData.correct
-    ) {
-      return <XCircle className="w-6 h-6 text-white" />;
-    }
-
+    const isCorrect = optionIndex === questions[currentQuestionIndex].correct;
+    if (isCorrect) return <CheckCircle />;
+    if (optionIndex === selectedAnswer) return <XCircle />;
     return null;
   };
 
-  if (!quizStarted) {
-    return (
-      <div
-        className={`min-h-screen ${colors.background} flex items-center justify-center p-4 relative overflow-hidden`}
-      >
-        {/* Animated background */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-20 h-20 bg-[#1d0042] rounded-full animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-16 h-16 bg-[#400c7c] rounded-full animate-bounce"></div>
-          <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-[#ffc33e] rounded-full animate-ping"></div>
-          <div className="absolute bottom-40 right-1/3 w-14 h-14 bg-[#1d0042] rounded-full animate-pulse"></div>
-        </div>
-
-        <div className="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-2xl w-full border border-gray-100 relative z-10">
-          <div className="mb-12">
-            <div
-              className={`w-24 h-24 ${colors.accent} rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg animate-bounce`}
-            >
-              <Trophy className="w-12 h-12 text-[#1d0042]" />
-            </div>
-            <h1
-              className={`text-5xl font-bold ${colors.primaryText} mb-6 bg-gradient-to-r from-[#1d0042] to-[#400c7c] bg-clip-text text-transparent`}
-            >
-              {originalQuizData.name}
-            </h1>
-
-            <div className="grid grid-cols-3 gap-4 mb-8">
-              <div
-                className={`${colors.primary} rounded-2xl p-4 transform hover:scale-105 transition-all duration-300`}
-              >
-                <Target className="w-8 h-8 mx-auto mb-2" />
-                <p className="text-sm font-semibold">Questions</p>
-                <p className="text-2xl font-bold">
-                  {originalQuizData.questions.length}
-                </p>
-              </div>
-              <div
-                className={`${colors.secondary} rounded-2xl p-4 transform hover:scale-105 transition-all duration-300`}
-              >
-                <Award className="w-8 h-8 mx-auto mb-2" />
-                <p className="text-sm font-semibold">Total Marks</p>
-                <p className="text-2xl font-bold">
-                  {originalQuizData.totalMarks}
-                </p>
-              </div>
-              <div
-                className={`${colors.accent} rounded-2xl p-4 transform hover:scale-105 transition-all duration-300`}
-              >
-                <Timer className="w-8 h-8 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-[#1d0042]">
-                  Per Question
-                </p>
-                <p className="text-2xl font-bold text-[#1d0042]">30s</p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6 mb-8">
-              <div className="flex items-center justify-center mb-4">
-                <Volume2 className={`w-6 h-6 ${colors.secondaryText} mr-2`} />
-                <p className={`font-bold ${colors.secondaryText}`}>
-                  Audio Enabled Quiz
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                  <span className={colors.tertiaryText}>
-                    Question: 5 seconds
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                  <span className={colors.tertiaryText}>
-                    Options: 25 seconds
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                  <span className={colors.tertiaryText}>Random Order</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-                  <span className={colors.tertiaryText}>Sound Effects</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={startQuiz}
-            className={`${colors.accent} hover:bg-[#e6b038] font-bold py-5 px-12 rounded-2xl text-2xl transition-all duration-300 transform hover:scale-110 shadow-xl flex items-center gap-4 mx-auto group`}
-          >
-            <Play className="w-8 h-8 group-hover:animate-pulse" />
-            Start Quiz
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (quizCompleted) {
-    const percentage = (score / randomizedQuestions.length) * 100;
-    return (
-      <div
-        className={`min-h-screen ${colors.background} flex items-center justify-center p-4 relative overflow-hidden`}
-      >
-        {/* Celebration animation */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-[#ffc33e] rounded-full animate-ping"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                animationDuration: `${1 + Math.random()}s`,
-              }}
-            ></div>
-          ))}
-        </div>
-
-        <div className="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-2xl w-full border border-gray-100 relative z-10">
-          <div
-            className={`w-32 h-32 ${colors.accent} rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl animate-bounce`}
-          >
-            <Trophy className="w-16 h-16 text-[#1d0042]" />
-          </div>
-
-          <h2
-            className={`text-5xl font-bold ${colors.primaryText} mb-8 bg-gradient-to-r from-[#1d0042] to-[#400c7c] bg-clip-text text-transparent`}
-          >
-            Quiz Completed!
-          </h2>
-
-          <div className="mb-10">
-            <div
-              className={`text-8xl font-bold ${colors.secondaryText} mb-6 animate-pulse`}
-            >
-              {score}/{randomizedQuestions.length}
-            </div>
-
-            <div className="grid grid-cols-2 gap-6 mb-8">
-              <div className={`${colors.primary} rounded-2xl p-6`}>
-                <p className="text-sm font-semibold mb-2">Accuracy</p>
-                <p className="text-3xl font-bold">{percentage.toFixed(1)}%</p>
-              </div>
-              <div className={`${colors.secondary} rounded-2xl p-6`}>
-                <p className="text-sm font-semibold mb-2">Grade</p>
-                <p className="text-3xl font-bold">
-                  {percentage >= 90
-                    ? "A+"
-                    : percentage >= 80
-                    ? "A"
-                    : percentage >= 70
-                    ? "B"
-                    : percentage >= 60
-                    ? "C"
-                    : "D"}
-                </p>
-              </div>
-            </div>
-
-            <div
-              className={`${
-                percentage >= 80
-                  ? colors.success
-                  : percentage >= 60
-                  ? colors.accent
-                  : colors.error
-              } rounded-2xl p-8 transform hover:scale-105 transition-all duration-300`}
-            >
-              {percentage >= 80 ? (
-                <div>
-                  <CheckCircle className="w-12 h-12 mx-auto mb-4" />
-                  <p className="text-2xl font-bold">
-                    Outstanding Performance! 🎉
-                  </p>
-                </div>
-              ) : percentage >= 60 ? (
-                <div>
-                  <Award className="w-12 h-12 mx-auto mb-4 text-[#1d0042]" />
-                  <p className="text-2xl font-bold text-[#1d0042]">
-                    Great Effort! 👏
-                  </p>
-                </div>
-              ) : (
-                <div>
-                  <Target className="w-12 h-12 mx-auto mb-4" />
-                  <p className="text-2xl font-bold">Keep Learning! 💪</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <button
-            onClick={resetQuiz}
-            className={`${colors.secondary} hover:bg-[#351066] font-bold py-5 px-12 rounded-2xl text-xl transition-all duration-300 transform hover:scale-110 shadow-xl flex items-center gap-4 mx-auto group`}
-          >
-            <RotateCcw className="w-8 h-8 group-hover:animate-spin" />
-            Take Quiz Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!currentQuestionData) return null;
+  const renderGameState = () => {
+    switch (gameState) {
+      case "playing":
+        return (
+          <QuizScreen
+            questionData={questions[currentQuestionIndex]}
+            onAnswerSelect={handleAnswerSelect}
+            onNextQuestion={nextQuestion}
+            timeLeft={timeLeft}
+            phase={phase}
+            currentQuestionIndex={currentQuestionIndex}
+            totalQuestions={questions.length}
+            showResult={showResult}
+            getOptionStyle={getOptionStyle}
+            getOptionIcon={getOptionIcon}
+          />
+        );
+      case "finished":
+        return (
+          <ResultScreen
+            score={score}
+            totalQuestions={questions.length}
+            onResetQuiz={resetQuiz}
+          />
+        );
+      case "welcome":
+      default:
+        return <WelcomeScreen onStartQuiz={startQuiz} />;
+    }
+  };
 
   return (
-    <div
-      className={`min-h-screen ${colors.background} p-4 relative overflow-hidden`}
-    >
-      {/* Animated background elements */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-20 left-20 w-32 h-32 bg-[#1d0042] rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-24 h-24 bg-[#400c7c] rounded-full animate-bounce"></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 bg-[#ffc33e] rounded-full animate-ping"></div>
-      </div>
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Enhanced Header */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 mb-8 border border-gray-100 backdrop-blur-sm">
-          <div className="flex justify-between items-center mb-8">
-            <div className="flex items-center space-x-6">
-              <div
-                className={`w-16 h-16 ${colors.accent} rounded-2xl flex items-center justify-center shadow-lg`}
-              >
-                <Trophy className="w-8 h-8 text-[#1d0042]" />
-              </div>
-              <div>
-                <h1 className={`text-4xl font-bold ${colors.primaryText} mb-2`}>
-                  {originalQuizData.name}
-                </h1>
-                <p className={`${colors.tertiaryText} text-xl`}>
-                  Question {currentQuestion + 1} of {randomizedQuestions.length}
-                </p>
-              </div>
-            </div>
-
-            <div className="text-right">
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`${timeLeft <= 5 ? "animate-pulse" : ""}`}>
-                  <Clock
-                    className={`w-10 h-10 ${
-                      timeLeft <= 5 ? "text-red-500" : colors.accentText
-                    }`}
-                  />
-                </div>
-                <div
-                  className={`text-6xl font-bold ${
-                    timeLeft <= 5
-                      ? "text-red-500 animate-bounce"
-                      : colors.secondaryText
-                  }`}
-                >
-                  {timeLeft}
-                </div>
-              </div>
-              <div
-                className={`${colors.accent} rounded-xl px-6 py-3 shadow-lg`}
-              >
-                <p className="text-xl font-bold">
-                  Score: {score}/{currentQuestion + (showResult ? 1 : 0)}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced Progress Bar */}
-          <div className="relative">
-            <div className="bg-gray-200 rounded-full h-6 shadow-inner">
-              <div
-                className={`${colors.secondary} h-6 rounded-full transition-all duration-700 relative overflow-hidden`}
-                style={{
-                  width: `${
-                    ((currentQuestion + (showResult ? 1 : 0)) /
-                      randomizedQuestions.length) *
-                    100
-                  }%`,
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse"></div>
-              </div>
-            </div>
-            <div className="flex justify-between mt-3">
-              <p className={`${colors.tertiaryText} font-medium`}>
-                Progress:{" "}
-                {Math.round(
-                  ((currentQuestion + (showResult ? 1 : 0)) /
-                    randomizedQuestions.length) *
-                    100
-                )}
-                %
-              </p>
-              <p className={`${colors.secondaryText} font-bold`}>
-                {questionPhase === "question"
-                  ? "Reading Question..."
-                  : "Choose Answer"}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Enhanced Question Card */}
-        <div className="bg-white rounded-3xl shadow-xl p-12 border border-gray-100 backdrop-blur-sm">
-          <div className="mb-12">
-            <div
-              className={`${colors.primary} rounded-3xl p-8 mb-10 shadow-lg transform hover:scale-105 transition-all duration-300`}
-            >
-              <h2 className="text-3xl font-bold text-center leading-relaxed">
-                {currentQuestionData.question}
-              </h2>
-            </div>
-
-            {questionPhase === "question" && !showOptions && (
-              <div className="text-center py-20">
-                <div className="animate-pulse">
-                  <div
-                    className={`w-32 h-32 ${colors.accent} rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl`}
-                  >
-                    <Timer className="w-16 h-16 text-[#1d0042] animate-spin" />
-                  </div>
-                  <div
-                    className={`${colors.secondary} rounded-3xl p-8 max-w-lg mx-auto shadow-lg`}
-                  >
-                    <p className="text-2xl font-bold mb-2">Get Ready!</p>
-                    <p className="text-xl">Options in {timeLeft} seconds...</p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Enhanced Options */}
-          {showOptions && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {currentQuestionData.options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleAnswerSelect(index)}
-                  disabled={showResult}
-                  className={`p-8 rounded-3xl border-3 text-left font-bold text-xl transition-all duration-300 ${getOptionStyle(
-                    index
-                  )} ${
-                    showResult
-                      ? "cursor-default"
-                      : "cursor-pointer hover:shadow-2xl active:scale-95"
-                  } relative overflow-hidden group`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <span className="font-black text-2xl mr-4 inline-block w-10 h-10 rounded-full bg-current bg-opacity-20 flex items-center justify-center">
-                        {String.fromCharCode(65 + index)}
-                      </span>
-                      <span className="flex-1">{option}</span>
-                    </div>
-                    <div className="ml-4">{getOptionIcon(index)}</div>
-                  </div>
-
-                  {!showResult && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-300 transform -skew-x-12"></div>
-                  )}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 flex items-center justify-center font-sans p-4">
+      <div className="w-full max-w-3xl mx-auto bg-black/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10">
+        {renderGameState()}
       </div>
     </div>
   );

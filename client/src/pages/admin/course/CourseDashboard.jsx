@@ -1,17 +1,16 @@
 import React, { useState, useMemo } from "react";
 import {
-  Search,
-  Plus,
-  ChevronDown,
-  Eye,
-  Edit,
-  Trash2,
-  ChevronLeft,
-  ChevronRight,
-  BookOpen,
-  Star,
-  Users,
-} from "lucide-react";
+  FaSearch,
+  FaPlus,
+  FaChevronDown,
+  FaChevronLeft,
+  FaChevronRight,
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaStar,
+  FaUsers,
+} from "react-icons/fa";
 
 // Sample data generation (no changes needed here)
 const generateCourseData = () => {
@@ -138,9 +137,9 @@ const CourseDashboard = () => {
         {/* Controls Row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           {/* Search Bar */}
-          <div className="w-full sm:w-auto flex-grow relative">
-            <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-tertiary/50"
+          <div className="w-full sm:w-auto flex-grow relative group">
+            <FaSearch
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:text-accent transition-colors"
               size={20}
             />
             <input
@@ -148,7 +147,7 @@ const CourseDashboard = () => {
               placeholder="Search courses or instructors..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all"
+              className="w-full pl-12 pr-4 py-3 bg-white border border-primary rounded-lg focus:ring-2 focus:ring-accent outline-none transition-all text-primary hover:border-secondary focus:border-accent placeholder:text-primary"
             />
           </div>
 
@@ -158,7 +157,7 @@ const CourseDashboard = () => {
               <select
                 value={filterSubject}
                 onChange={(e) => setFilterSubject(e.target.value)}
-                className="w-full appearance-none px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all outline-none"
+                className="w-full appearance-none px-4 py-3  bg-white border border-primary rounded-lg focus:ring-2 focus:ring-accent outline-none transition-all text-primary hover:border-secondary focus:border-accent placeholder:text-primary"
               >
                 {subjects.map((subject) => (
                   <option key={subject} value={subject}>
@@ -166,15 +165,15 @@ const CourseDashboard = () => {
                   </option>
                 ))}
               </select>
-              <ChevronDown
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-tertiary/50"
+              <FaChevronDown
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-primary pointer-events-none group-focus-within:text-accent transition-colors"
                 size={20}
               />
             </div>
 
             {/* Add New Course Button */}
             <button className="flex-shrink-0 bg-accent hover:bg-yellow-500 text-primary font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-transform transform hover:scale-105">
-              <Plus size={20} />
+              <FaPlus size={20} />
               <span>Add Course</span>
             </button>
           </div>
@@ -186,11 +185,11 @@ const CourseDashboard = () => {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-secondary text-background">
-                  <th className="p-4 font-semibold text-left">
+                  <th className="p-4 font-semibold text-center">
                     Course Details
                   </th>
-                  <th className="p-4 font-semibold text-left">Subject</th>
-                  <th className="p-4 font-semibold text-left">Instructor</th>
+                  <th className="p-4 font-semibold text-center">Subject</th>
+                  <th className="p-4 font-semibold text-center">Instructor</th>
                   <th className="p-4 font-semibold text-center">Students</th>
                   <th className="p-4 font-semibold text-center">Rating</th>
                   <th className="p-4 font-semibold text-center">Price</th>
@@ -222,7 +221,7 @@ const CourseDashboard = () => {
                     </td>
                     <td className="p-4">
                       <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full font-semibold inline-flex items-center gap-1">
-                        <BookOpen size={14} /> {course.subject}
+                        {course.subject}
                       </span>
                     </td>
                     <td className="p-4 text-tertiary font-medium">
@@ -230,13 +229,16 @@ const CourseDashboard = () => {
                     </td>
                     <td className="p-4 text-center">
                       <div className="flex items-center justify-center gap-2 font-semibold text-tertiary">
-                        <Users size={16} className="text-tertiary/70" />
+                        <FaUsers size={16} className="text-tertiary/70" />
                         {course.students.toLocaleString()}
                       </div>
                     </td>
                     <td className="p-4 text-center">
                       <div className="flex items-center justify-center gap-1 font-bold text-amber-600">
-                        <Star size={16} className="text-accent fill-current" />{" "}
+                        <FaStar
+                          size={16}
+                          className="text-accent fill-current"
+                        />{" "}
                         {course.rating}
                       </div>
                     </td>
@@ -246,22 +248,22 @@ const CourseDashboard = () => {
                     <td className="p-4 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button
-                          className="p-2 text-tertiary/70 hover:text-blue-500 transition-colors"
+                          className="p-2 text-secondary hover:bg-secondary/10 rounded-full transition-colors"
                           title="View"
                         >
-                          <Eye size={18} />
+                          <FaEye size={18} />
                         </button>
                         <button
-                          className="p-2 text-tertiary/70 hover:text-green-600 transition-colors"
+                          className="p-2 text-accent hover:bg-accent/10 rounded-full transition-colors"
                           title="Edit"
                         >
-                          <Edit size={18} />
+                          <FaEdit size={18} />
                         </button>
                         <button
-                          className="p-2 text-tertiary/70 hover:text-red-500 transition-colors"
+                          className="p-2 text-error hover:bg-error/10 rounded-full transition-colors"
                           title="Delete"
                         >
-                          <Trash2 size={18} />
+                          <FaTrash size={18} />
                         </button>
                       </div>
                     </td>
@@ -292,7 +294,7 @@ const CourseDashboard = () => {
                 disabled={currentPage === 1}
                 className="p-2 rounded-md bg-white border border-gray-200 hover:bg-gray-100 disabled:opacity-50"
               >
-                <ChevronLeft size={20} />
+                <FaChevronLeft size={20} />
               </button>
               <span className="px-4 py-2 bg-white border border-gray-200 rounded-md font-semibold text-primary">
                 Page {currentPage} of {totalPages}
@@ -304,7 +306,7 @@ const CourseDashboard = () => {
                 disabled={currentPage === totalPages}
                 className="p-2 rounded-md bg-white border border-gray-200 hover:bg-gray-100 disabled:opacity-50"
               >
-                <ChevronRight size={20} />
+                <FaChevronRight size={20} />
               </button>
             </div>
           </div>
