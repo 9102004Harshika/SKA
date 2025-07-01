@@ -27,7 +27,7 @@ const Footer = () => {
         </div>
 
         {/* About Section */}
-        <div className="w-full md:w-1/4 text-center md:text-left">
+        <div className="w-full md:w-1/4 text-left">
           <h2 className="text-sm text-accent">About</h2>
           <ul className="mt-2 space-y-1 text-background">
             {["About Us", "Careers", "Teachers", "Developers", "Blog"].map(
@@ -46,7 +46,7 @@ const Footer = () => {
         </div>
 
         {/* Legal Section */}
-        <div className="w-full md:w-1/4 text-center md:text-left">
+        <div className="w-full md:w-1/4 text-left">
           <h2 className="text-sm text-accent">Legal & Accessibility</h2>
           <ul className="mt-2 space-y-1 text-background">
             {[
@@ -69,7 +69,7 @@ const Footer = () => {
         </div>
 
         {/* Social Media */}
-        <div className="w-full md:w-1/4 text-center md:text-left">
+        <div className="w-full md:w-1/4 text-left">
           <h2 className="text-sm text-accent">Connect Here</h2>
           <ul className="mt-2 space-y-1 text-background">
             {[
@@ -116,7 +116,7 @@ const Footer = () => {
           <span>
             Made with <span className="text-error">♥</span> by{" "}
             <a
-              href="https://abhikatechsolution.netlify.app/"
+              href="https://abhikatechsolutions.netlify.app/"
               target="_blank"
               rel="noreferrer"
               className="text-accent hover:underline underline-offset-2"
