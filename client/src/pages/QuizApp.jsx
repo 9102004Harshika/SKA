@@ -12,7 +12,11 @@ import {
   HelpCircle,
   BarChart2,
 } from "lucide-react";
-
+import confetti from "canvas-confetti";
+import correctAnswerSound from "../sounds/correctAnswer.mp3";
+import wrongAnswerSound from "../sounds/wrongAnswer.mp3";
+import timer from '../sounds/timer.mp3';
+import quizEnd from '../sounds/quizEnd.mp3'
 // --- Audio Functions ---
 
 const createAudioContext = () => {
@@ -267,11 +271,13 @@ const QuizApp = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-
-  const correctSoundRef = useRef(null);
-  const wrongSoundRef = useRef(null);
+ const correctSoundRef = useRef(new Audio(correctAnswerSound));
+ const wrongSoundRef = useRef(new Audio(wrongAnswerSound));
+ const alertSoundRef = useRef(new Audio(timer));
+ const endSoundRef=useRef(new Audio(quizEnd))
+  // const correctSoundRef = useRef(null);
+  // const wrongSoundRef = useRef(null);
   const timeUpSoundRef = useRef(null);
-  const alertSoundRef = useRef(null);
 
   const originalQuizData = {
     questions: [
@@ -426,14 +432,34 @@ const QuizApp = () => {
     setShowResult(false);
     setSelectedAnswer(null);
   };
+const playAudio = (type) => {
+  try {
+    if (type === "correct" && correctSoundRef.current) {
+      correctSoundRef.current.currentTime = 0;
+      correctSoundRef.current.play().catch((e) => console.warn("Playback failed:", e));
+      return;
+    }
+     if (type === "wrong" && wrongSoundRef.current) {
+      wrongSoundRef.current.currentTime = 0;
+      wrongSoundRef.current.play().catch((e) => console.warn("Wrong sound failed:", e));
+      return;
+    }
+     if (type === "alert" && alertSoundRef.current) {
+      alertSoundRef.current.currentTime = 0;
+      alertSoundRef.current.play().catch((e) => console.warn("Wrong sound failed:", e));
+      return;
+    }
 
-  const playAudio = (type) => {
-    // Try to play the sound and fallback to no sound if it fails
+    // fallback oscillator for other sounds
     const played = playTone(type);
     if (!played) {
       console.warn(`Could not play ${type} sound`);
     }
-  };
+  } catch (error) {
+    console.error("Error playing audio:", error);
+  }
+};
+
 
   const handleTimeout = () => {
     playAudio("timeup");
@@ -493,6 +519,49 @@ const QuizApp = () => {
     if (optionIndex === selectedAnswer) return <XCircle />;
     return null;
   };
+const fireConfetti = useCallback(() => {
+  const duration = 2 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = {
+    startVelocity: 30,
+    spread: 360,
+    ticks: 60,
+    zIndex: 1000,
+    colors: ["#FFC33E", "#FBFBFB", "#400C7C", "#1D0042", "#4F4F4F"], // Deep Purple & Gold palette
+  };
+ if (endSoundRef.current) {
+    endSoundRef.current.currentTime = 0;
+    endSoundRef.current.play().catch((e) => console.error("Error playing quiz end sound:", e));
+  }
+  const interval = setInterval(() => {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+
+    // Left side
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: 0, y: 0.6 },
+    });
+
+    // Right side
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: 1, y: 0.6 },
+    });
+  }, 250);
+}, []);
+useEffect(() => {
+  if (gameState === "finished") {
+    fireConfetti();
+  }
+}, [gameState, fireConfetti]);
 
   const renderGameState = () => {
     switch (gameState) {
@@ -529,9 +598,22 @@ const QuizApp = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 flex items-center justify-center font-sans p-4">
       <div className="w-full max-w-3xl mx-auto bg-black/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10">
         {renderGameState()}
+        <audio ref={endSoundRef} src={quizEnd} preload="auto" />
+
       </div>
     </div>
   );
 };
 
 export default QuizApp;
+
+
+
+
+
+
+
+
+
+
+
