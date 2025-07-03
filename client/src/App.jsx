@@ -16,13 +16,12 @@ import Video from "./pages/Video";
 import NotesAdminLayout from "./layouts/NotesAdminLayout";
 import CourseAdminDashboard from "./pages/admin/CourseDashboard";
 import MainLayout from "./layouts/MainLayout";
-import TermsConditions from "./components/Terms&Conditions";
+
 import NotFound from "./pages/NotFound";
 import Unauth from "./pages/Unauth";
 import AddNotesPage from "./pages/admin/AddNotesPage";
 import UpdateNotesPage from "./pages/admin/UpdateNotesPage";
 import Notes from "./pages/Notes";
-import CircularProgress from "./ui/progressBar";
 import Modal from "./components/Modal";
 import DeleteNotesPage from "./pages/admin/DeleteNotesPage";
 import EditNotesPage from "./pages/admin/EditNotesPage";
@@ -51,6 +50,12 @@ import Teachers from "./pages/admin/teachers/Teachers";
 import { Settings } from "lucide-react";
 import NotesDashboard from "./pages/admin/notes/NotesDashboard";
 import QuizApp from "./pages/QuizApp";
+import FAQ from "./pages/footer/FAQ";
+import PrivacyPolicy from "./pages/footer/PrivacyPolicy";
+import TermsAndConditions from "./pages/footer/TermsAndConditions";
+import ContactUs from "./pages/footer/ContactUs";
+import Developers from "./pages/footer/Developers";
+import AboutUs from "./pages/footer/AboutUs";
 
 const App = () => {
   return (
@@ -82,6 +87,16 @@ const App = () => {
               <Route path="notes/:id" element={<NotesDetail />} />
               <Route path="coursedetail/:id" element={<CourseDetail />} />
               <Route path="quizapp" element={<QuizApp />} />
+
+              <Route path="faq" element={<FAQ />} />
+              <Route
+                path="terms-and-conditions"
+                element={<TermsAndConditions />}
+              />
+              <Route path="privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="developers" element={<Developers />} />
+              <Route path="contact-us" element={<ContactUs />} />
+              <Route path="about-us" element={<AboutUs />} />
             </Route>
 
             {/*Admin Routes here */}
@@ -126,7 +141,6 @@ const App = () => {
             <Route path="/pdfViewer" element={<PdfViewer />} />
             <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />
-            <Route path="/terms-and-conditions" element={<TermsConditions />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
