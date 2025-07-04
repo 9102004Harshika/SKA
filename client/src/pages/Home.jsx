@@ -7,6 +7,7 @@ import Notes from "../ui/illustrations/notes.svg";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import SubjectSlider from "../components/SubjectSlider";
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -80,25 +81,31 @@ const Home = () => {
         />
         <link rel="canonical" href="https://yourdomain.com/" />
       </Helmet> */}
-      <div className="mb-24">
+      <div className="mb-20">
         <Carousel />
+      </div>
+
+      <div className="mb-24 mx-8">
+        <SubjectSlider />
       </div>
 
       {/* Featured Courses */}
       <div className="mb-20">
-        <h1 className="font-semibold font-header text-4xl tracking-wide text-center mb-8">
-          Featured Courses
-        </h1>
-        <Slider items={courses} CardComponent={CourseCard} />
+        <Slider
+          items={courses}
+          CardComponent={CourseCard}
+          heading="Featured Courses"
+        />
       </div>
 
       {/* One Shot Courses */}
       {oneShotCourses.length > 0 && (
         <div className="mb-20">
-          <h1 className="font-semibold font-header text-4xl tracking-wide text-center mb-8">
-            One Shot Videos
-          </h1>
-          <Slider items={oneShotCourses} CardComponent={CourseCard} />
+          <Slider
+            items={oneShotCourses}
+            CardComponent={CourseCard}
+            heading="One Shot Videos"
+          />
         </div>
       )}
 

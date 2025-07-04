@@ -4,6 +4,7 @@ import {
   FaYoutube,
   FaTelegramPlane,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -30,18 +31,31 @@ const Footer = () => {
         <div className="w-full md:w-1/4 text-left">
           <h2 className="text-sm text-accent">About</h2>
           <ul className="mt-2 space-y-1 text-background">
-            {["About Us", "Careers", "Teachers", "Developers", "Blog"].map(
-              (item) => (
-                <li key={item}>
-                  <a
-                    href="#"
+            {[
+              { text: "About Us", link: "/app/about-us" },
+              { text: "Careers", link: "/app/careers" },
+              { text: "Teachers", link: "/app/teachers" },
+              { text: "Developers", link: "/app/developers" },
+              { text: "Contact Us", link: "/app/contact-us" },
+            ].map((item) => (
+              <li key={item.text}>
+                {item.link.startsWith("/") ? (
+                  <Link
+                    to={item.link}
                     className="hover:underline hover:translate-x-1 underline-offset-4 transition-transform duration-200 inline-block"
                   >
-                    {item}
+                    {item.text}
+                  </Link>
+                ) : (
+                  <a
+                    href={item.link}
+                    className="hover:underline hover:translate-x-1 underline-offset-4 transition-transform duration-200 inline-block"
+                  >
+                    {item.text}
                   </a>
-                </li>
-              )
-            )}
+                )}
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -50,19 +64,28 @@ const Footer = () => {
           <h2 className="text-sm text-accent">Legal & Accessibility</h2>
           <ul className="mt-2 space-y-1 text-background">
             {[
-              "Privacy Policy",
-              "Terms & Conditions",
-              "FAQ",
-              "Refund Policy",
-              "Accessibility",
+              { text: "Privacy Policy", link: "/app/privacy-policy" },
+              { text: "Terms & Conditions", link: "/app/terms-and-conditions" },
+              { text: "FAQ", link: "/app/faq" },
+              { text: "Refund Policy", link: "/app/refund-policy" },
+              { text: "Accessibility", link: "/app/accessibility" },
             ].map((item) => (
-              <li key={item}>
-                <a
-                  href="#"
-                  className="hover:underline hover:translate-x-1 underline-offset-4 transition-transform duration-200 inline-block"
-                >
-                  {item}
-                </a>
+              <li key={item.text}>
+                {item.link.startsWith("/") ? (
+                  <Link
+                    to={item.link}
+                    className="hover:underline hover:translate-x-1 underline-offset-4 transition-transform duration-200 inline-block"
+                  >
+                    {item.text}
+                  </Link>
+                ) : (
+                  <a
+                    href={item.link}
+                    className="hover:underline hover:translate-x-1 underline-offset-4 transition-transform duration-200 inline-block"
+                  >
+                    {item.text}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
