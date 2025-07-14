@@ -162,7 +162,7 @@ const Navbar = () => {
                 className="h-10 w-auto inline-block bg-secondary rounded-full"
               />
               <span className="text-background font-highlight text-2xl hidden sm:inline ml-5 md:tracking-wide">
-                Shree Kalam Academy
+                Kalp Academy
               </span>
             </a>
           </div>

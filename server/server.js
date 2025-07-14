@@ -42,7 +42,7 @@ mongoose
   });
 // Define a sample route
 app.get("/", (req, res) => {
-  res.send("Shree Kalam Academy: Endless Possibilities!!!");
+  res.send("Kalp Academy: Endless Possibilities!!!");
 });
 
 // API Routes

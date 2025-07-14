@@ -62,7 +62,7 @@ const useAddNotes = () => {
         );
         coverImageUrl = await uploadToCloudinary(
           coverImageFile,
-          "Shree Kalam Academy"
+          "Kalp Academy"
         );
       }
 

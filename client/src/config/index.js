@@ -193,25 +193,25 @@ export const navigationLinksMobile = [
 export const notificationItems = [
   {
     title: "New Message",
-    description: "This is a New Message from Shree Kalam Academy",
+    description: "This is a New Message from Kalp Academy",
     icon: <FaEnvelope />,
     link: "/messages",
   },
   {
     title: "New Comment",
-    description: "This is a New Comment from Shree Kalam Academy",
+    description: "This is a New Comment from Kalp Academy",
     icon: <FaComment />,
     link: "/comments",
   },
   {
     title: "Server Alert",
-    description: "This is a Server Alert from Shree Kalam Academy",
+    description: "This is a Server Alert from Kalp Academy",
     icon: <FaExclamationTriangle />,
     link: "/alerts",
   },
   {
     title: "Server Alert",
-    description: "This is a Server Alert from Shree Kalam Academy",
+    description: "This is a Server Alert from Kalp Academy",
     icon: <FaExclamationTriangle />,
     link: "/alerts",
   },

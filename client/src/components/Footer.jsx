@@ -13,7 +13,7 @@ const Footer = () => {
         {/* Contact Section */}
         <div className="w-full md:w-1/4">
           <h1 className="text-2xl font-highlight text-background">
-            Shree Kalam Academy
+            Kalp Academy
           </h1>
           <h2 className="mt-4 text-sm font-light text-accent">Contact</h2>
           <address className="not-italic text-background">
@@ -134,7 +134,7 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className="w-full flex flex-wrap justify-between items-center text-background text-sm mt-6 border-t border-accent pt-4">
-        <p>&copy; 2024 Shree Kalam Academy. All rights reserved.</p>
+        <p>&copy; 2024 Kalp Academy. All rights reserved.</p>
         <div>
           <span>
             Made with <span className="text-error">♥</span> by{" "}

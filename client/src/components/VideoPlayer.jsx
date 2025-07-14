@@ -172,7 +172,7 @@ const [quality, setQuality] = useState("Auto (720p)");
     >
       {/* Title Overlay */}
       <div className="absolute top-2 left-4 z-20 text-white font-semibold text-lg select-none">
-        Shree Kalam Academy
+        Kalp Academy
       </div>
       {flashIcon && (
   <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">

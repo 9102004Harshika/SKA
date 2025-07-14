@@ -4,7 +4,7 @@ const FooterAdmin = () => {
   return (
     <footer>
       <div className="w-screen flex flex-wrap justify-between items-center text-background text-sm border-t border-accent p-8 bg-primary">
-        <p>&copy; 2024 Shree Kalam Academy. All rights reserved.</p>
+        <p>&copy; 2024 Kalp Academy. All rights reserved.</p>
         <div>
           <span>
             Made with <span className="text-error">♥</span> by{" "}

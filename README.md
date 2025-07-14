@@ -1,4 +1,4 @@
-# Shree Kalam Academy - LMS Application
+# Kalp Academy - LMS Application
 
 ![Logo](https://res.cloudinary.com/ddnp4px7u/image/upload/v1746244189/logo_bag6ll.png)
 

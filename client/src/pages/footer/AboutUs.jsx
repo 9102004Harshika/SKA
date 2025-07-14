@@ -6,7 +6,7 @@ const AboutUs = () => {
     <div className="min-h-screen bg-background text-secondary p-4 md:p-8 font-body">
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto text-center py-12">
-        <h1 className="text-4xl md:text-5xl font-header text-primary mb-6">About Shree Kalam Academy</h1>
+        <h1 className="text-4xl md:text-5xl font-header text-primary mb-6">About Kalp Academy</h1>
         <p className="text-lg md:text-xl max-w-3xl mx-auto mb-8">
           Empowering minds and shaping futures through quality education and innovative learning experiences.
         </p>
@@ -41,7 +41,7 @@ const AboutUs = () => {
         <h2 className="text-3xl font-header text-primary text-center mb-8">Our Story</h2>
         <div className="prose max-w-none text-secondary/90">
           <p className="mb-4">
-            Founded in 2024, Shree Kalam Academy was born out of a passion for education and a commitment to nurturing young minds. 
+            Founded in 2024, Kalp Academy was born out of a passion for education and a commitment to nurturing young minds. 
             What started as a small initiative has grown into a respected educational institution that serves hundreds of students annually.
           </p>
           <p>
@@ -112,7 +112,7 @@ const AboutUs = () => {
       <section className="max-w-2xl mx-auto text-center py-12">
         <h2 className="text-3xl font-header text-primary mb-6">Join Our Learning Community</h2>
         <p className="text-lg mb-8 text-secondary/90">
-          Discover how Shree Kalam Academy can help you achieve your educational goals.
+          Discover how Kalp Academy can help you achieve your educational goals.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <a 

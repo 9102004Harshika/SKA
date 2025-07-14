@@ -176,7 +176,7 @@ const AdminLayout = () => {
                 alt="Company Logo"
                 className="h-7 w-auto inline-block bg-secondary rounded-full border border-accent"
               />
-              Shree Kalam Academy
+              Kalp Academy
             </div>
           </div>
         )}

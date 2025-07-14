@@ -104,7 +104,7 @@ const PrivacyPolicy = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 md:p-8">
             <p className="text-lg text-secondary/90 mb-8">
-              At Shree Kalam Academy, we take your privacy seriously. This Privacy Policy explains how we collect, use, 
+              At Kalp Academy, we take your privacy seriously. This Privacy Policy explains how we collect, use, 
               disclose, and safeguard your information when you use our platform and services. Please read this policy carefully.
             </p>
 
@@ -140,7 +140,7 @@ const PrivacyPolicy = () => {
         </div>
 
         <div className="mt-8 text-center text-sm text-secondary/60">
-          <p>© {currentDate} Shree Kalam Academy. All rights reserved.</p>
+          <p>© {currentDate} Kalp Academy. All rights reserved.</p>
         </div>
       </div>
     </div>

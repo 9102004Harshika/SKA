@@ -15,7 +15,7 @@ const Developers = () => {
     {
       name: "Abhay Kumar Das",
       role: "Lead Developer & Architect",
-      bio: "Spearheaded the development of Shree Kalam Academy's learning platform, focusing on creating a scalable and performant architecture. Led the technical direction and mentored the development team.",
+      bio: "Spearheaded the development of Kalp Academy's learning platform, focusing on creating a scalable and performant architecture. Led the technical direction and mentored the development team.",
       image: "https://avatars.githubusercontent.com/u/120706732?v=4",
       contributions: [
         "Designed and implemented the core platform architecture",
@@ -116,7 +116,7 @@ const Developers = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-header text-primary mb-4">
-            The Team Behind Shree Kalam Academy
+            The Team Behind Kalp Academy
           </h1>
           <p className="text-xl text-secondary/80 max-w-3xl mx-auto">
             Meet the talented individuals who brought this platform to life

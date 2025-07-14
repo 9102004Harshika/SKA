@@ -73,7 +73,7 @@ const useUpdateNotes = () => {
       let pdfUrl = note.pdfUrl || "";
       if (isImageRemoved && note.coverImageUrl?.startsWith("blob")) {
         const coverImageFile = await convertBlobUrlToFile(note.coverImageUrl, "cover_image.jpg");
-        coverImageUrl = await uploadToCloudinary(coverImageFile, "Shree Kalam Academy");
+        coverImageUrl = await uploadToCloudinary(coverImageFile, "Kalp Academy");
     }
 
     // Upload new PDF if removed

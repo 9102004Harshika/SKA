@@ -141,7 +141,6 @@ const App = () => {
             <Route path="/pdfViewer" element={<PdfViewer />} />
             <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />
-
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

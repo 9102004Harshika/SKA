@@ -905,7 +905,8 @@ const CourseDetailPage = () => {
           {/* Reviews section */}
           <div className="review pt-[50px] pl-20 ml-5 z-0">
             <div className="pt-[50px]  ml-8">
-              <h2 className="font-header text-primary text-4xl">
+              <h2 className="font-header text-primary text-
+              4xl">
                 Leaner Review
               </h2>
             </div>
@@ -939,7 +940,7 @@ const CourseDetailPage = () => {
           className={`card md:block hidden  ${
             isFixed
               ? "is-fixed fixed top-[25px] right-0 w-[50%]  transform transition-all duration-500  flex-grow"
-              : "not-fixed absolute top-[460px] right-0 transform translate-y-[-50%] transition-all duration-500 flex-grow"
+              : "not-fixed absolute top-[500px] right-0 transform translate-y-[-50%] transition-all duration-500 flex-grow"
           } ${isScrolled ? "fade-out" : ""}`}
         >
           {!isFixed && (
@@ -960,7 +961,7 @@ const CourseDetailPage = () => {
           <ul className={`pt-2 ${isFixed ? "text-sm space-y-8 pt-6" : ""}`}>
             {[
               { label: "Class", value: `${course.class}` },
-              { label: "Board", value: `${course.board}` },
+              { label: "Board", value: course.board?.match(/\(([^)]+)\)/)?.[1] || course.board, },
               { label: "Stream", value: `${course.stream}` },
               { label: "Subject", value: `${course.subject}` },
               isFixed && {

@@ -40,7 +40,7 @@ const Landing = () => {
               className="h-10 w-auto inline-block bg-secondary rounded-full"
             />
             <span className="text-background font-highlight text-xl ml-3 tracking-wide">
-              Shree Kalam Academy
+              Kalp Academy
             </span>
           </a>
         </div>
@@ -194,7 +194,7 @@ const Landing = () => {
         <motion.div className="text-start py-10">
           <h1 className="text-6xl font-bold font-header mb-10">About US</h1>
           <p className="font-body text-tertiary leading-relaxed md:w-[800px]">
-            At Shree Kalam Academy, we specialize in providing top-tier
+            At Kalp Academy, we specialize in providing top-tier
             educational solutions through our robust and scalable Learning
             Management System (LMS). Our platform is designed to enhance the
             learning experience, simplify course management, and support both

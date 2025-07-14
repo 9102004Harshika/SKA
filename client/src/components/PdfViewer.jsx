@@ -178,7 +178,7 @@ export default function PDFViewer() {
 </div>
 
           </div>
-          <h2 className="text-background text-2xl font-semibold font-highlight">Shree Kalam Academy</h2>
+          <h2 className="text-background text-2xl font-semibold font-highlight">Kalp Academy</h2>
         </div>
       )}
 

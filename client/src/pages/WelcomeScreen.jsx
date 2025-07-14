@@ -63,7 +63,7 @@ const WelcomeScreen = () => {
           animate={{ scale: 1.1, opacity: 1 }}
           transition={{ delay: 1, duration: 0.6, type: "spring" }}
         >
-          Shree Kalam Academy!
+          Kalp Academy!
         </motion.span>
       </motion.h1>
 
