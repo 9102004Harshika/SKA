@@ -13,7 +13,6 @@ import {
   FaStickyNote,
 } from "react-icons/fa";
 import { FaQuestion, FaBook } from "react-icons/fa6";
-
 import styled from "styled-components";
 import { Button } from "../ui/button";
 import { PiStudent } from "react-icons/pi";
@@ -29,7 +28,6 @@ const StyledWrapper = styled.div`
   .course-page {
     font-family: Arial, sans-serif;
   }
-
   .hero-section {
     display: flex;
     justify-content: space-between;
@@ -163,10 +161,11 @@ const StyledWrapper = styled.div`
   }
 
   .card.is-fixed {
-    box-shadow: 0 2px 3px rgba(73, 72, 72, 0.5),
-      0 2px 3px rgba(104, 103, 103, 0.6);
+    box-shadow: 0 5px 9px rgba(73, 72, 72, 0.5),
+      0 9px 9px rgba(104, 103, 103, 0.6);
     animation: fadeIn 0.5s ease-out forwards;
   }
+  
 
   .tabs {
     background: hsl(0, 0%, 98%);
@@ -940,7 +939,7 @@ const CourseDetailPage = () => {
           className={`card md:block hidden  ${
             isFixed
               ? "is-fixed fixed top-[25px] right-0 w-[50%]  transform transition-all duration-500  flex-grow"
-              : "not-fixed absolute top-[500px] right-0 transform translate-y-[-50%] transition-all duration-500 flex-grow"
+              : "not-fixed absolute top-[500px]  right-0 transform translate-y-[-50%] transition-all duration-500 flex-grow"
           } ${isScrolled ? "fade-out" : ""}`}
         >
           {!isFixed && (
@@ -952,7 +951,7 @@ const CourseDetailPage = () => {
           )}
           <h3
             className={`font-bold font-body text-primary mt-[-10px]  ${
-              isFixed ? "text-lg mt-0 pl-[55px]" : ""
+              isFixed ? "text-lg mt-0 " : ""
             }`}
           >
             {truncateCourseTitle(course.courseTitle)}
