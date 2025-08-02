@@ -3,34 +3,91 @@ import Quiz from "../models/Quiz.js";
 // Create a new quiz
 export const createQuiz = async (req, res) => {
   try {
-    const { name, description, image, link, questions } = req.body;
+    const {
+      name,
+      description,
+      visibility,
+      board,
+      class: classLevel,
+      timeLimit,
+      subject,
+      questions,
+      totalMarks,
+    } = req.body;
 
-    if (!questions || !Array.isArray(questions) || questions.length === 0) {
-      return res.status(400).json({ message: "Questions are required." });
+    if (!name || !description || !subject) {
+      return res
+        .status(400)
+        .json({ message: "Name, description, and subject are required." });
     }
 
-    const questionIds = [];
-    let totalMarks = 0;
+    if (!questions || !Array.isArray(questions) || questions.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "At least one question is required." });
+    }
 
-    for (const q of questions) {
-      const newQuestion = new Question(q);
-      const savedQuestion = await newQuestion.save();
-      questionIds.push(savedQuestion._id);
-      totalMarks += savedQuestion.marks || 0;
+    // Validate each question
+    for (const [index, question] of questions.entries()) {
+      if (!question.question || question.question.trim() === "") {
+        return res
+          .status(400)
+          .json({ message: `Question ${index + 1} text is required` });
+      }
+
+      // Validate options structure and filter out any invalid ones
+      const validOptions = question.options.filter((opt) => {
+        return (
+          opt &&
+          typeof opt === "object" &&
+          "text" in opt &&
+          typeof opt.text === "string" &&
+          opt.text.trim() !== "" &&
+          "isCorrect" in opt &&
+          typeof opt.isCorrect === "boolean"
+        );
+      });
+
+      if (validOptions.length < 2) {
+        return res
+          .status(400)
+          .json({
+            message: `Question ${index + 1} must have at least 2 valid options`,
+          });
+      }
+
+      // Find the index of the correct option
+      const correctOptionIndex = validOptions.findIndex((opt) => opt.isCorrect);
+
+      if (correctOptionIndex === -1) {
+        return res.status(400).json({
+          message: `Question ${index + 1} must have exactly one correct option`,
+        });
+      }
+
+      // Update the correctOption index to match the filtered array
+      question.correctOption = correctOptionIndex;
     }
 
     const newQuiz = new Quiz({
       name,
       description,
-      image,
-      questions: questionIds,
-      totalMarks,
+      visibility: visibility || "free",
+      board,
+      class: classLevel,
+      timeLimit: parseInt(timeLimit) || 30,
+      subject,
+      questions,
+      totalMarks:
+        parseInt(totalMarks) ||
+        questions.reduce((sum, q) => sum + (parseInt(q.marks) || 1), 0),
     });
 
     await newQuiz.save();
 
     res.status(201).json({
-      message: "Quiz and questions created successfully",
+      success: true,
+      message: "Quiz created successfully",
       quiz: newQuiz,
     });
   } catch (error) {
@@ -40,12 +97,22 @@ export const createQuiz = async (req, res) => {
 };
 
 // Get all quizzes
+// controllers/Quiz.js
+
+// Get all quizzes
 export const getAllQuizzes = async (req, res) => {
   try {
     const quizzes = await Quiz.find();
-    res.status(200).json(quizzes);
+    res.status(200).json({
+      success: true, // Add this property
+      quizzes: quizzes, // Wrap the quizzes array in an object
+      message: "Quizzes fetched successfully", // Optional: Add a success message
+    });
   } catch (error) {
-    res.status(400).json({ message: "Error fetching quizzes", error });
+    console.error("Error in getAllQuizzes:", error); // Log the server-side error for debugging
+    res
+      .status(500)
+      .json({ message: "Error fetching quizzes", error: error.message }); // Send a 500 for server errors
   }
 };
 
