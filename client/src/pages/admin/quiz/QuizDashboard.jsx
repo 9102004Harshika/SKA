@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   FaSearch,
   FaChevronRight,
@@ -14,270 +14,83 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "../../../components/use-toast";
+import BookLoader from "../../../components/BookLoader";
+import ViewQuiz from "./ViewQuiz";
 
 const QuizDashboard = () => {
+  // All state declarations at the top
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterSubject, setFilterSubject] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const quizzesPerPage = 10;
+  const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [viewQuizModalOpen, setViewQuizModalOpen] = useState(false);
+  const [selectedQuizId, setSelectedQuizId] = useState(null);
+  const [quizToDelete, setQuizToDelete] = useState(null);
 
-  const [quizzes, setQuizzes] = useState([
-    {
-      id: 1,
-      title: "Basic Mathematics",
-      subject: "Mathematics",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "CBSE",
-      class: "10th",
-    },
-    {
-      id: 2,
-      title: "React Fundamentals Quiz",
-      subject: "Computer Science",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "ICSE",
-      class: "11th",
-    },
-    {
-      id: 3,
-      title: "JavaScript ES6+ Challenge",
-      subject: "Computer Science",
-      timeLimit: 60,
-      questions: 30,
-      participants: 250,
-      board: "State Board",
-      class: "12th",
-    },
-    {
-      id: 4,
-      title: "Python Programming Test",
-      subject: "Computer Science",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "IB",
-      class: "11th",
-    },
-    {
-      id: 5,
-      title: "Web Development Basics",
-      subject: "Computer Science",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "IGCSE",
-      class: "10th",
-    },
-    {
-      id: 6,
-      title: "Database Design Quiz",
-      subject: "Computer Science",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "CBSE",
-      class: "11th",
-    },
-    {
-      id: 7,
-      title: "Algorithms & Data Structures",
-      subject: "Computer Science",
-      timeLimit: 60,
-      questions: 30,
-      participants: 250,
-      board: "ICSE",
-      class: "12th",
-    },
-    {
-      id: 8,
-      title: "System Design Interview Prep",
-      subject: "Computer Science",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "State Board",
-      class: "11th",
-    },
-    {
-      id: 9,
-      title: "Frontend Development Quiz",
-      subject: "Computer Science",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "IB",
-      class: "10th",
-    },
-    {
-      id: 10,
-      title: "Backend Development Test",
-      subject: "Computer Science",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "IGCSE",
-      class: "11th",
-    },
-    {
-      id: 11,
-      title: "Full Stack Assessment",
-      subject: "Computer Science",
-      timeLimit: 60,
-      questions: 30,
-      participants: 250,
-      board: "CBSE",
-      class: "12th",
-    },
-    {
-      id: 12,
-      title: "Science Quiz",
-      subject: "Science",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "ICSE",
-      class: "10th",
-    },
-    {
-      id: 13,
-      title: "Mathematics Quiz",
-      subject: "Mathematics",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "State Board",
-      class: "11th",
-    },
-    {
-      id: 14,
-      title: "English Quiz",
-      subject: "English",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "IB",
-      class: "10th",
-    },
-    {
-      id: 15,
-      title: "History Quiz",
-      subject: "History",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "IGCSE",
-      class: "11th",
-    },
-    {
-      id: 16,
-      title: "Geography Quiz",
-      subject: "Geography",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "CBSE",
-      class: "10th",
-    },
-    {
-      id: 17,
-      title: "Civics Quiz",
-      subject: "Civics",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "ICSE",
-      class: "11th",
-    },
-    {
-      id: 18,
-      title: "Economics Quiz",
-      subject: "Economics",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "State Board",
-      class: "10th",
-    },
-    {
-      id: 19,
-      title: "Biology Quiz",
-      subject: "Biology",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "IB",
-      class: "11th",
-    },
-    {
-      id: 20,
-      title: "Chemistry Quiz",
-      subject: "Chemistry",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "IGCSE",
-      class: "10th",
-    },
-    {
-      id: 21,
-      title: "Physics Quiz",
-      subject: "Physics",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "CBSE",
-      class: "11th",
-    },
-    {
-      id: 22,
-      title: "Computer Science Quiz",
-      subject: "Computer Science",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "ICSE",
-      class: "10th",
-    },
-    {
-      id: 23,
-      title: "Information Technology Quiz",
-      subject: "Information Technology",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "State Board",
-      class: "11th",
-    },
-    {
-      id: 24,
-      title: "Artificial Intelligence Quiz",
-      subject: "Artificial Intelligence",
-      timeLimit: 30,
-      questions: 20,
-      participants: 150,
-      board: "IB",
-      class: "10th",
-    },
-    {
-      id: 25,
-      title: "Machine Learning Quiz",
-      subject: "Machine Learning",
-      timeLimit: 45,
-      questions: 25,
-      participants: 200,
-      board: "IGCSE",
-      class: "11th",
-    },
-  ]);
+  // Fetch quizzes from the backend
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      try {
+        console.log(
+          "Fetching quizzes from:",
+          `${process.env.REACT_APP_API_BASE_URL}api/quizzes/get`
+        );
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}api/quizzes/get`,
+          { withCredentials: true } // Include credentials if needed
+        );
+        console.log("Quiz API Response:", response);
+
+        if (response.data && response.data.success) {
+          setQuizzes(response.data.quizzes || []);
+          setError(null);
+        } else {
+          const errorMessage =
+            response.data?.message || "Failed to fetch quizzes";
+          console.error("API Error:", errorMessage);
+          throw new Error(errorMessage);
+        }
+      } catch (err) {
+        console.error("Error fetching quizzes:", {
+          message: err.message,
+          response: err.response?.data,
+          status: err.response?.status,
+          config: {
+            url: err.config?.url,
+            method: err.config?.method,
+            headers: err.config?.headers,
+          },
+        });
+
+        const errorMessage =
+          err.response?.data?.message ||
+          err.message ||
+          "Failed to load quizzes. Please check your connection and try again.";
+
+        setError(errorMessage);
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuizzes();
+  }, []);
 
   const filteredQuizzes = useMemo(() => {
     return quizzes.filter((quiz) => {
-      const matchesSearch = quiz.title
+      const matchesSearch = quiz.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
       const matchesSubject =
@@ -285,6 +98,20 @@ const QuizDashboard = () => {
       return matchesSearch && matchesSubject;
     });
   }, [quizzes, searchTerm, filterSubject]);
+
+  if (loading) {
+    return <BookLoader />;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="text-red-500 text-center">{error}</div>
+        </div>
+      </div>
+    );
+  }
 
   const indexOfLastQuiz = currentPage * quizzesPerPage;
   const indexOfFirstQuiz = indexOfLastQuiz - quizzesPerPage;
@@ -302,9 +129,6 @@ const QuizDashboard = () => {
     "Engineering",
     "Business",
   ];
-
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [quizToDelete, setQuizToDelete] = useState(null);
 
   const handleDeleteQuiz = (id) => {
     setQuizToDelete(id);
@@ -372,19 +196,20 @@ const QuizDashboard = () => {
               />
             </div>
 
+            {/* Leaderboard Button */}
+            <button className="flex-shrink-0 bg-secondary hover:bg-secondary/90 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-transform transform hover:scale-105">
+              <FaAward size={20} />
+              <span className="hidden md:block">Leaderboard</span>
+            </button>
+
             {/* Add New Quiz Button */}
             <button
               className="flex-shrink-0 bg-accent hover:bg-accent/90 text-primary font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-transform transform hover:scale-105"
               onClick={() => navigate("/admin/quiz/add")}
             >
               <FaPlus size={20} />
-              <span>Add Quiz</span>
-            </button>
-
-            {/* Leaderboard Button */}
-            <button className="flex-shrink-0 bg-secondary hover:bg-secondary/90 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-transform transform hover:scale-105">
-              <FaAward size={20} />
-              <span>Leaderboard</span>
+              <span>Add</span>
+              <span className="hidden md:block"> Quiz</span>
             </button>
           </div>
         </div>
@@ -421,31 +246,31 @@ const QuizDashboard = () => {
                     key={quiz.id}
                     className="hover:bg-gray-50 transition-colors"
                   >
-                    <td className="px-4 py-2 font-bold text-secondary">
-                      {quiz.title}
+                    <td className="px-4 py-2 font-bold text-secondary capitalize">
+                      {quiz.name}
                     </td>
-                    <td className="px-4 py-2">
-                      <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full font-semibold inline-flex items-center gap-1">
+                    <td className="px-4 py-2 text-center">
+                      <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full font-semibold inline-flex items-center gap-1 capitalize">
                         {quiz.subject}
                       </span>
                     </td>
-                    <td className="p-4 text-center text-tertiary/80">
+                    <td className="p-4 text-center text-tertiary">
                       {quiz.timeLimit} min
                     </td>
-                    <td className="p-4 text-center text-tertiary/80">
-                      {quiz.questions}
+                    <td className="p-4 text-center text-tertiary">
+                      {quiz.questions ? quiz.questions.length : 0}
                     </td>
-                    <td className="p-4 text-center text-tertiary/80">
+                    <td className="p-4 text-center text-tertiary">
                       {quiz.board}
                     </td>
-                    <td className="p-4 text-center text-tertiary/80">
-                      {quiz.class}
+                    <td className="p-4 text-center text-tertiary">
+                      {quiz.class}th
                     </td>
                     <td className="p-4 text-center">
                       <div className="flex items-center justify-center">
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-accent/20 text-primary border border-accent/80">
                           <FaUsers size={14} className="mr-1.5" />
-                          {quiz.participants.toLocaleString()}
+                          {/* {quiz.participants.toLocaleString()} */}0
                         </span>
                       </div>
                     </td>
@@ -454,6 +279,10 @@ const QuizDashboard = () => {
                         <button
                           title="View Quiz"
                           className="p-2 text-secondary hover:bg-secondary/20 rounded-full transition-colors"
+                          onClick={() => {
+                            setSelectedQuizId(quiz._id);
+                            setViewQuizModalOpen(true);
+                          }}
                         >
                           <FaEye size={16} />
                         </button>
@@ -610,6 +439,12 @@ const QuizDashboard = () => {
           </div>
         </div>
       )}
+      {/* View Quiz Modal */}
+      <ViewQuiz
+        quizId={selectedQuizId}
+        isOpen={viewQuizModalOpen}
+        onClose={() => setViewQuizModalOpen(false)}
+      />
     </div>
   );
 };

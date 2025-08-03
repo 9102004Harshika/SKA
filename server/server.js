@@ -15,7 +15,26 @@ import cron from "node-cron";
 import { cleanupCachedPdfs } from "./utils/cleanupCachedPdfs.js";
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: process.env.REACT_APP_API_BASE_URL || "http://localhost:3000",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Origin",
+    process.env.FRONTEND_URL || "http://localhost:3000"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  next();
+});
+app.use(cors(corsOptions));
 app.use(express.json()); // Make sure JSON parsing is enabled for incoming requests
 
 dotenv.config();
@@ -36,10 +55,10 @@ mongoose
     console.error("MongoDB connection error:", err.message);
   });
 
-  cron.schedule("0 0 * * *", async () => {
-    console.log("⏰ Running scheduled PDF cache cleanup...");
-    await cleanupCachedPdfs();
-  });
+cron.schedule("0 0 * * *", async () => {
+  console.log("⏰ Running scheduled PDF cache cleanup...");
+  await cleanupCachedPdfs();
+});
 // Define a sample route
 app.get("/", (req, res) => {
   res.send("Kalp Academy: Endless Possibilities!!!");
