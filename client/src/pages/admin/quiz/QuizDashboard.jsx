@@ -244,7 +244,14 @@ const QuizDashboard = () => {
                 {currentQuizzes.map((quiz) => (
                   <tr
                     key={quiz.id}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-gray-50 transition-colors group cursor-pointer"
+                    onClick={(e) => {
+                      // Only trigger if click is directly on the row, not on action buttons
+                      if (!e.target.closest(".action-button")) {
+                        setSelectedQuizId(quiz._id);
+                        setViewQuizModalOpen(true);
+                      }
+                    }}
                   >
                     <td className="px-4 py-2 font-bold text-secondary capitalize">
                       {quiz.name}
@@ -275,36 +282,31 @@ const QuizDashboard = () => {
                       </div>
                     </td>
                     <td className="p-4">
-                      <div className="flex justify-center space-x-1">
-                        <button
-                          title="View Quiz"
-                          className="p-2 text-secondary hover:bg-secondary/20 rounded-full transition-colors"
-                          onClick={() => {
-                            setSelectedQuizId(quiz._id);
-                            setViewQuizModalOpen(true);
-                          }}
-                        >
-                          <FaEye size={16} />
-                        </button>
-
+                      <div
+                        className="flex justify-center space-x-1"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <button
                           title="Edit Quiz"
-                          className="p-2 text-green-500 hover:bg-green-500/20 rounded-full transition-colors"
+                          className="p-2 text-secondary hover:bg-secondary/20 rounded-full transition-colors action-button"
                         >
                           <FaEdit size={16} />
                         </button>
 
                         <button
                           title="View Leaderboard"
-                          className="p-2 text-accent hover:bg-accent/20 rounded-full transition-colors"
+                          className="p-2 text-accent hover:bg-accent/20 rounded-full transition-colors action-button"
                         >
                           <FaAward size={16} />
                         </button>
 
                         <button
                           title="Delete Quiz"
-                          onClick={() => handleDeleteQuiz(quiz.id)}
-                          className="p-2 text-error hover:bg-error/20 rounded-full transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteQuiz(quiz.id);
+                          }}
+                          className="p-2 text-error hover:bg-error/20 rounded-full transition-colors action-button"
                         >
                           <FaTrash size={16} />
                         </button>
