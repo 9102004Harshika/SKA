@@ -100,14 +100,119 @@ const QuizDashboard = () => {
   }, [quizzes, searchTerm, filterSubject]);
 
   if (loading) {
-    return <BookLoader />;
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-24 mx-auto mb-4">
+            <BookLoader />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="text-red-500 text-center">{error}</div>
+      <div className="min-h-screen bg-background text-tertiary px-4 sm:px-6 lg:px-8 font-body">
+        <div className="max-w-7xl mx-auto py-4">
+          {/* Header */}
+          <header className="mb-8">
+            <h1 className="text-3xl font-bold font-header tracking-wide text-primary">
+              Quiz Dashboard
+            </h1>
+          </header>
+
+          {/* Controls Row */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+            {/* Search Bar */}
+            <div className="w-full sm:w-auto flex-grow relative group">
+              <FaSearch
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:text-accent transition-colors"
+                size={20}
+              />
+              <input
+                type="text"
+                placeholder="Search quizzes..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 bg-white border border-primary rounded-lg focus:ring-2 focus:ring-accent outline-none transition-all text-primary hover:border-secondary focus:border-accent placeholder:text-primary"
+              />
+            </div>
+
+            <div className="w-full sm:w-auto flex items-center gap-4">
+              {/* Subject Filter */}
+              <div className="w-full sm:w-48 relative group">
+                <select
+                  value={filterSubject}
+                  onChange={(e) => setFilterSubject(e.target.value)}
+                  className="w-full appearance-none pl-4 pr-10 py-3 bg-white border border-primary rounded-lg focus:ring-2 focus:ring-accent outline-none transition-all text-primary hover:border-secondary focus:border-accent placeholder:text-primary"
+                >
+                  {subjects.map((subject) => (
+                    <option key={subject} value={subject}>
+                      {subject}
+                    </option>
+                  ))}
+                </select>
+                <FaChevronDown
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-primary pointer-events-none group-focus-within:text-accent transition-colors"
+                  size={18}
+                />
+              </div>
+
+              {/* Add New Quiz Button */}
+              <button
+                onClick={() => navigate("/admin/quiz/create")}
+                className="flex-shrink-0 bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-transform transform hover:scale-105"
+              >
+                <FaPlus size={20} />
+                <span className="hidden md:block">New Quiz</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Error State */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-8 text-center">
+              <div className="flex flex-col items-center justify-center gap-4 p-6 bg-red-50 rounded-lg border border-red-200 max-w-2xl mx-auto">
+                <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-red-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-red-800">
+                    Error Loading Quizzes
+                  </h3>
+                  <p className="text-red-600 mt-1">{error}</p>
+                </div>
+                <div className="flex gap-3 mt-2">
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+                  >
+                    Retry
+                  </button>
+                  <button
+                    onClick={() => navigate("/admin")}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+                  >
+                    Go to Dashboard
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -151,9 +256,9 @@ const QuizDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background text-tertiary px-4 sm:px-6 lg:px-8 font-body">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto ">
         {/* Header */}
-        <header className="mb-6">
+        <header className="mb-8">
           <h1 className="text-3xl font-bold font-header tracking-wide text-primary">
             Quiz Dashboard
           </h1>

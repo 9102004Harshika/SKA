@@ -19,7 +19,7 @@ import MainLayout from "./layouts/MainLayout";
 
 import NotFound from "./pages/NotFound";
 import Unauth from "./pages/Unauth";
-import AddNotesPage from "./pages/admin/AddNotesPage";
+import AddNotes from "./pages/admin/notes/AddNotes";
 import UpdateNotesPage from "./pages/admin/UpdateNotesPage";
 import Notes from "./pages/Notes";
 import Modal from "./components/Modal";
@@ -110,11 +110,16 @@ const App = () => {
             >
               <Route index element={<SalesDashboard />} />
               <Route path="course" element={<CourseDashboard />} />
-              <Route path="quiz" element={<QuizDashboard />} />
-              <Route path="quiz/add" element={<AddQuiz />} />
               <Route path="settings" element={<Settings />} />
               <Route path="teachers" element={<Teachers />} />
-              <Route path="notes" element={<NotesDashboard />} />
+              <Route path="quiz">
+                <Route index element={<QuizDashboard />} />
+                <Route path="add" element={<AddQuiz />} />
+              </Route>
+              <Route path="notes">
+                <Route index element={<NotesDashboard />} />
+                <Route path="add" element={<AddNotes />} />
+              </Route>
 
               {/* <Route path="instructor" element={<InstructorAdminLayout />}>
                 <Route index element={<InstructorPage />} />
