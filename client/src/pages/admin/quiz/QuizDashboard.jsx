@@ -19,6 +19,7 @@ import { toast } from "../../../components/use-toast";
 import BookLoader from "../../../components/BookLoader";
 import ViewQuiz from "./ViewQuiz";
 
+const API_URL = process.env.REACT_APP_API_BASE_URL;
 const QuizDashboard = () => {
   // All state declarations at the top
   const navigate = useNavigate();
@@ -240,13 +241,50 @@ const QuizDashboard = () => {
     setDeleteModalOpen(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async() => {
     // Filter out the quiz to be deleted
     const updatedQuizzes = quizzes.filter((quiz) => quiz.id !== quizToDelete);
     setQuizzes(updatedQuizzes);
     setDeleteModalOpen(false);
     setQuizToDelete(null);
     // TODO: Add API call to delete quiz
+    try {
+    // Call API to delete the quiz
+    const response = await axios.delete(
+      `${API_URL}api/quizzes/delete/${quizToDelete}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    if (response.data?.success || response.status === 200) {
+      // Update state to remove the deleted quiz
+      const updatedQuizzes = quizzes.filter((quiz) => quiz.id !== quizToDelete);
+      setQuizzes(updatedQuizzes);
+
+      toast({
+        title: "Success",
+        description: "Quiz deleted successfully.",
+        variant: "success",
+      });
+    } else {
+      throw new Error(response.data?.message || "Failed to delete quiz");
+    }
+  } catch (error) {
+    toast({
+      title: "Error",
+      description:
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to delete quiz.",
+      variant: "destructive",
+    });
+  } finally {
+    setDeleteModalOpen(false);
+    setQuizToDelete(null);
+  }
   };
 
   const cancelDelete = () => {
@@ -391,20 +429,22 @@ const QuizDashboard = () => {
                         className="flex justify-center space-x-1"
                         onClick={(e) => e.stopPropagation()}
                       >
+                        {/* update quiz button */}
                         <button
                           title="Edit Quiz"
                           className="p-2 text-secondary hover:bg-secondary/20 rounded-full transition-colors action-button"
-                        >
+                          onClick={() => navigate(`/admin/quiz/update/${quiz._id}`)}
+                       >
                           <FaEdit size={16} />
                         </button>
-
+  
                         <button
                           title="View Leaderboard"
                           className="p-2 text-accent hover:bg-accent/20 rounded-full transition-colors action-button"
                         >
                           <FaAward size={16} />
                         </button>
-
+                        {/* delete quiz button */}
                         <button
                           title="Delete Quiz"
                           onClick={(e) => {

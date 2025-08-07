@@ -1,29 +1,16 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageUploader from "../../../ui/imageUploader";
 import FileUploader from "../../../ui/fileUploader";
 import Select from "../../../ui/select";
 import { toast } from "../../../components/use-toast";
-import {
-  FaArrowLeft,
-  FaTimes,
-  FaBookOpen,
-  FaGraduationCap,
-  FaChevronDown,
-  FaImage,
-  FaFilePdf,
-  FaUserEdit,
-} from "react-icons/fa";
 import axios from "axios";
-
-// UI Components
+import { FaTimes ,FaSchool,FaBookOpen,FaClock,FaUpload,FaInfoCircle} from "react-icons/fa";
 import TextInput from "../../../ui/textInput";
 import TextAreaInput from "../../../ui/textarea";
 import { Button } from "../../../ui/button";
 import Modal from "../../../components/Modal";
-
-// API Configuration
-const API_URL = process.env.REACT_APP_API_BASE_URL;
 
 // Configurations
 const {
@@ -32,8 +19,19 @@ const {
   getSubjects,
   streams,
 } = require("../../../config");
+
+const API_URL = process.env.REACT_APP_API_BASE_URL;
+
 const AddNotes = () => {
   const navigate = useNavigate();
+
+  const [activeTab, setActiveTab] = useState(1); // 1 = Notes Details, 2 = Upload Files
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [uploadType, setUploadType] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     subject: "",
@@ -47,12 +45,6 @@ const AddNotes = () => {
     stream: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
-  const [progress, setProgress] = useState(0);
-  const [uploadType, setUploadType] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const openModal = (type) => {
     setUploadType(type);
     setIsModalOpen(true);
@@ -61,6 +53,25 @@ const AddNotes = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setUploadType("");
+  };
+
+  const validateTab1 = () => {
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.board ||
+      !formData.classFor ||
+      !formData.subject ||
+      !formData.writtenBy
+    ) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill all required fields before proceeding.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = async (e) => {
@@ -122,241 +133,221 @@ const AddNotes = () => {
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      title: "",
-      subject: "",
-      classFor: "",
-      board: "",
-      description: "",
-      writtenBy: "",
-      visibility: "free",
-      coverImageUrl: "",
-      pdfUrl: "",
-      stream: "",
-    });
-    setError("");
-  };
-
-  const handleFileChange = (e, type) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (type === "image" && !file.type.startsWith("image/")) {
-      setError("Please upload a valid image file");
-      return;
-    }
-
-    if (type === "pdf" && file.type !== "application/pdf") {
-      setError("Please upload a valid PDF file");
-      return;
-    }
-
-    setFormData((prev) => ({
-      ...prev,
-      [type === "image" ? "coverImageUrl" : "pdfUrl"]: file,
-    }));
-    openModal(type);
-  };
-
   return (
-    <div className="mx-10 font-body">
-      <h2 className="mb-10 font-header text-3xl font-semibold md:tracking-wide text-center">
-        Create New Notes
-      </h2>
-      <div className="space-y-6 mx-10">
-        <form
-          onSubmit={(e) =>
-            handleSubmit(
-              e,
-              formData,
-              setFormData,
-              openModal,
-              closeModal,
-              resetForm,
-              setUploadType
-            )
-          }
-          className="flex flex-col gap-6"
-        >
-          <div className="flex gap-10">
-            <div className="flex-1 flex flex-col justify-between">
-              <TextInput
-                label="Title of Notes"
-                type="text"
-                required
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-              />
-              <TextAreaInput
-                label="Description"
-                name="description"
-                required
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-              />
-              <div className="pt-2">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Access Type <span className="text-red-500">*</span>
-                </label>
-                <div className="flex space-x-6">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      className="h-4 w-4 text-primary focus:ring-primary"
-                      name="visibility"
-                      value="free"
-                      checked={formData.visibility === "free"}
-                      onChange={(e) =>
-                        setFormData({ ...formData, visibility: e.target.value })
-                      }
-                    />
-                    <span className="ml-2 text-gray-700">Free</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      className="h-4 w-4 text-primary focus:ring-primary"
-                      name="visibility"
-                      value="paid"
-                      checked={formData.visibility === "paid"}
-                      onChange={(e) =>
-                        setFormData({ ...formData, visibility: e.target.value })
-                      }
-                    />
-                    <span className="ml-2 text-gray-700">Paid</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-10 items-center justify-center p-8 border-[1px] border-primary rounded-md">
-              <label htmlFor="imageUpload">Add Cover Image</label>
-              <ImageUploader
-                label="Upload Image"
-                id="imageUpload"
-                required
-                onChange={(file) =>
-                  setFormData({ ...formData, coverImageUrl: file })
-                }
-              />
+    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 font-body">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center mb-6">
+          <h1 className="text-3xl font-bold tracking-wide font-header text-gray-900">
+            Create New Notes
+          </h1>
+        </div>
+        {error && (
+          <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r">
+            <div className="flex items-center">
+              <FaTimes className="w-5 h-5 mr-2" />
+              <p>{error}</p>
             </div>
           </div>
-          <div className="flex gap-10">
-            <div className="flex flex-col gap-10 items-center justify-center p-8 border-[1px] border-primary rounded-md">
-              <label htmlFor="pdfUpload">Add The PDF File</label>
-              <FileUploader
-                label="Upload PDF"
-                id="pdfUpload"
-                required
-                onChange={(file) => setFormData({ ...formData, pdfUrl: file })}
-              />
-            </div>
+        )}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="border-b border-gray-200">
+           <nav className="flex -mb-px">
+  <button
+    onClick={() => setActiveTab(1)}
+    className={`py-4 px-6 font-bold text-sm border-b-2 ${
+      activeTab === 1
+        ? "border-secondary text-secondary"
+        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+    }`}
+  >
+    Notes Details
+  </button>
+  
+  <button
+    onClick={() => {
+      if (validateTab1()) setActiveTab(2);
+    }}
+    className={`py-4 px-6 font-bold text-sm border-b-2 ${
+      activeTab === 2
+        ? "border-secondary text-secondary"
+        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+    }`}
+  >
+    Upload Files
+  </button>
+</nav>
 
-            <div className="flex-1 flex flex-col justify-between space-y-6">
-              <Select
-                menuTitle="Board"
-                submenuItems={boards}
-                onSelect={(selectedBoard) => {
-                  setFormData({
-                    ...formData,
-                    board: selectedBoard,
-                    classFor: "",
-                  });
-                }}
-              />
-              <Select
-                menuTitle="Class"
-                submenuItems={getClassOptions(formData.board)}
-                onSelect={(selectedClass) => {
-                  setFormData({
-                    ...formData,
-                    classFor: selectedClass,
-                    stream: undefined,
-                    subject: "",
-                  });
-                }}
-                disabled={!formData.board}
-              />
-              {!(
-                parseInt(formData.classFor) > 0 &&
-                parseInt(formData.classFor) <= 10
-              ) && (
-                <Select
-                  menuTitle="Stream"
-                  submenuItems={streams}
-                  onSelect={(selectedStream) => {
-                    setFormData({
-                      ...formData,
-                      stream: selectedStream || undefined,
-                      subject: "",
-                    });
-                  }}
-                  disabled={!formData.board}
-                />
-              )}
-              <Select
-                menuTitle="Subject"
-                submenuItems={getSubjects(formData.classFor, formData.stream)}
-                onSelect={(selectedSubject) => {
-                  setFormData({ ...formData, subject: selectedSubject });
-                }}
-                disabled={
-                  !formData.classFor ||
-                  (formData.classFor > 10 && !formData.stream)
-                }
-              />
-
-              <TextInput
-                label="Written By"
-                type="text"
-                required
-                value={formData.writtenBy}
-                onChange={(e) =>
-                  setFormData({ ...formData, writtenBy: e.target.value })
-                }
-              />
-            </div>
           </div>
 
-          <div className="flex justify-between mt-1 gap-6">
-            <Button
-              text="Create Notes"
-              size="lg"
-              variant="primary"
-              type="submit"
-              className="w-full"
-              disabled={isSubmitting}
-            />
-            <Button
-              text="Clear All"
-              size="lg"
-              variant="accent"
-              type="reset"
-              className="w-full"
-              onClick={() => resetForm()}
-            />
+          <form onSubmit={handleSubmit} className="p-8">
+  {activeTab === 1 && (
+    <div className="space-y-8">
+  {/* First row: Basic Info + Notes Settings */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {/* Basic Information */}
+    <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+      <h3 className="text-lg font-bold text-secondary mb-4 flex items-center">
+        <FaBookOpen className="w-5 h-5 mr-2 text-secondary" /> Basic Information
+      </h3>
+      <TextInput
+        label="Notes Title *"
+        required
+        value={formData.title}
+        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+      />
+      <TextAreaInput
+        label="Description *"
+        required
+        value={formData.description}
+        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+      />
+    </div>
+
+    {/* Notes Settings */}
+    <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+      <h3 className="text-lg font-bold text-secondary mb-4 flex items-center">
+        <FaClock className="w-5 h-5 mr-2 text-secondary" /> Notes Settings
+      </h3>
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Visibility</label>
+          <div className="flex gap-6">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                value="free"
+                checked={formData.visibility === "free"}
+                onChange={(e) => setFormData({ ...formData, visibility: e.target.value })}
+              /> Free
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                value="paid"
+                checked={formData.visibility === "paid"}
+                onChange={(e) => setFormData({ ...formData, visibility: e.target.value })}
+              /> Paid
+            </label>
           </div>
-        </form>
+        </div>
+        <TextInput
+          label="Written By *"
+          required
+          value={formData.writtenBy}
+          onChange={(e) => setFormData({ ...formData, writtenBy: e.target.value })}
+        />
       </div>
-      <Modal isOpen={isModalOpen} progress={progress}>
-        <h2 className="text-lg text-primary font-semibold">
-          {uploadType === "Compress" ? (
-            "Please wait, Pdf is being compressed..."
-          ) : (
-            <>
-              Please wait,
-              {uploadType === "image" ? " Cover Image " : " Notes PDF "} is
-              uploading...
-            </>
-          )}
-        </h2>
-      </Modal>
+    </div>
+  </div>
+
+  {/* Second row: Academic Information full width */}
+  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+    <h3 className="text-lg font-bold text-secondary mb-4 flex items-center">
+      <FaSchool className="w-5 h-5 mr-2 text-secondary" /> Academic Information
+    </h3>
+   
+   <div className="mb-5">
+     <Select
+        menuTitle="Board *"
+        submenuItems={boards}
+        onSelect={(board) => setFormData({ ...formData, board, classFor: "" })}
+        
+      />
+   </div>
+     <div className="mb-5">
+       <Select
+        menuTitle="Class *"
+        submenuItems={getClassOptions(formData.board)}
+        onSelect={(cls) => setFormData({ ...formData, classFor: cls, stream: undefined, subject: "" })}
+        disabled={!formData.board}
+      />
+     </div>
+     <div className="mb-5">
+       {formData.classFor > 10 && (
+        <Select
+          menuTitle="Stream *"
+          submenuItems={streams}
+          onSelect={(stream) => setFormData({ ...formData, stream, subject: "" })}
+        />
+      )}
+     </div>
+      <Select
+        menuTitle="Subject *"
+        submenuItems={getSubjects(formData.classFor, formData.stream)}
+        onSelect={(subject) => setFormData({ ...formData, subject })}
+        disabled={!formData.classFor || (formData.classFor > 10 && !formData.stream)}
+      />
+  
+  </div>
+
+  {/* Footer Buttons */}
+  <div className="flex justify-between pt-4 border-t border-gray-200">
+    <button
+      type="button"
+      onClick={() => navigate(-1)}
+      className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      onClick={() => { if (validateTab1()) setActiveTab(2); }}
+      className="px-6 py-2.5 bg-accent text-white rounded-lg hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors"
+    >
+      Next: Upload Files
+    </button>
+  </div>
+</div>
+
+  )}
+
+  {activeTab === 2 && (
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+          <h3 className="text-lg font-bold text-secondary mb-4 flex items-center">
+            <FaUpload className="w-5 h-5 mr-2 text-secondary" /> Upload Cover Image
+          </h3>
+          <div className="flex justify-center mb-10 mt-10">
+
+            <ImageUploader  label="Upload File" required onChange={(file) => setFormData({ ...formData, coverImageUrl: file })} />
+            
+          </div>
+          <p className="text-xs text-center">*select a file or drag and drop to add file</p>
+        </div>
+
+        <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+          <h3 className="text-lg font-bold text-secondary mb-4 flex items-center">
+            <FaUpload className="w-5 h-5 mr-2 text-secondary" /> Upload Pdf
+          </h3>
+         <div className="flex justify-center mb-10 mt-10">
+<FileUploader label="Upload File" required onChange={(file) => setFormData({ ...formData, pdfUrl: file })} />
+          </div>
+           <p className="text-xs text-center">*select a file or drag and drop to add file</p>
+        </div>
+      </div>
+
+      <div className="flex justify-between pt-4 border-t border-gray-200">
+        <button type="button" onClick={() => setActiveTab(1)} className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors">
+          Back
+        </button>
+        <button type="submit" disabled={isSubmitting} className="px-6 py-2.5 bg-accent text-white rounded-lg hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent disabled:opacity-70 disabled:cursor-not-allowed transition-colors">
+          {isSubmitting ? "Creating Notes..." : "Create Notes"}
+        </button>
+      </div>
+    </div>
+  )}
+</form>
+   
+        </div>
+      </div>
+     
     </div>
   );
 };
 
 export default AddNotes;
+
+// <h2 className="mb-10 font-header text-3xl font-semibold md:tracking-wide text-center">
+//   Create New Notes
+// </h2>

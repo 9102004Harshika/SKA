@@ -120,12 +120,25 @@ export const getAllQuizzes = async (req, res) => {
 export const getQuizById = async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
+
     if (!quiz) {
-      return res.status(404).json({ message: "Quiz not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Quiz not found",
+      });
     }
-    res.status(200).json(quiz);
+
+    return res.status(200).json({
+      success: true,
+      message: "Quiz fetched successfully",
+      quiz,
+    });
   } catch (error) {
-    res.status(400).json({ message: "Error fetching quiz", error });
+    console.error("Error fetching quiz:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching quiz",
+    });
   }
 };
 

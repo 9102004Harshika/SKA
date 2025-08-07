@@ -1,5 +1,6 @@
+
 import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 
 // Floating animation for folder
 const float = keyframes`
@@ -23,6 +24,15 @@ const Container = styled.div`
   height: calc(var(--folder-H) * 1.7);
   width: 160px; /* Slightly increased width */
   position: relative;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  transition: border-color 0.3s ease, background 0.3s ease;
+
+  ${(props) =>
+    props.isDragOver &&
+    css`
+      border-color: #ffc663;
+      background: linear-gradient(135deg, hsl(268, 82%, 27%), hsl(266, 100%, 13%));
+    `}
 `;
 
 const Folder = styled.div`
@@ -106,23 +116,40 @@ const FileInput = styled.input`
 
 const FileUploader = ({ label, onChange, ...props }) => {
   const [fileUrl, setFileUrl] = useState(null);
+  const [isDragOver, setIsDragOver] = useState(false);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      // Check if file is an image
-      if (!file.type.startsWith("application/pdf")) {
-        alert("Only image files are allowed!");
-        return;
-      }
+  const handleFile = (file) => {
+    if (file && file.type === "application/pdf") {
       const url = URL.createObjectURL(file);
       setFileUrl(url);
-      onChange && onChange(url); // Pass file URL to parent
+      onChange && onChange(url);
+    } else {
+      alert("Only PDF files are allowed!");
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) handleFile(file);
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setIsDragOver(false);
+    const file = event.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
+
   return (
-    <Container>
+    <Container
+      isDragOver={isDragOver}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setIsDragOver(true);
+      }}
+      onDragLeave={() => setIsDragOver(false)}
+      onDrop={handleDrop}
+    >
       <Folder>
         <FrontSide>
           <Tip />
@@ -137,7 +164,7 @@ const FileUploader = ({ label, onChange, ...props }) => {
           onChange={handleFileChange}
           {...props}
         />
-        {label}
+        {label || "Upload PDF"}
       </FileLabel>
       {fileUrl && (
         <p style={{ color: "#f5f5db", fontSize: "12px" }}>File Selected!</p>

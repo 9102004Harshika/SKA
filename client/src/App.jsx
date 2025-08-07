@@ -56,6 +56,7 @@ import TermsAndConditions from "./pages/footer/TermsAndConditions";
 import ContactUs from "./pages/footer/ContactUs";
 import Developers from "./pages/footer/Developers";
 import AboutUs from "./pages/footer/AboutUs";
+import UpdateQuiz from "./pages/admin/quiz/UpdateQuiz";
 
 const App = () => {
   return (
@@ -115,6 +116,8 @@ const App = () => {
               <Route path="quiz">
                 <Route index element={<QuizDashboard />} />
                 <Route path="add" element={<AddQuiz />} />
+                <Route path="update/:id" element={<UpdateQuiz />} />
+
               </Route>
               <Route path="notes">
                 <Route index element={<NotesDashboard />} />
@@ -142,7 +145,6 @@ const App = () => {
                 <Route path="delete" element={<DeleteNotesPage />} />
               </Route> */}
             </Route>
-
             <Route path="/pdfViewer" element={<PdfViewer />} />
             <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />

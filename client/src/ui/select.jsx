@@ -65,7 +65,7 @@ const Select = ({ menuTitle, submenuItems, onSelect, value }) => {
             </svg>
           </button>
           {isOpen && (
-            <div className="submenu">
+            <div className="submenu  absolute left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-50">
               {submenuItems.map((item, index) => (
                 <div
                   key={index}
