@@ -147,6 +147,7 @@ const ImageUploader = ({ label, onChange, ...props }) => {
       <ImageIcon />
       <FileLabel>
         <FileInput
+        name="coverImage" 
           type="file"
           accept="image/*"
           onChange={handleFileChange}

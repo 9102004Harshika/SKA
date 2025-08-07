@@ -3,6 +3,7 @@ import { createNotification } from "./notificationController.js";
 
 // Create a new note
 export const createNote = async (req, res) => {
+   console.log(req.body)
   try {
     const newNote = new Notes(req.body);
     await newNote.save();
@@ -24,6 +25,7 @@ export const createNote = async (req, res) => {
     );
   } catch (error) {
     res.status(400).json({ message: "Error creating note", error });
+    console.log(error)
   }
 };
 

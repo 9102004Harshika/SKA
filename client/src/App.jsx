@@ -57,6 +57,7 @@ import ContactUs from "./pages/footer/ContactUs";
 import Developers from "./pages/footer/Developers";
 import AboutUs from "./pages/footer/AboutUs";
 import UpdateQuiz from "./pages/admin/quiz/UpdateQuiz";
+import UpdateNotes from "./pages/admin/notes/UpdateNotes";
 
 const App = () => {
   return (
@@ -122,6 +123,10 @@ const App = () => {
               <Route path="notes">
                 <Route index element={<NotesDashboard />} />
                 <Route path="add" element={<AddNotes />} />
+                <Route path="update/:id" element={<UpdateNotes />} />
+
+
+
               </Route>
 
               {/* <Route path="instructor" element={<InstructorAdminLayout />}>

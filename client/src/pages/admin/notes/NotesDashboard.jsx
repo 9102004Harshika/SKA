@@ -291,6 +291,7 @@ const NotesDashboard = () => {
                           <button
                             className="p-2 text-accent hover:bg-accent/10 rounded-full transition-colors"
                             title="Edit"
+                            onClick={() => navigate(`/admin/notes/update/${note._id}`)}
                           >
                             <FaEdit size={18} />
                           </button>

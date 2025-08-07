@@ -118,15 +118,15 @@ const FileUploader = ({ label, onChange, ...props }) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
-  const handleFile = (file) => {
-    if (file && file.type === "application/pdf") {
-      const url = URL.createObjectURL(file);
-      setFileUrl(url);
-      onChange && onChange(url);
-    } else {
-      alert("Only PDF files are allowed!");
-    }
-  };
+const handleFile = (file) => {
+  if (file && file.type === "application/pdf") {
+    const url = URL.createObjectURL(file);
+    setFileUrl(url);         // for preview
+    onChange && onChange(file); // send actual File object
+  } else {
+    alert("Only PDF files are allowed!");
+  }
+};
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -159,6 +159,7 @@ const FileUploader = ({ label, onChange, ...props }) => {
       </Folder>
       <FileLabel>
         <FileInput
+          name="pdfUrl" 
           accept="application/pdf"
           type="file"
           onChange={handleFileChange}
