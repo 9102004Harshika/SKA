@@ -26,7 +26,7 @@ const useAddCourse = () => {
         formData.append("upload_preset", preset);
 
         const response = await axios.post(
-            "https://api.cloudinary.com/v1_1/dsnsi0ioz/upload",
+            `${process.env.CLOUDINARY_URL}`,
             formData,
             {
                 onUploadProgress: (progressEvent) => {

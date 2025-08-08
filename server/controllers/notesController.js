@@ -3,7 +3,6 @@ import { createNotification } from "./notificationController.js";
 
 // Create a new note
 export const createNote = async (req, res) => {
-   console.log(req.body)
   try {
     const newNote = new Notes(req.body);
     await newNote.save();
