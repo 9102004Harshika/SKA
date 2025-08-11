@@ -123,7 +123,7 @@ const App = () => {
               <Route path="notes">
                 <Route index element={<NotesDashboard />} />
                 <Route path="add" element={<AddNotes />} />
-                {/* <Route path="update/:id" element={<UpdateNotes />} /> */}
+                <Route path="update/:id" element={<UpdateNotes />} /> 
 
 
 
@@ -150,7 +150,7 @@ const App = () => {
                 <Route path="delete" element={<DeleteNotesPage />} />
               </Route> */}
             </Route>
-             <Route path="test/:id" element={<UpdateNotes />} />
+           
             <Route path="/pdfViewer" element={<PdfViewer />} />
             <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />

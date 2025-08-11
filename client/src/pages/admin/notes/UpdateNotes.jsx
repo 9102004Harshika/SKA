@@ -9,14 +9,11 @@ import TextInput from "../../../ui/textInput";
 import TextAreaInput from "../../../ui/textarea";
 import Modal from "../../../components/Modal";
 import { toast } from "../../../components/use-toast";
-import { FaFilePdf } from "react-icons/fa";
-import {
-  FaTimes,
+import { FaFilePdf,FaCheck, FaTimes,
   FaSchool,
   FaBookOpen,
   FaClock,
-  FaUpload,
-} from "react-icons/fa";
+  FaUpload, } from "react-icons/fa";
 import useUpdateNotes from "../../../logic/notes/updateNotes";
 
 const {
@@ -38,25 +35,12 @@ const UpdateNotes = () => {
     error,
     modalType,
     closeModal,
+    success,
   } = useUpdateNotes();
 
   const [activeTab, setActiveTab] = useState(1);
- const [existingImage, setExistingImage] = useState("");
-const [existingPdf, setExistingPdf] = useState("");
-
-useEffect(() => {
-  if (note.coverImageUrl) {
-    setExistingImage(note.coverImageUrl);
-  }
-}, [note.coverImageUrl]);
-useEffect(() => {
-  if (note.pdfUrl) {
-    setExistingPdf(note.pdfUrl);
-  }
-}, [note.pdfUrl]);
 
 
-console.log(existingImage)
   const validateTab1 = () => {
     if (
       !note.title ||
@@ -75,7 +59,7 @@ console.log(existingImage)
     }
     return true;
   };
-
+  console.log(success)
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 font-body">
       <div className="max-w-7xl mx-auto">
@@ -90,6 +74,14 @@ console.log(existingImage)
             <div className="flex items-center">
               <FaTimes className="w-5 h-5 mr-2" />
               <p>{error}</p>
+            </div>
+          </div>
+        )}
+        {success && (
+          <div className="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-r">
+            <div className="flex items-center">
+              <FaCheck className="w-5 h-5 mr-2" />
+              <p>{success}</p>
             </div>
           </div>
         )}
@@ -278,49 +270,50 @@ console.log(existingImage)
               
 {/* Cover Image */}
 <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
-  <h3 className="text-lg font-bold text-secondary mb-4 flex items-center">
-    <FaUpload className="w-5 h-5 mr-2 text-secondary" /> Upload Cover Image
-  </h3>
-
-  {typeof note.coverImageUrl === "string" && note.coverImageUrl ? (
-    // Show only existing image from DB
-    <div className="flex flex-col items-center rounded">
-      <img
-        src={note.coverImageUrl}
-        alt="Current cover"
-        className="w-20 h-20 object-cover rounded"
+                    <h3 className="text-lg font-bold text-secondary mb-4 flex items-center">
+                      <FaUpload className="w-5 h-5 mr-2 text-secondary" /> Upload Cover Image
+                    </h3>
+               {note.coverImageUrl && typeof note.coverImageUrl === "string" && note.coverImageUrl.startsWith("http") ? (
+  <div className="flex flex-col items-center justify-center">
+    <img
+      src={note.coverImageUrl}
+      alt="Cover"
+      className="w-20 h-20 object-cover border rounded"
+    />
+    <p className="mt-2 text-sm text-gray-600">
+      {note.coverImageUrl.split("/").pop()}
+    </p>
+    <button
+      type="button"
+      onClick={() => {
+        setNote(prev => ({ ...prev, coverImageUrl: null }));
+      }}
+      className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+    >
+      Delete
+    </button>
+  </div>
+) : (
+  <div className="my-10">
+    <div className="flex justify-center">
+      <ImageUploader
+        label="Upload File"
+        required
+        onChange={(file) =>
+          setNote(prev => ({
+            ...prev,
+            coverImageUrl: file, // keep file for submit, no preview
+          }))
+        }
       />
-      <p className="mt-2 text-sm truncate w-40">
-        {note.coverImageUrl.split("/").pop()}
-      </p>
-      <button
-        type="button"
-        onClick={() => {
-          setNote((prev) => ({ ...prev, coverImageUrl: null }));
-        }}
-        className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-      >
-        Delete
-      </button>
     </div>
-  ) : (
-    // Show uploader if no DB image exists
-    <div className="my-10">
-      <div className="flex justify-center">
-        <ImageUploader
-          label="Upload File"
-          required={!note.coverImageUrl}
-          onChange={(file) =>
-            setNote((prev) => ({ ...prev, coverImageUrl: file }))
-          }
-        />
-      </div>
-      <p className="text-xs text-center mt-3">
-        *select a file or drag and drop to add file
-      </p>
-    </div>
-  )}
-</div>
+    <p className="text-xs text-center mt-3">
+      *select a file or drag and drop to add file
+    </p>
+  </div>
+)}
+
+                  </div>
 
 
 
@@ -330,7 +323,7 @@ console.log(existingImage)
     <FaUpload className="w-5 h-5 mr-2 text-secondary" /> Upload PDF
   </h3>
 
-  {typeof note.pdfUrl === "string" && note.pdfUrl ? (
+  {typeof note.pdfUrl === "string" && note.pdfUrl && note.pdfUrl.startsWith("http")? (
     // Show only existing PDF from DB until deleted
     <div className="flex flex-col items-center rounded">
       <FaFilePdf className="w-20 h-20 text-secondary" />
@@ -392,15 +385,9 @@ console.log(existingImage)
       </div>
 
       {/* Upload Modal */}
-      <Modal isOpen={!!modalType} closeModal={closeModal}>
+      <Modal isOpen={!!modalType} closeModal={closeModal} progress={progress}>
         <p className="text-lg font-medium mb-2">Uploading...</p>
-        <div className="w-full bg-gray-200 h-4 rounded">
-          <div
-            className="h-4 bg-green-500 rounded"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-        <p className="mt-2 text-sm">{progress}% completed</p>
+        
       </Modal>
     </div>
   );
