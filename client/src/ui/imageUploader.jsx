@@ -112,15 +112,16 @@ const ImageUploader = ({ label, onChange, ...props }) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
-  const handleFile = (file) => {
-    if (file && file.type.startsWith("image/")) {
-      const url = URL.createObjectURL(file);
-      setFileUrl(url);
-      onChange && onChange(url);
-    } else {
-      alert("Only image files are allowed!");
-    }
-  };
+const handleFile = (file) => {
+  if (file && file.type.startsWith("image/")) {
+    const url = URL.createObjectURL(file);
+    setFileUrl(url);          // for preview
+    onChange && onChange(file); // send actual File object
+  } else {
+    alert("Only image files are allowed!");
+  }
+};
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];

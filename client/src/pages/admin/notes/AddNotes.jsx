@@ -347,15 +347,9 @@ const AddNotes = () => {
       </div>
 
       {/* Upload Progress Modal */}
-      <Modal isOpen={isModalOpen} closeModal={closeModal}>
+      <Modal isOpen={isModalOpen} closeModal={closeModal} progress={progress}>
         <p className="text-lg font-medium mb-2">Uploading {uploadType}...</p>
-        <div className="w-full bg-gray-200 h-4 rounded">
-          <div
-            className="h-4 bg-green-500 rounded"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-        <p className="mt-2 text-sm">{progress}% completed</p>
+
       </Modal>
     </div>
   );

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "../../components/use-toast";
+const CLOUDINARY_URL=process.env.CLOUDINARY_URL;
+const API_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:4000/";
 
 const useAddNotes = () => {
   const [loading, setLoading] = useState(false);
@@ -19,7 +21,7 @@ const handleSubmit = async (
   setLoading(true);
   openModal();
   setProgress(0);
-
+  console.log(formData)
   try {
     const uploadToCloudinary = async (file, preset) => {
       const form = new FormData();
@@ -27,7 +29,7 @@ const handleSubmit = async (
       form.append("upload_preset", preset);
 
       const response = await axios.post(
-       `${process.env.CLOUDINARY_URL}`,
+      "https://api.cloudinary.com/v1_1/dsnsi0ioz/upload",
         form,
         {
           onUploadProgress: (progressEvent) => {
@@ -73,9 +75,9 @@ const handleSubmit = async (
     };
 
     console.log("Data sent to backend:", updatedFormData);
-
+     
     await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}api/notes/add`,
+        `${API_URL}api/notes/add`,
       updatedFormData
     );
 

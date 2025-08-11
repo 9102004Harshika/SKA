@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "../../../components/use-toast";
 import axios from "axios";
 import {
   FaSearch,
@@ -13,10 +14,11 @@ import {
   FaFilePdf,
   FaLock,
   FaLockOpen,
+  FaTimes
 } from "react-icons/fa";
 import BookLoader from "../../../components/BookLoader";
 
-const NOTES_API_URL = `${process.env.REACT_APP_API_BASE_URL}api/notes/get`;
+const API_URL = process.env.REACT_APP_API_BASE_URL;
 
 const NotesDashboard = () => {
   const navigate = useNavigate();
@@ -26,6 +28,8 @@ const NotesDashboard = () => {
   const [allNotes, setAllNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState(null);
   const notesPerPage = 10;
 
   // Fetch notes from API
@@ -33,7 +37,7 @@ const NotesDashboard = () => {
     const fetchNotes = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(NOTES_API_URL);
+        const response = await axios.get(`${API_URL}api/notes/get`);
         // Transform the data to match our UI structure
         const transformedNotes = response.data.map((note) => ({
           ...note,
@@ -97,6 +101,55 @@ const NotesDashboard = () => {
       month: "short",
       day: "numeric",
     });
+  };
+// Open delete confirmation modal
+  const handleDeleteNotes = (id) => {
+    setNoteToDelete(id);
+    setDeleteModalOpen(true);
+  };
+  const confirmDelete = async () => {
+    try {
+      const res = await axios.delete(
+        `${API_URL}api/notes/delete/${noteToDelete}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+     if (res.data?.success || res.status === 200) {
+  const updatedNotes = allNotes.filter((note) => note._id !== noteToDelete);
+  setAllNotes(updatedNotes);
+
+  toast({
+    title: "Success",
+    description: "Note deleted successfully.",
+    variant: "success",
+  });
+} else {
+  throw new Error(res.data?.message || "Failed to delete note");
+}
+
+    } catch (err) {
+      toast({
+        title: "Error",
+        description:
+          err.response?.data?.message ||
+          err.message ||
+          "Failed to delete note.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleteModalOpen(false);
+      setNoteToDelete(null);
+    }
+  };
+
+  // Cancel deletion
+  const cancelDelete = () => {
+    setDeleteModalOpen(false);
+    setNoteToDelete(null);
   };
 
   return (
@@ -298,6 +351,10 @@ const NotesDashboard = () => {
                           <button
                             className="p-2 text-error hover:bg-error/10 rounded-full transition-colors"
                             title="Delete"
+                              onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteNotes(note._id);
+                          }}
                           >
                             <FaTrash size={18} />
                           </button>
@@ -349,7 +406,43 @@ const NotesDashboard = () => {
           </div>
         )}
       </div>
+       {deleteModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Delete Notes
+              </h3>
+              <button
+                onClick={cancelDelete}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <FaTimes size={20} />
+              </button>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this note? This action cannot be
+              undone.
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+    
   );
 };
 
