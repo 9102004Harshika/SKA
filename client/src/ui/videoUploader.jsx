@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import camera from "../images/camera.png";
+
 // Floating animation for camera
 const float = keyframes`
   0% { transform: translateY(0px); }
@@ -22,6 +23,17 @@ const Container = styled.div`
   width: 160px;
   position: relative;
   margin-top: 20px;
+  border: 2px dotted transparent; /* default dotted but invisible */
+  transition: border var(--transition), background var(--transition);
+
+  &.dragover {
+    border: 2px dotted #ffc33e; /* dotted gold when dragging */
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &:hover {
+    border: 2px dotted #ffc33e; /* dotted gold on hover */
+  }
 `;
 
 const CameraIcon = styled.img`
@@ -59,24 +71,48 @@ const FileInput = styled.input`
   display: none;
 `;
 
-const VideoUploader = ({ label, onChange, ...props }) => {
-  const [fileUrl, setFileUrl] = useState(null);
+const VideoUploader = ({ label, onChange,FileUrl, ...props }) => {
+  const [fileUrl, setFileUrl] = useState(FileUrl);
+  const [dragActive, setDragActive] = useState(false);
+
+  const processFile = (file) => {
+    if (!file.type.startsWith("video/")) {
+      alert("Only video files are allowed!");
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setFileUrl(url);
+    onChange && onChange(url);
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      if (!file.type.startsWith("video/")) {
-        alert("Only video files are allowed!");
-        return;
-      }
-      const url = URL.createObjectURL(file);
-      setFileUrl(url);
-      onChange && onChange(url); // Pass file URL to parent
-    }
+    if (file) processFile(file);
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragActive(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragActive(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragActive(false);
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+  };
+  console.log(fileUrl);
   return (
-    <Container>
+    <Container
+      className={dragActive ? "dragover" : ""}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
       <CameraIcon src={camera} alt="Camera Icon" />
       <FileLabel>
         <FileInput
@@ -85,7 +121,7 @@ const VideoUploader = ({ label, onChange, ...props }) => {
           onChange={handleFileChange}
           {...props}
         />
-        {label}
+        {label || "Upload Video"}
       </FileLabel>
       {fileUrl && (
         <p style={{ color: "#fff", fontSize: "12px" }}>Video Selected!</p>

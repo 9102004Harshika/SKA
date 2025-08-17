@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 
@@ -36,14 +35,18 @@ const Container = styled.div`
   position: relative;
   cursor: pointer;
   overflow: visible;
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  transition: border-color 0.3s ease, background 0.3s ease;
+  border: 2px dotted transparent; /* invisible dotted border by default */
+  transition: border 0.3s ease, background 0.3s ease;
 
   ${(props) =>
     props.isDragOver &&
     css`
       border-color: hsl(41, 100%, 62%);
-      background: linear-gradient(135deg, hsl(268, 82%, 27%), hsl(266, 100%, 13%));
+      background: linear-gradient(
+        135deg,
+        hsl(268, 82%, 27%),
+        hsl(266, 100%, 13%)
+      );
     `}
 `;
 
@@ -56,7 +59,7 @@ const ImageIcon = styled.div`
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  animation: ${float} 2.5s infinite ease-in-out; /* Continuous floating */
+  animation: ${float} 2.5s infinite ease-in-out;
 
   &:before {
     content: "";
@@ -112,16 +115,15 @@ const ImageUploader = ({ label, onChange, ...props }) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
-const handleFile = (file) => {
-  if (file && file.type.startsWith("image/")) {
-    const url = URL.createObjectURL(file);
-    setFileUrl(url);          // for preview
-    onChange && onChange(file); // send actual File object
-  } else {
-    alert("Only image files are allowed!");
-  }
-};
-
+  const handleFile = (file) => {
+    if (file && file.type.startsWith("image/")) {
+      const url = URL.createObjectURL(file);
+      setFileUrl(url);
+      onChange && onChange(file);
+    } else {
+      alert("Only image files are allowed!");
+    }
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -148,7 +150,7 @@ const handleFile = (file) => {
       <ImageIcon />
       <FileLabel>
         <FileInput
-        name="coverImage" 
+          name="coverImage"
           type="file"
           accept="image/*"
           onChange={handleFileChange}

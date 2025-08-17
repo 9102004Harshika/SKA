@@ -221,7 +221,7 @@ const UpdateNotes = () => {
 
   {/* Stream */}
   <div className="mb-5">
-    {note.classFor > 10 && (
+    {parseInt(note.classFor) > 10 && (
       <Select
         menuTitle="Stream *"
         submenuItems={streams}

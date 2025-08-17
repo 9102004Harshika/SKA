@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 
@@ -11,7 +10,7 @@ const float = keyframes`
 
 const Container = styled.div`
   --transition: 350ms;
-  --folder-W: 90px; /* More compact */
+  --folder-W: 90px;
   --folder-H: 55px;
   display: flex;
   flex-direction: column;
@@ -22,11 +21,17 @@ const Container = styled.div`
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   height: calc(var(--folder-H) * 1.7);
-  width: 160px; /* Slightly increased width */
+  width: 160px;
   position: relative;
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  transition: border-color 0.3s ease, background 0.3s ease;
+  border: 2px dotted rgba(255, 255, 255, 0.2); /* dotted border by default */
+  transition: border-color var(--transition) ease, background var(--transition) ease;
 
+  /* Hover effect */
+  &:hover {
+    border-color: #ffc663;
+  }
+
+  /* Drag-over effect */
   ${(props) =>
     props.isDragOver &&
     css`
@@ -39,7 +44,7 @@ const Folder = styled.div`
   position: absolute;
   top: -15px;
   left: calc(50% - 45px);
-  animation: ${float} 2.5s infinite ease-in-out; /* Floating animation */
+  animation: ${float} 2.5s infinite ease-in-out;
   transition: transform var(--transition) ease;
 
   &:hover {
@@ -96,7 +101,6 @@ const FileLabel = styled.label`
   color: #f5f5db;
   text-align: center;
   background: rgba(255, 255, 255, 0.2);
-  border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: background var(--transition) ease;
@@ -118,15 +122,15 @@ const FileUploader = ({ label, onChange, ...props }) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
-const handleFile = (file) => {
-  if (file && file.type === "application/pdf") {
-    const url = URL.createObjectURL(file);
-    setFileUrl(url);         // for preview
-    onChange && onChange(file); // send actual File object
-  } else {
-    alert("Only PDF files are allowed!");
-  }
-};
+  const handleFile = (file) => {
+    if (file && file.type === "application/pdf") {
+      const url = URL.createObjectURL(file);
+      setFileUrl(url);
+      onChange && onChange(file);
+    } else {
+      alert("Only PDF files are allowed!");
+    }
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -159,7 +163,7 @@ const handleFile = (file) => {
       </Folder>
       <FileLabel>
         <FileInput
-          name="pdfUrl" 
+          name="pdfUrl"
           accept="application/pdf"
           type="file"
           onChange={handleFileChange}

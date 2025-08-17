@@ -79,7 +79,6 @@ const AddNotes = () => {
     });
     setActiveTab(1);
   };
-
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 font-body">
       <div className="max-w-7xl mx-auto">
@@ -239,7 +238,7 @@ const AddNotes = () => {
                   </div>
 
                   <div className="mb-5">
-                    {formData.classFor > 10 && (
+                    {parseInt(formData.classFor )> 10 && (
                       <Select
                         menuTitle="Stream *"
                         submenuItems={streams}
