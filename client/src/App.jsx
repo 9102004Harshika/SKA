@@ -47,7 +47,6 @@ import SalesDashboard from "./pages/admin/sales/SalesDashboard";
 import QuizDashboard from "./pages/admin/quiz/QuizDashboard";
 import AddQuiz from "./pages/admin/quiz/AddQuiz";
 import Teachers from "./pages/admin/teachers/Teachers";
-import { Settings } from "lucide-react";
 import NotesDashboard from "./pages/admin/notes/NotesDashboard";
 import QuizApp from "./pages/QuizApp";
 import FAQ from "./pages/footer/FAQ";
@@ -59,6 +58,7 @@ import AboutUs from "./pages/footer/AboutUs";
 import UpdateQuiz from "./pages/admin/quiz/UpdateQuiz";
 import UpdateNotes from "./pages/admin/notes/UpdateNotes";
 import AddCourse from "./test";
+import Settings from "./pages/admin/settings/Settings";
 
 const App = () => {
   return (
@@ -115,23 +115,18 @@ const App = () => {
               <Route path="course">
                 <Route index element={<CourseDashboard />} />
                 <Route path="add" element={<AddCoursePage />} />
-               
-               </Route>
+              </Route>
               <Route path="settings" element={<Settings />} />
               <Route path="teachers" element={<Teachers />} />
               <Route path="quiz">
                 <Route index element={<QuizDashboard />} />
                 <Route path="add" element={<AddQuiz />} />
                 <Route path="update/:id" element={<UpdateQuiz />} />
-
               </Route>
               <Route path="notes">
                 <Route index element={<NotesDashboard />} />
                 <Route path="add" element={<AddNotes />} />
-                <Route path="update/:id" element={<UpdateNotes />} /> 
-
-
-
+                <Route path="update/:id" element={<UpdateNotes />} />
               </Route>
 
               {/* <Route path="instructor" element={<InstructorAdminLayout />}>
@@ -155,7 +150,7 @@ const App = () => {
                 <Route path="delete" element={<DeleteNotesPage />} />
               </Route> */}
             </Route>
-           <Route path="/test" element={<AddCourse/>} />
+            <Route path="/test" element={<AddCourse />} />
             <Route path="/pdfViewer" element={<PdfViewer />} />
             <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />

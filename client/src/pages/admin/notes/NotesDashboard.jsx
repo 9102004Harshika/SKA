@@ -14,7 +14,7 @@ import {
   FaFilePdf,
   FaLock,
   FaLockOpen,
-  FaTimes
+  FaTimes,
 } from "react-icons/fa";
 import BookLoader from "../../../components/BookLoader";
 
@@ -102,7 +102,7 @@ const NotesDashboard = () => {
       day: "numeric",
     });
   };
-// Open delete confirmation modal
+  // Open delete confirmation modal
   const handleDeleteNotes = (id) => {
     setNoteToDelete(id);
     setDeleteModalOpen(true);
@@ -118,19 +118,20 @@ const NotesDashboard = () => {
         }
       );
 
-     if (res.data?.success || res.status === 200) {
-  const updatedNotes = allNotes.filter((note) => note._id !== noteToDelete);
-  setAllNotes(updatedNotes);
+      if (res.data?.success || res.status === 200) {
+        const updatedNotes = allNotes.filter(
+          (note) => note._id !== noteToDelete
+        );
+        setAllNotes(updatedNotes);
 
-  toast({
-    title: "Success",
-    description: "Note deleted successfully.",
-    variant: "success",
-  });
-} else {
-  throw new Error(res.data?.message || "Failed to delete note");
-}
-
+        toast({
+          title: "Success",
+          description: "Note deleted successfully.",
+          variant: "success",
+        });
+      } else {
+        throw new Error(res.data?.message || "Failed to delete note");
+      }
     } catch (err) {
       toast({
         title: "Error",
@@ -200,7 +201,7 @@ const NotesDashboard = () => {
             </div>
 
             {/* Add New Note Button */}
-            <button 
+            <button
               onClick={() => navigate("/admin/notes/add")}
               className="flex-shrink-0 bg-accent hover:bg-yellow-500 text-primary font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-transform transform hover:scale-105"
             >
@@ -344,17 +345,19 @@ const NotesDashboard = () => {
                           <button
                             className="p-2 text-accent hover:bg-accent/10 rounded-full transition-colors"
                             title="Edit"
-                            onClick={() => navigate(`/admin/notes/update/${note._id}`)}
+                            onClick={() =>
+                              navigate(`/admin/notes/update/${note._id}`)
+                            }
                           >
                             <FaEdit size={18} />
                           </button>
                           <button
                             className="p-2 text-error hover:bg-error/10 rounded-full transition-colors"
                             title="Delete"
-                              onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteNotes(note._id);
-                          }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteNotes(note._id);
+                            }}
                           >
                             <FaTrash size={18} />
                           </button>
@@ -406,16 +409,16 @@ const NotesDashboard = () => {
           </div>
         )}
       </div>
-       {deleteModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      {deleteModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-gray-900 font-header">
                 Delete Notes
               </h3>
               <button
                 onClick={cancelDelete}
-                className="text-gray-400 hover:text-gray-500"
+                className="text-gray-400 hover:text-accent"
               >
                 <FaTimes size={20} />
               </button>
@@ -427,7 +430,7 @@ const NotesDashboard = () => {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={cancelDelete}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 border border-primary rounded-lg text-primary hover:border-secondary hover:shadow-lg transition-colors"
               >
                 Cancel
               </button>
@@ -442,7 +445,6 @@ const NotesDashboard = () => {
         </div>
       )}
     </div>
-    
   );
 };
 
