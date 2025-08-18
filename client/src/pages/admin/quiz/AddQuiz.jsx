@@ -127,7 +127,7 @@ const AddQuiz = () => {
             .filter((opt) => opt.trim() !== "") // Remove empty options
             .map((opt, index) => ({
               text: opt,
-              isCorrect: index === parseInt(q.correctOption)
+              isCorrect: index === parseInt(q.correctOption),
             })),
           correctOption: parseInt(q.correctOption) || 0,
         })),
@@ -411,7 +411,7 @@ const AddQuiz = () => {
                   <button
                     type="button"
                     onClick={() => navigate(-1)}
-                    className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors"
+                    className="px-6 py-2.5 border border-accent rounded-lg text-accent bg-background hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors"
                   >
                     Cancel
                   </button>
@@ -419,7 +419,7 @@ const AddQuiz = () => {
                     <button
                       type="button"
                       onClick={() => setActiveTab("questions")}
-                      className="px-6 py-2.5 bg-accent text-white rounded-lg hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors"
+                      className="px-6 py-2.5 bg-secondary text-white rounded-lg hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-colors"
                     >
                       Next: Add Questions
                     </button>
