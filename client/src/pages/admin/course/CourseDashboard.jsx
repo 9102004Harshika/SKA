@@ -1,4 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "../../../components/use-toast";
+import axios from "axios";
 import {
   FaSearch,
   FaPlus,
@@ -10,119 +13,103 @@ import {
   FaTrash,
   FaStar,
   FaUsers,
+  FaTimes,
 } from "react-icons/fa";
 
-// Sample data generation (no changes needed here)
-const generateCourseData = () => {
-  const courseNames = [
-    "Advanced React Development",
-    "Python for Data Science",
-    "Digital Marketing Fundamentals",
-    "JavaScript ES6+ Mastery",
-    "UI/UX Design Principles",
-    "Machine Learning Basics",
-    "WordPress Development",
-    "Graphic Design with Photoshop",
-    "Mobile App Development",
-    "Cybersecurity Essentials",
-    "Cloud Computing with AWS",
-    "Database Management",
-    "SEO Optimization Strategies",
-    "Content Writing Mastery",
-    "Excel Advanced Techniques",
-    "Photography Basics",
-    "Video Editing Pro",
-    "Social Media Marketing",
-    "E-commerce Business",
-    "Project Management",
-    "Blockchain Technology",
-    "Artificial Intelligence",
-    "Game Development Unity",
-    "Web Development Bootcamp",
-    "Financial Analysis",
-    "Leadership Skills",
-    "Public Speaking",
-    "Creative Writing",
-    "Music Production",
-    "Fitness Training",
-  ];
-  const instructors = [
-    "Dr. Sarah Johnson",
-    "Prof. Michael Chen",
-    "Ms. Emily Davis",
-    "Mr. David Wilson",
-    "Dr. Lisa Anderson",
-    "Prof. James Brown",
-    "Ms. Jessica Taylor",
-    "Mr. Robert Garcia",
-    "Dr. Amanda White",
-    "Prof. Kevin Lee",
-    "Ms. Rachel Martinez",
-    "Mr. Thomas Miller",
-  ];
-  const subjects = [
-    "Computer Science",
-    "Mathematics",
-    "Business",
-    "Design",
-    "Marketing",
-    "Science",
-    "Arts",
-    "Engineering",
-    "Psychology",
-    "Finance",
-  ];
-  return Array.from({ length: 87 }, (_, i) => ({
-    id: i + 1,
-    title: courseNames[i % courseNames.length],
-    instructor: instructors[i % instructors.length],
-    subject: subjects[i % subjects.length],
-    students: Math.floor(Math.random() * 500) + 10,
-    rating: (Math.random() * 2 + 3).toFixed(1),
-    price: Math.floor(Math.random() * 200) + 50,
-    thumbnail: `https://picsum.photos/120/80?random=${i + 1}`,
-  }));
-};
+const API_URL = process.env.REACT_APP_API_BASE_URL;
 
 const CourseDashboard = () => {
+  const navigate = useNavigate();
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterSubject, setFilterSubject] = useState("All");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [courseToDelete, setCourseToDelete] = useState(null);
+  // pagination state from backend
   const [currentPage, setCurrentPage] = useState(1);
-  const coursesPerPage = 10; // Reduced for better single-page view
+  const [totalPages, setTotalPages] = useState(1);
+  const coursesPerPage = 10;
 
-  const allCourses = useMemo(() => generateCourseData(), []);
+  const subjects = ["All", "Computer Science", "Mathematics", "Business", "Design"];
 
-  const filteredCourses = useMemo(() => {
-    return allCourses.filter((course) => {
-      const matchesSearch =
-        course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesSubject =
-        filterSubject === "All" || course.subject === filterSubject;
-      return matchesSearch && matchesSubject;
-    });
-  }, [allCourses, searchTerm, filterSubject]);
+  // Fetch courses from API with pagination
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `${API_URL}api/courses/get?page=${currentPage}&limit=${coursesPerPage}`
+        );
 
-  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
-  const startIndex = (currentPage - 1) * coursesPerPage;
-  const currentCourses = filteredCourses.slice(
-    startIndex,
-    startIndex + coursesPerPage
-  );
+        setCourses(data.courses);
+        setTotalPages(data.totalPages);
+      } catch (err) {
+        console.error("Error fetching courses:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const subjects = [
-    "All",
-    "Computer Science",
-    "Mathematics",
-    "Business",
-    "Design",
-    "Marketing",
-    "Science",
-    "Arts",
-    "Engineering",
-    "Psychology",
-    "Finance",
-  ];
+    fetchCourses();
+  }, [currentPage]);
+
+  // Filter courses (search + subject) client-side on current page
+  const filteredCourses = courses.filter((course) => {
+    const matchesSearch =
+      course.courseTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      course.instructor?.user?.fullName?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSubject = filterSubject === "All" || course.subject === filterSubject;
+    return matchesSearch && matchesSubject;
+  });
+
+  if (loading) {
+    return <div className="text-center py-10">Loading courses...</div>;
+  }
+  const handleDeleteCourse = (id) => {
+    setCourseToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  // confirm delete
+  const confirmDelete = async () => {
+    try {
+      const res = await axios.delete(`${API_URL}api/courses/${courseToDelete}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (res.data?.success || res.status === 200) {
+        setCourses((prev) => prev.filter((course) => course._id !== courseToDelete));
+        toast({
+          title: "Success",
+          description: "Course deleted successfully.",
+          variant: "success",
+        });
+      } else {
+        throw new Error(res.data?.message || "Failed to delete course");
+      }
+    } catch (err) {
+      toast({
+        title: "Error",
+        description:
+          err.response?.data?.message ||
+          err.message ||
+          "Failed to delete course.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleteModalOpen(false);
+      setCourseToDelete(null);
+    }
+  };
+
+  // cancel delete
+  const cancelDelete = () => {
+    setDeleteModalOpen(false);
+    setCourseToDelete(null);
+  };
 
   return (
     <div className="min-h-screen bg-background text-tertiary px-4 sm:px-6 lg:px-8 font-body">
@@ -134,9 +121,8 @@ const CourseDashboard = () => {
           </h1>
         </header>
 
-        {/* Controls Row */}
+        {/* Controls */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
-          {/* Search Bar */}
           <div className="w-full sm:w-auto flex-grow relative group">
             <FaSearch
               className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-focus-within:text-accent transition-colors"
@@ -152,12 +138,11 @@ const CourseDashboard = () => {
           </div>
 
           <div className="w-full sm:w-auto flex items-center gap-4">
-            {/* Filter Dropdown */}
             <div className="w-full sm:w-48 relative">
               <select
                 value={filterSubject}
                 onChange={(e) => setFilterSubject(e.target.value)}
-                className="w-full appearance-none px-4 py-3  bg-white border border-primary rounded-lg focus:ring-2 focus:ring-accent outline-none transition-all text-primary hover:border-secondary focus:border-accent placeholder:text-primary"
+                className="w-full appearance-none px-4 py-3 bg-white border border-primary rounded-lg focus:ring-2 focus:ring-accent outline-none transition-all text-primary hover:border-secondary focus:border-accent placeholder:text-primary"
               >
                 {subjects.map((subject) => (
                   <option key={subject} value={subject}>
@@ -166,13 +151,15 @@ const CourseDashboard = () => {
                 ))}
               </select>
               <FaChevronDown
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-primary pointer-events-none group-focus-within:text-accent transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-primary pointer-events-none"
                 size={20}
               />
             </div>
 
-            {/* Add New Course Button */}
-            <button className="flex-shrink-0 bg-accent hover:bg-yellow-500 text-primary font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-transform transform hover:scale-105">
+            <button
+              onClick={() => navigate("/admin/course/add")}
+              className="flex-shrink-0 bg-accent hover:bg-yellow-500 text-primary font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-transform transform hover:scale-105"
+            >
               <FaPlus size={20} />
               <span>Add Course</span>
             </button>
@@ -180,73 +167,84 @@ const CourseDashboard = () => {
         </div>
 
         {/* Courses Table */}
-        <div className="bg-background rounded-xl shadow-md border border-gray-100 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+        <div className="bg-background rounded-xl shadow-md border border-gray-100 overflow-hidden ">
+          <div className="overflow-x-auto -mb-px overflow-x-auto scrollbar-hide">
+            <table className="w-full text-sm ">
               <thead>
-                <tr className="bg-secondary text-background">
-                  <th className="p-4 font-semibold text-center">
-                    Course Details
-                  </th>
-                  <th className="p-4 font-semibold text-center">Subject</th>
-                  <th className="p-4 font-semibold text-center">Instructor</th>
-                  <th className="p-4 font-semibold text-center">Students</th>
-                  <th className="p-4 font-semibold text-center">Rating</th>
-                  <th className="p-4 font-semibold text-center">Price</th>
-                  <th className="p-4 font-semibold text-center">Actions</th>
+                <tr className="bg-secondary text-background -mb-px overflow-x-auto scrollbar-hide">
+                  <th className="p-4 text-left font-semibold">Course</th>
+                  <th className="p-4 text-center font-semibold">Subject</th>
+                  <th className="p-4 text-center font-semibold">Instructor</th>
+                  <th className="p-4 text-center font-semibold">Students</th>
+                  <th className="p-4 text-center font-semibold">Rating</th>
+                  <th className="p-4 text-center font-semibold">Price</th>
+                  <th className="p-4 text-center font-semibold">Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                {currentCourses.map((course) => (
-                  <tr
-                    key={course.id}
-                    className="border-b border-gray-100 hover:bg-background/50"
-                  >
-                    <td className="p-4">
-                      <div className="flex items-center gap-4">
+              <tbody className="-mb-px overflow-x-auto scrollbar-hide">
+                {filteredCourses.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center text-tertiary">
+                      No courses found.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredCourses.map((course) => (
+                    <tr
+                      key={course._id}
+                      className="border-b border-gray-100 hover:bg-background/50"
+                    >
+                      {/* Course */}
+                      <td className="p-4 flex items-center gap-4">
                         <img
-                          src={course.thumbnail}
-                          alt={course.title}
-                          className="w-20 h-14 rounded-md object-cover"
+                          src={course.courseImage || "https://via.placeholder.com/80x50"}
+                          alt={course.courseTitle}
+                          className="w-20 h-14 rounded-md object-cover flex-shrink-0"
                         />
-                        <div>
+                        <div className="flex flex-col justify-center">
                           <div className="font-bold text-secondary">
-                            {course.title}
-                          </div>
-                          <div className="text-xs text-tertiary/70">
-                            {course.instructor}
+                            {course.courseTitle.split(" ").slice(0, 4).join(" ")}
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full font-semibold inline-flex items-center gap-1">
-                        {course.subject}
-                      </span>
-                    </td>
-                    <td className="p-4 text-tertiary font-medium">
-                      {course.instructor}
-                    </td>
-                    <td className="p-4 text-center">
-                      <div className="flex items-center justify-center gap-2 font-semibold text-tertiary">
-                        <FaUsers size={16} className="text-tertiary/70" />
-                        {course.students.toLocaleString()}
-                      </div>
-                    </td>
-                    <td className="p-4 text-center">
-                      <div className="flex items-center justify-center gap-1 font-bold text-amber-600">
-                        <FaStar
-                          size={16}
-                          className="text-accent fill-current"
-                        />{" "}
-                        {course.rating}
-                      </div>
-                    </td>
-                    <td className="p-4 text-center font-bold text-green-600">
-                      ${course.price}
-                    </td>
-                    <td className="p-4 text-center">
-                      <div className="flex items-center justify-center gap-2">
+                      </td>
+
+                      {/* Subject */}
+                      <td className="p-4 text-center align-middle">{course.subject || "-"}</td>
+
+                      {/* Instructor */}
+                      <td className="p-4 text-center align-middle">
+                        {course.instructor?.user ? (
+                          <span className="text-sm">{course.instructor.user.fullName}</span>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+
+                      {/* Students */}
+                      <td className="p-4 text-center align-middle">
+                        <div className="flex items-center justify-center gap-2 font-semibold text-tertiary">
+                          <FaUsers className="text-tertiary/70" />
+                          {course.studentCount?.toLocaleString() || 0}
+                        </div>
+                      </td>
+
+                      {/* Rating */}
+                      <td className="p-4 text-center align-middle">
+                        <div className="flex items-center justify-center gap-1 font-bold text-amber-600">
+                          <FaStar size={16} /> {course.rating || 0}
+                        </div>
+                      </td>
+
+                      {/* Price */}
+                      <td className="p-4 text-center align-middle font-bold text-green-600">
+                        ₹
+                        {course.discountedPrice > 0
+                          ? course.discountedPrice
+                          : course.originalPrice}
+                      </td>
+
+                      {/* Actions */}
+                      <td className="p-4 flex items-center justify-center gap-2">
                         <button
                           className="p-2 text-secondary hover:bg-secondary/10 rounded-full transition-colors"
                           title="View"
@@ -256,19 +254,27 @@ const CourseDashboard = () => {
                         <button
                           className="p-2 text-accent hover:bg-accent/10 rounded-full transition-colors"
                           title="Edit"
+                          onClick={() =>
+                            navigate(`/admin/course/update/${course._id}`)
+                          }
                         >
                           <FaEdit size={18} />
                         </button>
                         <button
-                          className="p-2 text-error hover:bg-error/10 rounded-full transition-colors"
-                          title="Delete"
-                        >
-                          <FaTrash size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+  className="p-2 text-error hover:bg-error/10 rounded-full transition-colors"
+  title="Delete"
+  onClick={(e) => {
+    e.stopPropagation();
+    handleDeleteCourse(course._id); // ✅ Correct function
+  }}
+>
+  <FaTrash size={18} />
+</button>
+
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -278,15 +284,9 @@ const CourseDashboard = () => {
         {totalPages > 1 && (
           <div className="flex items-center justify-between mt-6">
             <div className="text-tertiary/80">
-              Showing{" "}
-              <span className="font-bold text-primary">
-                {startIndex + 1}-
-                {Math.min(startIndex + coursesPerPage, filteredCourses.length)}
-              </span>{" "}
-              of{" "}
-              <span className="font-bold text-primary">
-                {filteredCourses.length}
-              </span>
+              Page{" "}
+              <span className="font-bold text-primary">{currentPage}</span> of{" "}
+              <span className="font-bold text-primary">{totalPages}</span>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -297,12 +297,10 @@ const CourseDashboard = () => {
                 <FaChevronLeft size={20} />
               </button>
               <span className="px-4 py-2 bg-white border border-gray-200 rounded-md font-semibold text-primary">
-                Page {currentPage} of {totalPages}
+                {currentPage}
               </span>
               <button
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(totalPages, p + 1))
-                }
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
                 className="p-2 rounded-md bg-white border border-gray-200 hover:bg-gray-100 disabled:opacity-50"
               >
@@ -312,6 +310,41 @@ const CourseDashboard = () => {
           </div>
         )}
       </div>
+      {deleteModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 font-header">
+                Delete Course
+              </h3>
+              <button
+                onClick={cancelDelete}
+                className="text-gray-400 hover:text-accent"
+              >
+                <FaTimes size={20} />
+              </button>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this note? This action cannot be
+              undone.
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 border border-primary rounded-lg text-primary hover:border-secondary hover:shadow-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

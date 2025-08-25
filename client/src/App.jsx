@@ -10,7 +10,7 @@ import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetails";
 import QuizAndNotesDetails from "./components/CourseInfo";
-import AddCoursePage from "./pages/admin/AddCoursePage";
+import AddCourse from "./pages/admin/course/AddCourse";
 import AddQuotesPage from "./pages/admin/AddQuotesPage";
 import Video from "./pages/Video";
 import NotesAdminLayout from "./layouts/NotesAdminLayout";
@@ -30,7 +30,6 @@ import NotesDetail from "./pages/NotesDetail";
 import FeatureAdminLayout from "./layouts/FeatureAdminLayout";
 import AddCarouselPage from "./pages/admin/AddCarouselPage";
 import Quiz from "./pages/Quiz";
-import UpdateCoursePage from "./pages/admin/UpdateCoursePage";
 import DeleteCourse from "./pages/admin/DeleteCoursePage";
 import EditCoursesPage from "./pages/admin/EditCoursesPage";
 import AnimatedBook from "./components/BookLoader";
@@ -57,8 +56,10 @@ import Developers from "./pages/footer/Developers";
 import AboutUs from "./pages/footer/AboutUs";
 import UpdateQuiz from "./pages/admin/quiz/UpdateQuiz";
 import UpdateNotes from "./pages/admin/notes/UpdateNotes";
-import AddCourse from "./test";
+// import AddCourse from "./test";
 import Settings from "./pages/admin/settings/Settings";
+import UpdateCourse from "./pages/admin/course/UpdateCourse";
+import UpdateCoursePage from "./pages/admin/UpdateCoursePage";
 
 const App = () => {
   return (
@@ -114,7 +115,8 @@ const App = () => {
               <Route index element={<SalesDashboard />} />
               <Route path="course">
                 <Route index element={<CourseDashboard />} />
-                <Route path="add" element={<AddCoursePage />} />
+                <Route path="add" element={<AddCourse />} />
+                <Route path="update/:id" element={<UpdateCourse />} />
               </Route>
               <Route path="settings" element={<Settings />} />
               <Route path="teachers" element={<Teachers />} />
@@ -150,7 +152,7 @@ const App = () => {
                 <Route path="delete" element={<DeleteNotesPage />} />
               </Route> */}
             </Route>
-            <Route path="/test" element={<AddCourse />} />
+            <Route path="/test" element={<UpdateCoursePage/>}/>
             <Route path="/pdfViewer" element={<PdfViewer />} />
             <Route path="/welcome" element={<WelcomeScreen />} />
             <Route path="/unauth" element={<Unauth />} />

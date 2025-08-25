@@ -37,9 +37,7 @@ export const getAllPaidNotes = async (req, res) => {
       filter.subject = subject;
     }
     if (classFor) {
-      // Extract only the number from "11th" → "11"
-      const classNumber = classFor.match(/\d+/)?.[0]; // Extracts numeric part
-      if (classNumber) filter.classFor = classNumber;
+     filter.classFor = classFor;
     }
     const notes = await Notes.find(filter);
     res.status(200).json(notes);

@@ -71,8 +71,8 @@ const FileInput = styled.input`
   display: none;
 `;
 
-const VideoUploader = ({ label, onChange,FileUrl, ...props }) => {
-  const [fileUrl, setFileUrl] = useState(FileUrl);
+const VideoUploader = ({ label, onChange, initialFileUrl, ...props }) => {
+  const [fileUrl, setFileUrl] = useState(initialFileUrl || null);
   const [dragActive, setDragActive] = useState(false);
 
   const processFile = (file) => {
@@ -82,7 +82,9 @@ const VideoUploader = ({ label, onChange,FileUrl, ...props }) => {
     }
     const url = URL.createObjectURL(file);
     setFileUrl(url);
-    onChange && onChange(url);
+
+    // Pass the actual file, not blob url
+    onChange && onChange(file);
   };
 
   const handleFileChange = (event) => {
@@ -105,7 +107,7 @@ const VideoUploader = ({ label, onChange,FileUrl, ...props }) => {
     const file = e.dataTransfer.files[0];
     if (file) processFile(file);
   };
-  console.log(fileUrl);
+
   return (
     <Container
       className={dragActive ? "dragover" : ""}

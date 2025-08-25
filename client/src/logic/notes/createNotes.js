@@ -21,7 +21,6 @@ const handleSubmit = async (
   setLoading(true);
   openModal();
   setProgress(0);
-  console.log(formData)
   try {
     const uploadToCloudinary = async (file, preset) => {
       const form = new FormData();

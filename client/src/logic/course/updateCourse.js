@@ -2,7 +2,9 @@ import { useState,useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "../../components/use-toast";
+import { useNavigate } from "react-router-dom";
 const useUpdateCourse=()=>{
+    const navigate=useNavigate();
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -17,7 +19,7 @@ const useUpdateCourse=()=>{
             demoVideo: "",
             studentCount: "",
             lastUpdated: "",
-            classFor: "",
+            class: "",
             board: "",
             subject: "",
             stream: "",
@@ -56,11 +58,6 @@ const useUpdateCourse=()=>{
         }
       
       }
-      const convertBlobUrlToFile = async (blobUrl, filename) => {
-        const response = await fetch(blobUrl);
-        const blob = await response.blob();
-        return new File([blob], filename, { type: blob.type });
-    };
 
     const uploadToCloudinary = async (file, preset) => {
         const formData = new FormData();
@@ -88,35 +85,29 @@ const useUpdateCourse=()=>{
   
       try {
           let imageUrl = course.courseImage; // Keep existing image if not removed
-          let updatedModules = [...course.modules]; // Keep existing modules
-  
+          console.log(imageUrl)
           // Step 1: Upload course image ONLY if it was removed
-          if (isImageRemoved) {
-              const imageFile = await convertBlobUrlToFile(course.courseImage, "course_image.jpg");
-              imageUrl = await uploadToCloudinary(imageFile, "Course_Image");
-  
-              if (!imageUrl) {
-                  setLoading(false);
-                  return;
-              }
+          if (imageUrl instanceof File) {
+            // New image uploaded
+            imageUrl = await uploadToCloudinary(course.courseImage, "Course_Image");
+          } else if (!course.courseImage && isImageRemoved) {
+            // If explicitly deleted
+            imageUrl = "";
           }
   
           // Step 2: Upload videos ONLY if they were removed
-          if (isVideoRemoved) {
-              updatedModules = [];
-              for (let i = 0; i < course.modules.length; i++) {
-                  let module = course.modules[i];
-  
-                  if (module.videoLink) {
-                      const videoFile = await convertBlobUrlToFile(module.videoLink, `course_video_${i}.mp4`);
-                      const videoUrl = await uploadToCloudinary(videoFile, "Course_Video");
-  
-                      updatedModules.push({ ...module, videoLink: videoUrl });
-                  } else {
-                      updatedModules.push(module);
-                  }
+          const updatedModules = await Promise.all(
+            course.modules.map(async (module) => {
+              if (module.videoLink instanceof File) {
+                const videoUrl = await uploadToCloudinary(module.videoLink, "Course_Video");
+                return { ...module, videoLink: videoUrl };
+              } else if (!module.videoLink && isVideoRemoved) {
+                return { ...module, videoLink: "" };
+              } else {
+                return module;
               }
-          }
+            })
+          );
   
           // Step 3: Prepare final data
           const formattedData = {
@@ -125,7 +116,7 @@ const useUpdateCourse=()=>{
               modules: updatedModules,
           };
   
-          // Step 4: Send data to backend
+          //Step 4: Send data to backend
           await axios.put(`${process.env.REACT_APP_API_BASE_URL}api/courses/update/${id}`, formattedData);
   
           toast({
@@ -133,6 +124,8 @@ const useUpdateCourse=()=>{
               description: `You have successfully edited the course: ${formattedData.courseTitle}`,
               variant: "success",
           });
+          navigate("/admin/course")
+          console.log(formattedData)
   
       } catch (error) {
           console.error("Error updating course:", error);

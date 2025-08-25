@@ -31,13 +31,47 @@ export const createCourse = async (req, res) => {
 // Get All Courses
 export const getCourses = async (req, res) => {
   try {
-    const courses = await Course.find().populate("instructor notes quizzes");
-    res.status(200).json(courses);
+    // Get page & limit from query params (defaults: page=1, limit=10)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Count total courses
+    const totalCourses = await Course.countDocuments();
+
+    // Fetch courses with pagination + populates
+    const courses = await Course.find()
+      .skip(skip)
+      .limit(limit)
+      .populate({
+        path: "instructor",
+        populate: {
+          path: "user",
+          select: "fullName", // only fullName for instructor's user
+        },
+      })
+      .populate({
+        path: "notes",
+        select: "title subject classFor", // keep it light for dashboard
+      })
+      .populate({
+        path: "quizzes",
+        select: "title subject totalMarks", // keep only summary info
+      });
+
+    // Send response
+    res.status(200).json({
+      courses,
+      totalPages: Math.ceil(totalCourses / limit),
+      currentPage: page,
+      totalCourses,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error fetching courses", error });
   }
 };
+
 
 export const getAll = async (req, res) => {
   try {
@@ -52,9 +86,16 @@ export const getAll = async (req, res) => {
 // Get a specific course by ID
 export const getCourseById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate(
-      "instructor notes quizzes"
-    );
+    const course = await Course.findById(req.params.id)
+    .populate({
+      path: "instructor",
+      populate: {
+        path: "user", // field inside instructor schema
+      },
+    })
+    .populate("notes")
+    .populate("quizzes");
+  
     if (!course) return res.status(404).json({ error: "Course not found" });
     res.json(course);
   } catch (error) {
